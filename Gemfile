@@ -45,3 +45,16 @@ end
 
 # Manage constant
 gem 'rails_config'
+
+# test
+group :development, :test do
+  gem 'rspec'
+  gem 'rspec-rails'
+  gem 'guard-rspec'
+  gem 'factory_girl_rails'
+  gem 'email_spec'
+  gem 'database_cleaner'
+  gem 'pry-byebug'
+end
+
+gem 'simplecov', require: false, group: :test
