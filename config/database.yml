@@ -13,13 +13,19 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: root
-  password:
-  socket: /tmp/mysql.sock
+  username: <%= Settings.db.default.username %>
+  password: <%= Settings.db.default.password %>
+  socket: <%= Settings.db.default.socket %>
 
 development:
   <<: *default
   database: finc_store_development
+
+staging:
+  <<: *default
+  database: fincrew_manager_staging
+  host: <%= Settings.db.default.host %>
+  port: <%= Settings.db.default.port %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -49,6 +55,11 @@ test:
 #
 production:
   <<: *default
-  database: finc_store_production
-  username: finc_store
-  password: <%= ENV['FINC_STORE_DATABASE_PASSWORD'] %>
+  database: fincrew_manager_production
+  username: <%= Settings.db.default.username %>
+  password: <%= Settings.db.default.password %>
+  host: <%= Settings.db.default.host %>
+  port: <%= Settings.db.default.port %>
+
+heroku_staging:
+  url: <%= ENV['DATABASE_URL'] %>
