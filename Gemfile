@@ -58,3 +58,30 @@ group :development, :test do
 end
 
 gem 'simplecov', require: false, group: :test
+
+# ERD
+gem 'rails-erd', group: :development
+
+# debug
+group :development, :staging do
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'pry-rails'
+  gem 'hirb'
+  gem 'hirb-unicode'
+
+  gem 'tapp'
+  gem 'letter_opener_web'
+  gem 'awesome_print'
+  gem 'quiet_assets'
+end
+
+group :development, :staging, :heroku_staging do
+  gem 'rack-dev-mark'
+end
+
+# seed
+gem 'seed-fu'
+gem 'annotate'
+
+gem 'bullet', group: :development
