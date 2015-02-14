@@ -85,3 +85,6 @@ gem 'seed-fu'
 gem 'annotate'
 
 gem 'bullet', group: :development
+
+# Authentication
+gem 'devise'
