@@ -1,0 +1,2 @@
+module Users::CheckoutsHelper
+end

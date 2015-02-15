@@ -1,5 +1,24 @@
 Rails.application.routes.draw do
   devise_for :users
+
+  scope module: :users do
+    resource :account, only: [:show]
+    resources :products, only: [:index, :show]
+    resource :cart do
+      get :address, on: :member
+    end
+    resources :orders, :except => [:index, :new, :create, :destroy] do
+      post :populate, :on => :collection
+    end
+
+    resource :checkout do
+      get ':state', :to => 'checkout#edit'
+      patch ':state', :to => 'checkout#update'
+    end
+
+    get '/t/*id', :to => 'taxons#show', :as => :nested_taxon
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
