@@ -4,16 +4,17 @@ Rails.application.routes.draw do
   scope module: :users do
     resource :account, only: [:show]
     resources :products, only: [:index, :show]
-    resource :cart do
+    resource :cart, only: [:update], controller: :orders do
+      get '/', action: :edit
       get :address, on: :member
     end
     resources :orders, :except => [:index, :new, :create, :destroy] do
       post :populate, :on => :collection
     end
 
-    resource :checkout do
-      get ':state', :to => 'checkout#edit'
-      patch ':state', :to => 'checkout#update'
+    resource :checkout, only: [] do
+      get ':state', action: :edit 
+      patch ':state', action: :edit
     end
 
     get '/t/*id', :to => 'taxons#show', :as => :nested_taxon
