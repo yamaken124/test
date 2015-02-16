@@ -1,8 +1,8 @@
-.c-item_list{
+.c-product_list{
 	width:100%;
 	height:100px;
 	margin-top:10px;
-	.c-item_list__image{
+	.c-product_list__image{
 		width:120px;
 		height:90px;
 		float:left;
@@ -10,18 +10,19 @@
 			width:100%;
 		}
 	}
-	.c-item_list__title{
+	.c-product_list__title{
+    @include calc("width", "100%-100px");
 		margin-top:45px;
 		color:$base_font_color;
 		float:left;
 	}
-	.c-item_list__price{
+	.c-product_list__price{
 		margin-top:5px;
 		color:$finc_color;
 		float:left;
 	}
 }
-.c-item_list__detail{
+.c-product_list__detail{
 	width:100%;
 	height:24px;
 	select{

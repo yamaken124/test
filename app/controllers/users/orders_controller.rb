@@ -4,6 +4,9 @@ class Users::OrdersController < Users::BaseController
   before_action :assign_order_with_lock, only: :update
   before_action :apply_coupon_code, only: :update
 
+  def index
+  end
+
   def edit
     @order = current_order || PurchaseOrder.incomplete.new
     associate_user

@@ -8,16 +8,18 @@
   background-color:white;
   width:100%;
   border:1px solid $base_border_color;
-  margin-bottom:50px;
   border-radius:5px;
   margin-left:-1px;
-	.c-link{
+  .c-link_base{
     @include calc("width", "100%-15px");
     height:42px;
     line-height:42px;
     padding-left:15px;
     border-bottom:1px solid $base_border_color;
     color:$base_font_color;
+  }
+	.c-link{
+    @extend .c-link_base;
     &:after{
       content: "";  
       display: block;  
@@ -29,6 +31,15 @@
       background-image:url(asset-path("users/icon_next.png"));
       background-size:contain;
       background-repeat:no-repeat;
+    }
+  }
+	.c-link--small_text{
+    @extend .c-link_base;
+    line-height:14px;
+    font-size:12px;
+    span{
+      margin-top:6px;
+      float:left;
     }
   }
   a{

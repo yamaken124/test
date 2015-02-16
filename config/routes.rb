@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       get '/', action: :edit
       get :address, on: :member
     end
-    resources :orders, :except => [:index, :new, :create, :destroy] do
+    resources :orders, :except => [:new, :create, :destroy] do
       post :populate, :on => :collection
     end
 
