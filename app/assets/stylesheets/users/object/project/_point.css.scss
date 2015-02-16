@@ -1,0 +1,89 @@
+@mixin calc_circle_max_width($max-width){
+  @media screen and (max-width: $max-width) {
+    width: $max-width*0.8;
+    height: $max-width*0.8;
+    border-radius:50%;
+    margin:0 auto;
+    background-color:$finc_color;
+  }
+}
+@mixin calc_circle_inner_max_width($max-width){
+  @media screen and (max-width: $max-width) {
+    width: $max-width*0.6;
+    height: $max-width*0.6;
+    border-radius:50%;
+    margin:$max_width*0.1 $max_width*0.1;
+    background-color:white;
+    float:left;
+    p{
+      width:100%;
+      font-size:(15 * $max-width / 340);
+      text-align:center;
+      color:$finc_color;
+      margin-top:20%;
+    }
+    h1{
+      text-align:center;
+      color:$base_font_color;
+      font-size:(40 * $max-width / 340);
+      margin-top:20px;
+      &:after{
+        content: 'pt';
+        font-size:(10 * $max-width / 340);  
+      }
+    }
+  }
+}
+
+.p-point__lost_notice{
+  width:100%;
+  height:50px;
+  font-size:15px;
+  background-color:rgb(197,197,197);
+  color:white;
+  text-align:center;
+  line-height:50px;
+}
+.p-point__lost_triangle{
+  width:0;
+  height:0;
+  border: 13px solid transparent;
+  border-top: 13px solid rgb(197,197,197);
+  margin:0 auto;
+}
+.p-point__circle{
+  @include calc_circle_max_width(2500px);
+  @include calc_circle_max_width(2000px);
+  @include calc_circle_max_width(1600px);
+  @include calc_circle_max_width(1400px);
+  @include calc_circle_max_width(1200px);
+  @include calc_circle_max_width(1000px);
+  @include calc_circle_max_width(900px);
+  @include calc_circle_max_width(800px);
+  @include calc_circle_max_width(700px);
+  @include calc_circle_max_width(600px);
+  @include calc_circle_max_width(550px);
+  @include calc_circle_max_width(500px);
+  @include calc_circle_max_width(450px);
+  @include calc_circle_max_width(400px);
+  @include calc_circle_max_width(350px);
+  @include calc_circle_max_width(300px);
+}
+.p-point__circle_inner{
+  @include calc_circle_inner_max_width(2500px);
+  @include calc_circle_inner_max_width(2000px);
+  @include calc_circle_inner_max_width(1600px);
+  @include calc_circle_inner_max_width(1400px);
+  @include calc_circle_inner_max_width(1200px);
+  @include calc_circle_inner_max_width(1000px);
+  @include calc_circle_inner_max_width(900px);
+  @include calc_circle_inner_max_width(800px);
+  @include calc_circle_inner_max_width(700px);
+  @include calc_circle_inner_max_width(600px);
+  @include calc_circle_inner_max_width(550px);
+  @include calc_circle_inner_max_width(500px);
+  @include calc_circle_inner_max_width(450px);
+  @include calc_circle_inner_max_width(400px);
+  @include calc_circle_inner_max_width(350px);
+  @include calc_circle_inner_max_width(300px);
+}
