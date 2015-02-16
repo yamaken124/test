@@ -1,0 +1,12 @@
+#footer{
+  @include calc("width", "100%-10px");
+  min-height:30px;
+  padding:20px 5px;
+  background-color:$footer_background_color;
+  #footer__to_top_link{
+    color:$finc_color;
+    text-decoration:none;
+    padding-bottom:10px;
+    display:block;
+  }
+}

@@ -1,0 +1,41 @@
+.c-links__title{
+  font-size:18px;
+  padding-top:25px;
+  padding-bottom:10px;
+  color:$base_font_color;
+}
+.c-links{
+  background-color:white;
+  width:100%;
+  border:1px solid $base_border_color;
+  margin-bottom:50px;
+  border-radius:5px;
+  margin-left:-1px;
+	.c-link{
+    @include calc("width", "100%-15px");
+    height:42px;
+    line-height:42px;
+    padding-left:15px;
+    border-bottom:1px solid $base_border_color;
+    color:$base_font_color;
+    &:after{
+      content: "";  
+      display: block;  
+      width:21px;
+      height:22px;
+      position:absolute;
+      margin-top:-32px;
+      right:9px;
+      background-image:url(asset-path("users/icon_next.png"));
+      background-size:contain;
+      background-repeat:no-repeat;
+    }
+  }
+  a{
+    &:last-child{
+      li{
+        border-bottom:none;
+      }
+    }
+  }
+}
