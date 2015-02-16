@@ -12,4 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require library/slider/modernizr.js
+//= require library/slider/jquery.easing.js
+//= require library/slider/jquery.flexslider.js

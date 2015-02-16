@@ -1,0 +1,29 @@
+#form{
+  padding:20px 5px;
+  h2{
+    font-size:20px;
+    color:$base_font_color;
+    font-weight:bold;
+  }
+  label{
+    width:100%;
+    color:$base_font_color;
+  }
+  .form__text--long{
+    @include calc(width, "98% - 2px");
+    border:1px solid $base_border_color;
+    font-size:18px;
+    height:30px;
+    margin-top:5px;
+    padding-left:2%;
+    border-radius:5px;
+    color:$base_font_color;
+  }
+  .form__field{
+    padding-top:15px;
+  }
+  i{
+    font-size:12px;
+    color:$base_font_color;
+  }
+}

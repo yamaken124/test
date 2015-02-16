@@ -1,0 +1,89 @@
+<%= javascript_include_tag 'users/products/show' %>
+
+<h2 class="p-product_title">パーソナルサプリメント</h2>
+<div class="flexslider">
+  <ul class="slides">
+    <% 3.times do %>
+      <li>
+        <%= image_tag "users/sample_item_01.png" %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="p-product__price_wrapper">
+  <div class="p-product__price">
+    <p class="p-product__price_title">定期購買</p>
+    <p class="p-product__price_value">0,000円<span class="p-product__price_unit">(税込)</span></p>
+  </div>
+  <div class="p-product__price">
+    <p class="p-product__price_title">単品</p>
+    <p class="p-product__price_value">0,000円<span class="p-product__price_unit">(税込)</span></p>
+  </div>
+</div>
+
+<div class="p-wrapper--have_padding">
+  <ul class="p-payment_method_selections">
+    <li class="p-payment_method_selection">
+      <div class="p-payment_method_selection__radio">
+        <input type="radio" name="select">
+      </div>
+      <p class="p-payment_method_selection__title">
+        定期購買
+      </p>
+      <p class="p-payment_method_selection__price">
+        ￥0,000
+      </p>
+      <p class="p-payment_method_selection__attention">
+        ※初回2ヶ月分の料金をいただきます。
+      </p>
+      <div class="p-payment_method__detail is-active">
+        <p>数量: </p>
+        <input type="text" class="p-payment_method__amount">
+        <p class="u-margin__left_short">個</p>
+        <div class="c-btn c-btn__submit--short">カートへ</div>
+      </div>
+    </li>
+    <li class="p-payment_method_selection">
+      <div class="p-payment_method_selection__radio">
+        <input type="radio" name="select">
+      </div>
+      <p class="p-payment_method_selection__title">
+        単品
+      </p>
+      <p class="p-payment_method_selection__price">
+        ￥0,000
+      </p> 
+      <div class="p-payment_method__detail">
+        <p>数量: </p>
+        <input type="text" class="p-payment_method__amount">
+        <p class="u-margin_short">個</p>
+        <div class="c-btn c-btn__submit--short">カートへ</div>
+      </div>
+    </li>
+  </ul>
+
+  <h2 class="u-margin__top25">この商品について</h2>
+  <ul class="p-about_products">
+    <li class="p-about_product">
+      <p>栄養士からの説明</p>
+      <div class="p-about_product__fincrew">
+        <%= image_tag "users/icon_yuka.png" %>
+      </div>
+      <div class="p-about_product__fincrew_description">
+        ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
+      </div>
+    </li>
+    <li class="p-about_product">
+      <p>商品詳細</p>
+      <div class="p-about_product__description">
+        ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
+      </div>
+    </li>
+  </ul>
+  <a href="<%= products_path %>">
+    <div class="c-btn c-btn__submit">
+      レジへ進む
+    </div>
+  </a>
+</div>
