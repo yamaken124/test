@@ -1,8 +1,23 @@
-<a href="<%= "#" %>">
-  <div class="c-category_select">
-    サプリ
+<% if @nested_taxons.present? %>
+  <div class="p-wrapper--have_padding">
+    <h2 class="c-links__title">カテゴリ一覧</h2>
+    <ul class="c-links">
+      <% 5.times do %>
+        <a href="<%= nested_taxon_path("水") %>">
+          <li class="c-link">
+            サプリ
+          </li>
+        </a>
+      <% end %>
+    </ul>
   </div>
-</a>
-<% 5.times do %>
-  <%= render partial: 'users/products/product', locals: {} %>
+<% else %>
+  <a href="<%= nested_taxon_path(1) %>">
+    <div class="c-category_select">
+      サプリ
+    </div>
+  </a>
+  <% 5.times do %>
+    <%= render partial: 'users/products/product', locals: {} %>
+  <% end %>
 <% end %>
