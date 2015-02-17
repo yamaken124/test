@@ -1,0 +1,59 @@
+<div class="p-wrapper--have_padding">
+  <h2 class="title">注文確定</h2>
+	<div class="c-btn--submit u-margin__bottom_middle">
+	  注文の確定
+  </div>
+  <h2 class="c-links__title">注文内容</h2>
+  <ul class="p-payment_method_selections">
+    <li class="p-payment_method_selection">
+      <span>
+      商品: ¥5,900<br>
+      配送料手数料: ¥0
+      </span>
+    </li>
+    <li class="p-payment_method_selection">
+      <span>
+        使用ポイント:800pt<br>
+        注文合計: ¥8,100
+      </span>
+    </li>
+  </ul>
+  <h2 class="c-links__title">お届け先住所</h2>
+  <ul class="p-payment_method_selections">
+    <li class="p-payment_method_selection">
+      <span>大谷真司<br>大阪市住吉区...</span>
+    </li>
+  </ul>
+  <h2 class="c-links__title">支払い方法</h2>
+  <ul class="p-payment_method_selections">
+    <li class="p-payment_method_selection">
+      <span>
+        支払い方法<br>クレジット 下4桁 8080
+      </span>
+    </li>
+  </ul>
+  <h2 class="c-links__title">購入詳細</h2>
+  <% 2.times do %>
+	  <div class="c-payment_method_section">
+	  		購入形式: 定期購買
+	  </div>
+	  <% 3.times do %>
+	    <div class="c-product_list">
+	    	<div class="c-product_list__image">
+	    		<%= image_tag "users/sample_item_01.png" %>			
+        </div>
+        <div class="c-product__list_detail_wrapper">
+	    	  <div class="c-product_list__title">
+	    		  サプリメント
+	      	</div>
+	      	<div class="c-product_list__price">
+	      		￥10,000(1個)
+	    	  </div>
+        </div>
+	    </div>
+    <% end %>
+  <% end %>
+  <div class="c-btn--submit">
+    注文の確定
+  </div>
+</div>
