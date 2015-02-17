@@ -1,32 +1,6 @@
-<div class="p-wrapper--have_padding">
-	<h2>カート小計(2個の商品): <span>￥10,000</span></h2>
-	<div class="c-btn--submit">
-	  レジに進む
-  </div>
-  <% 2.times do %>
-	  <div class="c-payment_method_section">
-	  		購入形式: 定期購買
-	  </div>
-	  <% 3.times do %>
-	    <div class="c-item_list">
-	    	<div class="c-item_list__image">
-	    		<%= image_tag "users/sample_item_01.png" %>			
-	    	</div>
-	    	<div class="c-item_list__title">
-	    		サプリメント
-	    	</div>
-	    	<div class="c-item_list__price">
-	    		￥10,000 / 月
-	    	</div>
-	    </div>
-	    <div class="c-item_list__detail">
-	    	<select>
-	    		<option>1</option>
-	    		<option>2</option>
-	    		<option>3</option>
-	    	</select>
-	    	<p class="u-margin__left_short">削除</p>
-	    </div>
-    <% end %>
-	<% end %>
-</div>
+<% case params[:state] %>
+<% when "payment" %>
+  <%= render partial: 'users/checkouts/payment', locals: {} %>
+<% when "confirm" %>
+<% when "thanks" %>
+<% end %>

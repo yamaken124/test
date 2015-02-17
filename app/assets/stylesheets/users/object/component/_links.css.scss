@@ -1,7 +1,7 @@
 .c-links__title{
   font-size:18px;
   padding-top:25px;
-  padding-bottom:10px;
+  padding-bottom:5px;
   color:$base_font_color;
 }
 .c-links{
@@ -33,6 +33,15 @@
       background-repeat:no-repeat;
     }
   }
+	.c-link--small_text--nolink{
+    @extend .c-link_base;
+    line-height:14px;
+    font-size:12px;
+    span{
+      margin-top:6px;
+      float:left;
+    }
+  }
 	.c-link--small_text{
     @extend .c-link_base;
     line-height:14px;
@@ -40,6 +49,18 @@
     span{
       margin-top:6px;
       float:left;
+    }
+    &:after{
+      content: "";  
+      display: block;  
+      width:21px;
+      height:22px;
+      position:absolute;
+      margin-top:10px;
+      right:9px;
+      background-image:url(asset-path("users/icon_next.png"));
+      background-size:contain;
+      background-repeat:no-repeat;
     }
   }
   a{
