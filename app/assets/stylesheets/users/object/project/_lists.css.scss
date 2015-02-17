@@ -1,11 +1,11 @@
-.p-about_products{
+.p-lists{
   background-color:white;
   width:100%;
   border:1px solid $base_border_color;
   margin-bottom:50px;
   border-radius:5px;
 	margin-left:-1px;
-  .p-about_product{
+  .p-list{
     @include calc("width", "100%-15px");
     min-height:42px;
     overflow:hidden;
@@ -18,7 +18,7 @@
       padding-top:10px;
       padding-bottom:5px;
     }
-    .p-about_product__fincrew{
+    .p-list__fincrew{
       width:50px;
       height:50px;
       float:left;
@@ -29,7 +29,7 @@
     &:last-child{
       border-bottom:none;
     }
-    .p-about_product__fincrew_description{
+    .p-list__fincrew_description{
       @include calc("width", "100%-50px");
       font-size:13px;
       line-height:17px;
@@ -38,7 +38,7 @@
       padding-bottom:5px;
       float:left;
     }
-    .p-about_product__description{
+    .p-list__description{
       font-size:13px;
       line-height:17px;
       padding-right:15px;
