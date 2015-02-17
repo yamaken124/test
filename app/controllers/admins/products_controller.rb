@@ -5,13 +5,14 @@ def new
 end
 
 def create
-  product = Product.new(product_params)
-  product.save
-  variant = product.variant.build(variant_params)
-  variant.save
-  price = variant.price.build(price_params)
-  price.save
-
+  ActiveRecord::Base.transaction do
+    product = Product.new(product_params)
+    product.save!
+    variant = product.variants.build(variant_params)
+    variant.save!
+    price = variant.prices.build(price_params)
+    price.save!
+  end
   redirect_to new_admins_product_path
 end
 

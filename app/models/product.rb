@@ -1,3 +1,3 @@
 class Product < ActiveRecord::Base
-  has_many :variant
+  has_many :variants
 end
