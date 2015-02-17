@@ -1,7 +1,7 @@
 class PurchaseOrder < ActiveRecord::Base
   belongs_to :user
 
-  enum state: { payment: 10, confirm: 20, complete: 30 }
+  enum state: { cart: 0, payment: 10, confirm: 20, complete: 30 }
 
   def self.incomplete
     PurchaseOrder.where(id: PurchaseOrder.complete.pluck(:id))

@@ -44,11 +44,28 @@ class Users::OrdersController < Users::BaseController
 
   private
 
-  def assign_order_with_lock
-    @order = current_order(lock: true)
-    unless @order
-      flash[:error] = Spree.t(:order_not_found)
-      redirect_to root_path and return
-    end
-  end
+      def order_params
+        if params[:order]
+          params[:order].permit(*permitted_order_attributes)
+        else
+          {}
+        end
+      end
+
+      def assign_order_with_lock
+        @order = current_order(lock: true)
+        unless @order
+          flash[:error] = Spree.t(:order_not_found)
+          redirect_to root_path and return
+        end
+      end
+
+      def permitted_order_attributes
+        { :coupon_code, :email, :shipping_method_id, :special_instructions, :use_billing
+          line_items_attributes: permitted_line_item_attributes }
+      end
+
+      def permitted_line_item_attributes
+        [:id, :variant_id, :quantity]
+      end
 end
