@@ -88,3 +88,5 @@ gem 'bullet', group: :development
 
 # Authentication
 gem 'devise'
+
+gem 'httparty'
