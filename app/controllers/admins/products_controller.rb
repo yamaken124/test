@@ -16,11 +16,11 @@ def create
 end
 
   def product_params
-    params.require(:product).permit(:name, :description)
+    params.require(:product).permit(:name, :description, :is_valid_at, :is_invalid_at)
   end
 
   def variant_params
-    params[:product].require(:variants).permit(:sku)
+    params[:product].require(:variants).permit(:sku, :is_valid_at, :is_invalid_at)
   end
 
   def price_params

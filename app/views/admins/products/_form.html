@@ -8,11 +8,27 @@
     <%= p.label :description %><br>
     <%= p.text_field :description, class: "text" %>
   </div>
+  <div class="field">
+    <%= p.label :product_is_valid_at %><br>
+    <%= p.date_select :is_valid_at, class: "form-control" %>
+  </div>
+  <div class="field">
+    <%= p.label :product_is_invalid_at %><br>
+    <%= p.date_select :is_invalid_at, class: "form-control" %>
+  </div>
 
   <%= p.fields_for :variants do |v| %>
-      <div class="field">
+    <div class="field">
       <%= v.label :sku %><br>
       <%= v.text_field :sku, class: "text" %>
+    </div>
+    <div class="field">
+      <%= v.label :variant_is_valid_at %><br>
+      <%= v.date_select :is_valid_at, class: "form-control" %>
+    </div>
+    <div class="field">
+      <%= v.label :variant_is_invalid_at %><br>
+      <%= v.date_select :is_invalid_at, class: "form-control" %>
     </div>
   <% end %>
 
