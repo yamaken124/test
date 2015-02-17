@@ -1,0 +1,30 @@
+<%= form_for([:admins, product]) do |p| %>
+
+  <div class="field">
+    <%= p.label :name %><br>
+    <%= p.text_field :name, class: "text" %>
+  </div>
+  <div class="field">
+    <%= p.label :description %><br>
+    <%= p.text_field :description, class: "text" %>
+  </div>
+
+  <%= p.fields_for :variants do |v| %>
+      <div class="field">
+      <%= v.label :sku %><br>
+      <%= v.text_field :sku, class: "text" %>
+    </div>
+  <% end %>
+
+  <%= p.fields_for :prices do |pri| %>
+    <div class="field">
+      <%= pri.label :amount %><br>
+      <%= pri.text_field :amount, class: "text" %>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= p.submit "登録", class: "submit" %>
+  </div>
+
+<% end %>
