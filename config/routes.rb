@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admins do
-    resources :products, only: [:new, :create]
+    resources :products, only: [:index, :new, :create]
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
