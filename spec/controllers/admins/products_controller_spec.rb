@@ -7,13 +7,16 @@ RSpec.describe Admins::ProductsController, type: :controller do
 
     before { get :index }
     it { expect(response).to render_template :index }
+
+    it 'assings products' do
+      expect(assigns(:products)).to eq [product]
+    end
   end
 
   describe 'POST #create' do
     let(:params) { { product: attributes_for(:product) \
       .merge(variants: attributes_for(:variant)) \
       .merge(prices: attributes_for(:price)) } }
-    let(:fake_params) { { product: attributes_for(:product) } }
 
     it { expect { post :create, params }.to change(Product, :count).by(1) }
 
@@ -21,7 +24,6 @@ RSpec.describe Admins::ProductsController, type: :controller do
       post :create, params
       expect(response).to redirect_to admins_products_path
     end
-
   end
 
   describe 'GET #new' do

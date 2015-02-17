@@ -1,6 +1,7 @@
 class Admins::ProductsController < ApplicationController
 
   def index
+    @products = Product.includes(:variants)
   end
 
   def new
