@@ -7,7 +7,7 @@ class Admins::VariantsController < ApplicationController
   def create
     @variant = Variant.new(variant_params)
     if @variant.save
-      redirect_to admins_product_path(@variant.product_id,)
+      redirect_to admins_product_path(@variant.product_id)
     else
       render :new
     end

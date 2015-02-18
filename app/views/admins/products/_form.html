@@ -10,11 +10,11 @@
   </div>
   <div class="field">
     <%= p.label :product_is_valid_at %><br>
-    <%= p.date_select :is_valid_at, class: "form-control" %>
+    <%= p.date_field :is_valid_at, value: Date.today %><br/>
   </div>
   <div class="field">
     <%= p.label :product_is_invalid_at %><br>
-    <%= p.date_select :is_invalid_at, class: "form-control" %>
+    <%= p.date_field :is_invalid_at, value: Date.today %><br/>
   </div>
 
   <%= p.fields_for :variants do |v| %>
@@ -24,14 +24,14 @@
     </div>
     <div class="field">
       <%= v.label :variant_is_valid_at %><br>
-      <%= v.date_select :is_valid_at, class: "form-control" %>
+      <%= v.date_field :is_valid_at, value: Date.today %><br/>
     </div>
     <div class="field">
       <%= v.label :variant_is_invalid_at %><br>
-      <%= v.date_select :is_invalid_at, class: "form-control" %>
+      <%= v.date_field :is_invalid_at, value: Date.today %><br/>
     </div>
     <div class="field">
-      <%= v.select :order_type, {"定期購入" => "subscription_order", "単品購入" => "single_order"} %>
+      <%= v.select :order_type, {t('attributes.order_type.single_order') => "single_order", t('attributes.order_type.subscription_order') => "subscription_order"} %>
     </div>
 
   <% end %>
