@@ -1,34 +1,22 @@
 <div class="p-wrapper--have_padding">
-	<h2 class="title">カート小計(2個の商品): <span>￥10,000</span></h2>
-	<div class="c-btn--submit">
-	  レジに進む
+  <%= form_for @order, url: cart_path, html: { id: 'update-cart' } do |order_form| %>
+    <h2 class="title">カート小計(2個の商品): <span>￥10,000</span></h2>
+      <%= order_form.submit "レジに進む", class: 'c-btn--submit' %>    
+
+      <div class="p-wrapper--have_padding">
+        <div class="c-payment_method_section">
+          購入形式: 購買
+        </div>
+        <%= order_form.fields_for :single_order, order_form.object.single_order do |single_order_form| %>
+          <%= single_order_form.fields_for :single_order_detail, single_order_form.object.single_order_detail do |single_order_detail_form| %>
+            <%= render partial: 'single_line_item', collection: single_order_detail_form.object.single_line_items, locals: { order_form: single_order_detail_form } %>
+          <% end %>
+        <% end %>
+
+        <% # TODO 定期購買 %>
+
+
+
+      <% end %>
+    </div>
   </div>
-  <% 2.times do %>
-	  <div class="c-payment_method_section">
-	  		購入形式: 定期購買
-	  </div>
-	  <% 3.times do %>
-	    <div class="c-product_list">
-	    	<div class="c-product_list__image">
-	    		<%= image_tag "users/sample_item_01.png" %>			
-        </div>
-        <div class="c-product__list_detail_wrapper">
-	    	  <div class="c-product_list__title">
-	    	  	サプリメント
-	    	  </div>
-	    	  <div class="c-product_list__price">
-	    	  	￥10,000 / 月
-          </div>
-        </div>
-	    </div>
-	    <div class="c-product_list__detail">
-	    	<select>
-	    		<option>1</option>
-	    		<option>2</option>
-	    		<option>3</option>
-	    	</select>
-	    	<p class="u-margin__left_short">削除</p>
-	    </div>
-    <% end %>
-	<% end %>
-</div>
