@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FiNCstore</title>
+  <%= stylesheet_link_tag    'admins/app', media: 'all' %>
+  <%= javascript_include_tag 'admins/app' %>
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0;"> 
+</head>
+<body class="skin-blue">
+  <%= render :partial => "layouts/admins/header" %>
+  <div class="wrapper row-offcanvas row-offcanvas-left">
+    <%= render :partial => "layouts/admins/left" %>
+    <!-- Right side column. Contains the navbar and content of the page -->
+    <aside class="right-side">          
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        content-header
+      </section>
+      <!-- Main content -->
+      <section class="content">
+        <%= yield %>
+      </section><!-- /.content -->
+    </aside><!-- /.right-side -->
+  </div><!-- ./wrapper -->
+</body>
+</html>
