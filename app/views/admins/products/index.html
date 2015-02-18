@@ -1,4 +1,7 @@
 <p>Product#index</p>
+
+<p><a href="<%= new_admins_product_path %>">product作成</a></p>
+
 <% if !@products.blank? %>
   <table>
     <thead>
@@ -14,7 +17,7 @@
       <% @products.each do |product| %>
         <tr>
           <td><%= product.id %></td>
-          <td><%= product.name %></td>
+          <td><a href="<%= admins_product_path(product.id) %>"><%= product.name %></a></td>
           <td><%= product.description %></td>
           <% product.variants.each do |v| %>
             <td><%= v.sku %></td>

@@ -4,6 +4,11 @@ class Admins::ProductsController < ApplicationController
     @products = Product.includes(:variants)
   end
 
+  def show
+    @product = Product.includes(:variants)
+      .find(params[:id])
+  end
+
   def new
     @product = Product.new
   end
@@ -20,7 +25,7 @@ class Admins::ProductsController < ApplicationController
       end
       redirect_to admins_products_path
     rescue
-      render new_admins_product_path
+      render :new
     end
   end
 
