@@ -17,7 +17,7 @@ class OrderContents
 
   def update_cart(params)
     if order.update_attributes(filter_order_items(params))
-      order.line_items = order.line_items.select { |li| li.quantity > 0 }
+      order.single_order.single_order_detail.single_line_items = order.single_order.single_order_detail.single_line_items.select { |li| li.quantity > 0 }
       # Update totals, then check if the order is eligible for any cart promotions.
       # If we do not update first, then the item total will be wrong and ItemTotal
       # promotion rules would not be triggered.
@@ -45,7 +45,7 @@ class OrderContents
     filtered_params = params.symbolize_keys
     return filtered_params if filtered_params[:line_items_attributes].nil? || filtered_params[:line_items_attributes][:id]
 
-    line_item_ids = order.line_items.pluck(:id)
+    line_item_ids = order.single_order.single_order_detail.single_line_items.pluck(:id)
 
     params[:line_items_attributes].each_pair do |id, value|
       unless line_item_ids.include?(value[:id].to_i) || value[:variant_id].present?

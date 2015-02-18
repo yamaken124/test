@@ -1,5 +1,8 @@
 class PurchaseOrder < ActiveRecord::Base
   belongs_to :user
+  has_one    :single_order
+
+  accepts_nested_attributes_for :single_order 
 
   enum state: { cart: 0, payment: 10, confirm: 20, complete: 30 }
 
@@ -22,5 +25,9 @@ class PurchaseOrder < ActiveRecord::Base
       # immediately persist the changes we just made, but don't use save since we might have an invalid address associated
       self.class.unscoped.where(id: id).update_all(attrs_to_set)
     end
+  end
+
+  def contents                                                                                                                                          
+    @contents ||= OrderContents.new(self)
   end
 end
