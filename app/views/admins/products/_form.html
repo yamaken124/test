@@ -30,6 +30,10 @@
       <%= v.label :variant_is_invalid_at %><br>
       <%= v.date_select :is_invalid_at, class: "form-control" %>
     </div>
+    <div class="field">
+      <%= v.select :order_type, {"定期購入" => "subscription_order", "単品購入" => "single_order"} %>
+    </div>
+
   <% end %>
 
   <%= p.fields_for :prices do |pri| %>
