@@ -1,4 +1,4 @@
-module Gmo
+module GmoMultiPayment
   if Rails.env == "production"
   else
     Domain = "https://kt01.mul-pay.jp/"

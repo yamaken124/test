@@ -1,4 +1,4 @@
-class Gmo::Transaction
+class GmoMultiPayment::Transaction
   def initialize(user, bill)
     @user = user
     @bill = bill
@@ -6,50 +6,50 @@ class Gmo::Transaction
   
   #transactionの初期::返り値にAccessIDとAccessPass
   def entry
-    url = Gmo::Domain + "/payment/EntryTran.idPass"
+    url = GmoMultiPayment::Domain + "/payment/EntryTran.idPass"
     HTTParty.post( url, {body: 
-                  {:SiteID => Gmo::SiteID, 
-                    :SitePass => Gmo::SitePass, 
+                  {:SiteID => GmoMultiPayment::SiteID, 
+                    :SitePass => GmoMultiPayment::SitePass, 
                     :OrderID => @bill.id, 
-                    :JobCd => Gmo::Capture,
+                    :JobCd => GmoMultiPayment::Capture,
                     :Amount => @bill.total, 
                     :Tax => (@bill.additional_tax_total + @bill.shipment_total) }
     })   
   end
 
   def exec(card_seq)
-    url = Gmo::Domain + "/payment/ExecTran.idPass"
+    url = GmoMultiPayment::Domain + "/payment/ExecTran.idPass"
     HTTParty.post( url, {body: 
                   {:AccessID   => @bill.access_id,
                    :AccessPass => @bill.access_pass,
                    :OrderID    => @bill.id,
                    :Method     => 1,
-                   :SiteID     => Gmo::SiteID,
-                   :SitePass   => Gmo::SitePass,
+                   :SiteID     => GmoMultiPayment::SiteID,
+                   :SitePass   => GmoMultiPayment::SitePass,
                    :MemberID   => @bill.address.user.id,
                    :CardSeq    => card_seq }
     })  
   end
 
   def transaction_void
-    url = Gmo::Domain + "/payment/AlterTran.idPass"
+    url = GmoMultiPayment::Domain + "/payment/AlterTran.idPass"
     HTTParty.post( url, {body: 
-                  {:SiteID      => Gmo::SiteID,
-                   :SitePass    => Gmo::SitePass,
+                  {:SiteID      => GmoMultiPayment::SiteID,
+                   :SitePass    => GmoMultiPayment::SitePass,
                    :AccessID    => @bill.access_id,
                    :AccessPass  => @bill.access_pass, 
-                   :JobCd       => Gmo::Void}
+                   :JobCd       => GmoMultiPayment::Void}
     })
   end
 
   def tracsaction_return
-    url = Gmo::Domain + "/payment/AlterTran.idPass"
+    url = GmoMultiPayment::Domain + "/payment/AlterTran.idPass"
     HTTParty.post( url, {body: 
-                  {:SiteID      => Gmo::SiteID,
-                   :SitePass    => Gmo::SitePass,
+                  {:SiteID      => GmoMultiPayment::SiteID,
+                   :SitePass    => GmoMultiPayment::SitePass,
                    :AccessID    => @bill.access_id,
                    :AccessPass  => @bill.access_pass, 
-                   :JobCd       => Gmo::Void}
+                   :JobCd       => GmoMultiPayment::Void}
     })
   end
 end
