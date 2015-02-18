@@ -1,5 +1,5 @@
 class Admins::ProductsController < ApplicationController
-
+  layout "admins/admins"
   def index
     @products = Product.includes(:variants)
   end
