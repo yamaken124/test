@@ -39,7 +39,7 @@ class OrderContents
 
   def issue_bill
     @bill = order.bill || order.build_bill
-    @bill.update_bill(order)
+    @bill.update_bill
   end
 
   private
