@@ -21,7 +21,7 @@ class GmoMultiPayment::Member
                     :SitePass => GmoMultiPayment::SitePass, 
                     :MemberID => @user.id }
     })
-    response.parsed_response.index("ErrCode").blank? ? true : flase
+    response.parsed_response.index("ErrCode").blank? ? true : false
   end
 
   def update

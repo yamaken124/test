@@ -1,8 +1,7 @@
 class Users::CreditCardsController < Users::BaseController
+  before_action :check_multi_payment_user
+
   def index
-    @user = current_user
-    gmo_member = GmoMultiPayment::Member.new(@user)
-    gmo_member.create unless gmo_member.search 
     @gmo_cards = GmoMultiPayment::Card.new(@user).search
   end
 
@@ -10,13 +9,11 @@ class Users::CreditCardsController < Users::BaseController
   end
 
   def edit
-    @user = current_user
     @card_no = params[:card_no]
     @card_seq = params[:id]
   end
 
   def create
-    @user = current_user
     gmo_card = GmoMultiPayment::Card.new(@user)
     is_success = gmo_card.create(params[:card_no], params[:expire])
     if is_success
@@ -28,7 +25,6 @@ class Users::CreditCardsController < Users::BaseController
   end
 
   def update
-    @user = current_user
     @card_seq = params[:id]
     gmo_card = GmoMultiPayment::Card.new(@user)
     is_success = gmo_card.update(params[:card_no], params[:expire], params[:card_seq], params[:default_flag])
@@ -42,9 +38,23 @@ class Users::CreditCardsController < Users::BaseController
   end
 
   def destroy
-    @user = current_user
     gmo_card = GmoMultiPayment::Card.new(@user)
     gmo_card.delete(params[:id])
     redirect_to account_credit_cards_path
   end
+
+  private
+    def check_multi_payment_user
+      @user = current_user
+      gmo_member = GmoMultiPayment::Member.new(@user)
+      if gmo_member.search 
+        is_success = true
+      else
+        is_success = gmo_member.create 
+      end
+      if !is_success
+        session.delete(:user)
+        redirect_to new_user_session_path
+      end
+    end
 end

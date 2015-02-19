@@ -39,7 +39,7 @@ class GmoMultiPayment::Card
                     :MemberID => @user.id, 
                     :SeqMode => 0 }
      })
-     response.parsed_response.index("ErrCode").blank? ? GmoMultiPayment::Card.parse_response(response.parsed_response) : false
+     response.parsed_response.index("ErrCode").blank? ? GmoMultiPayment::Card.parse_response(response.parsed_response) : []
   end
 
   def delete(card_seq)
@@ -53,12 +53,17 @@ class GmoMultiPayment::Card
   end
 
   def self.parse_response(response)
+    p response
     parsed_response = []
     length = response.split("&")[0].split("=")[1].split("|").length
     for i in 0..(length-1) do
       row = {}
       response.split("&").each do |formula|
-        row[formula.split("=")[0].to_sym] = formula.split("=")[1].split("|")[i]
+        if length == 1
+          row[formula.split("=")[0].to_sym] = formula.split("=")[1]
+        else
+          row[formula.split("=")[0].to_sym] = formula.split("=")[1].split("|")[i]
+        end
       end
       parsed_response << row
     end
