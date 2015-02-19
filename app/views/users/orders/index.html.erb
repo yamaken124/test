@@ -1,0 +1,41 @@
+<div class="c-segments">
+  <p class="is--active">通常購入</p>
+  <div class="border"></div>
+  <p>定期購入</p>
+</div>
+<% 2.times do %>
+  <div class="c-order_title">
+    <p>注文日:<br>2015/02/25</p>
+    <p>合計:<br>¥ 17,960</p>
+    <p>お届け先:<br>大谷 真司</p>
+  </div>
+  <% 2.times do %>
+    <div class="c-product_list">
+    	<div class="c-product_list__image">
+    		<%= image_tag "users/sample_item_01.png" %>	
+      </div>
+      <div class="c-product__list_detail_wrapper">
+    	  <div class="c-product_list__title">
+    	  	サプリメント
+    	  </div>
+    	  <div class="c-product_list__price">
+    	  	￥10,000
+        </div>
+      </div>
+    </div>
+    <div class="p-wrapper--have_padding">
+      <ul class="c-links">
+        <a href="<%= products_path %>">
+          <li class="c-link">
+            商品を返品
+          </li>
+        </a>
+        <a href="<%= products_path %>">
+          <li class="c-link--small_text--nolink">
+            <span>発送を完了しました<br>発送日:2014/12/25</span>
+          </li>
+        </a>
+      </ul>
+    </div>
+  <% end %>
+<% end %>

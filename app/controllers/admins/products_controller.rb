@@ -1,5 +1,6 @@
 class Admins::ProductsController < ApplicationController
   before_action :set_product, only: [:update]
+  layout "admins/admins"
 
   def index
     @products = Product.includes(:variants)

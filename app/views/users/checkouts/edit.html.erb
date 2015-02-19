@@ -1,0 +1,8 @@
+<% case params[:state] %>
+<% when "payment" %>
+  <%= render partial: 'users/checkouts/payment', locals: {} %>
+<% when "confirm" %>
+  <%= render partial: 'users/checkouts/confirm', locals: {} %>
+<% when "thanks" %>
+  <%= render partial: 'users/checkouts/thanks', locals: {} %>
+<% end %>

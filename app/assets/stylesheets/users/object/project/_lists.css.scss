@@ -1,0 +1,48 @@
+.p-lists{
+  background-color:white;
+  width:100%;
+  border:1px solid $base_border_color;
+  margin-bottom:50px;
+  border-radius:5px;
+	margin-left:-1px;
+  .p-list{
+    @include calc("width", "100%-15px");
+    min-height:42px;
+    overflow:hidden;
+    padding-left:15px;
+    border-bottom:1px solid $base_border_color;
+    color:$base_font_color;
+    p{
+      font-size:18px;
+      font-weight:bold;
+      padding-top:10px;
+      padding-bottom:5px;
+    }
+    .p-list__fincrew{
+      width:50px;
+      height:50px;
+      float:left;
+      img{
+        width:100%;
+      } 
+    }
+    &:last-child{
+      border-bottom:none;
+    }
+    .p-list__fincrew_description{
+      @include calc("width", "100%-50px");
+      font-size:13px;
+      line-height:17px;
+      margin-top:-50px;
+      padding-left:55px;
+      padding-bottom:5px;
+      float:left;
+    }
+    .p-list__description{
+      font-size:13px;
+      line-height:17px;
+      padding-right:15px;
+      padding-bottom:5px;
+    }
+  }
+}
