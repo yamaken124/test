@@ -5,10 +5,6 @@ class SingleOrderContents
     @order = order.single_order || order.build_single_order
   end
 
-  def detail
-    @detail ||= order.single_order_detail || order.build_single_order_detail
-  end
-
   def add(variant, quantity = 1, options = {})
     line_item = add_to_line_item(variant, quantity, options)
     after_add_or_remove(line_item, options)
@@ -21,7 +17,7 @@ class SingleOrderContents
 
   def update_cart(params)
     # TODO method
-    return false if (order && order.single_order_detail.blank?)
+    return false if order.single_order_detail.blank?
 
     if order.update(filter_order_items(params))
       detail.single_line_items = detail.single_line_items.select { |li| li.quantity > 0 }
@@ -67,6 +63,11 @@ class SingleOrderContents
       end
     end
     filtered_params
+  end
+
+  def detail
+    single_order_detail = order.single_order_detail || order.build_single_order_detail
+    @detail ||= single_order_detail
   end
 
   def order_updater
