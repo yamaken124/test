@@ -16,10 +16,8 @@ Rails.application.routes.draw do
       post :populate, :on => :collection
     end
 
-    resource :checkout, only: [] do
-      get ':state', action: :edit 
-      patch ':state', action: :edit
-    end
+    get '/checkout/:state', :to => 'checkouts#edit', :as => :checkout_state
+    patch '/checkout/:state', :to => 'checkouts#update', :as => :update_checkout
 
     get '/t/*id', :to => 'taxons#show', :as => :nested_taxon
   end

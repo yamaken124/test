@@ -2,8 +2,13 @@ class PurchaseOrder < ActiveRecord::Base
   include PurchaseOrder::Checkout
 
   belongs_to :user
+  has_one    :single_order
+  has_many   :subscription_orders
+  has_many   :subscription_order_details, through: :subscription_orders
 
-  enum state: { payment: 10, confirm: 20, complete: 30 }
+  accepts_nested_attributes_for :single_order 
+
+  enum state: { cart: 0, payment: 10, confirm: 20, complete: 30 }
 
   def self.incomplete
     PurchaseOrder.where.not(id: PurchaseOrder.complete.pluck(:id))
@@ -33,5 +38,13 @@ class PurchaseOrder < ActiveRecord::Base
   def checkout_allowed?
     # TODO check line_items line_items.count > 0
     true
+  end
+
+  def contents                                                                                                                                          
+    @contents ||= OrderContents.new(self)
+  end
+
+  def single_contents
+    @contents ||= SingleOrderContents.new(self)
   end
 end
