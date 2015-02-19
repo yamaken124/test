@@ -20,8 +20,8 @@ Rails.application.routes.draw do
   end
 
   namespace :admins do
-    resources :products, only: [:index, :show, :new, :create] do
-      resources :variants, only: [:new, :create]
+   resources :products, only: [:index, :new, :create, :edit,:update] do
+      resources :variants, only: [:new, :create, :index, :edit, :update]
     end
   end
 

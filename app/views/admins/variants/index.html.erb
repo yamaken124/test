@@ -1,0 +1,30 @@
+<p class="title">variant#index</p>
+
+<p><a href="<%= new_admins_product_variant_path(product_id: params[:product_id]) %>">variant作成</a></p>
+
+<% if !@variant.blank? %>
+  <table>
+    <thead>
+      <tr>
+        <th>sku</th>
+        <th>注文タイプ</th>
+        <th>price</th>
+        <th>link</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @variant.each do |v| %>
+        <tr>
+          <td><%= v.sku %></td>
+          <td><%= v.order_type %></td>
+          <% v.prices.each do |p| %>
+            <td><%= p.amount %></td>
+          <% end %>
+            <td><a href="<%= edit_admins_product_variant_path(id: v.id, product_id: params[:product_id]) %>">variant#edit</a></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>not registerd</p>
+<% end %>

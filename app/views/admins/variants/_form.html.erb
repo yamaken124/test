@@ -1,0 +1,24 @@
+<%= form_for([:admins, variant.product, variant]) do |v| %>
+
+<%= variant.product.inspect %>
+
+  <div class="field">
+    <%= v.label :sku %><br>
+    <%= v.text_field :sku, class: "text" %>
+  </div>
+  <div class="field">
+    <%= v.label :is_valid_at %><br>
+    <%= v.date_field :is_valid_at, value: Date.today %><br/>
+  </div>
+  <div class="field">
+    <%= v.label :is_invalid_at %><br>
+    <%= v.date_field :is_invalid_at, value: Date.today %><br/>
+  </div>
+  <div class="field">
+    <%= v.select :order_type, {t('attributes.order_type.single_order') => "single_order", t('attributes.order_type.subscription_order') => "subscription_order"} %>
+  </div>
+  <div class="actions">
+    <%= v.submit "登録", class: "submit" %>
+  </div>
+
+<% end %>

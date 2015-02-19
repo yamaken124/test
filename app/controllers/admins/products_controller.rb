@@ -1,4 +1,5 @@
 class Admins::ProductsController < ApplicationController
+  before_action :set_product, only: [:update]
 
   def index
     @products = Product.includes(:variants)
@@ -11,6 +12,15 @@ class Admins::ProductsController < ApplicationController
 
   def new
     @product = Product.new
+  end
+
+  def edit
+    @product = Product.find(params[:id])
+  end
+
+  def update
+    @product.update(product_params)
+    redirect_to edit_admins_product_path(params[:id])
   end
 
   def create
@@ -41,6 +51,10 @@ class Admins::ProductsController < ApplicationController
 
     def price_params
       params[:product].require(:prices).permit(:amount)
+    end
+
+    def set_product
+      @product = Product.find(params[:id])
     end
 
 end

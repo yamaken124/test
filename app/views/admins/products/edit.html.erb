@@ -1,0 +1,6 @@
+<p class="title">product#edit</p>
+
+<p><a href="<%= new_admins_product_variant_path(product_id: @product.id) %>">variant作成</a></p>
+<p><a href="<%= admins_product_variants_path(product_id: @product.id) %>">variant#index</a></p>
+
+<%= render partial: 'form', locals: { product: @product } %>
