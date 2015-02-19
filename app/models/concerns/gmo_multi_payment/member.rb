@@ -5,21 +5,23 @@ class GmoMultiPayment::Member
 
   def create
     url = GmoMultiPayment::Domain + "/payment/SaveMember.idPass"
-    HTTParty.post( url, {body: 
+    response = HTTParty.post( url, {body: 
                   {:SiteID => GmoMultiPayment::SiteID, 
                     :SitePass => GmoMultiPayment::SitePass, 
                     :MemberID => @user.id, 
                     :MemberName => @user.name }
     })
+    response.parsed_response.index("ErrCode").blank? ? true : false
   end
 
   def search
     url = GmoMultiPayment::Domain + "/payment/SearchMember.idPass"
-    HTTParty.post( url, {body: 
+    response = HTTParty.post( url, {body: 
                   {:SiteID => GmoMultiPayment::SiteID, 
                     :SitePass => GmoMultiPayment::SitePass, 
                     :MemberID => @user.id }
     })
+    response.parsed_response.index("ErrCode").blank? ? true : flase
   end
 
   def update
