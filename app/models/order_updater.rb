@@ -1,9 +1,11 @@
 class OrderUpdater
-  attr_reader :order
+  attr_reader :order, :order_detail
   # delegate :payments, :line_items, :adjustments, :all_adjustments, :shipments, :update_hooks, :quantity, to: :order
+  delegate :total, :item_total, :shipment_total, :adjustment_total, to: :order_detail
 
-  def initialize(order)
-    @order = order
+  def initialize(order_detail)
+    @order        = order_detail.single_order
+    @order_detail = order_detail
   end
 
   # This is a multi-purpose method for processing logic related to changes in the Order.
@@ -15,7 +17,7 @@ class OrderUpdater
   # associations try to save and then in turn try to call +update!+ again.)
   def update
     update_totals
-    if order.completed?
+    if order.purchase_order.completed?
       update_payment_state
       update_shipments
       update_shipment_state
@@ -25,7 +27,7 @@ class OrderUpdater
   end
 
   def run_hooks
-    update_hooks.each { |hook| order.send hook }
+    # update_hooks.each { |hook| order.send hook }
   end
 
   def recalculate_adjustments
@@ -60,55 +62,52 @@ class OrderUpdater
   end
 
   def update_payment_total
-    order.payment_total = payments.completed.includes(:refunds).inject(0) { |sum, payment| sum + payment.amount - payment.refunds.sum(:amount) }
+    # order_detail.payment_total = payments.completed.includes(:refunds).inject(0) { |sum, payment| sum + payment.amount - payment.refunds.sum(:amount) }
+    # order_detail.total = payments.completed.includes(:refunds).inject(0) { |sum, payment| sum + payment.amount - payment.refunds.sum(:amount) }
   end
 
   def update_shipment_total
-    order.shipment_total = shipments.sum(:cost)
+    # order_detail.shipment_total = shipments.sum(:cost)
+    order_detail.shipment_total = (item_total >= 10_000) ? 0 : 700
     update_order_total
   end
 
   def update_order_total
-    order.total = order.item_total + order.shipment_total + order.adjustment_total
+    total = item_total + shipment_total + adjustment_total
   end
 
   def update_adjustment_total
-    recalculate_adjustments
-    order.adjustment_total = line_items.sum(:adjustment_total) +
-      shipments.sum(:adjustment_total)  +
-      adjustments.eligible.sum(:amount)
-    order.included_tax_total = line_items.sum(:included_tax_total) + shipments.sum(:included_tax_total)
-    order.additional_tax_total = line_items.sum(:additional_tax_total) + shipments.sum(:additional_tax_total)
+    # recalculate_adjustments
+    # order.adjustment_total = line_items.sum(:adjustment_total) +
+      # shipments.sum(:adjustment_total)  +
+      # adjustments.eligible.sum(:amount)
+    # order.included_tax_total = line_items.sum(:included_tax_total) + shipments.sum(:included_tax_total)
+    # order.additional_tax_total = line_items.sum(:additional_tax_total) + shipments.sum(:additional_tax_total)
 
-    order.promo_total = line_items.sum(:promo_total) +
-      shipments.sum(:promo_total) +
-      adjustments.promotion.eligible.sum(:amount)
+    # order.promo_total = line_items.sum(:promo_total) +
+      # shipments.sum(:promo_total) +
+      # adjustments.promotion.eligible.sum(:amount)
 
     update_order_total
   end
 
   def update_item_count
-    order.item_count = order.single_order.single_order_detail.single_line_items.sum('quantity')
+    order_detail.item_count = order_detail.single_line_items.sum(:quantity)
   end
 
   def update_item_total
-    order.item_total = order.single_order.single_order_detail.single_line_items.sum('price * quantity')
+    order_detail.item_total = order_detail.single_line_items.sum('price * quantity')
     update_order_total
   end
 
   def persist_totals
-    order.update_columns(
-      payment_state: order.payment_state,
-      shipment_state: order.shipment_state,
-      item_total: order.item_total,
-      item_count: order.item_count,
-      adjustment_total: order.adjustment_total,
-      included_tax_total: order.included_tax_total,
-      additional_tax_total: order.additional_tax_total,
-      payment_total: order.payment_total,
-      shipment_total: order.shipment_total,
-      promo_total: order.promo_total,
-      total: order.total,
+    order_detail.update_columns(
+      item_total: order_detail.item_total,
+      item_count: order_detail.item_count,
+      adjustment_total: order_detail.adjustment_total,
+      additional_tax_total: order_detail.additional_tax_total,
+      shipment_total: order_detail.shipment_total,
+      total: order_detail.total,
       updated_at: Time.now,
     )
   end

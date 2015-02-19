@@ -3,6 +3,8 @@ class PurchaseOrder < ActiveRecord::Base
 
   belongs_to :user
   has_one    :single_order
+  has_many   :subscription_orders
+  has_many   :subscription_order_details, through: :subscription_orders
 
   accepts_nested_attributes_for :single_order 
 
@@ -40,5 +42,9 @@ class PurchaseOrder < ActiveRecord::Base
 
   def contents                                                                                                                                          
     @contents ||= OrderContents.new(self)
+  end
+
+  def single_contents
+    @contents ||= SingleOrderContents.new(self)
   end
 end
