@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: bills
+#
+#  id                     :integer          not null, primary key
+#  single_order_detail_id :integer
+#  address_id             :integer
+#  item_total             :integer
+#  total                  :integer
+#  shipment_total         :integer
+#  additional_tax_total   :integer
+#  used_point             :integer
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#
+
 class Bill < ActiveRecord::Base
   belongs_to :address
   belongs_to :single_order_detail
