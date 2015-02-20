@@ -9,7 +9,8 @@
         <th>id</th>
         <th>名前</th>
         <th>説明</th>
-        <th>sku</th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
 
@@ -19,9 +20,8 @@
           <td><%= product.id %></td>
           <td><a href="<%= edit_admins_product_path(id: product.id) %>"><%= product.name %></a></td>
           <td><%= product.description %></td>
-          <% product.variants.each do |v| %>
-            <td><%= v.sku %></td>
-          <% end %>
+          <td><a href="<%= edit_admins_product_path(id: product.id) %>"><%= "product#edit" %></td>
+          <td><a href="<%= admins_product_path(id: product.id) %>"data-method="delete"><%= "product#delete" %></td>
         </tr>
       <% end %>
     </tbody>

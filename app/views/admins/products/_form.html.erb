@@ -10,39 +10,12 @@
   </div>
   <div class="field">
     <%= p.label :product_is_valid_at %><br>
-    <%= p.date_field :is_valid_at, value: Date.today %><br/>
+    <%= p.date_field :is_valid_at %><br/>
   </div>
   <div class="field">
     <%= p.label :product_is_invalid_at %><br>
-    <%= p.date_field :is_invalid_at, value: Date.today %><br/>
+    <%= p.date_field :is_invalid_at %><br/>
   </div>
-
-  <%= p.fields_for :variants do |v| %>
-    <div class="field">
-      <%= v.label :sku %><br>
-      <%= v.text_field :sku, class: "text" %>
-    </div>
-    <div class="field">
-      <%= v.label :variant_is_valid_at %><br>
-      <%= v.date_field :is_valid_at, value: Date.today %><br/>
-    </div>
-    <div class="field">
-      <%= v.label :variant_is_invalid_at %><br>
-      <%= v.date_field :is_invalid_at, value: Date.today %><br/>
-    </div>
-    <div class="field">
-      <%= v.select :order_type, {t('attributes.order_type.single_order') => "single_order", t('attributes.order_type.subscription_order') => "subscription_order"} %>
-    </div>
-
-  <% end %>
-
-  <%= p.fields_for :prices do |pri| %>
-    <div class="field">
-      <%= pri.label :amount %><br>
-      <%= pri.text_field :amount, class: "text" %>
-    </div>
-  <% end %>
-
   <div class="actions">
     <%= p.submit "登録", class: "submit" %>
   </div>
