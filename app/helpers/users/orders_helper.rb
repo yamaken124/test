@@ -17,9 +17,11 @@ module Users::OrdersHelper
     @current_order = find_order_by_token_or_user(options, true)
 
     if options[:create_order_if_necessary] && (@current_order.nil? || @current_order.completed?)
-      @current_order = Spree::Order.new(current_order_params)
+      @current_order = PurchaseOrder.new(current_order_params)
       @current_order.user ||= try_current_user
       @current_order.save!
+      single_order = SingleOrder.create(purchase_older_id: @current_order.id)
+      SingleOrderDetail.create(single_older_id: single_order.id)
     end
 
     @current_order
