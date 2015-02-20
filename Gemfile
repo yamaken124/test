@@ -90,4 +90,3 @@ gem 'bullet', group: :development
 gem 'devise'
 
 gem "font-awesome-rails"
-gem "carrierwave"
