@@ -45,8 +45,8 @@ class SingleOrderContents
     reload_totals
     shipment = options[:shipment]
     shipment.present? ? shipment.update_amounts : order.ensure_updated_shipments
-    PromotionHandler::Cart.new(order, line_item).activate
-    ItemAdjustments.new(line_item).update
+    # PromotionHandler::Cart.new(order, line_item).activate
+    # ItemAdjustments.new(line_item).update
     reload_totals
     line_item
   end
@@ -86,11 +86,10 @@ class SingleOrderContents
     if line_item
       line_item.quantity += quantity.to_i
     else
-      opts = ActionController::Parameters.new(options) \
-        .permit(PermittedAttributes.line_item_attributes)
-      line_item = order.line_items.new(quantity: quantity,
-                                       variant: variant,
-                                       options: opts)
+      # opts = ActionController::Parameters.new(options) \
+        # .permit(PermittedAttributes.line_item_attributes)
+      line_item = order.single_order_detail.single_line_items.new(quantity: quantity,
+                                                                   variant: variant)
     end
     line_item.target_shipment = options[:shipment] if options.has_key? :shipment
     line_item.save!

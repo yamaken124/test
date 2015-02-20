@@ -73,6 +73,9 @@ class OrderUpdater
   end
 
   def update_order_total
+    # TODO 一時的なerror回避
+    order_detail.shipment_total = 0
+    order_detail.adjustment_total = 0
     total = item_total + shipment_total + adjustment_total
   end
 
