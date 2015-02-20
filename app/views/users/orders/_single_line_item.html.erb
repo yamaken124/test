@@ -17,9 +17,9 @@
     </div>
   </div>
   <div class="c-product_list__detail">
-        <% # TODO layout number_field %>
+    <% # TODO layout number_field %>
     <%= item_form.number_field :quantity, min: 0 %> ←ナンバーフィールドのcssお願いしますm(_ _)m
-        <% # TODO delete action %>
-    <p class="u-margin__left_short">削除</p>
+    <% # TODO delete action %>
+    <p class="u-margin__left_short"><%= link_to "削除", order_cancel_item_path(order_form.object.single_order.purchase_order, single_line_item.id), method: :patch %></p>
   </div>
 <% end %>

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     end
     resources :orders, :except => [:new, :create, :destroy] do
       post :populate, :on => :collection
+      patch '/cancel/:id', :to => 'orders#cancel', :as => :cancel_item
     end
 
     get '/checkout/:state', :to => 'checkouts#edit', :as => :checkout_state

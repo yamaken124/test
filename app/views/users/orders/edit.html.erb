@@ -6,7 +6,7 @@
 
       <div class="p-wrapper--have_padding">
         <div class="c-payment_method_section">
-          購入形式: 購買
+          購入形式: 単品 
         </div>
         <%= order_form.fields_for :single_order, order_form.object.single_order do |single_order_form| %>
           <%= single_order_form.fields_for :single_order_detail, single_order_form.object.single_order_detail do |single_order_detail_form| %>

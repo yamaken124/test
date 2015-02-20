@@ -2,7 +2,7 @@ class Users::OrdersController < Users::BaseController
   respond_to :html
   include Users::OrdersHelper
 
-  before_action :assign_order_with_lock, only: :update
+  before_action :assign_order_with_lock, only: [:update, :cancel]
   # before_action :apply_coupon_code, only: :update
 
   def index
@@ -32,15 +32,34 @@ class Users::OrdersController < Users::BaseController
 
   # Adds a new item to the order (creating a new order if none already exists)
   def populate
-    populator = OrderPopulator.new(current_order(create_order_if_necessary: true), current_currency)
-    if populator.populate(params[:variant_id], params[:quantity], params[:options])
-      respond_with(@order) do |format|
-        format.html { redirect_to cart_path }
+    order    = current_order(create_order_if_necessary: true)
+    variant  = Variant.find(params[:variant_id])
+    quantity = params[:quantity].to_i
+    options  = (params[:options] || {})#.merge(currency: current_currency)
+
+    # 2,147,483,647 is crazy. See issue #2695.
+    if quantity.between?(1, 2_147_483_647)
+      begin
+        order.single_contents.add(variant, quantity, options)
+      rescue ActiveRecord::RecordInvalid => e
+        error = e.record.errors.full_messages.join(", ")
       end
     else
-      flash[:error] = populator.errors.full_messages.join(" ")
-      redirect_back_or_default(spree.root_path)
+      error = :please_enter_reasonable_quantity
     end
+    if error
+      flash[:error] = error
+      redirect_to root_path
+    else
+      respond_with(order) do |format|
+        format.html { redirect_to cart_path }
+      end
+    end
+  end
+
+  def cancel
+    SingleLineItem.find(params[:id]).update(quantity: 0)
+    update and return
   end
 
   private
