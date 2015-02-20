@@ -4,6 +4,11 @@ class Admins::ProductsController < ApplicationController
     @products = Product.includes(:variants)
   end
 
+  def show
+    @product = Product.includes(:variants)
+      .find(params[:id])
+  end
+
   def new
     @product = Product.new
   end
@@ -20,7 +25,7 @@ class Admins::ProductsController < ApplicationController
       end
       redirect_to admins_products_path
     rescue
-      render new_admins_product_path
+      render :new
     end
   end
 
@@ -31,15 +36,10 @@ class Admins::ProductsController < ApplicationController
     end
 
     def variant_params
-      params[:product].require(:variants).permit(:sku, :is_valid_at, :is_invalid_at)
+      params[:product].require(:variants).permit(:sku, :is_valid_at, :is_invalid_at, :order_type)
     end
 
     def price_params
       params[:product].require(:prices).permit(:amount)
     end
-
-    def product_id
-      params.require(:product).permit(:name, :description, :is_valid_at, :is_invalid_at)
-    end
-
 end

@@ -1,0 +1,31 @@
+<p>Product#show</p>
+
+<p><a href="<%= new_admins_product_variant_path(product_id: @product.id) %>">variant作成</a></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <td><%= @product.id %></td>
+    </tr>
+    <tr>
+      <th>名前</th>
+      <td><%= @product.name %></td>
+    </tr>
+    <tr>
+      <th>説明</th>
+      <td><%= @product.description %></td>
+    </tr>
+  </thead>
+</table>
+
+<table>
+  <thead>
+    <% @product.variants.each.with_index(1) do |v,count| %>
+      <tr>
+        <th>sku<%=count%></th>
+        <td><%= v.sku %></td>
+      </tr>
+    <% end %>
+  </thead>
+</table>
