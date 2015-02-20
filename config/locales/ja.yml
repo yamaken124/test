@@ -5,7 +5,6 @@ ja:
     - :month
     - :day
 
-  attributes:
-    order_type:
-      single_order: 単品購入
-      subscription_order: 定期購入
+  order_type:
+    single_order: 単品購入
+    subscription_order: 定期購入
