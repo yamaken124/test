@@ -13,5 +13,6 @@
  *= require_self
  *= require font-awesome
  *= require_tree ./bootstrap
+ *= require_tree ./object
  *= require ./admin_lte
  */

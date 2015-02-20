@@ -29,6 +29,8 @@ Rails.application.routes.draw do
       resources :variants, only: [:new, :create] do
       end
     end
+    resources :shippings,only:[:index] 
+    resources :bills 
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
