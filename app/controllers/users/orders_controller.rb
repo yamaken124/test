@@ -2,7 +2,7 @@ class Users::OrdersController < Users::BaseController
   respond_to :html
   include Users::OrdersHelper
 
-  before_action :assign_order_with_lock, only: [:update, :cancel]
+  before_action :assign_order_with_lock, only: [:update, :remove_item]
   # before_action :apply_coupon_code, only: :update
 
   def index
@@ -57,7 +57,7 @@ class Users::OrdersController < Users::BaseController
     end
   end
 
-  def cancel
+  def remove_item
     SingleLineItem.find(params[:id]).update(quantity: 0)
     update and return
   end

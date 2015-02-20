@@ -11,15 +11,14 @@ Rails.application.routes.draw do
     resource :cart, only: [:update], controller: :orders do
       get '/', action: :edit
       get :address, on: :member
+      patch '/remove_item/:id' => 'orders#remove_item', on: :collection, :as => :remove_item
     end
     resources :orders, :except => [:new, :create, :destroy] do
       post :populate, :on => :collection
-      patch '/cancel/:id', :to => 'orders#cancel', :as => :cancel_item
     end
 
     get '/checkout/:state', :to => 'checkouts#edit', :as => :checkout_state
     patch '/checkout/:state', :to => 'checkouts#update', :as => :update_checkout
-
     get '/t/*id', :to => 'taxons#show', :as => :nested_taxon
   end
 
