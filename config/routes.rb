@@ -1,20 +1,23 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, :controllers => {
+    :sessions => 'users/sessions', 
+    :passwords => "users/passwords",
+    :registrations => 'users/registrations'
+  }
 
   scope module: :users do
     resource :account, only: [:show]
     resources :products, only: [:index, :show]
-    resource :cart do
+    resource :cart, only: [:update], controller: :orders do
+      get '/', action: :edit
       get :address, on: :member
     end
-    resources :orders, :except => [:index, :new, :create, :destroy] do
+    resources :orders, :except => [:new, :create, :destroy] do
       post :populate, :on => :collection
     end
 
-    resource :checkout do
-      get ':state', :to => 'checkout#edit'
-      patch ':state', :to => 'checkout#update'
-    end
+    get '/checkout/:state', :to => 'checkouts#edit', :as => :checkout_state
+    patch '/checkout/:state', :to => 'checkouts#update', :as => :update_checkout
 
     get '/t/*id', :to => 'taxons#show', :as => :nested_taxon
   end
@@ -23,6 +26,8 @@ Rails.application.routes.draw do
     resources :products, only: [:index, :show, :new, :create] do
       resources :variants, only: [:new, :create]
     end
+    resources :shippings,only:[:index] 
+    resources :bills 
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

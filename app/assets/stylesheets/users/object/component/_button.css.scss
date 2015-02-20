@@ -1,0 +1,21 @@
+.c-btn{
+  font-size:18px;
+  border-radius:5px;
+  background-color:$finc_color;
+  -webkit-appearance: none;
+  text-align:center;
+  color:white;
+}
+.c-btn--submit{
+  @extend .c-btn;
+  width:100%;
+  height:40px;
+  line-height:40px;
+}
+.c-btn--submit--short{
+	@extend .c-btn;
+  width:114px;
+  height:35px;
+  line-height:35px;    
+	float:right;
+}

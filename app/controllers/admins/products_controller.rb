@@ -1,5 +1,5 @@
 class Admins::ProductsController < ApplicationController
-
+  layout "admins/admins"
   def index
     @products = Product.includes(:variants)
   end
@@ -42,5 +42,4 @@ class Admins::ProductsController < ApplicationController
     def price_params
       params[:product].require(:prices).permit(:amount)
     end
-
 end
