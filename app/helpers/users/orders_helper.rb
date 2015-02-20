@@ -20,8 +20,8 @@ module Users::OrdersHelper
       @current_order = PurchaseOrder.new(current_order_params)
       @current_order.user ||= try_current_user
       @current_order.save!
-      single_order = SingleOrder.create(purchase_older_id: @current_order.id)
-      SingleOrderDetail.create(single_older_id: single_order.id)
+      single_order = @current_order.build_single_order.save!
+      single_order.build_single_order_detail.save!
     end
 
     @current_order
