@@ -21,18 +21,13 @@ module Users::OrdersHelper
       @current_order.user ||= try_current_user
       @current_order.save!
     end
+
+    @current_order
   end
 
   def find_order_by_token_or_user(options={}, with_adjustments = false)
-    options[:lock] ||= false
-
     # Find any incomplete orders for the guest_token
-    order = \
-      if with_adjustments
-        PurchaseOrder.incomplete.includes(:adjustments).lock(options[:lock]).find_by(current_order_params)
-      else
-        PurchaseOrder.incomplete.lock(options[:lock]).find_by(current_order_params)
-      end
+    order = PurchaseOrder.incomplete.find_by(current_order_params)
 
     # Find any incomplete orders for the current user
     if order.nil? && try_current_user
