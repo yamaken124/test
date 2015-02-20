@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150219160303) do
+ActiveRecord::Schema.define(version: 20150220083230) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -97,6 +97,18 @@ ActiveRecord::Schema.define(version: 20150219160303) do
   end
 
   add_index "products_taxons", ["product_id"], name: "index_products_taxons_on_product_id", using: :btree
+
+  create_table "profiles", force: :cascade do |t|
+    t.string   "last_name",       limit: 255
+    t.string   "first_name",      limit: 255
+    t.string   "last_name_kana",  limit: 255
+    t.string   "first_name_kana", limit: 255
+    t.integer  "user_id",         limit: 4
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
 
   create_table "purchase_orders", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -267,6 +279,7 @@ ActiveRecord::Schema.define(version: 20150219160303) do
   add_foreign_key "bills_payments", "payments"
   add_foreign_key "prices", "variants"
   add_foreign_key "products_taxons", "products"
+  add_foreign_key "profiles", "users"
   add_foreign_key "purchase_orders", "users"
   add_foreign_key "single_line_items", "single_order_details"
   add_foreign_key "single_line_items", "variants"
