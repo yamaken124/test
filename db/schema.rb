@@ -99,11 +99,12 @@ ActiveRecord::Schema.define(version: 20150220083230) do
   add_index "products_taxons", ["product_id"], name: "index_products_taxons_on_product_id", using: :btree
 
   create_table "profiles", force: :cascade do |t|
+    t.integer  "user_id",         limit: 4
     t.string   "last_name",       limit: 255
     t.string   "first_name",      limit: 255
     t.string   "last_name_kana",  limit: 255
     t.string   "first_name_kana", limit: 255
-    t.integer  "user_id",         limit: 4
+    t.string   "phone",           limit: 255
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
   end

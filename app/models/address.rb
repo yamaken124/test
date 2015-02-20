@@ -16,5 +16,11 @@
 #
 
 class Address < ActiveRecord::Base
+  validates :last_name, presence: true
+  validates :first_name, presence: true
+  validates :city, presence: true
+  validates :zipcode, presence: true
+  validates :phone, presence: true
+  
   belongs_to :user
 end

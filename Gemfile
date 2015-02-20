@@ -89,4 +89,5 @@ gem 'bullet', group: :development
 # Authentication
 gem 'devise'
 
+#bootstrap
 gem "font-awesome-rails"
