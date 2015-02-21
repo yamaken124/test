@@ -1,6 +1,8 @@
 <div id="header">
   <div id="header__left_wrapper">
-    <%= image_tag "users/header_logo.png", id: "header__logo" %>
+    <%= link_to products_path do %>
+      <%= image_tag "users/header_logo.png", id: "header__logo" %>
+    <% end %>
   </div>
   <div id="header__right_wrapper">
   </div>
