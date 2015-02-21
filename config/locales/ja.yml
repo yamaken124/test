@@ -1,0 +1,10 @@
+ja:
+  date:
+    order:
+    - :year
+    - :month
+    - :day
+
+  order_type:
+    single_order: 単品購入
+    subscription_order: 定期購入

@@ -1,5 +1,6 @@
 class OrderContents
-  attr_accessor :order
+  delegate :single_order, to: :order
+  attr_accessor :order, :bill
 
   def initialize(order)
     @order = order
@@ -16,18 +17,29 @@ class OrderContents
   end
 
   def update_cart(params)
-    if order.update_attributes(filter_order_items(params))
-      order.line_items = order.line_items.select { |li| li.quantity > 0 }
+    # TODO method
+    return false if order.single_order.blank?
+    return false if (order.single_order && order.single_order.single_order_detail.blank?)
+
+    if order.update(filter_order_items(params))
+      order.single_order.single_order_detail.single_line_items = order.single_order.single_order_detail.single_line_items.select { |li| li.quantity > 0 }
       # Update totals, then check if the order is eligible for any cart promotions.
       # If we do not update first, then the item total will be wrong and ItemTotal
       # promotion rules would not be triggered.
-      reload_totals
+      reload_total
+      issue_bill
       order.ensure_updated_shipments
-      reload_totals
+      reload_total
+      issue_bill
       true
     else
       false
     end
+  end
+
+  def issue_bill
+    @bill = order.bill || order.build_bill
+    @bill.update_bill
   end
 
   private
@@ -45,7 +57,7 @@ class OrderContents
     filtered_params = params.symbolize_keys
     return filtered_params if filtered_params[:line_items_attributes].nil? || filtered_params[:line_items_attributes][:id]
 
-    line_item_ids = order.line_items.pluck(:id)
+    line_item_ids = order.single_order.single_order_detail.single_line_items.pluck(:id)
 
     params[:line_items_attributes].each_pair do |id, value|
       unless line_item_ids.include?(value[:id].to_i) || value[:variant_id].present?
@@ -73,7 +85,7 @@ class OrderContents
     else
       opts = ActionController::Parameters.new(options) \
         .permit(PermittedAttributes.line_item_attributes)
-      line_item = order.line_items.new(quantity: quantity,
+      line_item = order.single_order.single_order_detail.single_line_items.new(quantity: quantity,
                                        variant: variant,
                                        options: opts)
     end
