@@ -1,6 +1,5 @@
 class Admins::ImagesController < ApplicationController
-
-  # before_action :imageable
+  before_action :set_image, only: [:edit, :update, :destroy]
   layout "admins/admins"
 
   def index
@@ -21,16 +20,19 @@ class Admins::ImagesController < ApplicationController
   end
 
   def edit
-    @image = Image.find(params[:id])
   end
 
   def update
-    @image = Image.new(image_params)
-    if @image.save!
+    if @image.update(image_params)
       redirect_to admins_variant_images_path
     else
-      render :new
+      render :edit
     end
+  end
+
+  def destroy
+    @image.delete
+    redirect_to admins_variant_images_path
   end
 
   private
@@ -56,8 +58,8 @@ class Admins::ImagesController < ApplicationController
       imageable_type.constantize
     end
 
-    def imageable
-      # @imageable ||= imageable_class.find(params[imageable_key])
+    def set_image
+      @image = Image.find(params[:id])
     end
 
-end 
+end

@@ -2,7 +2,7 @@
 
 <p><a href="<%= new_admins_product_variant_path(product_id: params[:product_id]) %>">variant作成</a></p>
 
-<% if !@variant.blank? %>
+<% if !@variants.blank? %>
   <table>
     <thead>
       <tr>
@@ -10,10 +10,11 @@
         <th>注文タイプ</th>
         <th>price</th>
         <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-      <% @variant.each do |v| %>
+      <% @variants.each do |v| %>
         <tr>
           <td><%= v.sku %></td>
           <td>
@@ -23,7 +24,8 @@
           <td>
             <% v.prices.each do |p| %><%= p.amount %><% end %>
           </td>
-            <td><a href="<%= edit_admins_product_variant_path(id: v.id) %>">variant#edit</a></td>
+          <td><a href="<%= edit_admins_product_variant_path(id: v.id) %>">variant#edit</a></td>
+          <td><a href="<%= admins_product_variant_path(id: v.id) %>"data-method="delete"><%= "variant#delete" %></td>
         </tr>
       <% end %>
     </tbody>

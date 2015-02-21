@@ -10,11 +10,19 @@
   </div>
   <div class="field">
     <%= p.label :product_is_valid_at %><br>
-    <%= p.date_field :is_valid_at %><br/>
+    <%if params[:action]=="new" %>
+      <%= p.date_field :is_valid_at, value: Date.today%><br/>
+    <% else %>
+      <%= p.date_field :is_valid_at %><br/>
+    <% end %>
   </div>
   <div class="field">
     <%= p.label :product_is_invalid_at %><br>
-    <%= p.date_field :is_invalid_at %><br/>
+    <%if params[:action]=="new" %>
+      <%= p.date_field :is_invalid_at, value: Date.today+6*30 %><br/>
+    <% else %>
+      <%= p.date_field :is_invalid_at %><br/>
+    <% end %>
   </div>
   <div class="actions">
     <%= p.submit "登録", class: "submit" %>

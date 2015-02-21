@@ -1,5 +1,5 @@
 class Admins::ProductsController < ApplicationController
-  before_action :set_product, only: [:update,:destroy]
+  before_action :set_product, only: [:edit, :update, :destroy]
   layout "admins/admins"
 
   def index
@@ -11,7 +11,6 @@ class Admins::ProductsController < ApplicationController
   end
 
   def edit
-    @product = Product.find(params[:id])
   end
 
   def update
@@ -32,7 +31,7 @@ class Admins::ProductsController < ApplicationController
   end
 
   def destroy
-    @product.update(is_invalid_at: Time.now)
+    @product.update(is_invalid_at: Time.now-1)
     redirect_to admins_products_path
   end
 

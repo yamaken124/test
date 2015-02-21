@@ -1,11 +1,11 @@
 class Admins::VariantsController < ApplicationController
-  before_action :prepare_update, only: [:update]
+  before_action :set_variant, only: [:edit, :update, :destroy]
+  before_action :set_price, only: [:update]
   layout "admins/admins"
 
   def index
-    @variant = Variant.includes(:prices) \
-      .where(product_id: params[:product_id] ).valid #\
-      # .where( "is_valid_at <= ? AND is_invalid_at >= ?", Date.today, Date.today )
+    @variants = Variant.includes(:prices) \
+      .where(product_id: params[:product_id] ).valid
   end
 
   def new
@@ -27,7 +27,6 @@ class Admins::VariantsController < ApplicationController
   end
 
   def edit
-    @variant = Variant.find(params[:id])
   end
 
   def update
@@ -42,13 +41,21 @@ class Admins::VariantsController < ApplicationController
       end
   end
 
+  def destroy
+    @variant.update(is_invalid_at: Time.now-1)
+    redirect_to admins_product_variants_path
+  end
+
   private
     def variant_params
       params.require(:variant).permit(:sku, :is_valid_at, :is_invalid_at, :order_type).merge(product_id: params[:product_id])
     end
 
-    def prepare_update
+    def set_variant
       @variant = Variant.find(params[:id])
+    end
+
+    def set_price
       @price = Price.find_or_initialize_by( variant_id: params[:id] )
     end
 

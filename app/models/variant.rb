@@ -4,7 +4,7 @@ class Variant < ActiveRecord::Base
   has_many :images, :as => :imageable
   validates :sku, :order_type, presence: true
 
-  scope :valid, -> { where( "is_valid_at <= ? AND is_invalid_at >= ?", Date.today, Date.today ) }
+  scope :valid, -> { where( "is_valid_at < ? AND is_invalid_at > ?", Time.now, Time.now ) }
 
   enum order_type: {single_order: 1, subscription_order: 2}
 end

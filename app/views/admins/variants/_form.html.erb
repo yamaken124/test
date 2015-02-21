@@ -6,11 +6,19 @@
   </div>
   <div class="field">
     <%= v.label :is_valid_at %><br>
-    <%= v.date_field :is_valid_at %><br/>
+    <%if params[:action]=="new" %>
+      <%= v.date_field :is_valid_at, value: Date.today%><br/>
+    <% else %>
+      <%= v.date_field :is_valid_at %><br/>
+    <% end %>
   </div>
   <div class="field">
     <%= v.label :is_invalid_at %><br>
-    <%= v.date_field :is_invalid_at %><br/>
+    <%if params[:action]=="new" %>
+      <%= v.date_field :is_invalid_at, value: Date.today+6*30 %><br/>
+    <% else %>
+      <%= v.date_field :is_invalid_at %><br/>
+    <% end %>
   </div>
   <div class="field">
     <%= v.select :order_type, {t('attributes.order_type.single_order') => "single_order", t('attributes.order_type.subscription_order') => "subscription_order"} %>
