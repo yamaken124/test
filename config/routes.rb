@@ -26,8 +26,19 @@ Rails.application.routes.draw do
     resources :products, only: [:index, :show, :new, :create] do
       resources :variants, only: [:new, :create]
     end
-    resources :shippings,only:[:index] 
-    resources :bills 
+    resources :purchase_orders,only:[:index] do
+      collection do 
+        get'shipped'
+        get'unshipped'
+      end
+    end
+    resources :bills do 
+      collection do
+        get'post_payment'
+        get'credit'
+        get'regular_purchase/:state', action: :regular_purchase, as: :regular_purchase
+      end
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
