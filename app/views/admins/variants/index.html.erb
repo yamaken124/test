@@ -19,7 +19,7 @@
           <td><%= v.sku %></td>
           <td>
             <% if !v.order_type.nil? %>
-              <%= t('attributes.order_type.'+v.order_type) %>
+              <%= t('order_type.'+v.order_type) %>
             <% end %></td>
           <td>
             <% v.prices.each do |p| %><%= p.amount %><% end %>

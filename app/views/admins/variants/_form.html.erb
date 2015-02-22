@@ -21,7 +21,7 @@
     <% end %>
   </div>
   <div class="field">
-    <%= v.select :order_type, {t('attributes.order_type.single_order') => "single_order", t('attributes.order_type.subscription_order') => "subscription_order"} %>
+    <%= v.select :order_type, {t('order_type.single_order') => "single_order", t('order_type.subscription_order') => "subscription_order"} %>
   </div>
   <%= v.fields_for :prices do |p| %>
     <div class="field">

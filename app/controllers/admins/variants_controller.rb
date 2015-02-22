@@ -5,7 +5,7 @@ class Admins::VariantsController < ApplicationController
 
   def index
     @variants = Variant.includes(:prices) \
-      .where(product_id: params[:product_id] ).valid
+      .where(product_id: params[:product_id] )
   end
 
   def new

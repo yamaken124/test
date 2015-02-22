@@ -3,7 +3,7 @@ class Admins::ProductsController < ApplicationController
   layout "admins/admins"
 
   def index
-    @products = Product.valid
+    @products = Product.all
   end
 
   def new

@@ -8,11 +8,10 @@ RSpec.describe Admins::VariantsController, type: :controller do
   end
 
   describe 'GET #index' do
-    let(:invalid_variant) { create(:invalid_variant) }
     before { get :index, product_id: @variant.product_id }
 
     it { expect(response).to render_template :index }
-    it 'assings products' do
+    it 'assings variant' do
       expect(assigns(:variants)).to eq [@variant]
     end
   end

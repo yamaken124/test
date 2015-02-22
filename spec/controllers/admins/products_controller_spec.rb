@@ -7,16 +7,9 @@ RSpec.describe Admins::ProductsController, type: :controller do
     let(:product) { create(:product) }
     before { get :index }
 
-    context 'valid products' do
-      it { expect(response).to render_template :index }
-      it 'assings products' do
-        expect(assigns(:products)).to eq [product]
-      end
-    end
-    context 'invalid products' do
-      it 'assings products' do
-          expect(assigns(:products)).to_not eq [invalid_product]
-      end
+    it { expect(response).to render_template :index }
+    it 'assings products' do
+      expect(assigns(:products)).to eq [product]
     end
   end
 

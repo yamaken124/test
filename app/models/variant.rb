@@ -1,10 +1,22 @@
+# == Schema Information
+#
+# Table name: variants
+#
+#  id            :integer          not null, primary key
+#  sku           :string(255)
+#  product_id    :integer
+#  is_valid_at   :datetime
+#  is_invalid_at :datetime
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
 class Variant < ActiveRecord::Base
   belongs_to :product
   has_many :prices
   has_many :images, :as => :imageable
+  has_many   :single_line_items
   validates :sku, :order_type, presence: true
-
-  scope :valid, -> { where( "is_valid_at < ? AND is_invalid_at > ?", Time.now, Time.now ) }
-
+  
   enum order_type: {single_order: 1, subscription_order: 2}
 end
