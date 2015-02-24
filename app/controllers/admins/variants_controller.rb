@@ -19,7 +19,7 @@ class Admins::VariantsController < ApplicationController
         @variant.save!
         price = @variant.prices.build(price_params)
         price.save!
-    end
+      end
       redirect_to admins_product_variants_path(product_id: params[:product_id])
     rescue
       render :new
@@ -36,9 +36,9 @@ class Admins::VariantsController < ApplicationController
         @price.update!(price_params)
       end
       redirect_to admins_product_variants_path
-      rescue
-        render :edit
-      end
+    rescue
+      render :edit
+    end
   end
 
   def destroy
