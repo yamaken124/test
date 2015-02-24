@@ -51,11 +51,15 @@ class PurchaseOrder < ActiveRecord::Base
     true
   end
 
-  def contents                                                                                                                                          
-    @contents ||= OrderContents.new(self)
+  def single_order_contents
+    @single_order_contents ||= SingleOrderContents.new(self)
   end
 
-  def single_contents
-    @contents ||= SingleOrderContents.new(self)
+  def single_order_detail
+    @single_order_detail ||= single_order_contents.detail
+  end
+
+  def single_bill
+    @single_bill ||= single_order_contents.bill
   end
 end
