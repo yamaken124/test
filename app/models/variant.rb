@@ -17,3 +17,6 @@ class Variant < ActiveRecord::Base
   has_many   :single_line_items
   enum order_type: {subscription_order: 1, single_order: 2}
 end
+
+# ban list 
+# same(product_id, sku)

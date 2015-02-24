@@ -13,4 +13,5 @@
 
 class Product < ActiveRecord::Base
   has_many :variants
+  paginates_per 5
 end

@@ -1,6 +1,8 @@
 class Users::ProductsController < Users::BaseController
   def index
-    @products = Product.all
+    @products = Product \
+      .includes({:variants => :prices}) \
+      .page(params[:page])
   end
 
   def show

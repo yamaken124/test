@@ -1,17 +1,51 @@
-<a href="<%= product_path(1) %>">
+<a href="<%= product_path(p.id) %>">
   <div class="c-product">
     <%= image_tag "users/sample_item_01.png", class: "c-product__image" %>
     <div class="c-product__left_wrapper">
       <div class="c-product__title">
-        サプリメント
+        <%= p.name %>/<%= p.id %>
       </div>
       <div class="c-product__price">
-        <p class="c-product__price_title">定期購買　</p>
-        <p class="c-product__price_value">￥0,000</p>
+        <p class="c-product__price_title"><%=t('order_type.subscription_order')%></p>
+        <p class="c-product__price_value">
+          <% if(p.variants.pluck(:sku,:order_type).include?(["all",1])) %>
+            <% p.variants.each do |v| %>
+              <% if(v.order_type=="subscription_order" && v.sku=="all") %>
+                <% v.prices.each do |pri| %>
+                  <%= pri.amount %>円
+                <% end %>
+              <% end %>
+            <% end %>
+          <% elsif(p.variants.pluck(:order_type).include?(1))%>
+            <% p.variants.each do |v| %>
+              <%= (v.prices.pluck(:amount)).min %>円
+            <% end %>
+          <% else %>
+            未設定
+          <% end %>
+        </p>
       </div>
       <div class="c-product__price">
-        <p class="c-product__price_title">単品購買　</p>
-        <p class="c-product__price_value">￥0,000</p>
+        <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
+        <p class="c-product__price_value">
+          <% if(p.variants.pluck(:sku,:order_type).include?(["all",2])) %>
+            <% p.variants.each do |v| %>
+              <% if(v.order_type=="single_order" && v.sku=="all") %>
+                <% v.prices.each do |pri| %>
+                  <%= pri.amount %>円
+                <% end %>
+              <% end %>
+            <% end %>
+          <% elsif(p.variants.pluck(:order_type).include?(2))%>
+            <% p.variants.each do |v| %>
+              <% @pricemin=[] %>
+              <% @pricemin.push(v.prices.pluck(:amount).first) %>
+            <% end %>
+            <%= @pricemin.min %>円
+          <% else %>
+            未設定
+          <% end %>
+        </p>
       </div>
     </div>
     <div class="c-product__right_wrapper">
