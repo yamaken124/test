@@ -296,6 +296,7 @@ DEPENDENCIES
   binding_of_caller
   bullet
   byebug
+  carrierwave
   coffee-rails (~> 4.1.0)
   database_cleaner
   devise

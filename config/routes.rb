@@ -23,12 +23,16 @@ Rails.application.routes.draw do
   end
 
   namespace :admins do
-    resources :products, only: [:index, :show, :new, :create] do
-      resources :variants, only: [:new, :create]
+    resources :products, only: [:index, :new, :create, :edit,:update, :destroy] do
+      resources :variants, only: [:index, :new, :create, :edit, :update, :destroy]
+    end
+    resources :variants, only: [] do
+      resources :images,only: [:index, :new, :create, :edit, :update, :destroy], controller: :images, imageable_type: 'Variant'
     end
     resources :shippings,only:[:index] 
     resources :bills 
   end
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
