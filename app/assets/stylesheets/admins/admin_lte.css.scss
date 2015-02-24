@@ -20,7 +20,7 @@ body {
   background: #f9f9f9;
 }
 a {
-  color: #6495ED;
+  color: #3F7CAC;
 }
 a:hover,
 a:active,
@@ -198,7 +198,7 @@ img {
   background-color: #0073b7 !important;
 }
 .bg-light-blue {
-  background-color: #6495ED !important;
+  background-color: #3F7CAC !important;
 }
 .bg-green {
   background-color: #228B22 !important;
@@ -244,7 +244,7 @@ img {
   color: #222222 !important;
 }
 .text-light-blue {
-  color: #6495ED !important;
+  color: #3F7CAC !important;
 }
 .text-green {
   color: #228B22 !important;
@@ -364,12 +364,12 @@ Gradient Background colors
   color: #fff;
 }
 .bg-light-blue-gradient {
-  background: #6495ED !important;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #6495ED), color-stop(1, #67a8ce)) !important;
-  background: -ms-linear-gradient(bottom, #6495ED, #67a8ce) !important;
-  background: -moz-linear-gradient(center bottom, #6495ED 0%, #67a8ce 100%) !important;
-  background: -o-linear-gradient(#67a8ce, #6495ED) !important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#67a8ce', endColorstr='#6495ED', GradientType=0) !important;
+  background: #3F7CAC !important;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #3F7CAC), color-stop(1, #67a8ce)) !important;
+  background: -ms-linear-gradient(bottom, #3F7CAC, #67a8ce) !important;
+  background: -moz-linear-gradient(center bottom, #3F7CAC 0%, #67a8ce 100%) !important;
+  background: -o-linear-gradient(#67a8ce, #3F7CAC) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#67a8ce', endColorstr='#3F7CAC', GradientType=0) !important;
   color: #fff;
 }
 .bg-blue-gradient {
@@ -762,7 +762,7 @@ body > .header .logo .icon {
   margin-right: 10px;
 }
 .dropdown-menu > li > a:hover {
-  background-color: #6495ED;
+  background-color: #3F7CAC;
   color: #f9f9f9;
 }
 /*Drodown in navbars*/
@@ -987,7 +987,7 @@ body > .header .logo .icon {
 .navbar-nav > .user-menu > .dropdown-menu > li.user-header {
   height: 175px;
   padding: 10px;
-  background: #6495ED;
+  background: #3F7CAC;
   text-align: center;
 }
 .navbar-nav > .user-menu > .dropdown-menu > li.user-header > img {
@@ -1134,7 +1134,7 @@ body > .header .logo .icon {
   box-shadow: none;
 }
 .form-control:focus {
-  border-color: #6495ED !important;
+  border-color: #3F7CAC !important;
   box-shadow: none;
 }
 .form-group.has-success label {
@@ -1209,7 +1209,7 @@ body > .header .logo .icon {
 }
 .progress-bar-light-blue,
 .progress-bar-primary {
-  background-color: #6495ED;
+  background-color: #3F7CAC;
 }
 .progress-striped .progress-bar-light-blue,
 .progress-striped .progress-bar-primary {
@@ -1384,7 +1384,7 @@ body > .header .logo .icon {
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 .box.box-primary {
-  border-top-color: #6495ED;
+  border-top-color: #3F7CAC;
 }
 .box.box-info {
   border-top-color: #00c0ef;
@@ -1546,8 +1546,8 @@ body > .header .logo .icon {
 }
 .box.box-solid.box-primary > .box-header {
   color: #fff;
-  background: #6495ED;
-  background-color: #6495ED;
+  background: #3F7CAC;
+  background-color: #3F7CAC;
 }
 .box.box-solid.box-primary > .box-header a {
   color: #444;
@@ -1637,7 +1637,7 @@ body > .header .logo .icon {
   border-left-color: #228B22;
 }
 .box .todo-list > li.primary {
-  border-left-color: #6495ED;
+  border-left-color: #3F7CAC;
 }
 .box .todo-list > li > input[type='checkbox'] {
   margin: 0 10px 0 5px;
@@ -1887,13 +1887,13 @@ Component: timeline
   border-bottom-color: #d9dadc;
 }
 .btn.btn-primary {
-  background-color: #6495ED;
-  border-color: #6495ED;
+  background-color: #3F7CAC;
+  border-color: #3F7CAC;
 }
 .btn.btn-primary:hover,
 .btn.btn-primary:active,
 .btn.btn-primary.hover {
-  background-color: #6495ED;
+  background-color: #3F7CAC;
 }
 .btn.btn-success {
   background-color: #228B22;
@@ -2121,7 +2121,7 @@ Component: timeline
 .nav.nav-pills > li.active > a,
 .nav.nav-pills > li.active > a:hover {
   background-color: #f6f6f6;
-  border-top-color: #6495ED;
+  border-top-color: #3F7CAC;
   color: #444;
 }
 .nav.nav-pills > li.active > a {
@@ -2141,7 +2141,7 @@ Component: timeline
 .nav.nav-pills.nav-stacked > li.active > a,
 .nav.nav-pills.nav-stacked > li.active > a:hover {
   background-color: #f6f6f6;
-  border-left-color: #6495ED;
+  border-left-color: #3F7CAC;
   color: #444;
 }
 .nav.nav-pills.nav-stacked > li.header {
@@ -2182,7 +2182,7 @@ Component: timeline
   border-color: transparent;
 }
 .nav-tabs-custom > .nav-tabs > li.active {
-  border-top-color: #6495ED;
+  border-top-color: #3F7CAC;
 
 }
 .nav-tabs-custom > .nav-tabs > li.active > a,
