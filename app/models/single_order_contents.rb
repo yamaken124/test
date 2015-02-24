@@ -1,5 +1,6 @@
 class SingleOrderContents
-  attr_accessor :order, :detail
+  delegate :single_order, to: :order
+  attr_accessor :order, :detail, :bill
 
   def initialize(order)
     @order = order.single_order || order.build_single_order
@@ -40,6 +41,10 @@ class SingleOrderContents
     @bill.update_bill
   end
 
+  def bill
+    @bill = detail.bill || detail.build_bill
+  end
+
   private
   def after_add_or_remove(line_item, options = {})
     reload_totals
@@ -66,6 +71,8 @@ class SingleOrderContents
   end
 
   def detail
+    return @detail if @detail
+
     single_order_detail = order.single_order_detail || order.build_single_order_detail
     @detail ||= single_order_detail
   end
