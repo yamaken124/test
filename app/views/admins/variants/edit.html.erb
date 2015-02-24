@@ -1,5 +1,10 @@
-<p class="title">variant#edit</p>
-
-<p><a href="<%= admins_variant_images_path(variant_id: params[:id]) %>">image#index</a></p>
+<div class = "content-header">
+  <h3>
+    <%= link_to "商品一覧", admins_products_path %> / <%= @product.name %>
+    <div class="u-float_right">
+      <a href="<%= new_admins_product_variant_path %>" class="btn btn-primary">Variant追加</a>
+    </div>
+  </h3>
+</div>
 
 <%= render partial: 'form', locals: { variant: @variant } %>
