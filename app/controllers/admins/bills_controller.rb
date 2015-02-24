@@ -20,6 +20,8 @@ class Admins::BillsController < ApplicationController
       laundering_failure
     when "complete" then
       complete
+    else
+     laundering_planned 
     end
   end
 

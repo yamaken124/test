@@ -1,0 +1,46 @@
+<section class="content-header">
+<h1>
+  洗替管理
+</h1>
+</section>
+<section class="content col-md-9">
+<h3>洗替成功一覧</h3>
+<h4 class="box-title">検索</h4>
+<h4 class="box-title">注文リスト</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ユーザー名</th>
+      <th>注文コード</th>
+      <th>注文日時</th>
+      <th>合計金額</th>
+      <th>ユーザー名</th>
+      <th>合計金額</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>
+        <a href="<%= %>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</section>
+<section class="content col-md-2 float-right">
+<ul class="nav nav-pills nav-stacked">
+  <li><a href="<%=regular_purchase_admins_bills_path("laundering_planned") %>">洗替予定一覧</a></li>
+  <li class="active"><a href="<%= regular_purchase_admins_bills_path("laundering_success")%>">洗替成功一覧</a></li>
+  <li><a href="<%= regular_purchase_admins_bills_path("laundering_failure")%>">洗替失敗一覧</a></li>
+  <li><a href="<%= regular_purchase_admins_bills_path("complete")%>">売上計上済み一覧</a></li>
+</ul>
+</section>
+

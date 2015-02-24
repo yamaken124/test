@@ -28,13 +28,13 @@
     </ul>
     </li>
   <% else %>
-    <li>
+    <li class="treeview active">
     <a href="<%= %>">
       <i class="fa fa-th"></i>
       <span>請求管理</span>
       <i class="fa fa-angle-left pull-right"></i>
     </a>
-    <ul>
+    <ul class="treeview-menu">
       <li><a href="<%= post_payment_admins_bills_path %>"><i class="fa fa-angle-double-right"></i>後払い管理</a></li>
       <li><a href="<%= credit_admins_bills_path %>"><i class="fa fa-angle-double-right"></i>クレジット管理</a></li>
       <li><a href="<%= regular_purchase_admins_bills_path("laundering_planned")%>"><i class="fa fa-angle-double-right"></i>洗替管理</a></li>
