@@ -8,6 +8,11 @@ class Admins::BillsController < ApplicationController
   def show
   end
 
+  #description of the state 
+  #laundering_planned: 洗替予定
+  #laundering_failure: 洗替失敗
+  #laundering_planned: 洗替成功
+  #complete: 売上計上済み
   def regular_purchase
     case params[:state]
     when "laundering_planned" then
@@ -15,11 +20,9 @@ class Admins::BillsController < ApplicationController
     when "laundering_failure" then
       laundering_failure
     when "laundering_success" then 
-      laundering_success
-    when "laundering_failure" then 
-      laundering_failure
+      laundering_success 
     when "complete" then
-      complete
+      complete 
     else
      laundering_planned 
     end

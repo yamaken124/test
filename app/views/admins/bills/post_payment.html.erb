@@ -1,14 +1,11 @@
-<% if params[:state].nil? %>
-<%= render partial: 'post_payment_index', locals: {} %>
-
-<% elsif "unexamined" == params[:state] %>
-
+<% case params[:state] %>
+<% when "unexamined" %>
 <%= render partial: 'unexamined', locals: {} %>
 
-<% elsif "examining" == params[:state] %>
+<% when "examining" %>
 <%= render partial: 'examining', locals: {} %>
 
-<% elsif "examined" == params[:state] %>
+<% when "examined" %>
 <%= render partial: 'examined', locals: {} %>
 
 <% else %>

@@ -5,35 +5,9 @@
 </section>
 <section class="content col-md-9">
 <h3>売上計上済み一覧</h3>
-<h4 class="box-title">検索</h4>
-<h4 class="box-title">注文リスト</h4>
-<table class="table">
-  <thead>
-    <tr>
-      <th>ユーザー名</th>
-      <th>注文コード</th>
-      <th>注文日時</th>
-      <th>合計金額</th>
-      <th>ユーザー名</th>
-      <th>合計金額</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>
-        <a href="<%= %>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+
+<%= render partial: 'regular_purchase_table', locals: {} %>
+
 </section>
 <section class="content col-md-2 float-right">
 <ul class="nav nav-pills nav-stacked">
