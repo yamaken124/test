@@ -1,7 +1,6 @@
 class Admins::ProductsController < ApplicationController
   before_action :set_product, only: [:edit, :update, :destroy]
   layout "admins/admins"
-
   def index
     @products = Product.all
   end

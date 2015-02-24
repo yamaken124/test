@@ -29,8 +29,19 @@ Rails.application.routes.draw do
     resources :variants, only: [] do
       resources :images,only: [:index, :new, :create, :edit, :update, :destroy], controller: :images, imageable_type: 'Variant'
     end
-    resources :shippings,only:[:index] 
-    resources :bills 
+    resources :purchase_orders,only:[:index] do
+      collection do 
+        get'shipped'
+        get'unshipped'
+      end
+    end
+    resources :bills do 
+      collection do
+        get'post_payment'
+        get'credit'
+        get'regular_purchase/:state', action: :regular_purchase, as: :regular_purchase
+      end
+    end
   end
 
 

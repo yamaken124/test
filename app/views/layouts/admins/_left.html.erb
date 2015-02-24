@@ -1,19 +1,20 @@
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="left-side sidebar-offcanvas">               
-  <section class="sidebar">
-  <ul class="sidebar-menu">
-    <li>
-    <a href="<%= admins_products_path %>">
-      <i class="fa fa-laptop"></i>
-      <span>商品管理</span>
-    </a>
-    </li>
-    <li>
-    <a href="<%= admins_shippings_path %>">
-      <i class="fa fa-inbox"></i>
-      <span>発送管理</span>
-    </a>
-    </li>
+<section class="sidebar">
+<ul class="sidebar-menu">
+  <li>
+  <a href="<%= admins_products_path %>">
+    <i class="fa fa-laptop"></i>
+    <span>商品管理</span>
+  </a>
+  </li>
+  <li>
+  <a href="<%= admins_purchase_orders_path %>">
+    <i class="fa fa-inbox"></i>
+    <span>発送管理</span>
+  </a>
+  </li>
+  <% if @is_bills.nil? %>
     <li class="treeview">
     <a href="<%= %>">
       <i class="fa fa-th"></i>
@@ -21,23 +22,37 @@
       <i class="fa fa-angle-left pull-right"></i>
     </a>
     <ul class="treeview-menu">
-      <li><a href="pages/charts/morris.html"><i class="fa fa-angle-double-right"></i>後払い管理</a></li>
-      <li><a href="pages/charts/flot.html"><i class="fa fa-angle-double-right"></i>クレジット管理</a></li>
-      <li><a href="pages/charts/inline.html"><i class="fa fa-angle-double-right"></i>洗替管理</a></li>
+      <li><a href="<%= post_payment_admins_bills_path %>"><i class="fa fa-angle-double-right"></i>後払い管理</a></li>
+      <li><a href="<%= credit_admins_bills_path %>"><i class="fa fa-angle-double-right"></i>クレジット管理</a></li>
+      <li><a href="<%= regular_purchase_admins_bills_path("laundering_planned")%>"><i class="fa fa-angle-double-right"></i>洗替管理</a></li>
     </ul>
     </li>
-    <li>
-    <a href="<%=  %>">
-      <i class="fa fa-inbox"></i>
-      <span>レポート</span>
+  <% else %>
+    <li class="treeview active">
+    <a href="<%= %>">
+      <i class="fa fa-th"></i>
+      <span>請求管理</span>
+      <i class="fa fa-angle-left pull-right"></i>
     </a>
+    <ul class="treeview-menu">
+      <li><a href="<%= post_payment_admins_bills_path %>"><i class="fa fa-angle-double-right"></i>後払い管理</a></li>
+      <li><a href="<%= credit_admins_bills_path %>"><i class="fa fa-angle-double-right"></i>クレジット管理</a></li>
+      <li><a href="<%= regular_purchase_admins_bills_path("laundering_planned")%>"><i class="fa fa-angle-double-right"></i>洗替管理</a></li>
+    </ul>
     </li>
-    <li>
-    <a href="<%=  %>">
-      <i class="fa fa-inbox"></i>
-      <span>ユーザー管理</span>
-    </a>
-    </li>
-  </ul>
-  </section>
-  </aside>
+  <% end %>
+  <li>
+  <a href="<%=  %>">
+    <i class="fa fa-inbox"></i>
+    <span>レポート</span>
+  </a>
+  </li>
+  <li>
+  <a href="<%=  %>">
+    <i class="fa fa-inbox"></i>
+    <span>ユーザー管理</span>
+  </a>
+  </li>
+</ul>
+</section>
+</aside>
