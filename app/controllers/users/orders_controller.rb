@@ -14,7 +14,7 @@ class Users::OrdersController < Users::BaseController
   end
 
   def update
-    if @order.single_contents.update_cart(order_params)
+    if @order.single_order_contents.update_cart(order_params)
       respond_with(@order) do |format|
         format.html do
           if params.has_key?(:checkout)
