@@ -1,0 +1,30 @@
+<p>image#index</p>
+<p><a href="<%= new_admins_variant_image_path(variant_id: params[:variant_id]) %>">image#new</a></p>
+
+<% if !@images.blank? %>
+  <table>
+    <thead>
+      <tr>
+        <th>image</th>
+        <th>sku</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @images.each do |i| %>
+      <tr>
+        <td>
+          <% if !i.image.nil? %>
+            <%= image_tag i.image.url,:size => "60x60" %>
+          <% end %>
+        </td>
+        <td><%= i.variant.sku %></td>
+        <td><a href="<%= edit_admins_variant_image_path(id: i.id ,imageable_id: params[:imageable_id]) %>">image#edit</a></td>
+        <td><a href="<%= admins_variant_image_path(id: i.id ,imageable_id: params[:imageable_id]) %>"data-method="delete"><%= "image#delete" %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>現在画像は登録されていません</p>
+<% end %>

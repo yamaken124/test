@@ -1,5 +1,6 @@
 class SingleOrderContents
-  attr_accessor :order, :detail
+  delegate :single_order, to: :order
+  attr_accessor :order, :detail, :bill
 
   def initialize(order)
     @order = order.single_order || order.build_single_order
@@ -40,13 +41,17 @@ class SingleOrderContents
     @bill.update_bill
   end
 
+  def bill
+    @bill = detail.bill || detail.build_bill
+  end
+
   private
   def after_add_or_remove(line_item, options = {})
     reload_totals
     shipment = options[:shipment]
     shipment.present? ? shipment.update_amounts : order.ensure_updated_shipments
-    PromotionHandler::Cart.new(order, line_item).activate
-    ItemAdjustments.new(line_item).update
+    # PromotionHandler::Cart.new(order, line_item).activate
+    # ItemAdjustments.new(line_item).update
     reload_totals
     line_item
   end
@@ -66,6 +71,8 @@ class SingleOrderContents
   end
 
   def detail
+    return @detail if @detail
+
     single_order_detail = order.single_order_detail || order.build_single_order_detail
     @detail ||= single_order_detail
   end
@@ -86,11 +93,10 @@ class SingleOrderContents
     if line_item
       line_item.quantity += quantity.to_i
     else
-      opts = ActionController::Parameters.new(options) \
-        .permit(PermittedAttributes.line_item_attributes)
-      line_item = order.line_items.new(quantity: quantity,
-                                       variant: variant,
-                                       options: opts)
+      # opts = ActionController::Parameters.new(options) \
+        # .permit(PermittedAttributes.line_item_attributes)
+      line_item = order.single_order_detail.single_line_items.new(quantity: quantity,
+                                                                   variant: variant)
     end
     line_item.target_shipment = options[:shipment] if options.has_key? :shipment
     line_item.save!

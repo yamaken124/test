@@ -85,7 +85,7 @@ class OrderContents
     else
       opts = ActionController::Parameters.new(options) \
         .permit(PermittedAttributes.line_item_attributes)
-      line_item = order.line_items.new(quantity: quantity,
+      line_item = order.single_order.single_order_detail.single_line_items.new(quantity: quantity,
                                        variant: variant,
                                        options: opts)
     end

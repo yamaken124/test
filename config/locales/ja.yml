@@ -31,9 +31,17 @@ ja:
     - 金曜日
     - 土曜日
     formats:
-      default: ! "%Y/%m/%d"
-      long: ! "%Y年%m月%d日(%a)"
-      short: ! "%m/%d"
+      default: ! '%Y/%m/%d'
+      long: ! '%Y年%m月%d日(%a)'
+      short: ! '%m/%d'
+      ja:
+        default: ! '%Y年%m月%d日'
+        long: ! '%Y年%m月%d日(%a)'
+        short: ! '%m月%d日'
+      en:
+        default: ! '%Y/%m/%d'
+        long: ! '%Y/%m/%d(%a)'
+        short: ! '%m/%d'
     month_names:
     -
     - 1月
@@ -201,3 +209,27 @@ ja:
     city: 都道府県
     zipcode: 郵便局
     phone: 電話番号
+      ja:
+        default: ! '%Y年%m月%d日 %H時%M分%S秒'
+        long: ! '%Y年%m月%d日(%a) %H時%M分%S秒 %z'
+        short: ! '%y/%m/%d %H:%M'
+      en:
+        default: ! '%Y/%m/%d %H:%M:%S'
+        long: ! '%Y/%m/%d(%a) %H:%M:%S %z'
+        short: ! '%y/%m/%d %H:%M'
+    pm: 午後
+  only_time:
+    formats:
+      ja:
+        default: ! '%H時%M分%S秒'
+        short: ! '%H時%M秒'
+      en:
+        default: ! '%H:%M:%S'
+        short: ! '%H:%M'
+  order_type:
+    single_order: 単品購入
+    subscription_order: 定期購入
+  product_situation:
+    preparing: 準備中
+    valid: 有効
+    expired: 終了

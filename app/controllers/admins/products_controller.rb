@@ -1,27 +1,37 @@
 class Admins::ProductsController < ApplicationController
+  before_action :set_product, only: [:edit, :update, :destroy]
   layout "admins/admins"
   def index
-    @products = Product.includes(:variants)
+    @products = Product.all
   end
 
   def new
     @product = Product.new
   end
 
-  def create
-    begin
-      ActiveRecord::Base.transaction do
-        @product = Product.new(product_params)
-        @product.save!
-        variant = @product.variants.build(variant_params)
-        variant.save!
-        price = variant.prices.build(price_params)
-        price.save!
-      end
-      redirect_to admins_products_path
-    rescue
-      render new_admins_product_path
+  def edit
+  end
+
+  def update
+    if @product.update(product_params)
+      redirect_to edit_admins_product_path(params[:id])
+    else
+      render :edit
     end
+  end
+
+  def create
+    @product = Product.new(product_params)
+    if @product.save
+      redirect_to edit_admins_product_path(id: @product.id)
+    else
+      render :new
+    end
+  end
+
+  def destroy
+    @product.update(is_invalid_at: Time.now-1)
+    redirect_to admins_products_path
   end
 
   private
@@ -30,16 +40,8 @@ class Admins::ProductsController < ApplicationController
       params.require(:product).permit(:name, :description, :is_valid_at, :is_invalid_at)
     end
 
-    def variant_params
-      params[:product].require(:variants).permit(:sku, :is_valid_at, :is_invalid_at)
-    end
-
-    def price_params
-      params[:product].require(:prices).permit(:amount)
-    end
-
-    def product_id
-      params.require(:product).permit(:name, :description, :is_valid_at, :is_invalid_at)
+    def set_product
+      @product = Product.find(params[:id])
     end
 
 end
