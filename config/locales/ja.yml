@@ -209,15 +209,6 @@ ja:
     city: 都道府県
     zipcode: 郵便局
     phone: 電話番号
-      ja:
-        default: ! '%Y年%m月%d日 %H時%M分%S秒'
-        long: ! '%Y年%m月%d日(%a) %H時%M分%S秒 %z'
-        short: ! '%y/%m/%d %H:%M'
-      en:
-        default: ! '%Y/%m/%d %H:%M:%S'
-        long: ! '%Y/%m/%d(%a) %H:%M:%S %z'
-        short: ! '%y/%m/%d %H:%M'
-    pm: 午後
   only_time:
     formats:
       ja:

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     resource :account, only: [:show] do
       resources :addresses
     end
-    resource :profile
+    resource :profile do
       resources :credit_cards
     end
     resources :products, only: [:index, :show]
