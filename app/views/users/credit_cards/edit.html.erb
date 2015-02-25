@@ -1,0 +1,38 @@
+<div class="p-wrapper--have_padding">
+  <h2 class="title">クレジット編集 <span><%= flash[:notice] %></span></h2>
+  <%= form_tag(account_credit_card_path, method: :patch, id: "form") do %>
+    <%= hidden_field_tag :card_seq, @card_seq %>
+    <%= hidden_field_tag :prevent_card_no, @card_no %>
+    <div class="form__field">
+      <%= label_tag "現状のクレジット番号" %>
+      <h2 class="u-margin__top10"><%= @card_no %></h2>
+    </div>
+    <% if params[:default_flag].to_i != 1 %>
+      <div class="form__field">
+        <%= link_to account_credit_card_path, data: {method: :delete, confirm: "本当に削除しますか？"} do %>
+          <div class="c-btn--delete u-margin__bottom_middle">
+           削除
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="form__field">
+      <%= label_tag :card_no, "クレジットカード番号" %>
+      <%= text_field_tag :card_no, nil, class: "form__text--long", placeholder: "0000000000000000" %>
+    </div>
+    <div class="form__field">
+      <%= label_tag :expire, "有効期限" %>
+      <%= text_field_tag :expire, nil, class: "form__text--short", placeholder: "1901(年月-無し)" %>
+    </div>
+    <% if params[:default_flag].to_i != 1 %>
+      <div class="form__field">
+        <%= check_box_tag :default_flag %><span class="u-base_font_color">定期購買用クレジットカード指定</span>
+      </div>
+    <% end %>
+    <div class="form__field">
+      <div class="c-btn--submit u-margin__bottom_middle" onclick="$('form').submit()">
+       編集
+      </div>
+    </div>
+  <% end %>
+</div>
