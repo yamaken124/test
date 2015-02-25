@@ -3,7 +3,7 @@
   <% if @gmo_cards.count > 4 %>
     <p class="u-base_font_color">※クレジット登録枚数は最大5枚です。</p>
   <% else %>
-    <%= link_to new_account_credit_card_path do %>
+    <%= link_to new_profile_credit_card_path do %>
 	    <div class="c-btn--submit u-margin__bottom_middle">
 	      新規クレジット登録
       </div>
@@ -12,7 +12,7 @@
   <h2 class="c-links__title">登録クレジットカード</h2>
   <ul class="c-links">
     <% @gmo_cards.each do |gmo_card| %>
-      <a href="<%= edit_account_credit_card_path(gmo_card[:CardSeq], card_no: gmo_card[:CardNo], default_flag: gmo_card[:DefaultFlag]) %>">
+      <a href="<%= edit_profile_credit_card_path(gmo_card[:CardSeq], card_no: gmo_card[:CardNo], default_flag: gmo_card[:DefaultFlag]) %>">
         <li class="c-link--small_text">
         <span>
           カード番号<%= "(定期購買時使用)" if gmo_card[:DefaultFlag].to_i == 1 %><br>

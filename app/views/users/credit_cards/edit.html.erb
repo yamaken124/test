@@ -1,6 +1,6 @@
 <div class="p-wrapper--have_padding">
   <h2 class="title">クレジット編集 <span><%= flash[:notice] %></span></h2>
-  <%= form_tag(account_credit_card_path, method: :patch, id: "form") do %>
+  <%= form_tag(profile_credit_card_path, method: :patch, id: "form") do %>
     <%= hidden_field_tag :card_seq, @card_seq %>
     <%= hidden_field_tag :prevent_card_no, @card_no %>
     <div class="form__field">
@@ -9,7 +9,7 @@
     </div>
     <% if params[:default_flag].to_i != 1 %>
       <div class="form__field">
-        <%= link_to account_credit_card_path, data: {method: :delete, confirm: "本当に削除しますか？"} do %>
+        <%= link_to profile_credit_card_path, data: {method: :delete, confirm: "本当に削除しますか？"} do %>
           <div class="c-btn--delete u-margin__bottom_middle">
            削除
           </div>

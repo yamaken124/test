@@ -17,7 +17,7 @@ class Users::CreditCardsController < Users::BaseController
     gmo_card = GmoMultiPayment::Card.new(@user)
     is_success = gmo_card.create(params[:card_no], params[:expire])
     if is_success
-      redirect_to account_credit_cards_path
+      redirect_to profile_credit_cards_path
     else
       flash[:notice] = "カード情報または、有効期限が不正です。"
       render :new
@@ -29,7 +29,7 @@ class Users::CreditCardsController < Users::BaseController
     gmo_card = GmoMultiPayment::Card.new(@user)
     is_success = gmo_card.update(params[:card_no], params[:expire], params[:card_seq], params[:default_flag])
     if is_success
-      redirect_to account_credit_cards_path
+      redirect_to profile_credit_cards_path
     else
       flash[:notice] = "カード情報または、有効期限が不正です。"
       @card_no = params[:prevent_card_no]
@@ -40,7 +40,7 @@ class Users::CreditCardsController < Users::BaseController
   def destroy
     gmo_card = GmoMultiPayment::Card.new(@user)
     gmo_card.delete(params[:id])
-    redirect_to account_credit_cards_path
+    redirect_to profile_credit_cards_path
   end
 
   private
