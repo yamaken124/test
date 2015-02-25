@@ -1,0 +1,40 @@
+<%= form_for([:account, @address], html: { id: "form" }) do |f| %>
+  <h2>住所登録</h2>
+  <% if @address.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= @address.errors.count %>件のエラーが発生しました。</h2>
+      <ul>
+      <% @address.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="form__field">
+    <%= f.label :last_name, "姓" %>
+    <%= f.text_field :last_name, autofocus: true, class: "form__text--long", placeholder: "姓" %>
+  </div>
+  <div class="form__field">
+    <%= f.label :first_name, "名" %>
+    <%= f.text_field :first_name, class: "form__text--long", placeholder: "名" %>
+  </div>
+  <div class="form__field">
+    <%= f.label :zipcode, "郵便番号" %>
+    <%= f.text_field :zipcode, autofocus: false, class: "form__text--long", placeholder: "1500000" %>
+  </div>
+  <div class="form__field">
+    <%= f.label :city, "都道府県" %>
+    <%= f.text_field :city, autofocus: false, class: "form__text--long", placeholder: "東京" %>
+  </div>
+  <div class="form__field">
+    <%= f.label :address, "住所" %>
+    <%= f.text_field :address, autofocus: false, class: "form__text--long", placeholder: "住所" %>
+  </div>
+  <div class="form__field">
+    <%= f.label :phone, "電話番号" %>
+    <%= f.text_field :phone, class: "form__text--long", placeholder: "08012341234" %>
+  </div>
+  <div class="form__field">
+    <%= f.submit "Update", class: "c-btn--submit" %>
+  </div>
+<% end %>
