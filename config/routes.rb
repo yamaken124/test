@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   }
 
   scope module: :users do
-    resource :account, only: [:show]
+    resource :account, only: [:show] do
+      resources :credit_cards
+    end
     resources :products, only: [:index, :show]
     resource :cart, only: [:update], controller: :orders do
       get '/', action: :edit
