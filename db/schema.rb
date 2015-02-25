@@ -52,6 +52,14 @@ ActiveRecord::Schema.define(version: 20150220083230) do
   add_index "bills_payments", ["bill_id"], name: "index_bills_payments_on_bill_id", using: :btree
   add_index "bills_payments", ["payment_id"], name: "index_bills_payments_on_payment_id", using: :btree
 
+  create_table "images", force: :cascade do |t|
+    t.integer  "imageable_id",   limit: 4
+    t.string   "imageable_type", limit: 255
+    t.string   "image",          limit: 255
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
   create_table "payment_methods", force: :cascade do |t|
     t.string   "name",          limit: 255
     t.text     "description",   limit: 65535
@@ -264,13 +272,13 @@ ActiveRecord::Schema.define(version: 20150220083230) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "variants", force: :cascade do |t|
-    t.string   "sku",           limit: 255
+    t.string   "sku",           limit: 255, default: "all", null: false
     t.integer  "product_id",    limit: 4
     t.integer  "order_type",    limit: 1
     t.datetime "is_valid_at"
     t.datetime "is_invalid_at"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
   end
 
   add_index "variants", ["product_id"], name: "index_variants_on_product_id", using: :btree

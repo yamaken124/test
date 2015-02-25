@@ -92,3 +92,4 @@ gem 'devise'
 gem 'httparty'
 # bootstrap
 gem "font-awesome-rails"
+gem 'carrierwave'
