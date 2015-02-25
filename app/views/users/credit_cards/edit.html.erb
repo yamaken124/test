@@ -7,13 +7,15 @@
       <%= label_tag "現状のクレジット番号" %>
       <h2 class="u-margin__top10"><%= @card_no %></h2>
     </div>
-    <div class="form__field">
-      <%= link_to account_credit_card_path, data: {method: :delete, confirm: "本当に削除しますか？"} do %>
-        <div class="c-btn--delete u-margin__bottom_middle">
-         削除
-        </div>
-      <% end %>
-    </div>
+    <% if params[:default_flag].to_i != 1 %>
+      <div class="form__field">
+        <%= link_to account_credit_card_path, data: {method: :delete, confirm: "本当に削除しますか？"} do %>
+          <div class="c-btn--delete u-margin__bottom_middle">
+           削除
+          </div>
+        <% end %>
+      </div>
+    <% end %>
     <div class="form__field">
       <%= label_tag :card_no, "クレジットカード番号" %>
       <%= text_field_tag :card_no, nil, class: "form__text--long", placeholder: "0000000000000000" %>
