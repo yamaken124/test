@@ -1,0 +1,25 @@
+<div class="p-wrapper--have_padding">
+  <h2 class="title">住所管理</h2>
+  <% if @addresses.count > 2 %>
+    <p class="u-base_font_color">最大登録住所は3箇所です。</p>
+  <% else %>
+    <%= link_to new_account_address_path do %>
+     <div class="c-btn--submit u-margin__bottom_middle">
+       新規住所登録
+      </div>
+    <% end %>
+  <% end %>
+  <h2 class="c-links__title">登録住所</h2>
+  <ul class="c-links">
+    <% @addresses.each do |address| %>
+      <a href="<%= edit_account_address_path(address) %>">
+        <li class="c-link--small_text">
+        <span>
+          <%= address.last_name %><br>
+          <%= address.address %>
+        </span>
+        </li>
+      </a>
+   <% end %>
+  </ul>
+</div>
