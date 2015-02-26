@@ -57,7 +57,7 @@
         <li class="p-payment_method_selection">
           <div class="p-payment_method_selection__radio">
             <% # TODO get variant_id %>
-            <%= radio_button_tag :variant_id, @product.variants.single_order.first.id %>
+            <%= radio_button_tag :variant_id, @product.variants.subscription_order.first.id %>
           </div>
           <p class="p-payment_method_selection__title">
           <%=t('order_type.subscription_order')%>

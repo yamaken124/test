@@ -42,11 +42,8 @@ class Admins::VariantsController < ApplicationController
   end
 
   def destroy
-    if @variant.update(is_invalid_at: Time.now-1)
-      redirect_to admins_product_variants_path
-    else
-      vwonvw
-    end
+    @variant.update(is_invalid_at: Time.now-1)
+    redirect_to admins_product_variants_path
   end
 
   private

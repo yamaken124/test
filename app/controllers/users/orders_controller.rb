@@ -16,6 +16,9 @@ class Users::OrdersController < Users::BaseController
 
   def edit
     @order = current_order || PurchaseOrder.incomplete.new
+    @hoge = SingleOrder.where(purchase_order_id: @order.id) \
+      .includes(:single_order_detail) \
+      .includes(:single_line_items)
     associate_user
   end
 

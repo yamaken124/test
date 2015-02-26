@@ -226,3 +226,11 @@ ja:
     preparing: 準備中
     valid: 有効
     expired: 終了
+
+  views:
+    pagination:
+      first: "最初"
+      previous: "前ページ"
+      next: "次ページ"
+      last: "最後"
+      truncate: "..."
