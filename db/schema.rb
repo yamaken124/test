@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150220083230) do
+ActiveRecord::Schema.define(version: 20150225084026) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -52,6 +52,20 @@ ActiveRecord::Schema.define(version: 20150220083230) do
   add_index "bills_payments", ["bill_id"], name: "index_bills_payments_on_bill_id", using: :btree
   add_index "bills_payments", ["payment_id"], name: "index_bills_payments_on_payment_id", using: :btree
 
+  create_table "credit_cards", force: :cascade do |t|
+    t.integer  "month",             limit: 4
+    t.integer  "year",              limit: 4
+    t.string   "cc_type",           limit: 255
+    t.string   "last_digits",       limit: 255
+    t.string   "name",              limit: 255
+    t.integer  "user_id",           limit: 4
+    t.integer  "payment_method_id", limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "credit_cards", ["user_id"], name: "index_credit_cards_on_user_id", using: :btree
+
   create_table "images", force: :cascade do |t|
     t.integer  "imageable_id",   limit: 4
     t.string   "imageable_type", limit: 255
@@ -71,12 +85,18 @@ ActiveRecord::Schema.define(version: 20150220083230) do
   end
 
   create_table "payments", force: :cascade do |t|
-    t.integer  "amount",            limit: 4
-    t.integer  "used_point",        limit: 4
-    t.integer  "payment_method_id", limit: 4
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.integer  "amount",                 limit: 4
+    t.integer  "used_point",             limit: 4
+    t.integer  "payment_method_id",      limit: 4
+    t.integer  "address_id",             limit: 4
+    t.integer  "single_order_detail_id", limit: 4
+    t.integer  "state",                  limit: 4, default: 0
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
   end
+
+  add_index "payments", ["address_id"], name: "fk_rails_ab62ea9e14", using: :btree
+  add_index "payments", ["single_order_detail_id"], name: "fk_rails_8e7dca6cc1", using: :btree
 
   create_table "prices", force: :cascade do |t|
     t.integer  "variant_id", limit: 4
@@ -151,12 +171,13 @@ ActiveRecord::Schema.define(version: 20150220083230) do
     t.integer  "address_id",           limit: 4
     t.integer  "shipment_total",       limit: 4
     t.integer  "additional_tax_total", limit: 4
+    t.integer  "used_point",           limit: 4,   default: 0
     t.integer  "adjustment_total",     limit: 4
     t.integer  "item_count",           limit: 4
     t.date     "date"
-    t.integer  "lock_version",         limit: 4
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.integer  "lock_version",         limit: 4,   default: 0, null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
   end
 
   add_index "single_order_details", ["address_id"], name: "index_single_order_details_on_address_id", using: :btree
@@ -287,6 +308,9 @@ ActiveRecord::Schema.define(version: 20150220083230) do
   add_foreign_key "bills", "addresses"
   add_foreign_key "bills_payments", "bills"
   add_foreign_key "bills_payments", "payments"
+  add_foreign_key "credit_cards", "users"
+  add_foreign_key "payments", "addresses"
+  add_foreign_key "payments", "single_order_details"
   add_foreign_key "prices", "variants"
   add_foreign_key "products_taxons", "products"
   add_foreign_key "profiles", "users"

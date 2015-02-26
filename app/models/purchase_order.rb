@@ -11,6 +11,7 @@
 
 class PurchaseOrder < ActiveRecord::Base
   include PurchaseOrder::Checkout
+  include PurchaseOrder::Point
 
   belongs_to :user
   has_one    :single_order
