@@ -1,0 +1,18 @@
+<div class="p-wrapper--have_padding">
+  <h2 class="title">クレジット登録 <span><%= flash[:notice] %></span></h2>
+  <%= form_tag(profile_credit_cards_path, method: :post, id: "form") do %>
+    <div class="form__field">
+      <%= label_tag :card_no, "クレジットカード番号" %>
+      <%= text_field_tag :card_no, nil, class: "form__text--long", placeholder: "0000000000000000(- 無し)" %>
+    </div>
+    <div class="form__field">
+      <%= label_tag :expire, "有効期限" %>
+      <%= text_field_tag :expire, nil, class: "form__text--short", placeholder: "1901(年月-無し)" %>
+    </div>
+    <div class="form__field">
+      <div class="c-btn--submit u-margin__bottom_middle" onclick="$('form').submit()">
+       登録
+      </div>
+    </div>
+  <% end %>
+</div>
