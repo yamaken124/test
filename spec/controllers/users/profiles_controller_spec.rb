@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Users::ProfilesController, type: :controller do
+
   before do
     @user = create(:user)
     user_sign_in @user
