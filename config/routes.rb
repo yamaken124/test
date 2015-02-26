@@ -7,9 +7,9 @@ Rails.application.routes.draw do
 
   scope module: :users do
     resource :account, only: [:show] do
-      resources :addresses
+      resources :addresses, only: [:index, :edit, :update, :new, :create]
     end
-    resource :profile do
+    resource :profile, only: [:edit, :create, :update] do
       resources :credit_cards
     end
     resources :products, only: [:index, :show]
