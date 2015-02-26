@@ -11,5 +11,6 @@
 
 class Price < ActiveRecord::Base
   belongs_to :variant
+  validates :amount, presence: true
 
 end
