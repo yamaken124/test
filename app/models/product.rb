@@ -22,8 +22,4 @@ class Product < ActiveRecord::Base
     self.where('is_invalid_at > ? AND is_valid_at < ?', Time.now, Time.now)
   end
 
-  def self.with_images
-    self.where(variant.id = 1)
-  end
-
 end

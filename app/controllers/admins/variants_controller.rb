@@ -5,7 +5,8 @@ class Admins::VariantsController < ApplicationController
 
   def index
     @variants = Variant.includes(:prices) \
-      .where(product_id: params[:product_id] )
+      .where(product_id: params[:product_id] ) \
+      .valid
   end
 
   def new
@@ -42,13 +43,16 @@ class Admins::VariantsController < ApplicationController
   end
 
   def destroy
-    @variant.update(is_invalid_at: Time.now-1)
-    redirect_to admins_product_variants_path
+    if @variant.update(is_invalid_at: Time.now-1)
+      redirect_to admins_product_variants_path
+    else
+      vwonvw
+    end
   end
 
   private
     def variant_params
-      params.require(:variant).permit(:is_valid_at, :is_invalid_at, :order_type).merge(product_id: params[:product_id], sku: "all")
+      params.require(:variant).permit(:is_valid_at, :is_invalid_at, :order_type, :sku).merge(product_id: params[:product_id])
     end
 
     def set_variant

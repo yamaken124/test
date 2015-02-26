@@ -4,7 +4,7 @@
   </div>
 </a>
 <% @products.each do |product| %>
-  <% if !(product.prices.pluck("amount")).blank? %>
+  <% if !(product.prices.blank?) %>
     <% if product.images.present? %>
       <%= render partial: 'users/products/product', locals: {p: product} %>
     <% end %>

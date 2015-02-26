@@ -19,6 +19,7 @@
   <div class="field">
     <%= v.select :order_type, {t('order_type.single_order') => "single_order", t('order_type.subscription_order') => "subscription_order"} %>
   </div>
+  <%= v.hidden_field :sku, :value => "all" %>
   <%= v.fields_for :prices do |p| %>
     <div class="field">
       <%= p.label :amount %><br>

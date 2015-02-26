@@ -13,7 +13,7 @@
       <div class="p-product__price">
         <p class="p-product__price_title"><%=t('order_type.single_order')%></p>
         <p class="p-product__price_value">
-          <%= @product.variants.single_order.first.prices.pluck(:amount).first %>円
+          <%= @product.variants.single_order.first.prices.first.amount %>円
           <span class="p-product__price_unit">(税込)</span>
         </p>
       </div>
@@ -23,7 +23,7 @@
       <div class="p-product__price">
         <p class="p-product__price_title"><%=t('order_type.subscription_order')%></p>
         <p class="p-product__price_value">
-          <%= @product.variants.subscription_order.first.prices.pluck(:amount).first %>円
+          <%= @product.variants.subscription_order.first.prices.first.amount %>円
           <span class="p-product__price_unit">(税込)</span>
         </p>
       </div>
@@ -42,7 +42,7 @@
             <%=t('order_type.single_order')%>
           </p>
           <p class="p-payment_method_selection__price">
-            <%= @product.variants.single_order.first.prices.pluck(:amount).first %>円
+            <%= @product.variants.single_order.first.prices.first.amount %>円
           </p>
           <div class="p-payment_method__detail">
             <p>数量: </p>
@@ -63,19 +63,21 @@
           <%=t('order_type.subscription_order')%>
           </p>
           <p class="p-payment_method_selection__price">
-            <%= @product.variants.subscription_order.first.prices.pluck(:amount).first %>円
+            <%= @product.variants.subscription_order.first.prices.first.amount %>円
           </p>
-          <p class="p-payment_method_selection__attention">
-          ※初回2ヶ月分の料金をいただきます。
-          </p>
-          <div class="p-payment_method__detail is-active">
-            <p>数量: </p>
-            <%= number_field_tag :quantity, nil, min: 1, class: 'p-payment_method__amount' %>
-            <p class="u-margin__left_short">個</p>
-            <%= submit_tag 'カートへ', class: 'c-btn--submit--short' %>
-          </div>
         </li>
       <% end %>
+      <li class="p-payment_method_selection">
+        <p class="p-payment_method_selection__attention">
+        ※初回2ヶ月分の料金をいただきます。
+        </p>
+        <div class="p-payment_method__detail is-active">
+          <p>数量: </p>
+          <%= number_field_tag :quantity, nil, min: 1, class: 'p-payment_method__amount' %>
+          <p class="u-margin__left_short">個</p>
+          <%= submit_tag 'カートへ', class: 'c-btn--submit--short' %>
+        </div>
+      </li>
     </ul>
 
     <h2 class="u-margin__top25">この商品について</h2>

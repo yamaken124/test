@@ -1,14 +1,7 @@
 <a href="<%= product_path(p.id) %>">
   <div class="c-product">
 
-    <% p.variants.each do |v| %>
-      <% v.images.each do |img| %>
-        <% if img.image %>
-          <%= image_tag img.image.url, class: "c-product__image" %>
-          <% break %>
-        <% end %>
-      <% end %>
-    <% end %>
+    <%= image_tag p.images.first.image.url, class: "c-product__image" %>
     <div class="c-product__left_wrapper">
       <div class="c-product__title">
         <%= p.name %>
@@ -17,7 +10,7 @@
         <%if(!p.variants.single_order.blank?) %>
           <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
           <p class="c-product__price_value">
-            <%= p.variants.single_order.first.prices.pluck(:amount).first %>円
+            <%= p.variants.single_order.first.prices.first.amount %>円
           </p>
         <% end %>
       </div>
@@ -25,7 +18,7 @@
         <%if(!p.variants.subscription_order.blank?) %>
           <p class="c-product__price_title"><%=t('order_type.subscription_order')%></p>
           <p class="c-product__price_value">
-            <%= p.variants.subscription_order.first.prices.pluck(:amount).first %>円
+            <%= p.variants.subscription_order.first.prices.first.amount %>円
           </p>
         <% end %>
       </div>
