@@ -18,8 +18,6 @@ class SingleOrderContents
 
   def update_cart(params)
     # TODO method
-    return false if order.single_order_detail.blank?
-
     if order.update(filter_order_items(params))
       detail.single_line_items = detail.single_line_items.select { |li| li.quantity > 0 }
       # Update totals, then check if the order is eligible for any cart promotions.
@@ -45,6 +43,13 @@ class SingleOrderContents
     @bill = detail.bill || detail.build_bill
   end
 
+  def detail
+    return @detail if @detail
+
+    single_order_detail = order.single_order_detail || order.build_single_order_detail
+    @detail ||= single_order_detail
+  end
+
   private
   def after_add_or_remove(line_item, options = {})
     reload_totals
@@ -68,13 +73,6 @@ class SingleOrderContents
       end
     end
     filtered_params
-  end
-
-  def detail
-    return @detail if @detail
-
-    single_order_detail = order.single_order_detail || order.build_single_order_detail
-    @detail ||= single_order_detail
   end
 
   def order_updater

@@ -3,7 +3,6 @@ class Users::CheckoutsController < Users::BaseController
   include Users::CheckoutsHelper
 
   before_action :load_order_with_lock
-  before_action :ensure_valid_state_lock_version, only: [:update]
   before_action :set_state_if_present
 
   before_action :ensure_order_not_completed
@@ -25,7 +24,7 @@ class Users::CheckoutsController < Users::BaseController
       if @order.completed?
         @current_order = nil
         flash['order_completed'] = true
-        redirect_to completion_route
+        redirect_to order_path(number: @order.number)
       else
         redirect_to checkout_state_path(@order.state)
       end
@@ -39,18 +38,6 @@ class Users::CheckoutsController < Users::BaseController
     def load_order_with_lock
       @order = current_order
       redirect_to cart_path and return unless @order
-    end
-
-    def ensure_valid_state_lock_version
-      if params[:order] && params[:order][:state_lock_version]
-        @order.with_lock do
-          unless @order.lock_version == params[:order].delete(:lock_version).to_i
-            flash[:error] = Spree.t(:order_already_updated)
-            redirect_to checkout_state_path(@order.state) and return
-          end
-          @order.increment!(:lock_version)
-        end
-      end
     end
 
     def set_state_if_present

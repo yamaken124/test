@@ -104,7 +104,7 @@ class OrderUpdater
   end
 
   def persist_totals
-    order_detail.update_columns(
+    order_detail.update(
       item_total: order_detail.item_total,
       item_count: order_detail.item_count,
       adjustment_total: order_detail.adjustment_total,
