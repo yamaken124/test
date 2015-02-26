@@ -6,46 +6,28 @@
         <%= p.name %>/<%= p.id %>
       </div>
       <div class="c-product__price">
-        <p class="c-product__price_title"><%=t('order_type.subscription_order')%></p>
-        <p class="c-product__price_value">
-          <% if(p.variants.pluck(:sku,:order_type).include?(["all",1])) %>
+        <%if(p.variants.pluck("order_type").include?(1)) %>
+          <p class="c-product__price_title"><%=t('order_type.subscription_order')%></p>
+          <p class="c-product__price_value">
             <% p.variants.each do |v| %>
-              <% if(v.order_type=="subscription_order" && v.sku=="all") %>
-                <% v.prices.each do |pri| %>
-                  <%= pri.amount %>円
-                <% end %>
+              <% if v.order_type=="subscription_order" %>
+                <%= v.prices.pluck("amount").first %>
               <% end %>
             <% end %>
-          <% elsif(p.variants.pluck(:order_type).include?(1))%>
-            <% p.variants.each do |v| %>
-              <%= (v.prices.pluck(:amount)).min %>円
-            <% end %>
-          <% else %>
-            未設定
-          <% end %>
-        </p>
+          </p>
+        <% end %>
       </div>
       <div class="c-product__price">
-        <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
-        <p class="c-product__price_value">
-          <% if(p.variants.pluck(:sku,:order_type).include?(["all",2])) %>
-            <% p.variants.each do |v| %>
-              <% if(v.order_type=="single_order" && v.sku=="all") %>
-                <% v.prices.each do |pri| %>
-                  <%= pri.amount %>円
+        <%if(p.variants.pluck("order_type").include?(2)) %>
+          <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
+          <p class="c-product__price_value">
+              <% p.variants.each do |v| %>
+                <% if v.order_type=="single_order" %>
+                  <%= v.prices.pluck("amount").first %>円
                 <% end %>
               <% end %>
-            <% end %>
-          <% elsif(p.variants.pluck(:order_type).include?(2))%>
-            <% p.variants.each do |v| %>
-              <% @pricemin=[] %>
-              <% @pricemin.push(v.prices.pluck(:amount).first) %>
-            <% end %>
-            <%= @pricemin.min %>円
-          <% else %>
-            未設定
-          <% end %>
-        </p>
+          </p>
+        <% end %>
       </div>
     </div>
     <div class="c-product__right_wrapper">

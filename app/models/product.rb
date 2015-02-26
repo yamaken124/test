@@ -13,5 +13,9 @@
 
 class Product < ActiveRecord::Base
   has_many :variants
+  has_many :prices, :through => :variants
+  has_many :images, :through => :variants
   paginates_per 5
+  validates :name, presence: true
+
 end

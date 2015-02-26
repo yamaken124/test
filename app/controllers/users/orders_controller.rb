@@ -14,7 +14,7 @@ class Users::OrdersController < Users::BaseController
   end
 
   def update
-    if @order.single_contents.update_cart(order_params)
+    if @order.single_order_contents.update_cart(order_params)
       respond_with(@order) do |format|
         format.html do
           if params.has_key?(:checkout)
@@ -40,7 +40,7 @@ class Users::OrdersController < Users::BaseController
     # 2,147,483,647 is crazy. See issue #2695.
     if quantity.between?(1, 2_147_483_647)
       begin
-        order.single_contents.add(variant, quantity, options)
+        order.single_order_contents.add(variant, quantity, options)
       rescue ActiveRecord::RecordInvalid => e
         error = e.record.errors.full_messages.join(", ")
       end
@@ -49,7 +49,7 @@ class Users::OrdersController < Users::BaseController
     end
     if error
       flash[:error] = error
-      redirect_to root_path
+      redirect_to products_path
     else
       respond_with(order) do |format|
         format.html { redirect_to cart_path }

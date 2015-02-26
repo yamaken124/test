@@ -2,7 +2,7 @@
   <%= form_for @order, url: cart_path, html: { id: 'update-cart' } do |order_form| %>
     <h2 class="title">カート小計(2個の商品): <span>￥10,000</span></h2>
     <%= hidden_field_tag :checkout, "" %>
-      <%= order_form.submit "レジに進む", class: 'c-btn--submit' %>    
+      <%= order_form.submit "レジに進む", class: 'c-btn--submit' %>
 
       <div class="p-wrapper--have_padding">
         <div class="c-payment_method_section">

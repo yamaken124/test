@@ -18,12 +18,16 @@ class Bill < ActiveRecord::Base
   belongs_to :address
   belongs_to :single_order_detail
 
-  def update_bill
+  def update_bill(used_point: 0)
+    used_point ||= used_point
+    total = single_order_detail.total - used_point
+
     update(
       item_total: single_order_detail.item_total,
       additional_tax_total: single_order_detail.additional_tax_total,
       shipment_total: single_order_detail.shipment_total,
-      total: single_order_detail.total,
+      total: total,
+      used_point: used_point,
       updated_at: Time.now
     )
   end

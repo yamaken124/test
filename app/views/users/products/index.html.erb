@@ -1,8 +1,12 @@
+<%= flash[:error] %>
+
 <a href="">
   <div class="c-category_select">
     全てのカテゴリ
   </div>
 </a>
 <% @products.each do |product| %>
-  <%= render partial: 'users/products/product', locals: {p: product} %>
+  <% if !(product.prices.pluck("amount")).blank? %>
+    <%= render partial: 'users/products/product', locals: {p: product} %>
+  <% end %>
 <% end %>

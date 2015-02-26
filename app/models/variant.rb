@@ -14,9 +14,12 @@
 class Variant < ActiveRecord::Base
   belongs_to :product
   has_many :prices
+  has_many :images, :as => :imageable
   has_many   :single_line_items
-  enum order_type: {subscription_order: 1, single_order: 2}
-end
 
 # ban list 
 # same(product_id, sku)
+  validates :sku, :order_type, :product_id, presence: true
+  
+  enum order_type: {single_order: 1, subscription_order: 2}
+end

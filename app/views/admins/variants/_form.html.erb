@@ -1,0 +1,32 @@
+<%= form_for([:admins, variant.product, variant]) do |v| %>
+
+  <div class="field">
+    <%= v.label :is_valid_at %><br>
+    <%if params[:action]=="new" %>
+      <%= v.date_field :is_valid_at, value: Date.today%><br/>
+    <% else %>
+      <%= v.date_field :is_valid_at %><br/>
+    <% end %>
+  </div>
+  <div class="field">
+    <%= v.label :is_invalid_at %><br>
+    <%if params[:action]=="new" %>
+      <%= v.date_field :is_invalid_at, value: Date.today+6*30 %><br/>
+    <% else %>
+      <%= v.date_field :is_invalid_at %><br/>
+    <% end %>
+  </div>
+  <div class="field">
+    <%= v.select :order_type, {t('order_type.single_order') => "single_order", t('order_type.subscription_order') => "subscription_order"} %>
+  </div>
+  <%= v.fields_for :prices do |p| %>
+    <div class="field">
+      <%= p.label :amount %><br>
+      <%= p.text_field :amount, class: "text", value: variant.prices.pluck(:amount) %>
+    </div>
+  <% end %>
+  <div class="actions">
+    <%= v.submit "登録", class: "submit" %>
+  </div>
+
+<% end %>

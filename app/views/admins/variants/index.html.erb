@@ -1,0 +1,35 @@
+<p class="title">variant#index</p>
+
+<p><a href="<%= new_admins_product_variant_path(product_id: params[:product_id]) %>">variant作成</a></p>
+
+<% if !@variants.blank? %>
+  <table>
+    <thead>
+      <tr>
+        <th>sku</th>
+        <th>注文タイプ</th>
+        <th>price</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @variants.each do |v| %>
+        <tr>
+          <td><%= v.sku %></td>
+          <td>
+            <% if !v.order_type.nil? %>
+              <%= t('order_type.'+v.order_type) %>
+            <% end %></td>
+          <td>
+            <% v.prices.each do |p| %><%= p.amount %><% end %>
+          </td>
+          <td><a href="<%= edit_admins_product_variant_path(id: v.id) %>">variant#edit</a></td>
+          <td><a href="<%= admins_product_variant_path(id: v.id) %>"data-method="delete"><%= "variant#delete" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>現在variantは登録されていません</p>
+<% end %>
