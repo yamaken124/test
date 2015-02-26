@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(version: 20150225084026) do
     t.integer  "adjustment_total",     limit: 4
     t.integer  "item_count",           limit: 4
     t.date     "date"
-    t.integer  "lock_version",         limit: 4
+    t.integer  "lock_version",         limit: 4,   default: 0, null: false
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
   end
