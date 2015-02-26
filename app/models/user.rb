@@ -26,6 +26,11 @@ class User < ActiveRecord::Base
   has_many :purchase_orders
   has_many :addresses
 
+  def name
+    #TODO
+    "name1"
+  end
+  
   def last_incomplete_order
     purchase_orders.incomplete.order('created_at DESC').first
   end

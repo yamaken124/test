@@ -14,7 +14,6 @@ class SingleOrder < ActiveRecord::Base
 
   accepts_nested_attributes_for :single_order_detail
 
-
   def find_line_item_by_variant(variant, options = {})                                                                                                  
     single_order_detail.single_line_items.detect { |line_item|
       line_item.variant_id == variant.id &&

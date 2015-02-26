@@ -6,15 +6,23 @@ Rails.application.routes.draw do
   }
 
   scope module: :users do
-    resource :account, only: [:show]
+    resource :account, only: [:show] do
+      resources :addresses
+    end
+    resource :profile do
+      resources :credit_cards
+    end
     resources :products, only: [:index, :show]
     resource :cart, only: [:update], controller: :orders do
       get '/', action: :edit
       get :address, on: :member
       patch '/remove_item/:id' => 'orders#remove_item', on: :collection, :as => :remove_item
     end
-    resources :orders, :except => [:new, :create, :destroy] do
-      post :populate, :on => :collection
+    resources :orders, only: [:index, :show] do
+      collection do
+        post :populate
+        get  ':number/thanks', action: :thanks
+      end
     end
 
     get '/checkout/:state', :to => 'checkouts#edit', :as => :checkout_state

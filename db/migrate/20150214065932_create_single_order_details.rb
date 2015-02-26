@@ -12,7 +12,7 @@ class CreateSingleOrderDetails < ActiveRecord::Migration
       t.integer :adjustment_total
       t.integer :item_count
       t.date :date
-      t.integer :lock_version
+      t.integer :lock_version, default: 0, null: false
 
       t.timestamps null: false
     end

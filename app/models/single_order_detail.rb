@@ -25,8 +25,17 @@ class SingleOrderDetail < ActiveRecord::Base
   belongs_to :tax_rate
   has_one    :bill
   has_many   :single_line_items
+  has_one    :payment
+
+  before_save :ensure_updated_shipments
+  before_save :ensure_updated_adjustment
 
   accepts_nested_attributes_for :single_line_items
+  accepts_nested_attributes_for :payment, update_only: false
+
+  def single_payment
+    payment ||= self.build_payment
+  end
 
   def ensure_updated_shipments
     # if shipments.any? && !self.completed?
@@ -34,6 +43,9 @@ class SingleOrderDetail < ActiveRecord::Base
       # self.update_column(:shipment_total, 0)
       # restart_checkout_flow
     # end
+  end
+
+  def ensure_updated_adjustment
   end
 
 end

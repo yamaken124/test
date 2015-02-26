@@ -2,10 +2,16 @@ class Users::OrdersController < Users::BaseController
   respond_to :html
   include Users::OrdersHelper
 
-  before_action :assign_order_with_lock, only: [:update, :remove_item]
+  before_action :assign_order_with_lock, only: [:edit, :update, :remove_item]
   # before_action :apply_coupon_code, only: :update
 
   def index
+  end
+
+  def thanks
+    address_ids = current_user.addresses.pluck(:id)
+    @single_order_detail = SingleOrderDetail.where(address_id: address_ids).where(number: params[:number]).first
+    raise ActiveRecord::RecordNotFound if @single_order_detail.blank?
   end
 
   def edit
@@ -73,7 +79,7 @@ class Users::OrdersController < Users::BaseController
       end
 
       def assign_order_with_lock
-        @order = current_order(lock: true)
+        @order = current_order({lock: true, create_order_if_necessary: true})
         unless @order
           flash[:error] = :order_not_found
           redirect_to cart_path and return

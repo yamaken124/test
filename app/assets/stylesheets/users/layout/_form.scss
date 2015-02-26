@@ -8,6 +8,7 @@
   label{
     width:100%;
     color:$base_font_color;
+    display:block;
   }
   .form__text--long{
     @include calc(width, "98% - 2px");
@@ -19,8 +20,25 @@
     border-radius:5px;
     color:$base_font_color;
   }
+  .form__text--short{
+    @include calc(width, "40% - 2px");
+    border:1px solid $base_border_color;
+    font-size:18px;
+    height:30px;
+    margin-top:5px;
+    padding-left:2%;
+    border-radius:5px;
+    color:$base_font_color;
+    clear:both;
+  }
   .form__field{
     padding-top:15px;
+    a{
+      width:100%;
+      min-height:10px;
+      overflow:hidden;
+      display:block;
+    }
   }
   i{
     font-size:12px;

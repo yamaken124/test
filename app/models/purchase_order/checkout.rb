@@ -53,21 +53,23 @@ class PurchaseOrder < ActiveRecord::Base
         def update_from_params(params, permitted_params, request_env = {})
           @updating_params = params
 
+          # TODO update shipment
+          # TODO update adjustment
           begin
             ActiveRecord::Base.transaction do
-              # TODO shipment
+              attributes = @updating_params[:order] ? @updating_params[:order].permit(permitted_params).delete_if { |k, v| v.nil? } : {}
 
-              point = \
-                if params[:order] && params[:order][:used_point]
-                  raise unless valid_point?(params[:order][:used_point])
-                  params[:order][:order][:used_point]
-                else
-                  0
-                end
-              # TODO update adjustment
+              case "#{params[:state]}".to_sym
+              when :payment
+                attributes[:payment_attributes] ||= {}
+                attributes[:payment_attributes][:id] = single_order_detail.payment.try(:id)
+                raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) # invalid point error
+                single_order_detail.update!(attributes)
+              when :confirm
+                single_bill.single_payment.paid!
+              end
 
-              raise unless single_bill.update_bill({used_point: point})
-              raise unless next_state
+              send("#{checkout_steps[checkout_step_index(params[:state]) + 1]}!")
               self.reload
             end
             true
