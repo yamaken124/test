@@ -1,5 +1,5 @@
 <%= form_for([:account, @address], html: { id: "form" }) do |f| %>
-  <h2>住所登録</h2>
+  <h2>お届け先住所登録</h2>
   <% if @address.errors.any? %>
     <div id="error_explanation">
       <h2><%= @address.errors.count %>件のエラーが発生しました。</h2>
@@ -35,6 +35,6 @@
     <%= f.text_field :phone, class: "form__text--long", placeholder: "08012341234" %>
   </div>
   <div class="form__field">
-    <%= f.submit "Update", class: "c-btn--submit" %>
+    <%= f.submit "登録", class: "c-btn--submit" %>
   </div>
 <% end %>
