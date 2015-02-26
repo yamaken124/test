@@ -18,4 +18,12 @@ class Product < ActiveRecord::Base
   paginates_per 5
   validates :name, presence: true
 
+  def self.valid
+    self.where('is_invalid_at > ? AND is_valid_at < ?', Time.now, Time.now)
+  end
+
+  def self.with_images
+    self.where(variant.id = 1)
+  end
+
 end

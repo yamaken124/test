@@ -1,31 +1,31 @@
 <a href="<%= product_path(p.id) %>">
   <div class="c-product">
-    <%= image_tag "users/sample_item_01.png", class: "c-product__image" %>
+
+    <% p.variants.each do |v| %>
+      <% v.images.each do |img| %>
+        <% if img.image %>
+          <%= image_tag img.image.url, class: "c-product__image" %>
+          <% break %>
+        <% end %>
+      <% end %>
+    <% end %>
     <div class="c-product__left_wrapper">
       <div class="c-product__title">
-        <%= p.name %>/<%= p.id %>
+        <%= p.name %>
       </div>
       <div class="c-product__price">
-        <%if(p.variants.pluck("order_type").include?(1)) %>
-          <p class="c-product__price_title"><%=t('order_type.subscription_order')%></p>
+        <%if(!p.variants.single_order.blank?) %>
+          <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
           <p class="c-product__price_value">
-            <% p.variants.each do |v| %>
-              <% if v.order_type=="subscription_order" %>
-                <%= v.prices.pluck("amount").first %>
-              <% end %>
-            <% end %>
+            <%= p.variants.single_order.first.prices.pluck(:amount).first %>円
           </p>
         <% end %>
       </div>
       <div class="c-product__price">
-        <%if(p.variants.pluck("order_type").include?(2)) %>
-          <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
+        <%if(!p.variants.subscription_order.blank?) %>
+          <p class="c-product__price_title"><%=t('order_type.subscription_order')%></p>
           <p class="c-product__price_value">
-              <% p.variants.each do |v| %>
-                <% if v.order_type=="single_order" %>
-                  <%= v.prices.pluck("amount").first %>円
-                <% end %>
-              <% end %>
+            <%= p.variants.subscription_order.first.prices.pluck(:amount).first %>円
           </p>
         <% end %>
       </div>

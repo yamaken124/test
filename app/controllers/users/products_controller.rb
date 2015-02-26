@@ -3,7 +3,9 @@ class Users::ProductsController < Users::BaseController
     @products = Product \
       .includes(:variants) \
       .includes(:prices) \
-      .page(params[:page])
+      .includes(:images) \
+      .page(params[:page]) \
+      .valid
   end
 
   def show
@@ -11,6 +13,7 @@ class Users::ProductsController < Users::BaseController
       .includes(:variants) \
       .includes(:prices) \
       .includes(:images) \
+      .valid \
       .where(id: params[:id]).first
   end
 end

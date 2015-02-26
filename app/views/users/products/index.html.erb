@@ -1,5 +1,3 @@
-<%= flash[:error] %>
-
 <a href="">
   <div class="c-category_select">
     全てのカテゴリ
@@ -7,6 +5,8 @@
 </a>
 <% @products.each do |product| %>
   <% if !(product.prices.pluck("amount")).blank? %>
-    <%= render partial: 'users/products/product', locals: {p: product} %>
+    <% if product.images.present? %>
+      <%= render partial: 'users/products/product', locals: {p: product} %>
+    <% end %>
   <% end %>
 <% end %>
