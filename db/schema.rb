@@ -81,8 +81,8 @@ ActiveRecord::Schema.define(version: 20150225084026) do
     t.datetime "updated_at",                                   null: false
   end
 
-  add_index "payments", ["address_id"], name: "fk_rails_632d7aa6b0", using: :btree
-  add_index "payments", ["single_order_detail_id"], name: "fk_rails_cee4dcea16", using: :btree
+  add_index "payments", ["address_id"], name: "fk_rails_b4b2ca9ca8", using: :btree
+  add_index "payments", ["single_order_detail_id"], name: "fk_rails_e376976013", using: :btree
 
   create_table "prices", force: :cascade do |t|
     t.integer  "variant_id", limit: 4
