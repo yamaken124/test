@@ -20,8 +20,6 @@ class Product < ActiveRecord::Base
 
   include Merchandise
 
-  enum order_type: {single_order: 1, subscription_order: 2}
-
   def available
     (!prices.blank? && !images.blank?)
   end

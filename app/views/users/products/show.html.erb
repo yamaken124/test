@@ -9,10 +9,6 @@
     </ul>
   </div>
   <div class="p-product__price_wrapper">
-
-
-<%= Product.valid[:single_order] %>
-
     <% if(!@product.order_price("1").nil?) %>
       <div class="p-product__price">
         <p class="p-product__price_title"><%=t('order_type.single_order')%></p>
