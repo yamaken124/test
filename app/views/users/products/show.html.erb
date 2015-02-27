@@ -9,21 +9,25 @@
     </ul>
   </div>
   <div class="p-product__price_wrapper">
-    <% if(!@product.variants.single_order.blank?) %>
+
+
+<%= Product.valid[:single_order] %>
+
+    <% if(!@product.order_price("1").nil?) %>
       <div class="p-product__price">
         <p class="p-product__price_title"><%=t('order_type.single_order')%></p>
         <p class="p-product__price_value">
-          <%= @product.variants.single_order.first.prices.first.amount %>円
+          <%= @product.order_price("1") %>円
           <span class="p-product__price_unit">(税込)</span>
         </p>
       </div>
     <% end %>
 
-    <% if(!@product.variants.subscription_order.blank?) %>
+    <% if(!@product.order_price("2").nil?) %>
       <div class="p-product__price">
         <p class="p-product__price_title"><%=t('order_type.subscription_order')%></p>
         <p class="p-product__price_value">
-          <%= @product.variants.subscription_order.first.prices.first.amount %>円
+          <%= @product.order_price("2") %>円
           <span class="p-product__price_unit">(税込)</span>
         </p>
       </div>
@@ -32,17 +36,16 @@
 
   <div class="p-wrapper--have_padding">
     <ul class="p-payment_method_selections">
-      <% if(!@product.variants.single_order.blank?) %>
+      <% if(!@product.order_price("1").nil?) %>
         <li class="p-payment_method_selection">
           <div class="p-payment_method_selection__radio">
-            <% # TODO get variant_id %>
             <%= radio_button_tag :variant_id, @product.variants.single_order.first.id %>
           </div>
           <p class="p-payment_method_selection__title">
             <%=t('order_type.single_order')%>
           </p>
           <p class="p-payment_method_selection__price">
-            <%= @product.variants.single_order.first.prices.first.amount %>円
+            <%= @product.order_price("1") %>円
           </p>
           <div class="p-payment_method__detail">
             <p>数量: </p>
@@ -53,17 +56,16 @@
         </li>
       <% end %>
 
-      <% if(!@product.variants.subscription_order.blank?) %>
+      <% if(!@product.order_price("2").nil?) %>
         <li class="p-payment_method_selection">
           <div class="p-payment_method_selection__radio">
-            <% # TODO get variant_id %>
             <%= radio_button_tag :variant_id, @product.variants.subscription_order.first.id %>
           </div>
           <p class="p-payment_method_selection__title">
           <%=t('order_type.subscription_order')%>
           </p>
           <p class="p-payment_method_selection__price">
-            <%= @product.variants.subscription_order.first.prices.first.amount %>円
+            <%= @product.order_price("2") %>円
           </p>
         </li>
       <% end %>

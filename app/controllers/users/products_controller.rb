@@ -1,11 +1,12 @@
 class Users::ProductsController < Users::BaseController
   def index
-      @products = Product \
+    @products = Product \
       .valid \
       .where(id: Variant.valid.pluck(:product_id)) \
       .page(params[:page]) \
       .includes(:prices) \
-      .includes(:images) \
+      .includes(:images)
+
   end
 
   def show
@@ -14,5 +15,10 @@ class Users::ProductsController < Users::BaseController
       .includes(:variants) \
       .includes(:images) \
       .where(id: params[:id]).first
+
+    if @product.blank? || !@product.available
+      redirect_to products_path
+    end
   end
+
 end

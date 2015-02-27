@@ -4,10 +4,8 @@
   </div>
 </a>
 <% @products.each do |product| %>
-  <% if !(product.prices.blank?) %>
-    <% if product.images.present? %>
-      <%= render partial: 'users/products/product', locals: {p: product} %>
-    <% end %>
+  <% if product.available %>
+    <%= render partial: 'users/products/product', locals: {p: product} %>
   <% end %>
 <% end %>
 <%= paginate(@products) %>

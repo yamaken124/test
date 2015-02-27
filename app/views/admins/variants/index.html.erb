@@ -25,19 +25,7 @@
           <td>
             <% v.prices.each do |p| %><%= p.amount %><% end %>
           </td>
-          <td>
-            <% if( !v.is_valid_at.blank? && !v.is_invalid_at.blank? ) %>
-              <% if(v.is_valid_at <= Time.now && v.is_invalid_at >= Time.now) %>
-                <%= t('product_situation.valid') %>
-              <% elsif(v.is_valid_at > Time.now)  %>
-                <%= t('product_situation.preparing') %>
-              <% else %>
-                <%= t('product_situation.expired') %>
-              <% end %>
-            <% else %>
-              不明
-            <% end %>
-          </td>
+          <td><%= t(v.check_valid) %></td>
           <td><a href="<%= edit_admins_product_variant_path(id: v.id) %>">variant#edit</a></td>
           <td><a href="<%= admins_product_variant_path(id: v.id) %>"data-method="delete"><%= "variant#delete" %></td>
         </tr>

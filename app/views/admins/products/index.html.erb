@@ -25,20 +25,7 @@
             <td><%= product.id %></td>
             <td><a href="<%= edit_admins_product_path(id: product.id) %>"><%= product.name %></a></td>
             <td><%= product.description %></td>
-            <td>
-              <%# if product.is_valid_at >= Date.today.beginning_of_day %>
-              <% if( !product.is_valid_at.blank? && !product.is_invalid_at.blank? ) %>
-                <% if(product.is_valid_at <= Time.now && product.is_invalid_at >= Time.now) %>
-                  <%= t('product_situation.valid') %>
-                <% elsif(product.is_valid_at > Time.now)  %>
-                  <%= t('product_situation.preparing') %>
-                <% else %>
-                  <%= t('product_situation.expired') %>
-                <% end %>
-              <% else %>
-                不明
-              <% end %>
-            </td>
+            <td><%= t(product.check_valid) %></td>
             <td><a href="<%= edit_admins_product_path(id: product.id) %>"><%= "product#edit" %></td>
             <td><a href="<%= admins_product_path(id: product.id) %>"data-method="delete"><%= "product#delete" %></td>
           </tr>
