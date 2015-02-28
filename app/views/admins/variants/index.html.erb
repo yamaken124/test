@@ -25,7 +25,7 @@
           <td>
             <% v.prices.each do |p| %><%= p.amount %><% end %>
           </td>
-          <td><%= t(v.check_valid) %></td>
+          <td><%= t(v.classify_validity) %></td>
           <td><a href="<%= edit_admins_product_variant_path(id: v.id) %>">variant#edit</a></td>
           <td><a href="<%= admins_product_variant_path(id: v.id) %>"data-method="delete"><%= "variant#delete" %></td>
         </tr>

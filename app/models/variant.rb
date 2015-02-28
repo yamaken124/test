@@ -17,7 +17,8 @@ class Variant < ActiveRecord::Base
   has_many :images, :as => :imageable
   has_many :single_line_items
 
-  include Merchandise
+  include TimeValidityChecker
+
   enum order_type: {single_order: 1, subscription_order: 2}
   validates :product_id,
     uniqueness: {

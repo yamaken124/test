@@ -24,8 +24,6 @@ module Users::OrdersHelper
       single_order = @current_order.build_single_order
       single_order.save!
       single_order.build_single_order_detail.save!
-      # @current_order.build_single_order.save!
-      # @current_order.single_order.build_single_order_detail.save!
     end
  
     @current_order

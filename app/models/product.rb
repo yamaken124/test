@@ -18,7 +18,7 @@ class Product < ActiveRecord::Base
   paginates_per 5
   validates :name, :is_valid_at, :is_invalid_at, presence: true
 
-  include Merchandise
+  include TimeValidityChecker
 
   def available
     (!prices.blank? && !images.blank?)
