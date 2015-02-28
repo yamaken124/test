@@ -17,4 +17,16 @@ class SingleLineItem < ActiveRecord::Base
   belongs_to :variant
   belongs_to :single_order_detail
   belongs_to :tax_rate
+
+  def update_tax_adjustments
+    additional_tax_total = (price * quantity * valid_tax_rate.amount).floor
+  end
+
+  def valid_tax_rate
+    if tax_rate.nil? || tax_rate.invalid?
+      TaxRate.valid.first
+    else
+      tax_rate
+    end
+  end
 end

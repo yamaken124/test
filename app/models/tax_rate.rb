@@ -11,4 +11,22 @@
 #
 
 class TaxRate < ActiveRecord::Base
+
+  def self.valid
+    now = Time.now
+    where('is_valid_at <= ?', now).where('is_invalid_at >= ?', now)
+  end
+
+  def self.invalid
+    where('is_valid_at > :now OR is_invalid_at < :now ', { now: Time.now })
+  end
+
+  def valid?
+    now = Time.now
+    is_valid_at <= now && is_invalid_at >= now
+  end
+
+  def invalid?
+    !valid?
+  end
 end

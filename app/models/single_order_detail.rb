@@ -48,4 +48,18 @@ class SingleOrderDetail < ActiveRecord::Base
   def ensure_updated_adjustment
   end
 
+  def update_tax_adjustments
+    self.additional_tax_total = (item_total * valid_tax_rate.amount).floor
+    self.adjustment_total     = additional_tax_total
+  end
+
+  def valid_tax_rate
+    if tax_rate.nil? || tax_rate.invalid?
+      valid_tax = TaxRate.valid.first
+      self.tax_rate_id = valid_tax.id
+      valid_tax
+    else
+      tax_rate
+    end
+  end
 end
