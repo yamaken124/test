@@ -75,11 +75,11 @@ class OrderUpdater
   end
 
   def update_used_point
-    detail.used_point = payment.used_point if payment
+    order_detail.used_point = payment.used_point if payment
   end
 
   def update_order_total
-    total = item_total + shipment_total + adjustment_total - used_point
+    order_detail.total = item_total + shipment_total + adjustment_total - used_point
   end
 
   def update_adjustment_total
