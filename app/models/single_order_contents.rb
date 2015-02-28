@@ -17,7 +17,6 @@ class SingleOrderContents
   end
 
   def update_cart(params)
-    # TODO method
     if order.update(filter_order_items(params))
       detail.single_line_items = detail.single_line_items.select { |li| li.quantity > 0 }
       # Update totals, then check if the order is eligible for any cart promotions.
