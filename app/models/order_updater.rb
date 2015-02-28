@@ -1,7 +1,6 @@
 class OrderUpdater
   attr_reader :order, :order_detail
-  # delegate :payments, :line_items, :adjustments, :all_adjustments, :shipments, :update_hooks, :quantity, to: :order
-  delegate :total, :item_total, :shipment_total, :adjustment_total, to: :order_detail
+  delegate :total, :item_total, :shipment_total, :adjustment_total, :used_point, :payment, to: :order_detail
 
   def initialize(order_detail)
     @order        = order_detail.single_order
@@ -31,9 +30,10 @@ class OrderUpdater
   end
 
   def recalculate_adjustments
-    all_adjustments.includes(:adjustable).map(&:adjustable).uniq.each do |adjustable|
-      Adjustable::AdjustmentsUpdater.update(adjustable)
+    order_detail.single_line_items.includes(:tax_rate).each do |item|
+      item.update_tax_adjustments
     end
+    order_detail.update_tax_adjustments
   end
 
   # Updates the following Order total values:
@@ -47,20 +47,22 @@ class OrderUpdater
     update_payment_total
     update_item_total
     update_shipment_total
+    update_used_point
     update_adjustment_total
   end
 
 
   # give each of the shipments a chance to update themselves
   def update_shipments
-    shipments.each do |shipment|
-      next unless shipment.persisted?
-      shipment.update!(order)
-      shipment.refresh_rates
-      shipment.update_amounts
-    end
+    # shipments.each do |shipment|
+      # next unless shipment.persisted?
+      # shipment.update!(order)
+      # shipment.refresh_rates
+      # shipment.update_amounts
+    # end
   end
 
+  # paymentの最終金額(支払額 - 返金額)を保存しておきたい場合に利用
   def update_payment_total
     # order_detail.payment_total = payments.completed.includes(:refunds).inject(0) { |sum, payment| sum + payment.amount - payment.refunds.sum(:amount) }
     # order_detail.total = payments.completed.includes(:refunds).inject(0) { |sum, payment| sum + payment.amount - payment.refunds.sum(:amount) }
@@ -72,24 +74,18 @@ class OrderUpdater
     update_order_total
   end
 
+  def update_used_point
+    detail.used_point = payment.used_point if payment
+  end
+
   def update_order_total
-    # TODO 一時的なerror回避
-    order_detail.shipment_total = 0
-    order_detail.adjustment_total = 0
-    total = item_total + shipment_total + adjustment_total
+    total = item_total + shipment_total + adjustment_total - used_point
   end
 
   def update_adjustment_total
-    # recalculate_adjustments
-    # order.adjustment_total = line_items.sum(:adjustment_total) +
-      # shipments.sum(:adjustment_total)  +
-      # adjustments.eligible.sum(:amount)
-    # order.included_tax_total = line_items.sum(:included_tax_total) + shipments.sum(:included_tax_total)
-    # order.additional_tax_total = line_items.sum(:additional_tax_total) + shipments.sum(:additional_tax_total)
-
-    # order.promo_total = line_items.sum(:promo_total) +
-      # shipments.sum(:promo_total) +
-      # adjustments.promotion.eligible.sum(:amount)
+    # single_line_itemsとsingle_order_detailsの税金の再計算だけ行えば良い。
+    # shipmentをテーブルで扱うときはshipmentの税金の再計算も行う
+    recalculate_adjustments
 
     update_order_total
   end
@@ -111,7 +107,7 @@ class OrderUpdater
       additional_tax_total: order_detail.additional_tax_total,
       shipment_total: order_detail.shipment_total,
       total: order_detail.total,
-      updated_at: Time.now,
+      updated_at: Time.now
     )
   end
 
@@ -126,27 +122,27 @@ class OrderUpdater
   #
   # The +shipment_state+ value helps with reporting, etc. since it provides a quick and easy way to locate Orders needing attention.
   def update_shipment_state
-    if order.backordered?
-      order.shipment_state = 'backorder'
-    else
-      # get all the shipment states for this order
-      shipment_states = shipments.states
-      if shipment_states.size > 1
-        # multiple shiment states means it's most likely partially shipped
-        order.shipment_state = 'partial'
-      else
-        # will return nil if no shipments are found
-        order.shipment_state = shipment_states.first
-        # TODO inventory unit states?
-        # if order.shipment_state && order.inventory_units.where(:shipment_id => nil).exists?
-        #   shipments exist but there are unassigned inventory units
-        #   order.shipment_state = 'partial'
-        # end
-      end
-    end
+    # if order.backordered?
+      # order.shipment_state = 'backorder'
+    # else
+      # # get all the shipment states for this order
+      # shipment_states = shipments.states
+      # if shipment_states.size > 1
+        # # multiple shiment states means it's most likely partially shipped
+        # order.shipment_state = 'partial'
+      # else
+        # # will return nil if no shipments are found
+        # order.shipment_state = shipment_states.first
+        # # TODO inventory unit states?
+        # # if order.shipment_state && order.inventory_units.where(:shipment_id => nil).exists?
+        # #   shipments exist but there are unassigned inventory units
+        # #   order.shipment_state = 'partial'
+        # # end
+      # end
+    # end
 
-    order.state_changed('shipment')
-    order.shipment_state
+    # order.state_changed('shipment')
+    # order.shipment_state
   end
 
   # Updates the +payment_state+ attribute according to the following logic:
