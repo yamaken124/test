@@ -5,6 +5,8 @@ RSpec.describe Admins::VariantsController, type: :controller do
   before do
     @product = create(:product)
     @variant = create(:variant, product_id: @product.id)
+    @uniqueProduct = create(:product)
+    @uniqueProduct = create(:product)
   end
 
   describe 'GET #index' do
@@ -17,13 +19,29 @@ RSpec.describe Admins::VariantsController, type: :controller do
   end
 
   describe 'POST #create' do
-    let(:variant_params) { { product_id: @product.id, variant: attributes_for(:variant, prices: attributes_for(:price)) } }
 
-    it { expect { post :create, variant_params }.to change(Variant, :count).by(1) }
-    it do
-      post :create, variant_params
-      expect(response).to redirect_to admins_product_variants_path(product_id: @product.id)
+    context "unique_parameter" do
+      let(:unique_variant_params) { { product_id: @uniqueProduct.id, \
+        variant: attributes_for(:variant, \
+         prices: attributes_for(:price)) } }
+      it { expect { post :create, unique_variant_params }.to change(Variant, :count).by(1) }
+      it do
+        post :create, unique_variant_params
+        expect(response).to redirect_to admins_product_variants_path(product_id: @uniqueProduct.id)
+      end
     end
+
+    context "ununique_parameter" do
+      let(:variant_params) { { product_id: @product.id, \
+        variant: attributes_for(:variant, \
+         prices: attributes_for(:price)) } }
+      it { expect { post :create, variant_params }.to change(Variant, :count).by(0) }
+      it do
+        post :create, variant_params
+        expect(response).to render_template(:new)
+      end
+    end
+
   end
 
   describe 'GET #new' do
