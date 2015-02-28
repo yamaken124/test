@@ -20,12 +20,8 @@ class Product < ActiveRecord::Base
 
   include TimeValidityChecker
 
-  def master_order_price(order_type)
-    if !order_type.blank?
-      if !(price = order_type.first.prices).blank?
-        price.first.amount
-      end
-    end
+  def available
+    (!prices.blank? && !images.blank?)
   end
 
   def single_master_price

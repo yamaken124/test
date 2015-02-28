@@ -21,12 +21,11 @@ module TimeValidityChecker
   def classify_validity
     now = Time.now
     if active?(now)
-      "time_validity.valid"
+      "time_validity.active"
     elsif expired?(now)
       "time_validity.expired"
     elsif preparing?(now)
       "time_validity.preparing"
-
     end
   end
 

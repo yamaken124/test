@@ -216,7 +216,7 @@ ja:
 
   time_validity:
     preparing: 準備中
-    valid: 有効
+    active: 有効
     expired: 終了
 
   views:

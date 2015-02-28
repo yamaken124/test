@@ -7,18 +7,18 @@
         <%= product.name %>
       </div>
       <div class="c-product__price">
-        <%if(!product.master_order_price(product.variants.single_order).blank?) %>
+        <%if(!product.single_master_price.blank?) %>
           <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
           <p class="c-product__price_value">
-            <%= product.master_order_price(product.variants.single_order) %>円
+            <%= product.single_master_price %>円
           </p>
         <% end %>
       </div>
       <div class="c-product__price">
-        <%if(!product.master_order_price(product.variants.subscription_order).blank?) %>
+        <%if(!product.subscription_master_price.blank?) %>
           <p class="c-product__price_title"><%=t('order_type.subscription_order')%></p>
           <p class="c-product__price_value">
-            <%= product.master_order_price(product.variants.subscription_order) %>円
+            <%= product.subscription_master_price %>円
           </p>
         <% end %>
       </div>
