@@ -24,10 +24,10 @@ class Product < ActiveRecord::Base
     (!prices.blank? && !images.blank?)
   end
 
-  def order_price(type)
-    if !(v = variants.where(order_type: type)).blank?
-      if !(p = v.first.prices).blank?
-        p.first.amount
+  def master_order_price(order_type)
+    if !order_type.blank?
+      if !(price = order_type.first.prices).blank?
+        price.first.amount
       end
     end
   end

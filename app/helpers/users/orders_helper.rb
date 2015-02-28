@@ -16,7 +16,7 @@ module Users::OrdersHelper
 
     @current_order = find_order_by_token_or_user(options, true)
 
-    # if !options[:create_order_if_necessary] && (@current_order.nil? || @current_order.completed?)
+    if !options[:create_order_if_necessary] && (@current_order.nil? || @current_order.completed?)
       @current_order = PurchaseOrder.new(current_order_params)
       @current_order.user ||= try_current_user
       @current_order.save!
@@ -26,7 +26,7 @@ module Users::OrdersHelper
       single_order.build_single_order_detail.save!
       # @current_order.build_single_order.save!
       # @current_order.single_order.build_single_order_detail.save!
-    # end
+    end
  
     @current_order
 

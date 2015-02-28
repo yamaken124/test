@@ -9,21 +9,21 @@
     </ul>
   </div>
   <div class="p-product__price_wrapper">
-    <% if(!@product.order_price("1").nil?) %>
+    <% if(!@product.master_order_price(@product.variants.single_order).nil?) %>
       <div class="p-product__price">
         <p class="p-product__price_title"><%=t('order_type.single_order')%></p>
         <p class="p-product__price_value">
-          <%= @product.order_price("1") %>円
+          <%= @product.master_order_price(@product.variants.single_order) %>円
           <span class="p-product__price_unit">(税込)</span>
         </p>
       </div>
     <% end %>
 
-    <% if(!@product.order_price("2").nil?) %>
+    <% if(!@product.master_order_price(@product.variants.subscription_order).nil?) %>
       <div class="p-product__price">
         <p class="p-product__price_title"><%=t('order_type.subscription_order')%></p>
         <p class="p-product__price_value">
-          <%= @product.order_price("2") %>円
+          <%= @product.master_order_price(@product.variants.subscription_order) %>円
           <span class="p-product__price_unit">(税込)</span>
         </p>
       </div>
@@ -32,7 +32,7 @@
 
   <div class="p-wrapper--have_padding">
     <ul class="p-payment_method_selections">
-      <% if(!@product.order_price("1").nil?) %>
+      <% if(!@product.master_order_price(@product.variants.single_order).nil?) %>
         <li class="p-payment_method_selection">
           <div class="p-payment_method_selection__radio">
             <%= radio_button_tag :variant_id, @product.variants.single_order.first.id %>
@@ -41,7 +41,7 @@
             <%=t('order_type.single_order')%>
           </p>
           <p class="p-payment_method_selection__price">
-            <%= @product.order_price("1") %>円
+            <%= @product.master_order_price(@product.variants.single_order) %>円
           </p>
           <div class="p-payment_method__detail">
             <p>数量: </p>
@@ -52,7 +52,7 @@
         </li>
       <% end %>
 
-      <% if(!@product.order_price("2").nil?) %>
+      <% if(!@product.master_order_price(@product.variants.subscription_order).nil?) %>
         <li class="p-payment_method_selection">
           <div class="p-payment_method_selection__radio">
             <%= radio_button_tag :variant_id, @product.variants.subscription_order.first.id %>
@@ -61,7 +61,7 @@
           <%=t('order_type.subscription_order')%>
           </p>
           <p class="p-payment_method_selection__price">
-            <%= @product.order_price("2") %>円
+            <%= @product.master_order_price(@product.variants.subscription_order) %>円
           </p>
         </li>
       <% end %>

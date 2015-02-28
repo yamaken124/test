@@ -1,24 +1,24 @@
-<a href="<%= product_path(id: p.id) %>">
+<a href="<%= product_path(id: product.id) %>">
   <div class="c-product">
 
-    <%= image_tag p.images.first.image.url, class: "c-product__image" %>
+    <%= image_tag product.images.first.image.url, class: "c-product__image" %>
     <div class="c-product__left_wrapper">
       <div class="c-product__title">
-        <%= p.name %>
+        <%= product.name %>
       </div>
       <div class="c-product__price">
-        <%if(!p.variants.single_order.blank?) %>
+        <%if(!product.master_order_price(product.variants.single_order).blank?) %>
           <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
           <p class="c-product__price_value">
-            <%= p.variants.single_order.first.prices.first.amount %>円
+            <%= product.master_order_price(product.variants.single_order) %>円
           </p>
         <% end %>
       </div>
       <div class="c-product__price">
-        <%if(!p.variants.subscription_order.blank?) %>
+        <%if(!product.master_order_price(product.variants.subscription_order).blank?) %>
           <p class="c-product__price_title"><%=t('order_type.subscription_order')%></p>
           <p class="c-product__price_value">
-            <%= p.variants.subscription_order.first.prices.first.amount %>円
+            <%= product.master_order_price(product.variants.subscription_order) %>円
           </p>
         <% end %>
       </div>
