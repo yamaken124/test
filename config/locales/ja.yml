@@ -214,7 +214,7 @@ ja:
     single_order: 単品購入
     subscription_order: 定期購入
 
-  merchandise:
+  time_validity:
     preparing: 準備中
     valid: 有効
     expired: 終了
