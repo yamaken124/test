@@ -20,8 +20,8 @@ RSpec.describe Admins::VariantsController, type: :controller do
   describe 'POST #create' do
 
     context "unique_parameter" do
-      let(:unique_variant_params) { { product_id: @unique_product.id, \
-        variant: attributes_for(:variant, \
+      let(:unique_variant_params) { { product_id: @unique_product.id,
+        variant: attributes_for(:variant,
          prices: attributes_for(:price)) } }
       it { expect { post :create, unique_variant_params }.to change(Variant, :count).by(1) }
       it do
