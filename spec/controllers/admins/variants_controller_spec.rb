@@ -22,7 +22,7 @@ RSpec.describe Admins::VariantsController, type: :controller do
     context "unique_parameter" do
       let(:unique_variant_params) { { product_id: @unique_product.id,
         variant: attributes_for(:variant,
-         prices: attributes_for(:price)) } }
+          prices: attributes_for(:price)) } }
       it { expect { post :create, unique_variant_params }.to change(Variant, :count).by(1) }
       it do
         post :create, unique_variant_params
@@ -31,8 +31,8 @@ RSpec.describe Admins::VariantsController, type: :controller do
     end
 
     context "ununique_parameter" do
-      let(:variant_params) { { product_id: @product.id, \
-        variant: attributes_for(:variant, \
+      let(:variant_params) { { product_id: @product.id,
+        variant: attributes_for(:variant,
          prices: attributes_for(:price)) } }
       it { expect { post :create, variant_params }.to change(Variant, :count).by(0) }
       it do
