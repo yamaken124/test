@@ -7,7 +7,7 @@
         <%= product.name %>
       </div>
       <div class="c-product__price">
-        <%if(!product.single_master_price.blank?) %>
+        <%if(product.single_master_price.present?) %>
           <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
           <p class="c-product__price_value">
             <%= product.single_master_price %>円
@@ -15,7 +15,7 @@
         <% end %>
       </div>
       <div class="c-product__price">
-        <%if(!product.subscription_master_price.blank?) %>
+        <%if(product.subscription_master_price.present?) %>
           <p class="c-product__price_title"><%=t('order_type.subscription_order')%></p>
           <p class="c-product__price_value">
             <%= product.subscription_master_price %>円

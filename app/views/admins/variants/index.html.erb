@@ -2,7 +2,7 @@
 
 <p><a href="<%= new_admins_product_variant_path(product_id: params[:product_id]) %>">variant作成</a></p>
 
-<% if !@variants.blank? %>
+<% if @variants.present? %>
   <table>
     <thead>
       <tr>

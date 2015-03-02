@@ -1,7 +1,7 @@
 <p>image#index</p>
 <p><a href="<%= new_admins_variant_image_path(variant_id: params[:variant_id]) %>">image#new</a></p>
 
-<% if !@images.blank? %>
+<% if @images.present? %>
   <table>
     <thead>
       <tr>
