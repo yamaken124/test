@@ -3,7 +3,7 @@ module TimeValidityChecker
   extend ActiveSupport::Concern
   included do
     now = Time.now
-    scope :valid, lambda{ where('is_valid_at <= ?', now).where('is_invalid_at >= ?',now) }
+    scope :valid, -> { where('is_valid_at <= ?', now).where('is_invalid_at >= ?',now) }
   end
 
   def active?(now = Time.now)
