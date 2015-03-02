@@ -9,66 +9,67 @@
     </ul>
   </div>
   <div class="p-product__price_wrapper">
-    <% if(!@product.single_master_price.nil?) %>
-      <div class="p-product__price">
-        <p class="p-product__price_title"><%=t('order_type.single_order')%></p>
-        <p class="p-product__price_value">
-          <%= @product.single_master_price %>円
-          <span class="p-product__price_unit">(税込)</span>
-        </p>
-      </div>
+    <% @product.variants.single_order.each do |single| %>
+      <% if single.variant_available? %>
+        <div class="p-product__price">
+          <p class="p-product__price_title"><%=t('order_type.single_order')%></p>
+          <p class="p-product__price_value">
+            <%= single.prices.pluck(:amount).first %>円
+            <span class="p-product__price_unit">(税込)</span>
+          </p>
+        </div>
+      <% end %>
     <% end %>
 
-    <% if(!@product.subscription_master_price.nil?) %>
-      <div class="p-product__price">
-        <p class="p-product__price_title"><%=t('order_type.subscription_order')%></p>
-        <p class="p-product__price_value">
-          <%= @product.subscription_master_price %>円
-          <span class="p-product__price_unit">(税込)</span>
-        </p>
-      </div>
+    <% @product.variants.subscription_order.each do |subscription| %>
+      <% if subscription.variant_available? %>
+        <div class="p-product__price">
+          <p class="p-product__price_title"><%=t('order_type.subscription_order')%></p>
+          <p class="p-product__price_value">
+            <%= subscription.prices.pluck(:amount).first %>円
+            <span class="p-product__price_unit">(税込)</span>
+          </p>
+        </div>
+      <% end %>
     <% end %>
   </div>
-
   <div class="p-wrapper--have_padding">
     <ul class="p-payment_method_selections">
-      <% if(!@product.single_master_price.nil?) %>
-        <li class="p-payment_method_selection">
-          <div class="p-payment_method_selection__radio">
-            <%= radio_button_tag :variant_id, @product.variants.single_order.ids %>
-          </div>
-          <p class="p-payment_method_selection__title">
-            <%=t('order_type.single_order')%>
-          </p>
-          <p class="p-payment_method_selection__price">
-            <%= @product.single_master_price %>円
-          </p>
-          <div class="p-payment_method__detail">
-            <p>数量: </p>
-            <%= number_field_tag :quantity, nil, min: 1, class: 'p-payment_method__amount' %>
-            <p class="u-margin_short">個</p>
-            <%= submit_tag 'カートへ', class: 'c-btn--submit--short' %>
-          </div>
-        </li>
+      <% @product.variants.single_order.each do |single| %>
+        <% if single.variant_available? %>
+          <li class="p-payment_method_selection">
+            <div class="p-payment_method_selection__radio">
+              <%= radio_button_tag :variant_id, single.id %>
+            </div>
+            <p class="p-payment_method_selection__title">
+              <%=t('order_type.single_order')%>
+            </p>
+            <p class="p-payment_method_selection__price">
+              <%= single.prices.pluck(:amount).first %>円
+            </p>
+          </li>
+        <% end %>
       <% end %>
 
-      <% if(!@product.subscription_master_price.nil?) %>
-        <li class="p-payment_method_selection">
-          <div class="p-payment_method_selection__radio">
-            <%= radio_button_tag :variant_id, @product.variants.subscription_order.ids %>
-          </div>
-          <p class="p-payment_method_selection__title">
-          <%=t('order_type.subscription_order')%>
-          </p>
-          <p class="p-payment_method_selection__price">
-            <%= @product.subscription_master_price %>円
-          </p>
-        </li>
+      <% @product.variants.subscription_order.each do |subscription| %>
+        <% if subscription.variant_available? %>
+          <li class="p-payment_method_selection">
+            <div class="p-payment_method_selection__radio">
+              <%= radio_button_tag :variant_id, subscription.id %>
+            </div>
+            <p class="p-payment_method_selection__title">
+              <%=t('order_type.subscription_order')%>
+            </p>
+            <p class="p-payment_method_selection__price">
+              <%= subscription.prices.pluck(:amount).first %>円
+            </p>
+            <p class="p-payment_method_selection__attention">
+              ※初回2ヶ月分の料金をいただきます。
+            </p>
+          </li>
+        <% end %>
       <% end %>
       <li class="p-payment_method_selection">
-        <p class="p-payment_method_selection__attention">
-        ※初回2ヶ月分の料金をいただきます。
-        </p>
         <div class="p-payment_method__detail is-active">
           <p>数量: </p>
           <%= number_field_tag :quantity, nil, min: 1, class: 'p-payment_method__amount' %>

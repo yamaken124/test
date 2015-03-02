@@ -20,7 +20,7 @@ class Product < ActiveRecord::Base
 
   include TimeValidityChecker
 
-  def available
+  def product_available
     (prices.present? && images.present?)
   end
 

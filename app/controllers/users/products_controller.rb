@@ -13,9 +13,10 @@ class Users::ProductsController < Users::BaseController
       .active \
       .includes(:variants) \
       .includes(:images) \
+      .includes(:prices) \
       .where(id: params[:id]).first
 
-    if @product.blank? || !@product.available
+    if @product.blank? || !@product.product_available
       redirect_to products_path
     end
   end

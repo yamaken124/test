@@ -26,4 +26,8 @@ class Variant < ActiveRecord::Base
     }
   validates :sku, :order_type, :product_id, :is_valid_at, :is_invalid_at, presence: true
 
+  def variant_available?
+    (prices.present? && images.present?)
+  end
+
 end
