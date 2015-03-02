@@ -209,10 +209,20 @@ ja:
       en:
         default: ! '%H:%M:%S'
         short: ! '%H:%M'
+
   order_type:
     single_order: 単品購入
     subscription_order: 定期購入
-  product_situation:
+
+  time_validity:
     preparing: 準備中
-    valid: 有効
+    active: 有効
     expired: 終了
+
+  views:
+    pagination:
+      first: "最初"
+      previous: "前ページ"
+      next: "次ページ"
+      last: "最後"
+      truncate: "..."

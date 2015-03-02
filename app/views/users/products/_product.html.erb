@@ -1,17 +1,26 @@
-<a href="<%= product_path(1) %>">
+<a href="<%= product_path(id: product.id) %>">
   <div class="c-product">
-    <%= image_tag "users/sample_item_01.png", class: "c-product__image" %>
+
+    <%= image_tag product.images.first.image.url, class: "c-product__image" %>
     <div class="c-product__left_wrapper">
       <div class="c-product__title">
-        サプリメント
+        <%= product.name %>
       </div>
       <div class="c-product__price">
-        <p class="c-product__price_title">定期購買　</p>
-        <p class="c-product__price_value">￥0,000</p>
+        <%if(product.single_master_price.present?) %>
+          <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
+          <p class="c-product__price_value">
+            <%= product.single_master_price %>円
+          </p>
+        <% end %>
       </div>
       <div class="c-product__price">
-        <p class="c-product__price_title">単品購買　</p>
-        <p class="c-product__price_value">￥0,000</p>
+        <%if(product.subscription_master_price.present?) %>
+          <p class="c-product__price_title"><%=t('order_type.subscription_order')%></p>
+          <p class="c-product__price_value">
+            <%= product.subscription_master_price %>円
+          </p>
+        <% end %>
       </div>
     </div>
     <div class="c-product__right_wrapper">

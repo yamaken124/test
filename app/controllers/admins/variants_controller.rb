@@ -48,7 +48,7 @@ class Admins::VariantsController < ApplicationController
 
   private
     def variant_params
-      params.require(:variant).permit(:sku, :is_valid_at, :is_invalid_at, :order_type).merge(product_id: params[:product_id])
+      params.require(:variant).permit(:is_valid_at, :is_invalid_at, :order_type, :sku).merge(product_id: params[:product_id])
     end
 
     def set_variant

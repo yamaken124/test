@@ -1,10 +1,6 @@
 <%= form_for([:admins, variant.product, variant]) do |v| %>
 
   <div class="field">
-    <%= v.label :sku %><br>
-    <%= v.text_field :sku, class: "text" %>
-  </div>
-  <div class="field">
     <%= v.label :is_valid_at %><br>
     <%if params[:action]=="new" %>
       <%= v.date_field :is_valid_at, value: Date.today%><br/>
@@ -23,6 +19,7 @@
   <div class="field">
     <%= v.select :order_type, {t('order_type.single_order') => "single_order", t('order_type.subscription_order') => "subscription_order"} %>
   </div>
+  <%= v.hidden_field :sku, :value => "all" %>
   <%= v.fields_for :prices do |p| %>
     <div class="field">
       <%= p.label :amount %><br>

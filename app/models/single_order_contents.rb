@@ -92,8 +92,8 @@ class SingleOrderContents
     else
       # opts = ActionController::Parameters.new(options) \
         # .permit(PermittedAttributes.line_item_attributes)
-      line_item = order.single_order_detail.single_line_items.new(quantity: quantity,
-                                                                   variant: variant)
+      line_item = detail.single_line_items.new(quantity: quantity,
+                                                                   variant: variant, price: variant.prices.pluck(:amount).first)
     end
     line_item.target_shipment = options[:shipment] if options.has_key? :shipment
     line_item.save!

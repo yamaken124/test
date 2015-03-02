@@ -3,6 +3,7 @@
     全てのカテゴリ
   </div>
 </a>
-<% 5.times do %>
-  <%= render partial: 'users/products/product', locals: {} %>
+<% @products.each do |product| %>
+  <%= render partial: 'users/products/product', locals: {product: product} %>
 <% end %>
+<%= paginate(@products) %>

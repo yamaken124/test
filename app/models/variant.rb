@@ -15,8 +15,19 @@ class Variant < ActiveRecord::Base
   belongs_to :product
   has_many :prices
   has_many :images, :as => :imageable
-  has_many   :single_line_items
-  validates :sku, :order_type, presence: true
-  
+  has_many :single_line_items
+
+  include TimeValidityChecker
+
   enum order_type: {single_order: 1, subscription_order: 2}
+  validates :product_id,
+    uniqueness: {
+      scope: [:order_type]
+    }
+  validates :sku, :order_type, :product_id, :is_valid_at, :is_invalid_at, presence: true
+
+  def variant_available?
+    (prices.present? && images.present?)
+  end
+
 end

@@ -2,13 +2,14 @@
 
 <p><a href="<%= new_admins_product_variant_path(product_id: params[:product_id]) %>">variant作成</a></p>
 
-<% if !@variants.blank? %>
+<% if @variants.present? %>
   <table>
     <thead>
       <tr>
         <th>sku</th>
         <th>注文タイプ</th>
         <th>price</th>
+        <th>状態</th>
         <th></th>
         <th></th>
       </tr>
@@ -24,6 +25,7 @@
           <td>
             <% v.prices.each do |p| %><%= p.amount %><% end %>
           </td>
+          <td><%= t(v.classify_validity) %></td>
           <td><a href="<%= edit_admins_product_variant_path(id: v.id) %>">variant#edit</a></td>
           <td><a href="<%= admins_product_variant_path(id: v.id) %>"data-method="delete"><%= "variant#delete" %></td>
         </tr>

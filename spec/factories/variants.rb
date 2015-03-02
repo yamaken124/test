@@ -12,11 +12,22 @@
 #
 
 FactoryGirl.define do
+
   factory :variant do
-    sku "MyString"
+
+    sku "all"
     is_valid_at Date.yesterday
     is_invalid_at Date.tomorrow
     order_type "single_order"
+
+    factory :expired_variant do
+      is_invalid_at Date.yesterday
+    end
+
+    factory :preparing_variant do
+      is_valid_at Date.tomorrow
+    end
+
   end
 
 end

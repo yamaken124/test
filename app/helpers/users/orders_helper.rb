@@ -20,17 +20,18 @@ module Users::OrdersHelper
       @current_order = PurchaseOrder.new(current_order_params)
       @current_order.user ||= try_current_user
       @current_order.save!
-      @current_order.build_single_order.save!
-      @current_order.single_order.build_single_order_detail.save!
-    end
 
+      single_order = @current_order.build_single_order
+      single_order.save!
+      single_order.build_single_order_detail.save!
+    end
+ 
     @current_order
   end
 
   def find_order_by_token_or_user(options={}, with_adjustments = false)
     # Find any incomplete orders for the guest_token
     order = PurchaseOrder.incomplete.find_by(current_order_params)
-
     # Find any incomplete orders for the current user
     if order.nil? && try_current_user
       order = last_incomplete_order

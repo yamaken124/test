@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Admins::ProductsController, type: :controller do
 
   describe 'GET #index' do
-    let(:invalid_product) { create(:invalid_product) }
     let(:product) { create(:product) }
     before { get :index }
 
