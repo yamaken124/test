@@ -17,7 +17,6 @@ class Users::CheckoutsController < Users::BaseController
   before_action :setup_for_current_state
 
   def edit
-    @address = current_user.addresses
   end
 
   def update
