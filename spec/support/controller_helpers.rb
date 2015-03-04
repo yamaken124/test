@@ -9,13 +9,8 @@ module ControllerHelpers
   end
 
   def sign_in_helper(klass, klass_name)
-     if klass.nil?
-      request.env['warden'].stub(:authenticate!).and_throw(:warden, {:scope => klass_name})
-      allow(controller).to receilve(:"current_#{klass_name}") { nil }
-    else
-      request.env['warden'].stub(:authenticate! => klass)
-      allow(controller).to receive(:"current_#{klass_name}") { klass }
-    end
+    @request.env["devise.mapping"] = Devise.mappings[klass_name]
+    sign_in klass
   end
 end
 

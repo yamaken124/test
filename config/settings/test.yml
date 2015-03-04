@@ -6,3 +6,7 @@ db:
 
 secrets:
   secret_key_base: d03c7d69bf255a4997d02896626620582e9c38895e5dad0a299edd1780f8d38691e849ef015492fb63b77e9560e3c14f0993819b6c390cbb6ed5937b2adc8d0f
+
+internal_api:
+  finc_app:
+    host: 'https://app-dietcoach.finc.co.jp'
