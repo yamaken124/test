@@ -4,7 +4,6 @@ Rails.application.routes.draw do
     :passwords => "users/passwords",
     :registrations => 'users/registrations'
   }
-  root 'users/oauth/authorizations#create'
 
   scope module: :users do
     namespace :oauth do
