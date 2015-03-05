@@ -53,7 +53,6 @@ class GmoMultiPayment::Card
   end
 
   def self.parse_response(response)
-    p response
     parsed_response = []
     length = response.split("&")[0].split("=")[1].split("|").length
     for i in 0..(length-1) do
