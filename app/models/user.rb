@@ -25,6 +25,10 @@ class User < ActiveRecord::Base
 
   has_many :purchase_orders
   has_many :addresses
+  has_one  :profile
+  has_many :oauth_access_tokens
+
+  accepts_nested_attributes_for :profile
 
   def name
     #TODO

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150227111412) do
+ActiveRecord::Schema.define(version: 20150303062716) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -58,6 +58,28 @@ ActiveRecord::Schema.define(version: 20150227111412) do
     t.string   "image",          limit: 255
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+  end
+
+  create_table "oauth_access_tokens", force: :cascade do |t|
+    t.integer  "user_id",              limit: 4
+    t.integer  "oauth_application_id", limit: 4,                 null: false
+    t.string   "token",                limit: 255, default: "",  null: false
+    t.integer  "expires_in",           limit: 4,   default: 600, null: false
+    t.string   "scopes",               limit: 255, default: "",  null: false
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+  end
+
+  add_index "oauth_access_tokens", ["oauth_application_id"], name: "fk_rails_fb7d2ac575", using: :btree
+  add_index "oauth_access_tokens", ["user_id"], name: "index_oauth_access_tokens_on_user_id", using: :btree
+
+  create_table "oauth_applications", force: :cascade do |t|
+    t.string   "name",            limit: 255,   default: "", null: false
+    t.string   "consumer_key",    limit: 255,   default: "", null: false
+    t.string   "consumer_secret", limit: 255,   default: "", null: false
+    t.text     "redirect_uri",    limit: 65535
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
   end
 
   create_table "payment_methods", force: :cascade do |t|
@@ -296,6 +318,8 @@ ActiveRecord::Schema.define(version: 20150227111412) do
   add_foreign_key "bills", "addresses"
   add_foreign_key "bills_payments", "bills"
   add_foreign_key "bills_payments", "payments"
+  add_foreign_key "oauth_access_tokens", "oauth_applications"
+  add_foreign_key "oauth_access_tokens", "users"
   add_foreign_key "payments", "addresses"
   add_foreign_key "payments", "single_order_details"
   add_foreign_key "prices", "variants"

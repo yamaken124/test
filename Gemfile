@@ -47,7 +47,7 @@ end
 gem 'rails_config'
 
 # test
-group :development, :test do
+group :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'guard-rspec'
@@ -55,6 +55,7 @@ group :development, :test do
   gem 'email_spec'
   gem 'database_cleaner'
   gem 'pry-byebug'
+  gem 'webmock'
 end
 
 gem 'simplecov', require: false, group: :test
