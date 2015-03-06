@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   scope module: :users do
     namespace :oauth do
-      resource :authorizaiton, only: [:create]
+      resource :authorization, only: [:create]
     end
     resource :account, only: [:show] do
       resources :addresses, only: [:index, :edit, :update, :new, :create]

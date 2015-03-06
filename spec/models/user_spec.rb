@@ -20,5 +20,16 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'wellness_mileage' do
+    let(:user) { create(:user, used_point_total: 5) }
+
+    it 'returns diff in total_points at finc_app_me and used_point_total' do
+      allow_any_instance_of(User).to receive(:me_in_finc_app).and_return({ 'total_points' => 10 })
+      expect(user.wellness_mileage).to eq 5
+    end
+
+    it 'returns 0 if me_at_finc_app is not found' do
+      expect(user.wellness_mileage).to eq 0
+    end
+  end
 end

@@ -47,7 +47,7 @@ end
 gem 'rails_config'
 
 # test
-group :test do
+group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'guard-rspec'
@@ -55,16 +55,18 @@ group :test do
   gem 'email_spec'
   gem 'database_cleaner'
   gem 'pry-byebug'
-  gem 'webmock'
 end
 
-gem 'simplecov', require: false, group: :test
+group :test do
+  gem 'webmock'
+  gem 'simplecov', require: false
+end
 
 # ERD
 gem 'rails-erd', group: :development
 
 # debug
-group :development, :staging do
+group :development, :staging, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'pry-rails'
