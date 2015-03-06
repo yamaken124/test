@@ -70,10 +70,10 @@ class GmoMultiPayment::Transaction
                    :ShopPass   => GmoMultiPayment::ShopPass,
                    :OrderID    => order_id }
     }) 
-    { order_id: response.parsed_response.split("&")[0].split("=")[1], 
+    response.parsed_response.index("ErrCode").blank? ? { is_exist: true, order_id: response.parsed_response.split("&")[0].split("=")[1], 
       status: response.parsed_response.split("&")[1].split("=")[1], 
       process_date: response.parsed_response.split("&")[2].split("=")[1], 
-      job_cd: response.parsed_response.split("&")[3].split("=")[1] }
+      job_cd: response.parsed_response.split("&")[3].split("=")[1] } : { is_exist: false }
   end
 
   def transaction_void(access_id, access_pass)
