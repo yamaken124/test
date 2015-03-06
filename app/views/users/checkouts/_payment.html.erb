@@ -72,7 +72,7 @@
         </div>
         <div class="c-product__list_detail_wrapper">
           <div class="c-product_list__title">
-            <%= @products.find(item.product_id).name %>
+            <%= @products.where(id: item.product_id).name %>
           </div>
           <div class="c-product_list__price">
             ￥<%= item.prices.first.amount %>(<%= @single_line_items.where(variant_id: item.id).pluck(:quantity).first %>個)
