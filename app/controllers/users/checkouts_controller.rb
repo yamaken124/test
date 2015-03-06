@@ -21,7 +21,7 @@ class Users::CheckoutsController < Users::BaseController
   end
 
   def update
-    if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env)
+    if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env, current_user)
       if @order.completed?
         @current_order = nil
         flash['order_completed'] = true
@@ -39,17 +39,17 @@ class Users::CheckoutsController < Users::BaseController
     def load_order_with_lock
       @order = current_order
       redirect_to cart_path and return unless @order
-      @para = params[:order]
     end
 
     def set_state_if_present
       if params[:state]
         redirect_to checkout_state_path(@order.state) if @order.can_go_to_state?(params[:state])
         @order.state = params[:state]
+        set_common_parameter
         if @order.state == "payment"
-          before_payment
+          @addresses = current_user.addresses
         elsif @order.state == "confirm"
-          before_confirm
+          @address = current_user.addresses.find(@order.single_order_detail.payment.address_id)
         end
       end
     end
@@ -102,18 +102,14 @@ class Users::CheckoutsController < Users::BaseController
       send(method_name) if respond_to?(method_name, true)
     end
 
-    def before_payment
-      @address = current_user.addresses
-      # @credit_card = current_user.credit_cards.single_line_itemsfirst_or_initialize
-      @items = @order.single_order_detail.single_line_items
+    def set_common_parameter
+      @items = Variant \
+      .where(id: @order.single_order_detail.single_line_items.pluck(:variant_id)) \
+      .includes(:images) \
+      .includes(:prices)
+      @products = Product \
+      .where(id: @items.pluck(:product_id))
+      @single_line_items = @order.single_order_detail.single_line_items
     end
-
-    def before_confirm
-      # @bill = @order.single_bill
-      @items = @order.single_order_detail.single_line_items
-			@address = current_user.addresses.find(@order.single_order_detail.payment.address_id)
-			@used_point = @order.single_order_detail.payment.used_point
-		end
-
 
 end
