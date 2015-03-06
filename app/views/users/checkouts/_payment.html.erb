@@ -8,31 +8,39 @@
     </div>
     <h2 class="c-links__title">お届先住所</h2>
     <ul class="c-links">
-      <a href="<%= account_addresses_path %>">
+      <!-- <a href="<%= account_addresses_path %>"> -->
         <li class="c-link--small_text">
           <span>
-            <% if single_order_detail.address.present? %>
-              <%= single_order_detail.address.address %>
-              <%= hidden_field_tag "order[payment_attributes[address_id]]", single_order_detail.address.id %>
+            <% if @address.present? %>
+              <% @address.each do |address| %>
+                <%= radio_button_tag "order[payment_attributes[address_id]]", address.id %>
+                <%= address.address %><br />
+              <% end %>
+              <%= link_to "新規住所登録", new_account_address_path %>              
             <% else %>
               <%= link_to "新規住所登録", new_account_address_path %>
             <% end %>
           </span>
         </li>
-      </a>
+      <!-- </a> -->
     </ul>
 <%#TODO credit %>
     <h2 class="c-links__title">支払い方法</h2>
     <ul class="c-links">
-      <a href="<%= products_path %>">
+      <!-- <a href="<%= products_path %>"> -->
         <li class="c-link--small_text">
           <span>
-            支払い方法<br>
-            クレジット 下4桁 8080
-            <%= hidden_field_tag "order[payment_attributes[credit_card_id]]", "" %>
+クレジットカード<br>
+          <% if @gmo_cards %> 
+            <% @gmo_cards.each do |gmo_card| %>
+              <%= radio_button_tag "order[payment_attributes[source_id]]", gmo_card[:CardSeq] %>
+              <%= gmo_card[:CardName] %> 番号：<%= gmo_card[:CardNo] %> <br />
+            <% end %>
+          <% end %>
+          <%= radio_button_tag "order[payment_attributes[source_id]]", false %>後払い
           </span>
         </li>
-      </a>
+      <!-- </a> -->
     </ul>
     <h2 class="c-links__title">ポイント使用</h2>
     <ul class="p-payment_method_selections">
@@ -68,7 +76,8 @@
         購入形式: <%= t('order_type.single_order') %>
       </div>
 
-      <% single_order_detail.single_line_items.each do |single_line_item| %>
+<%# TODO 消費税 %>
+      <% @items.each do |single_line_item| %>
         <div class="c-product_list">
           <div class="c-product_list__image">
             <%= image_tag single_line_item.variant.images.first.image.url %>

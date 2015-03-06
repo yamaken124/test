@@ -1,3 +1,11 @@
+<%= form_tag(checkout_state_path(state: :confirm), :method => :patch) do %>
+<% single_order_detail = @order.single_order_detail %>
+<% #TODO 変更 %>
+<% address_id = 3 %>
+<% credit_card_id = 0 %>
+<% haisou = 20 %><%#@order.bill.shippment %>
+<% item_with_tax = single_order_detail.item_total + single_order_detail.additional_tax_total %>
+
 <div class="p-wrapper--have_padding">
   <h2 class="title">注文確定</h2>
 	<div class="c-btn--submit u-margin__bottom_middle">
@@ -7,13 +15,13 @@
   <ul class="p-payment_method_selections">
     <li class="p-payment_method_selection">
       <span>
-      商品: ¥5,900<br>
-      配送料手数料: ¥0
+      商品: ¥<%= item_with_tax %><br>
+      配送料手数料: ¥<%= single_order_detail.shipment_total %>
       </span>
     </li>
     <li class="p-payment_method_selection">
       <span>
-        使用ポイント:800pt<br>
+        使用ポイント:<%= @order_params.inspect %>pt<br>
         注文合計: ¥8,100
       </span>
     </li>
@@ -57,3 +65,5 @@
     注文の確定
   </div>
 </div>
+
+<% end %>

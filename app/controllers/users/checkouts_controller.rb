@@ -17,6 +17,7 @@ class Users::CheckoutsController < Users::BaseController
   before_action :setup_for_current_state
 
   def edit
+    @gmo_cards = GmoMultiPayment::Card.new(current_user).search
   end
 
   def update
@@ -38,12 +39,18 @@ class Users::CheckoutsController < Users::BaseController
     def load_order_with_lock
       @order = current_order
       redirect_to cart_path and return unless @order
+      @para = params[:order]
     end
 
     def set_state_if_present
       if params[:state]
         redirect_to checkout_state_path(@order.state) if @order.can_go_to_state?(params[:state])
         @order.state = params[:state]
+        if @order.state == "payment"
+          before_payment
+        elsif @order.state == "confirm"
+          before_confirm
+        end
       end
     end
 
@@ -94,4 +101,17 @@ class Users::CheckoutsController < Users::BaseController
       method_name = :"before_#{@order.state}"
       send(method_name) if respond_to?(method_name, true)
     end
+
+    def before_payment
+      @address = current_user.addresses
+      # @credit_card = current_user.credit_cards.single_line_itemsfirst_or_initialize
+      @items = @order.single_order_detail.single_line_items
+    end
+
+    def before_confirm
+      # @bill = @order.single_bill
+      @items = @order.single_order_detail.single_line_items
+    end
+
+
 end
