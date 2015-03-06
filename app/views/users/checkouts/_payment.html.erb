@@ -1,11 +1,10 @@
 <%= form_tag(checkout_state_path(state: :payment), :method => :patch) do %>
-  <% single_order_detail = @order.single_order_detail %>
-  <% max_point = 10 %>
+  <% max_point = 20 %> <%# TODO change user.points %>
 
   <div class="p-wrapper--have_padding">
     <h2 class="title">
-      カート小計(<%=single_order_detail.item_count%>個の商品):
-      <span>￥<%=single_order_detail.item_total%></span>
+      カート小計(<%=@detail.item_count%>個の商品):
+      <span>￥<%=@detail.item_total%></span>
     </h2>
     <div class="c-btn--submit u-margin__bottom_middle">
       <%= submit_tag "購入確認画面へ", class: 'c-btn--submit' %>

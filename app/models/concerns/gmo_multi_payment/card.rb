@@ -55,7 +55,7 @@ class GmoMultiPayment::Card
   def self.parse_response(response)
     parsed_response = []
     length = response.split("&")[0].split("=")[1].split("|").length
-    for i in 0..(length-1) do
+    0.upto(length-1) do |i|
       row = {}
       response.split("&").each do |formula|
         if length == 1

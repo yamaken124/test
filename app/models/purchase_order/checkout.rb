@@ -1,13 +1,9 @@
-class PurchaseOrder < ActiveRecord::Base
+  class PurchaseOrder < ActiveRecord::Base
   module Checkout
     def self.included(klass)
       klass.class_eval do
         class_attribute :checkout_flow
         class_attribute :checkout_steps
-
-        def item_with_tax
-          single_order_detail.item_total + single_order_detail.additional_tax_total
-        end
 
         def has_checkout_step?(step)
           step.present? && self.checkout_steps.include?(step)
@@ -37,8 +33,7 @@ class PurchaseOrder < ActiveRecord::Base
         end
 
         def valid_state?(step)
-          checkout_steps.in
-          clude? step.to_s
+          checkout_steps.include? step.to_s
         end
 
         def next_state
@@ -66,7 +61,6 @@ class PurchaseOrder < ActiveRecord::Base
               when :payment
                 attributes[:payment_attributes] ||= {}
                 attributes[:payment_attributes][:id] = single_order_detail.payment.try(:id)
-                # TODO MAX POINT
                 raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) # invalid point error
                 single_order_detail.update!(attributes)
 

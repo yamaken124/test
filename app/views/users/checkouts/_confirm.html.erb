@@ -1,5 +1,4 @@
 <%= form_tag(checkout_state_path(state: :confirm), :method => :patch) do %>
-  <% single_order_detail = @order.single_order_detail %>
 
   <div class="p-wrapper--have_padding">
     <h2 class="title">注文確定</h2>
@@ -10,14 +9,14 @@
     <ul class="p-payment_method_selections">
       <li class="p-payment_method_selection">
         <span>
-        商品: ¥<%= single_order_detail.item_total + single_order_detail.adjustment_total %>円<br>
-        配送料手数料: ¥<%= single_order_detail.shipment_total %>円
+        商品: ¥<%= @detail.item_total + @detail.additional_tax_total %>円<br>
+        配送料手数料: ¥<%= @detail.shipment_total %>円
         </span>
       </li>
       <li class="p-payment_method_selection">
         <span>
-          使用ポイント:<%= single_order_detail.payment.used_point %>pt<br>
-          注文合計: ¥<%= single_order_detail.total %>円
+          使用ポイント:<%= @detail.payment.used_point %>pt<br>
+          注文合計: ¥<%= @detail.total %>円
         </span>
       </li>
     </ul>
@@ -37,7 +36,7 @@
       <li class="p-payment_method_selection">
         <span>
           支払い方法<br>クレジット 下4桁
-  				<%= @gmo_cards[single_order_detail.payment.gmo_access_id][:CardNo] %>
+          <%= @gmo_cards[@detail.payment.gmo_access_id][:CardNo] %>
         </span>
       </li>
     </ul>

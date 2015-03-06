@@ -3,6 +3,7 @@ class Users::CheckoutsController < Users::BaseController
   include Users::CheckoutsHelper
 
   before_action :load_order_with_lock
+  before_action :detail
   before_action :set_state_if_present
 
   before_action :ensure_order_not_completed
@@ -41,6 +42,10 @@ class Users::CheckoutsController < Users::BaseController
       redirect_to cart_path and return unless @order
     end
 
+    def detail
+      @detail ||= @order.single_order_detail
+    end
+
     def set_state_if_present
       if params[:state]
         redirect_to checkout_state_path(@order.state) if @order.can_go_to_state?(params[:state])
@@ -49,7 +54,7 @@ class Users::CheckoutsController < Users::BaseController
         if @order.state == "payment"
           @addresses = current_user.addresses
         elsif @order.state == "confirm"
-          @address = current_user.addresses.find(@order.single_order_detail.payment.address_id)
+          @address = current_user.addresses.find(@detail.payment.address_id)
         end
       end
     end
@@ -103,13 +108,13 @@ class Users::CheckoutsController < Users::BaseController
     end
 
     def set_common_parameter
-      @items = Variant \
-      .where(id: @order.single_order_detail.single_line_items.pluck(:variant_id)) \
-      .includes(:images) \
+      @items = Variant
+      .where(id: @detail.single_line_items.pluck(:variant_id))
+      .includes(:images)
       .includes(:prices)
-      @products = Product \
+      @products = Product
       .where(id: @items.pluck(:product_id))
-      @single_line_items = @order.single_order_detail.single_line_items
+      @single_line_items = @detail.single_line_items
     end
 
 end
