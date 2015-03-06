@@ -111,7 +111,9 @@ class Users::CheckoutsController < Users::BaseController
     def before_confirm
       # @bill = @order.single_bill
       @items = @order.single_order_detail.single_line_items
-    end
+			@address = current_user.addresses.find(@order.single_order_detail.payment.address_id)
+			@used_point = @order.single_order_detail.payment.used_point
+		end
 
 
 end
