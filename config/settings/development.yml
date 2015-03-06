@@ -6,3 +6,7 @@ db:
 
 secrets:
   secret_key_base: 96c570f47ac3c92e6b6d7fb548815a0c385ad9f32d3ecc5042f70e3e5f319ee9b65fef06fb2e73ab2eb2404a8d26bca99b6cf84f60b49a9e0869b0a9b4a6785a
+
+internal_api:
+  finc_app:
+    host: 'http://localhost:3000'
