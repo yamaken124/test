@@ -21,12 +21,6 @@
   </thead>
   <tbody>
     <tr>
-      <td><%= product.id %></td>
-      <td><a href="<%= admins_product_path(id: product.id) %>"><%= product.name %></a></td>
-      <td><%= product.description %></td>
-      <td><%= t(product.classify_validity) %></td>
-      <td><a href="<%= edit_admins_product_path(id: product.id) %>"><%= "product#edit" %></td>
-      <td><a href="<%= admins_product_path(id: product.id) %>"data-method="delete"><%= "product#delete" %></td>
     </tr>
   </tbody>
 </table>
