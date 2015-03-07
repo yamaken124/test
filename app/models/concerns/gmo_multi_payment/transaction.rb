@@ -32,7 +32,7 @@ class GmoMultiPayment::Transaction
   end
 
   #card 有効性 CHECK or SALES
-  def exec(current_user, card_seq, access_id, access_pass)
+  def exec(card_seq)
     url = GmoMultiPayment::Domain + "/payment/ExecTran.idPass"
     response = HTTParty.post( url, {body:
                   {:AccessID   => @payment.gmo_access_id,
