@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306091331) do
+ActiveRecord::Schema.define(version: 20150306170819) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 20150306091331) do
     t.datetime "updated_at",                                     null: false
   end
 
-  add_index "oauth_access_tokens", ["oauth_application_id"], name: "fk_rails_79b696049c", using: :btree
+  add_index "oauth_access_tokens", ["oauth_application_id"], name: "fk_rails_125477e066", using: :btree
   add_index "oauth_access_tokens", ["user_id"], name: "index_oauth_access_tokens_on_user_id", using: :btree
 
   create_table "oauth_applications", force: :cascade do |t|
@@ -94,17 +94,21 @@ ActiveRecord::Schema.define(version: 20150306091331) do
 
   create_table "payments", force: :cascade do |t|
     t.integer  "amount",                 limit: 4
-    t.integer  "used_point",             limit: 4
+    t.integer  "source_id",              limit: 4
+    t.string   "source_type",            limit: 255
+    t.integer  "gmo_access_id",          limit: 4
+    t.string   "gmo_access_pass",        limit: 255
+    t.integer  "used_point",             limit: 4,   default: 0, null: false
     t.integer  "payment_method_id",      limit: 4
     t.integer  "address_id",             limit: 4
     t.integer  "single_order_detail_id", limit: 4
-    t.integer  "state",                  limit: 4, default: 0
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.integer  "state",                  limit: 4,   default: 0
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
   end
 
-  add_index "payments", ["address_id"], name: "fk_rails_632d7aa6b0", using: :btree
-  add_index "payments", ["single_order_detail_id"], name: "fk_rails_cee4dcea16", using: :btree
+  add_index "payments", ["address_id"], name: "fk_rails_2df50cc1f8", using: :btree
+  add_index "payments", ["single_order_detail_id"], name: "fk_rails_a8da3bcb03", using: :btree
 
   create_table "prices", force: :cascade do |t|
     t.integer  "variant_id", limit: 4
@@ -136,13 +140,13 @@ ActiveRecord::Schema.define(version: 20150306091331) do
 
   create_table "profiles", force: :cascade do |t|
     t.integer  "user_id",         limit: 4
-    t.string   "last_name",       limit: 255
-    t.string   "first_name",      limit: 255
-    t.string   "last_name_kana",  limit: 255
-    t.string   "first_name_kana", limit: 255
-    t.string   "phone",           limit: 255
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.string   "last_name",       limit: 255, default: "", null: false
+    t.string   "first_name",      limit: 255, default: "", null: false
+    t.string   "last_name_kana",  limit: 255, default: "", null: false
+    t.string   "first_name_kana", limit: 255, default: "", null: false
+    t.string   "phone",           limit: 255, default: "", null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
@@ -173,16 +177,16 @@ ActiveRecord::Schema.define(version: 20150306091331) do
   create_table "single_order_details", force: :cascade do |t|
     t.integer  "single_order_id",      limit: 4
     t.string   "number",               limit: 255
-    t.integer  "item_total",           limit: 4
+    t.integer  "item_total",           limit: 4,   default: 0, null: false
     t.integer  "tax_rate_id",          limit: 4
-    t.integer  "total",                limit: 4
+    t.integer  "total",                limit: 4,   default: 0, null: false
     t.datetime "completed_at"
     t.integer  "address_id",           limit: 4
-    t.integer  "shipment_total",       limit: 4
-    t.integer  "additional_tax_total", limit: 4
-    t.integer  "used_point",           limit: 4,   default: 0, null: false
-    t.integer  "adjustment_total",     limit: 4
-    t.integer  "item_count",           limit: 4
+    t.integer  "shipment_total",       limit: 4,   default: 0, null: false
+    t.integer  "additional_tax_total", limit: 4,   default: 0, null: false
+    t.integer  "used_point",           limit: 4,   default: 0
+    t.integer  "adjustment_total",     limit: 4,   default: 0, null: false
+    t.integer  "item_count",           limit: 4,   default: 0, null: false
     t.date     "date"
     t.integer  "lock_version",         limit: 4,   default: 0, null: false
     t.datetime "created_at",                                   null: false
@@ -191,7 +195,7 @@ ActiveRecord::Schema.define(version: 20150306091331) do
 
   add_index "single_order_details", ["address_id"], name: "index_single_order_details_on_address_id", using: :btree
   add_index "single_order_details", ["single_order_id"], name: "index_single_order_details_on_single_order_id", using: :btree
-  add_index "single_order_details", ["tax_rate_id"], name: "fk_rails_781ef2a084", using: :btree
+  add_index "single_order_details", ["tax_rate_id"], name: "fk_rails_297a86c095", using: :btree
 
   create_table "single_orders", force: :cascade do |t|
     t.integer  "purchase_order_id", limit: 4
@@ -259,11 +263,11 @@ ActiveRecord::Schema.define(version: 20150306091331) do
   add_index "subscription_terms", ["subscription_order_id"], name: "index_subscription_terms_on_subscription_order_id", using: :btree
 
   create_table "tax_rates", force: :cascade do |t|
-    t.decimal  "amount",        precision: 10
+    t.decimal  "amount",        precision: 6, scale: 5
     t.datetime "is_valid_at"
     t.datetime "is_invalid_at"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
   end
 
   create_table "taxonomies", force: :cascade do |t|
