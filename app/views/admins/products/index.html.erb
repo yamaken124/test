@@ -1,4 +1,4 @@
-<div class = "content-header">
+<div class="content-header">
   <h3>
     商品管理
     <div class="u-float_right">
@@ -6,33 +6,37 @@
     </div>
   </h3>
 </div>
-<div class = "content">
-  <% if @products.present? %>
-    <table class = "table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>名前</th>
-          <th>説明</th>
-          <th>状態</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @products.each do |product| %>
+<section class="content">
+  <h4 class="box-title">検索</h4>
+  <h4 class="box-title">注文リスト</h4>
+  <div class="content">
+    <% if @products.present? %>
+      <table class="table">
+        <thead>
           <tr>
-            <td><%= product.id %></td>
-            <td><a href="<%= edit_admins_product_path(id: product.id) %>"><%= product.name %></a></td>
-            <td><%= product.description %></td>
-            <td><%= t(product.classify_validity) %></td>
-            <td><a href="<%= edit_admins_product_path(id: product.id) %>"><%= "product#edit" %></td>
-            <td><a href="<%= admins_product_path(id: product.id) %>"data-method="delete"><%= "product#delete" %></td>
+            <th>ID</th>
+            <th>名前</th>
+            <th>説明</th>
+            <th>状態</th>
+            <th></th>
+            <th></th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p>現在商品は登録されていません</p>
-  <% end %>
-</div>
+        </thead>
+        <tbody>
+          <% @products.each do |product| %>
+            <tr>
+              <td><%= product.id %></td>
+              <td><a href="<%= edit_admins_product_path(id: product.id) %>"><%= product.name %></a></td>
+              <td><%= product.description %></td>
+              <td><%= t(product.classify_validity) %></td>
+              <td><a href="<%= edit_admins_product_path(id: product.id) %>"><%= "product#edit" %></td>
+              <td><a href="<%= admins_product_path(id: product.id) %>"data-method="delete"><%= "product#delete" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>現在商品は登録されていません</p>
+    <% end %>
+  </div>
+</section>

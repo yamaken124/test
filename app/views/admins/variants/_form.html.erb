@@ -1,9 +1,8 @@
 <%= form_for([:admins, variant.product, variant]) do |v| %>
-
   <div class="field">
     <%= v.label :is_valid_at %><br>
-    <%if params[:action]=="new" %>
-      <%= v.date_field :is_valid_at, value: Date.today%><br/>
+    <%if params[:action] == "new" %>
+      <%= v.date_field :is_valid_at, value: Date.today %><br/>
     <% else %>
       <%= v.date_field :is_valid_at %><br/>
     <% end %>
@@ -21,13 +20,43 @@
   </div>
   <%= v.hidden_field :sku, :value => "all" %>
   <%= v.fields_for :prices do |p| %>
-    <div class="field">
-      <%= p.label :amount %><br>
-      <%= p.text_field :amount, class: "text", value: variant.prices.pluck(:amount) %>
+    <section class = "content">
+    <div class="box-body col-md-6">
+      <div class="field">
+        <p><%= v.label :sku %></p>
+        <%= v.text_field :sku, class: "form-control" %>
+      </div>
+      <div class="field">
+        <p><%= v.label :is_valid_at %></p>
+        <%if params[:action]=="new" %>
+          <%= v.date_field :is_valid_at, value: Date.today%><br/>
+        <% else %>
+          <%= v.date_field :is_valid_at %><br/>
+        <% end %>
+      </div>
+      <div class="field">
+        <p><%= v.label :is_invalid_at %></p>
+        <%if params[:action]=="new" %>
+          <p><%= v.date_field :is_invalid_at, value: Date.today+6*30 %></p>
+        <% else %>
+          <p><%= v.date_field :is_invalid_at %></p>
+        <% end %>
+      </div>
+      <div class="field">
+        <p> 
+          <%= v.select :order_type,{t('order_type.single_order') => "single_order", t('order_type.subscription_order') => "subscription_order"},{},{:class=>"form-control"} %>
+        </p>
+      </div>
+      <%= v.fields_for :prices do |p| %>
+        <div class="field">
+          <p><%= p.label :amount %></p>
+          <p><%= p.text_field :amount, class: "form-control", value: variant.prices.pluck(:amount) %></p>
+        </div>
+      <% end %>
+      <div class="actions">
+        <%= v.submit "登録", class: "btn" %>
+      </div>
     </div>
+    </section>
   <% end %>
-  <div class="actions">
-    <%= v.submit "登録", class: "submit" %>
-  </div>
-
 <% end %>
