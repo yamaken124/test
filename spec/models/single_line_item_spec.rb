@@ -16,5 +16,20 @@
 require 'rails_helper'
 
 RSpec.describe SingleLineItem, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'invalid_quantity_check' do
+    it 'sets quantity 0 if quantity is nil' do
+      expect(create(:single_line_item, quantity: nil).quantity).to be_zero
+    end
+    it 'sets quantity 0 if quantity is under 0' do
+      expect(create(:single_line_item, quantity: -1).quantity).to be_zero
+    end
+
+    let!(:single_line_item) { create(:single_line_item, quantity: 10) }
+    context 'trying to set quantity nil' do
+      it { expect { single_line_item.update(quantity: nil) }.to change(SingleLineItem, :count).by(-1)  }
+    end
+    context 'trying to set quantity -1' do
+      it { expect { single_line_item.update(quantity: -1) }.to change(SingleLineItem, :count).by(-1)  }
+    end
+  end
 end
