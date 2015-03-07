@@ -1,6 +1,4 @@
 <%= form_tag(checkout_state_path(state: :payment), :method => :patch) do %>
-  <% max_point = 20 %> <%# TODO change user.points %>
-
   <div class="p-wrapper--have_padding">
     <h2 class="title">
       カート小計(<%=@detail.item_count%>個の商品):
@@ -33,7 +31,6 @@
             <%= gmo_card[:CardName] %> 番号：<%= gmo_card[:CardNo] %> <br />
           <% end %>
           <%= link_to "新規クレジットカード登録", new_profile_credit_card_path %>
-          <%#= radio_button_tag "order[payment_attributes[source_id]]", false %><%#後払い%>
         </span>
       </li>
     </ul>
@@ -44,7 +41,7 @@
           <%= radio_button_tag "order[use_all_point]", true %>
         </div>
         <p class="p-payment_method_selection__title">全て使用</p>
-        <p class="p-payment_method_selection__price"><%= max_point %>Pt</p>
+        <p class="p-payment_method_selection__price"><%= @wellness_mileage %>Pt</p>
       </li>
       <li class="p-payment_method_selection">
         <div class="p-payment_method_selection__radio">
@@ -53,7 +50,7 @@
         <p class="p-payment_method_selection__title">一部を使用</p>
         <div class="p-payment_method__detail is-active">
           <p>ポイント: </p>
-          <%= number_field_tag "order[used_point]", 1, min: 0, max: max_point, class: 'p-payment_method__amount' %>
+          <%= number_field_tag "order[used_point]", 0, min: 0, max: @wellness_mileage, class: 'p-payment_method__amount' %>
           <p class="u-margin_short">Pt</p>
         </div>
       </li>
