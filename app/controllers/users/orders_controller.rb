@@ -20,12 +20,15 @@ class Users::OrdersController < Users::BaseController
   end
 
   def update
-    if @order.single_order_contents.update_cart(order_params)
+    if @order.single_order_contents.update_cart(order_params) #TODO order_params
       respond_with(@order) do |format|
         format.html do
-          if params.has_key?(:checkout)
+          if params["updated_quantity"] #TODO switch to order_params
+            update_item
+            redirect_to cart_path
+          elsif params.has_key?(:checkout)
             #TODO @order.next if @order.cart?
-            redirect_to checkout_state_path(state: @order.checkout_steps.first)
+            redirect_to checkout_state_path(state: @order.checkout_steps.first)\
           else
             redirect_to cart_path
           end
@@ -74,6 +77,15 @@ class Users::OrdersController < Users::BaseController
     else
       redirect_to cart_path
     end
+  end
+
+  def update_item  # TODO switch to order_params
+    param = params[:purchase_order][:single_order_attributes][:single_order_detail_attributes][:single_line_items_attributes]
+    0.upto(param.length-1){|p|
+      num=p.to_s
+      SingleLineItem.find(param[p.to_s]["id"]).update(quantity: param[p.to_s]["quantity"])
+    }
+    params["updated_quantity"] = nil
   end
 
   private
