@@ -66,7 +66,8 @@ class PurchaseOrder < ActiveRecord::Base
                 raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) # invalid point error
                 single_order_detail.update!(attributes)
               when :confirm
-                single_bill.single_payment.paid!
+                single_bill.single_payment.processing!
+                single_bill.single_payment.completed!
               end
 
               send("#{checkout_steps[checkout_step_index(params[:state]) + 1]}!")
