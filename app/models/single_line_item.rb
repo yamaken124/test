@@ -14,6 +14,7 @@
 #
 
 class SingleLineItem < ActiveRecord::Base
+  before_validation :invalid_quantity_check
   belongs_to :variant
   belongs_to :single_order_detail
   belongs_to :tax_rate
@@ -34,5 +35,9 @@ class SingleLineItem < ActiveRecord::Base
 
   def destroy_if_order_detail_is_blank
     destroy
+  end
+
+  def invalid_quantity_check
+    self.quantity = 0 if quantity.nil? || quantity < 0
   end
 end
