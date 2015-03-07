@@ -1,6 +1,7 @@
 class Admins::VariantsController < ApplicationController
   before_action :set_variant, only: [:edit, :update, :destroy]
   before_action :set_price, only: [:update]
+  before_action :set_product,only: [:index,:new,:edit]
   layout "admins/admins"
 
   def index
@@ -63,4 +64,7 @@ class Admins::VariantsController < ApplicationController
       params[:variant].require(:prices).permit(:amount)
     end
 
+    def set_product
+      @product = Product.find(params[:product_id])
+    end
 end

@@ -1,5 +1,5 @@
 <%= form_for([:admins, product]) do |p| %>
-
+  <section class = "content">
   <div class="box-body col-md-6">
     <div class="form-group">
       <%= p.label :name %><br>
@@ -15,7 +15,7 @@
     </div>
     <div class="field">
       <%= p.label :product_is_invalid_at %><br>
-      <%= p.date_select :is_invalid_at,{},{:class=>"form-control"} %>
+      <p><%= p.date_select :is_invalid_at,{},{:class=>"form-control"} %></p>
     </div>
     <div class="actions">
       <%= p.submit "登録", class: "btn" %>
@@ -23,3 +23,4 @@
   </div>
 
 <% end %>
+</section>
