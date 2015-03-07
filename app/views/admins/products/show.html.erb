@@ -1,0 +1,36 @@
+<div class = "content-header">
+  <h3>
+    <%= link_to "商品一覧", admins_products_path %> / <%= @product.name %>
+    <div class="u-float_right">
+      <a href="<%= new_admins_product_path %>" class="btn btn-primary">商品追加</a>
+    </div>
+  </h3>
+</div>
+
+<section class="content col-md-9">
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>名前</th>
+      <th>説明</th>
+      <th>状態</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+</section>
+
+<section class="content col-md-2 float-right">
+<ul class="nav nav-pills nav-stacked">
+  <li <%= 'class=active' if request.fullpath == edit_admins_product_path(params[:id])  %>><a href="<%= edit_admins_product_path(@product.id) %>">商品詳細</a></li>
+  <li <%= 'class=active' if request.fullpath == admins_product_variants_path(params[:id])  %>><a href="<%= admins_product_variants_path(product_id: @product.id)%>">Variants詳細</a></li>
+  <li><a href="<%= %>">画像詳細</a></li>
+  <li><a href="<%= %>">在庫管理</a></li>
+</ul>
+</section>

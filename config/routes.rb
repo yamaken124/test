@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admins do
-    resources :products, only: [:index, :new, :create, :edit,:update, :destroy] do
+    resources :products do
       resources :variants, only: [:index, :new, :create, :edit, :update, :destroy]
     end
     resources :variants, only: [] do
