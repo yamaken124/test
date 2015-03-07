@@ -28,11 +28,9 @@
       <li class="c-link--small_text">
         <span>
           クレジットカード<br>
-          <% if @gmo_cards %>
-            <% @gmo_cards.each do |gmo_card| %>
-              <%= radio_button_tag "order[payment_attributes[source_id]]", gmo_card[:CardSeq] %>
-              <%= gmo_card[:CardName] %> 番号：<%= gmo_card[:CardNo] %> <br />
-            <% end %>
+          <% @gmo_cards.each do |gmo_card| %>
+            <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq] %>
+            <%= gmo_card[:CardName] %> 番号：<%= gmo_card[:CardNo] %> <br />
           <% end %>
           <%= link_to "新規クレジットカード登録", new_profile_credit_card_path %>
           <%#= radio_button_tag "order[payment_attributes[source_id]]", false %><%#後払い%>

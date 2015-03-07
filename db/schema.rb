@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306170819) do
+ActiveRecord::Schema.define(version: 20150307150532) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20150306170819) do
     t.string   "source_type",            limit: 255
     t.integer  "gmo_access_id",          limit: 4
     t.string   "gmo_access_pass",        limit: 255
+    t.integer  "gmo_card_seq_temporary", limit: 4
     t.integer  "used_point",             limit: 4,   default: 0, null: false
     t.integer  "payment_method_id",      limit: 4
     t.integer  "address_id",             limit: 4

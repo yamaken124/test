@@ -52,8 +52,6 @@
 
         def update_from_params(params, permitted_params, request_env = {})
           @updating_params = params
-          # TODO update shipment
-          # TODO update adjustment
           begin
             ActiveRecord::Base.transaction do
               attributes = @updating_params[:order] ? @updating_params[:order].permit(permitted_params).delete_if { |k, v| v.nil? } : {}

@@ -18,7 +18,6 @@ class Users::CheckoutsController < Users::BaseController
   before_action :setup_for_current_state
 
   def edit
-    @gmo_cards = GmoMultiPayment::Card.new(current_user).search || []
   end
 
   def update
@@ -51,11 +50,6 @@ class Users::CheckoutsController < Users::BaseController
         redirect_to checkout_state_path(@order.state) if @order.can_go_to_state?(params[:state])
         @order.state = params[:state]
         set_common_parameter
-        if @order.state == "payment"
-          @addresses = current_user.addresses
-        elsif @order.state == "confirm"
-          @address = current_user.addresses.find(@detail.payment.address_id)
-        end
       end
     end
 
@@ -107,6 +101,19 @@ class Users::CheckoutsController < Users::BaseController
       send(method_name) if respond_to?(method_name, true)
     end
 
+    def before_payment
+      @gmo_cards = GmoMultiPayment::Card.new(current_user).search
+      @addresses = current_user.addresses
+    end
+
+    def before_confirm
+      @payment = detail.payment
+      if @payment.gmo_card_seq_temporary
+        gmo_cards = GmoMultiPayment::Card.new(current_user).search
+        @gmo_card = gmo_cards[@payment.gmo_card_seq_temporary]
+      end
+    end
+
     def set_common_parameter
       @items = Variant
       .where(id: @detail.single_line_items.pluck(:variant_id))
@@ -116,5 +123,4 @@ class Users::CheckoutsController < Users::BaseController
       .where(id: @items.pluck(:product_id))
       @single_line_items = @detail.single_line_items
     end
-
 end
