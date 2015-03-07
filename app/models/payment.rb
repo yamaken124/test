@@ -11,6 +11,6 @@
 #
 
 class Payment < ActiveRecord::Base
+  include Payment::Transition
   belongs_to :payment_method
-  enum state: { bill: 0, paid: 10 }
 end

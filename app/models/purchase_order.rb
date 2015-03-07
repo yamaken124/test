@@ -10,6 +10,7 @@
 #
 
 class PurchaseOrder < ActiveRecord::Base
+  include PurchaseOrder::Transition
   include PurchaseOrder::Checkout
   include PurchaseOrder::Point
 
@@ -19,8 +20,6 @@ class PurchaseOrder < ActiveRecord::Base
   has_many   :subscription_order_details, through: :subscription_orders
 
   accepts_nested_attributes_for :single_order 
-
-  enum state: { cart: 0, payment: 10, confirm: 20, complete: 30 }
 
   def self.incomplete
     PurchaseOrder.where.not(id: PurchaseOrder.complete.pluck(:id))

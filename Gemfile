@@ -99,3 +99,6 @@ gem 'httparty'
 gem "font-awesome-rails"
 gem 'carrierwave'
 gem "kaminari"
+
+# state machines
+gem 'aasm'
