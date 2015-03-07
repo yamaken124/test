@@ -18,11 +18,11 @@ class Users::CheckoutsController < Users::BaseController
   before_action :setup_for_current_state
 
   def edit
-    @gmo_cards = GmoMultiPayment::Card.new(current_user).search
+    @gmo_cards = GmoMultiPayment::Card.new(current_user).search || []
   end
 
   def update
-    if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env, current_user)
+    if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env)
       if @order.completed?
         @current_order = nil
         flash['order_completed'] = true

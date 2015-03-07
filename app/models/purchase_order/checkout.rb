@@ -50,7 +50,7 @@
 
         set_callback :updating_from_params, :before, :update_params_payment_source
 
-        def update_from_params(params, permitted_params, request_env = {}, current_user)
+        def update_from_params(params, permitted_params, request_env = {})
           @updating_params = params
           # TODO update shipment
           # TODO update adjustment

@@ -63,7 +63,7 @@ class GmoMultiPayment::Transaction
     response.parsed_response.index("ErrCode").blank? ? true : false
   end
 
-  def serach(order_id)
+  def search(order_id)
     url = GmoMultiPayment::Domain + "/payment/SearchTrade.idPass"
     response = HTTParty.post( url, {body:
                   {:ShopID     => GmoMultiPayment::ShopID,
