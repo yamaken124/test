@@ -7,7 +7,7 @@
   </h3>
 </div>
 <section class="content col-md-9">
-<% if !@variants.blank? %>
+  <% if !@variants.blank? %>
   <table class="table c-table_new">
     <thead>
       <tr>
@@ -17,16 +17,6 @@
         <th></th>
       </tr>
     </thead>
-    <tbody>
-      <% @variants.each do |v| %>
-        <tr>
-          <th>sku</th>
-          <th>注文タイプ</th>
-          <th>price</th>
-          <th>状態</th>
-          <th></th>
-        </tr>
-      </thead>
       <tbody>
         <% @variants.each do |v| %>
           <tr>
