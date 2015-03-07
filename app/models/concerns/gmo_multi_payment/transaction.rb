@@ -1,48 +1,47 @@
 class GmoMultiPayment::Transaction
-  def initialize(user)
-    @user = user
+  def initialize(payment)
+    @payment = payment
   end
 
   #transactionの初期::返り値にAccessIDとAccessPass
   #JobCd => GmoMultiPayment::Auth
   #TODO instance変数に入れれるところは入れる
-  def auth_entry(order_id, amount)
+  def auth_entry
     url = GmoMultiPayment::Domain + "/payment/EntryTran.idPass"
     response = HTTParty.post( url, {body:
                   { :ShopID => GmoMultiPayment::ShopID,
                     :ShopPass => GmoMultiPayment::ShopPass,
-                    :OrderID => order_id,
+                    :OrderID => @payment.single_order_detail_id,
                     :JobCd => GmoMultiPayment::Auth,
-                    :Amount => amount }
+                    :Amount => @payment.amount }
     })
     {access_id: response.parsed_response.split("&")[0].split("=")[1], access_pass: response.parsed_response.split("&")[1].split("=")[1]}
   end
 
-
   #card 即時決済 取引登録 SALES(CAPTURE)
-  def sales_entry(order_id, amount)
+  def sales_entry
     url = GmoMultiPayment::Domain + "/payment/EntryTran.idPass"
     response = HTTParty.post( url, {body:
                   { :ShopID => GmoMultiPayment::ShopID,
                     :ShopPass => GmoMultiPayment::ShopPass,
-                    :OrderID => order_id,
+                    :OrderID => @payment.single_order_detail_id,
                     :JobCd => GmoMultiPayment::Capture,
-                    :Amount => amount }
+                    :Amount => @payment.amount }
     })
     {access_id: response.parsed_response.split("&")[0].split("=")[1], access_pass: response.parsed_response.split("&")[1].split("=")[1]}
   end
 
   #card 有効性 CHECK or SALES
-  def exec(order_id, card_seq, access_id, access_pass)
+  def exec(current_user, card_seq, access_id, access_pass)
     url = GmoMultiPayment::Domain + "/payment/ExecTran.idPass"
     response = HTTParty.post( url, {body:
-                  {:AccessID   => access_id,
-                   :AccessPass => access_pass,
-                   :OrderID    => order_id,
+                  {:AccessID   => @payment.gmo_access_id,
+                   :AccessPass => @payment.gmo_access_pass,
+                   :OrderID    => @payment.single_order_detail_id,
                    :Method     => "1",
                    :SiteID     => GmoMultiPayment::SiteID,
                    :SitePass   => GmoMultiPayment::SitePass,
-                   :MemberID   => @user.id,
+                   :MemberID   => current_user.id,
                    :CardSeq    => card_seq }
     })
     response.parsed_response.index("ErrCode").blank? ? true : false
