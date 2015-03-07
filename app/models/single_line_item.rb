@@ -18,6 +18,8 @@ class SingleLineItem < ActiveRecord::Base
   belongs_to :single_order_detail
   belongs_to :tax_rate
 
+  after_save :destroy_if_order_detail_is_blank, if: Proc.new { |item| item.quantity.zero? }
+
   def update_tax_adjustments
     additional_tax_total = (price * quantity * valid_tax_rate.amount).floor
   end
@@ -28,5 +30,9 @@ class SingleLineItem < ActiveRecord::Base
     else
       tax_rate
     end
+  end
+
+  def destroy_if_order_detail_is_blank
+    destroy
   end
 end

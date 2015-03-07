@@ -64,8 +64,16 @@ class Users::OrdersController < Users::BaseController
   end
 
   def remove_item
-    SingleLineItem.find(params[:id]).update(quantity: 0)
-    update and return
+    remove_params = order_params.merge({ single_line_items_attributes: [{id: params[:id], quantity: 0 }]})
+    if @order.single_order_contents.update_cart(remove_params)
+      respond_with(@order) do |format|
+        format.html do
+          redirect_to cart_path
+        end
+      end
+    else
+      redirect_to cart_path
+    end
   end
 
   private
