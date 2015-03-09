@@ -1,32 +1,12 @@
 <%= form_for([:admins, variant.product, variant]) do |v| %>
-  <div class="field">
-    <%= v.label :is_valid_at %><br>
-    <%if params[:action] == "new" %>
-      <%= v.date_field :is_valid_at, value: Date.today %><br/>
-    <% else %>
-      <%= v.date_field :is_valid_at %><br/>
-    <% end %>
-  </div>
-  <div class="field">
-    <%= v.label :is_invalid_at %><br>
-    <%if params[:action]=="new" %>
-      <%= v.date_field :is_invalid_at, value: Date.today+6*30 %><br/>
-    <% else %>
-      <%= v.date_field :is_invalid_at %><br/>
-    <% end %>
-  </div>
-  <div class="field">
-    <%= v.select :order_type, {t('order_type.single_order') => "single_order", t('order_type.subscription_order') => "subscription_order"} %>
-  </div>
-  <%= v.hidden_field :sku, :value => "all" %>
-  <%= v.fields_for :prices do |p| %>
-    <section class = "content">
-    <div class="box-body col-md-6">
-      <div class="field">
+  <section class="content">
+  <div class="box-body col-md-6">
+    <%= v.hidden_field :sku, :value => "all" %>
+      <div class="form-group">
         <p><%= v.label :sku %></p>
         <%= v.text_field :sku, class: "form-control" %>
       </div>
-      <div class="field">
+      <div class="form-group">
         <p><%= v.label :is_valid_at %></p>
         <%if params[:action]=="new" %>
           <%= v.date_field :is_valid_at, value: Date.today%><br/>
@@ -34,7 +14,7 @@
           <%= v.date_field :is_valid_at %><br/>
         <% end %>
       </div>
-      <div class="field">
+      <div class="form-group">
         <p><%= v.label :is_invalid_at %></p>
         <%if params[:action]=="new" %>
           <p><%= v.date_field :is_invalid_at, value: Date.today+6*30 %></p>
@@ -42,13 +22,13 @@
           <p><%= v.date_field :is_invalid_at %></p>
         <% end %>
       </div>
-      <div class="field">
+      <div class="form-group">
         <p> 
           <%= v.select :order_type,{t('order_type.single_order') => "single_order", t('order_type.subscription_order') => "subscription_order"},{},{:class=>"form-control"} %>
         </p>
       </div>
       <%= v.fields_for :prices do |p| %>
-        <div class="field">
+        <div class="form-group">
           <p><%= p.label :amount %></p>
           <p><%= p.text_field :amount, class: "form-control", value: variant.prices.pluck(:amount) %></p>
         </div>
@@ -58,5 +38,4 @@
       </div>
     </div>
     </section>
-  <% end %>
 <% end %>
