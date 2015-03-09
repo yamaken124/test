@@ -41,7 +41,7 @@ class GmoMultiPayment::Transaction
                    :Method     => "1",
                    :SiteID     => GmoMultiPayment::SiteID,
                    :SitePass   => GmoMultiPayment::SitePass,
-                   :MemberID   => current_user.id,
+                   :MemberID   => @payment.user_id,
                    :CardSeq    => card_seq }
     })
     response.parsed_response.index("ErrCode").blank? ? true : false
