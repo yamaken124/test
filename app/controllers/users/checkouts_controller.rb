@@ -21,7 +21,7 @@ class Users::CheckoutsController < Users::BaseController
   end
 
   def update
-    if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env, @order.user_id)
+    if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env, current_user.id)
       if @order.completed?
         @current_order = nil
         flash['order_completed'] = true
@@ -104,7 +104,7 @@ class Users::CheckoutsController < Users::BaseController
     def before_payment
       @gmo_cards = GmoMultiPayment::Card.new(current_user).search
       @addresses = current_user.addresses
-      @wellness_mileage = current_user.wellness_mileage(@order.single_order_detail.item_total)
+      @wellness_mileage = current_user.wellness_mileage
     end
 
     def before_confirm

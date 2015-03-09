@@ -41,13 +41,9 @@ class User < ActiveRecord::Base
     purchase_orders.incomplete.order('created_at DESC').first
   end
 
-  def wellness_mileage(item_total)
+  def wellness_mileage
     if total_points = me_in_finc_app['total_points']
-      if total_points.to_i - self.used_point_total > item_total.to_i
-        item_total
-      else
-        total_points.to_i - self.used_point_total
-      end
+      total_points.to_i - self.used_point_total
     else
       0
     end

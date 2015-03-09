@@ -59,13 +59,12 @@
               when :payment
                 attributes[:total] = single_order_detail.item_total - attributes[:used_point].to_i
                 set_payment_attributes(single_order_detail,attributes,user_id)
-                raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) # invalid point error
+                raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) || attributes[:total] < 0  # invalid point error
                 single_order_detail.update!(attributes)
               when :confirm
                 single_order_detail.single_payment.processing!
                 single_order_detail.single_payment.completed!
               end
-
               send("#{checkout_steps[checkout_step_index(params[:state]) + 1]}!")
               self.reload
             end
