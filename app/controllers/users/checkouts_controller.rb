@@ -21,7 +21,7 @@ class Users::CheckoutsController < Users::BaseController
   end
 
   def update
-    if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env)
+    if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env, @order.user_id)
       if @order.completed?
         @current_order = nil
         flash['order_completed'] = true

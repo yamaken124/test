@@ -13,7 +13,7 @@
         <span>
           <% if @addresses.present? %>
             <% @addresses.each do |address| %>
-              <%= radio_button_tag "order[payment_attributes[address_id]]", address.id %>
+              <%= radio_button_tag "order[address_id]", address.id %>
               <%= address.address %><br />
             <% end %>
           <% end %>

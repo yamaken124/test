@@ -50,16 +50,15 @@
 
         set_callback :updating_from_params, :before, :update_params_payment_source
 
-        def update_from_params(params, permitted_params, request_env = {})
+        def update_from_params(params, permitted_params, request_env = {}, user_id)
           @updating_params = params
           begin
             ActiveRecord::Base.transaction do
               attributes = @updating_params[:order] ? @updating_params[:order].permit(permitted_params).delete_if { |k, v| v.nil? } : {}
               case "#{params[:state]}".to_sym
               when :payment
-                attributes[:payment_attributes] ||= {}
-                attributes[:payment_attributes][:id] = single_order_detail.payment.try(:id)
-                attributes[:payment_attributes][:used_point] = attributes[:used_point]
+                attributes[:total] = single_order_detail.item_total - attributes[:used_point].to_i
+                set_payment_attributes(single_order_detail,attributes,user_id)
                 raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) # invalid point error
                 single_order_detail.update!(attributes)
               when :confirm
@@ -74,6 +73,15 @@
           rescue
             false
           end
+        end
+
+        def set_payment_attributes(single_order_detail,attributes,user_id)
+          attributes[:payment_attributes] ||= {}
+          attributes[:payment_attributes][:id] = single_order_detail.payment.try(:id)
+          attributes[:payment_attributes][:used_point] = attributes[:used_point]
+          attributes[:payment_attributes][:amount] = attributes[:total]
+          attributes[:payment_attributes][:user_id] = user_id
+          attributes[:payment_attributes][:address_id] = attributes[:address_id]
         end
       end
     end
