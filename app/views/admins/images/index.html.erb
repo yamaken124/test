@@ -1,8 +1,15 @@
-<p>image#index</p>
-<p><a href="<%= new_admins_variant_image_path(variant_id: params[:variant_id]) %>">image#new</a></p>
-
+<div class="content-header">
+  <h3>
+    <%= @imageable.sku %> / <%= link_to "画像一覧", admins_products_path %> 
+    <div class="u-float_right">
+      <a href="<%= new_admins_variant_image_path(variant_id: params[:variant_id]) %>" class="btn btn-primary">画像追加</a>
+    </div>
+  </h3>
+</div>
+<section class="content col-md-10">
+<h4 class="box-title">画像リスト</h4>
 <% if @images.present? %>
-  <table>
+  <table class="table c-table_new">
     <thead>
       <tr>
         <th>image</th>
@@ -19,8 +26,14 @@
           <% end %>
         </td>
         <td><%= i.variant.sku %></td>
-        <td><a href="<%= edit_admins_variant_image_path(id: i.id ,imageable_id: params[:imageable_id]) %>">image#edit</a></td>
-        <td><a href="<%= admins_variant_image_path(id: i.id ,imageable_id: params[:imageable_id]) %>"data-method="delete"><%= "image#delete" %></td>
+        <td>
+          <a href="<%= edit_admins_variant_image_path(id: i.id ,imageable_id: params[:imageable_id]) %>" class="btn btn-warning btn-sm">
+            <i class="fa fa-edit"></i>
+          </a>
+          <a href="<%= admins_variant_image_path(id: i.id ,imageable_id: params[:imageable_id]) %>" class="btn btn-success btn-sm" data-method="delete" data-confirm="本当に削除しますか？">
+            <i class="fa fa-trash"></i>
+          </a>
+        </td>
       </tr>
     <% end %>
     </tbody>
@@ -28,3 +41,4 @@
 <% else %>
   <p>現在画像は登録されていません</p>
 <% end %>
+</section>

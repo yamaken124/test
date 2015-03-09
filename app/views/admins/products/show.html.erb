@@ -1,6 +1,6 @@
 <div class = "content-header">
   <h3>
-    <%= link_to "商品一覧", admins_products_path %> / <%= @product.name %>
+    <%= link_to "商品一覧", admins_products_path %> / <%= link_to @product.name, admins_product_path(@product) %>
     <div class="u-float_right">
       <a href="<%= new_admins_product_path %>" class="btn btn-primary">商品追加</a>
     </div>
@@ -9,28 +9,26 @@
 
 <section class="content col-md-9">
 <table class="table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>名前</th>
-      <th>説明</th>
-      <th>状態</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
   <tbody>
     <tr>
+      <th>ID</th>
+      <td><%= @product.id %></td>
+    </tr>
+    <tr>
+      <th>名前</th>
+      <td><%= @product.name %></td>
+    </tr>
+    <tr>
+      <th>説明</th>
+      <td><%= @product.description %></td>
+    </tr>
+    <tr>
+      <th>isValidAt</th><td><%= @product.is_valid_at.strftime("%Y/%m/%d %H:%M") %></td>
+    </tr>
+    <tr>
+      <th>isInValidAt</th><td><%= @product.is_invalid_at.strftime("%Y/%m/%d %H:%M") %></td>
     </tr>
   </tbody>
 </table>
 </section>
-
-<section class="content col-md-2 float-right">
-<ul class="nav nav-pills nav-stacked">
-  <li <%= 'class=active' if request.fullpath == edit_admins_product_path(params[:id])  %>><a href="<%= edit_admins_product_path(@product.id) %>">商品詳細</a></li>
-  <li <%= 'class=active' if request.fullpath == admins_product_variants_path(params[:id])  %>><a href="<%= admins_product_variants_path(product_id: @product.id)%>">Variants詳細</a></li>
-  <li><a href="<%= %>">画像詳細</a></li>
-  <li><a href="<%= %>">在庫管理</a></li>
-</ul>
-</section>
+<%= render partial: '/admins/products/nav', locals:{product: @product } %>
