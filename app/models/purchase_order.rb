@@ -59,10 +59,6 @@ class PurchaseOrder < ActiveRecord::Base
     @single_order_detail ||= single_order_contents.detail
   end
 
-  def single_bill
-    @single_bill ||= single_order_contents.bill
-  end
-
   def find_line_item_by_variant(variant, options = {})                                                                                                  
     single_order.single_order_detail.single_line_items.detect { |line_item|
       line_item.variant_id == variant.id &&

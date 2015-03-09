@@ -71,8 +71,8 @@
                 # single_order_detail.payment.update(payment_attributes)
 
               when :confirm
-                single_bill.single_payment.processing!
-                single_bill.single_payment.completed!
+                single_order_detail.single_payment.processing!
+                single_order_detail.single_payment.completed!
               end
 
               send("#{checkout_steps[checkout_step_index(params[:state]) + 1]}!")
