@@ -104,7 +104,7 @@ class Users::CheckoutsController < Users::BaseController
     def before_payment
       @gmo_cards = GmoMultiPayment::Card.new(current_user).search
       @addresses = current_user.addresses
-      @wellness_mileage = current_user.wellness_mileage
+      @wellness_mileage = current_user.wellness_mileage(@order.single_order_detail.item_total)
     end
 
     def before_confirm
