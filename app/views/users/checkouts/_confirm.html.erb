@@ -15,8 +15,8 @@
       </li>
       <li class="p-payment_method_selection">
         <span>
-          使用ポイント:<%= @detail.payment.used_point %>pt<br>
-          注文合計: ¥<%= @detail.total %>円
+          使用ポイント:<%= @payment.used_point %>pt<br>
+          注文合計: ¥<%= @payment.amount %>円
         </span>
       </li>
     </ul>
@@ -25,8 +25,8 @@
     <ul class="p-payment_method_selections">
       <li class="p-payment_method_selection">
         <span>
-          <%= @address.last_name %><br>
-          <%= @address.address %>
+          <%= @payment.address.last_name %><br>
+          <%= @payment.address.address %>
         </span>
       </li>
     </ul>
@@ -35,8 +35,7 @@
     <ul class="p-payment_method_selections">
       <li class="p-payment_method_selection">
         <span>
-          支払い方法<br>クレジット 下4桁
-          <%= @gmo_cards[@detail.payment.gmo_access_id][:CardNo] %>
+          <%= @gmo_card[:CardNo] %>
         </span>
       </li>
     </ul>

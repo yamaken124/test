@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 20150309062547) do
     t.string   "source_type",            limit: 255
     t.integer  "gmo_access_id",          limit: 4
     t.string   "gmo_access_pass",        limit: 255
+    t.integer  "gmo_card_seq_temporary", limit: 4
     t.integer  "used_point",             limit: 4,   default: 0, null: false
     t.integer  "payment_method_id",      limit: 4
     t.integer  "address_id",             limit: 4
