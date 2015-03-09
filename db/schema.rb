@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 20150309062547) do
     t.integer  "payment_method_id",      limit: 4
     t.integer  "address_id",             limit: 4
     t.integer  "single_order_detail_id", limit: 4
+    t.integer  "user_id",                limit: 4
     t.integer  "state",                  limit: 4,   default: 0
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
