@@ -15,8 +15,13 @@ class Users::AddressesController < Users::BaseController
 
   def create
     @address = Address.new(address_params)
+    @referer = referer_params[:referer]
     if @address.save
-      redirect_to account_addresses_path 
+      if @referer.include?("checkout/payment")
+        redirect_to checkout_state_path("payment")
+      else
+        redirect_to account_addresses_path
+      end
     else
       render :edit
     end
@@ -24,8 +29,13 @@ class Users::AddressesController < Users::BaseController
 
   def update
     @address = Address.find(params[:id])
+    if back_to.include?("checkout/payment")
+      an
+    end
+    vw
+
     if @address.update(address_params)
-      redirect_to account_addresses_path 
+      redirect_to account_addresses_path
     else
       render :edit
     end
@@ -42,5 +52,9 @@ class Users::AddressesController < Users::BaseController
 
     def address_params
       params.require(:address).permit(:last_name, :first_name, :zipcode, :address, :city, :phone).merge(user_id: @user.id)
+    end
+
+    def referer_params
+      params.permit(:referer)
     end
 end
