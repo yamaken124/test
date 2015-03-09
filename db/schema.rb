@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306170819) do
+ActiveRecord::Schema.define(version: 20150309062547) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -27,30 +27,6 @@ ActiveRecord::Schema.define(version: 20150306170819) do
   end
 
   add_index "addresses", ["user_id"], name: "index_addresses_on_user_id", using: :btree
-
-  create_table "bills", force: :cascade do |t|
-    t.integer  "single_order_detail_id", limit: 4
-    t.integer  "address_id",             limit: 4
-    t.integer  "item_total",             limit: 4
-    t.integer  "total",                  limit: 4
-    t.integer  "shipment_total",         limit: 4
-    t.integer  "additional_tax_total",   limit: 4
-    t.integer  "used_point",             limit: 4
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-  end
-
-  add_index "bills", ["address_id"], name: "index_bills_on_address_id", using: :btree
-
-  create_table "bills_payments", force: :cascade do |t|
-    t.integer  "bill_id",    limit: 4
-    t.integer  "payment_id", limit: 4
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
-  end
-
-  add_index "bills_payments", ["bill_id"], name: "index_bills_payments_on_bill_id", using: :btree
-  add_index "bills_payments", ["payment_id"], name: "index_bills_payments_on_payment_id", using: :btree
 
   create_table "images", force: :cascade do |t|
     t.integer  "imageable_id",   limit: 4
@@ -98,6 +74,7 @@ ActiveRecord::Schema.define(version: 20150306170819) do
     t.string   "source_type",            limit: 255
     t.integer  "gmo_access_id",          limit: 4
     t.string   "gmo_access_pass",        limit: 255
+    t.integer  "gmo_card_seq_temporary", limit: 4
     t.integer  "used_point",             limit: 4,   default: 0, null: false
     t.integer  "payment_method_id",      limit: 4
     t.integer  "address_id",             limit: 4
@@ -320,9 +297,6 @@ ActiveRecord::Schema.define(version: 20150306170819) do
   add_index "variants", ["product_id"], name: "index_variants_on_product_id", using: :btree
 
   add_foreign_key "addresses", "users"
-  add_foreign_key "bills", "addresses"
-  add_foreign_key "bills_payments", "bills"
-  add_foreign_key "bills_payments", "payments"
   add_foreign_key "oauth_access_tokens", "oauth_applications"
   add_foreign_key "oauth_access_tokens", "users"
   add_foreign_key "payments", "addresses"

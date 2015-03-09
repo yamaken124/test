@@ -59,18 +59,14 @@ class PurchaseOrder < ActiveRecord::Base
     @single_order_detail ||= single_order_contents.detail
   end
 
-  def single_bill
-    @single_bill ||= single_order_contents.bill
-  end
-
-  def find_line_item_by_variant(variant, options = {})                                                                                                  
+  def find_line_item_by_variant(variant, options = {})
     single_order.single_order_detail.single_line_items.detect { |line_item|
       line_item.variant_id == variant.id &&
         line_item_options_match(line_item, options)
     }
   end
 
-  def line_item_options_match(line_item, options)                                                                                                       
+  def line_item_options_match(line_item, options)
     return true unless options
 
     self.line_item_comparison_hooks.all? { |hook|

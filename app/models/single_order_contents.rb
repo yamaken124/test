@@ -1,6 +1,6 @@
 class SingleOrderContents
   delegate :single_order, to: :order
-  attr_accessor :order, :detail, :bill
+  attr_accessor :order, :detail
 
   def initialize(order)
     @order = order.single_order || order.build_single_order
@@ -23,23 +23,12 @@ class SingleOrderContents
       # If we do not update first, then the item total will be wrong and ItemTotal
       # promotion rules would not be triggered.
       reload_totals
-      issue_bill
       detail.ensure_updated_shipments
       reload_totals
-      issue_bill
       true
     else
       false
     end
-  end
-
-  def issue_bill
-    @bill = detail.bill || detail.build_bill
-    @bill.update_bill
-  end
-
-  def bill
-    @bill = detail.bill || detail.build_bill
   end
 
   def detail

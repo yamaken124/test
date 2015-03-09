@@ -52,8 +52,6 @@
 
         def update_from_params(params, permitted_params, request_env = {})
           @updating_params = params
-          # TODO update shipment
-          # TODO update adjustment
           begin
             ActiveRecord::Base.transaction do
               attributes = @updating_params[:order] ? @updating_params[:order].permit(permitted_params).delete_if { |k, v| v.nil? } : {}
@@ -61,18 +59,12 @@
               when :payment
                 attributes[:payment_attributes] ||= {}
                 attributes[:payment_attributes][:id] = single_order_detail.payment.try(:id)
+                attributes[:payment_attributes][:used_point] = attributes[:used_point]
                 raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) # invalid point error
                 single_order_detail.update!(attributes)
-
-                # payment_attributes = params[:order].require(:payment_attributes).permit(:address_id,:source_id).merge(used_point: attributes[:used_point])
-                # sales_entry_response = GmoMultiPayment::Transaction.new(current_user).sales_entry(single_order_detail.id,single_order_detail.total)
-                # payment_attributes[:gmo_access_id] = sales_entry_response[:access_id]
-                # payment_attributes[:gmo_access_pass] = sales_entry_response[:access_pass]
-                # single_order_detail.payment.update(payment_attributes)
-
               when :confirm
-                single_bill.single_payment.processing!
-                single_bill.single_payment.completed!
+                single_order_detail.single_payment.processing!
+                single_order_detail.single_payment.completed!
               end
 
               send("#{checkout_steps[checkout_step_index(params[:state]) + 1]}!")
