@@ -96,9 +96,12 @@ gem 'devise'
 gem 'httparty'
 
 # bootstrap
-gem "font-awesome-rails"
+gem 'adminlte-rails'
+
+#setting
 gem 'carrierwave'
 gem "kaminari"
 
 # state machines
 gem 'aasm'
+
