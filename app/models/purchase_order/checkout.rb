@@ -60,7 +60,7 @@
                 attributes[:payment_attributes] ||= {}
                 attributes[:payment_attributes][:id] = single_order_detail.payment.try(:id)
                 attributes[:payment_attributes][:used_point] = attributes[:used_point]
-                raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) # invalid point error
+                raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) || attributes[:payment_attributes][:address_id].nil?
                 single_order_detail.update!(attributes)
               when :confirm
                 single_order_detail.single_payment.processing!
