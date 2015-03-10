@@ -18,7 +18,7 @@ class SingleOrderContents
 
   def update_cart(params)
     if detail.update(params)
-      detail.single_line_items = detail.single_line_items.where('quantity > 0 ')
+      detail.single_line_items = detail.single_line_items.select { |li| li.quantity > 0 }
       # Update totals, then check if the order is eligible for any cart promotions.
       # If we do not update first, then the item total will be wrong and ItemTotal
       # promotion rules would not be triggered.
