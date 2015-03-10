@@ -9,7 +9,6 @@
     </div>
     <h2 class="c-links__title">お届先住所</h2>
     <ul class="c-links">
-      <% if @addresses.present? %>
         <% @addresses.each do |address| %>
           <li class="c-link--small_text--nolink">
             <div class="c-link__radio_div">
@@ -20,7 +19,6 @@
             </span>
           </li>
         <% end %>
-      <% end %>
       <a href="<%= new_account_address_path %>">
        <li class="c-link">
         新規住所登録
