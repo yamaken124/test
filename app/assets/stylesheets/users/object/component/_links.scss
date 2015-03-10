@@ -18,7 +18,7 @@
     border-bottom:1px solid $base_border_color;
     color:$base_font_color;
   }
-	.c-link{
+  .c-link{
     @extend .c-link_base;
     &:after{
       content: "";  
@@ -35,7 +35,7 @@
   }
   .c-link--nolink{
     @extend .c-link_base;
-		&:last-child{
+    &:last-child{
       border-bottom:none;
     }
   }
@@ -48,7 +48,7 @@
       float:left;
     }
   }
-	.c-link--small_text{
+  .c-link--small_text{
     @extend .c-link_base;
     line-height:14px;
     font-size:12px;
