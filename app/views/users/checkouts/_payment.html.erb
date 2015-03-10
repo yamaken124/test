@@ -9,30 +9,42 @@
     </div>
     <h2 class="c-links__title">お届先住所</h2>
     <ul class="c-links">
-      <li class="c-link--small_text">
-        <span>
-          <% if @addresses.present? %>
-            <% @addresses.each do |address| %>
+      <% if @addresses.present? %>
+        <% @addresses.each do |address| %>
+          <a>
+          <li class="c-link--small_text">
+            <span>
               <%= radio_button_tag "order[payment_attributes[address_id]]", address.id %>
-              <%= address.address %><br />
-            <% end %>
-          <% end %>
-          <%= link_to "新規住所登録", new_account_address_path %>
-        </span>
+              <%= address.city %> <%= address.address %>
+            </span>
+          </li>
+          </a>
+        <% end %>
+      <% end %>
+      <a href="<%= new_account_address_path %>">
+      <li class="c-link">
+        新規住所登録
       </li>
+      </a>
     </ul>
     <h2 class="c-links__title">支払い方法</h2>
     <ul class="c-links">
-      <li class="c-link--small_text">
-        <span>
-          クレジットカード<br>
-          <% @gmo_cards.each do |gmo_card| %>
+      <% @gmo_cards.each do |gmo_card| %>
+        <li class="c-link--small_text">
+          <div class="c-link__radio_div">
             <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq] %>
-            <%= gmo_card[:CardName] %> 番号：<%= gmo_card[:CardNo] %> <br />
-          <% end %>
-          <%= link_to "新規クレジットカード登録", new_profile_credit_card_path %>
-        </span>
-      </li>
+          </div>
+          <span>
+            番号：<%= gmo_card[:CardNo] %> <br />
+            有効期限： <%= gmo_card[:Expire] %>
+          </span>
+        </li>
+      <% end %>
+      <%= link_to new_profile_credit_card_path  do %>
+        <li class="c-link">
+          新規クレジットカード登録
+        </li>
+      <% end %>
     </ul>
     <h2 class="c-links__title">ポイント使用</h2>
     <ul class="p-payment_method_selections">

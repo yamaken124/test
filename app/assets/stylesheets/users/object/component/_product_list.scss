@@ -49,5 +49,19 @@
 		float:left;
 		font-size:13px;
 		color:$finc_color;
+		background-color:$finc_color;
+		a{
+		  color:white;
+			text-decoration:none;
+		}
+	}
+	.submit{
+		width:58px;
+		height:24px;
+		float:left;
+		border:1px solid $finc_color;
+		border-radius:4px;
+		background-color:white;
+		color:$finc_color;
 	}
 }

@@ -1,5 +1,4 @@
 <% variant = single_line_item.variant %>
-
 <%= order_form.fields_for 'single_line_items_attributes[]', single_line_item do |item_form| %>
   <div class="c-product_list">
     <div class="c-product_list__image">
@@ -16,10 +15,10 @@
   </div>
   <div class="c-product_list__detail">
     <% # TODO layout %>
-    <%= item_form.number_field :quantity, min: 0 %>
+    <%= item_form.select :quantity,  (1..100).map{|i| [i,i]} %>
     <%= item_form.hidden_field :variant_id %>
     <%= item_form.hidden_field :id %>
-    <p class="u-margin__left_short"><%= item_form.submit "数量変更" %></p>
+    <%= item_form.submit "数量変更", class: "submit u-margin__left_short" %>
     <p class="u-margin__left_short"><%= link_to "削除", remove_item_cart_path(single_line_item.id), method: :patch %></p>
   </div>
 <% end %>
