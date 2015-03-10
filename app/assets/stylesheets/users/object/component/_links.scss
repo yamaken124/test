@@ -33,13 +33,13 @@
       background-repeat:no-repeat;
     }
   }
-	.c-link--nolink{
+  .c-link--nolink{
     @extend .c-link_base;
-    &:last-child{
+		&:last-child{
       border-bottom:none;
     }
   }
-	.c-link--small_text--nolink{
+  .c-link--small_text--nolink{
     @extend .c-link_base;
     line-height:14px;
     font-size:12px;
