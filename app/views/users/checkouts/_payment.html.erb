@@ -11,14 +11,14 @@
     <ul class="c-links">
       <% if @addresses.present? %>
         <% @addresses.each do |address| %>
-          <a>
-          <li class="c-link--small_text">
-            <span>
+          <li class="c-link--small_text--nolink">
+            <div class="c-link__radio_div">
               <%= radio_button_tag "order[payment_attributes[address_id]]", address.id %>
+            </div>
+            <span>
               <%= address.city %> <%= address.address %>
             </span>
           </li>
-          </a>
         <% end %>
       <% end %>
       <a href="<%= new_account_address_path %>">
@@ -28,9 +28,27 @@
       </a>
     </ul>
     <h2 class="c-links__title">支払い方法</h2>
-    <ul class="c-links">
+    <ul class="c-links u-margin__bottom_middle">
+      <li class="c-link--nolink">
+        <div class="c-link__radio_div">
+          <%= radio_button_tag "payment_method_id", 1, nil, :onclick=> "payment_method_change(this.value)" %>
+        </div>      
+        <p>
+         クレジット
+        </p>
+      </li>
+      <li class="c-link--nolink">
+        <div class="c-link__radio_div">
+          <%= radio_button_tag "payment_method_id", 2, nil, :onclick=> "payment_method_change(this.value)" %>
+        </div>      
+        <p>
+        後払い決済
+        </p>
+      </li>
+    </ul>
+    <ul class="c-links js-cresit">
       <% @gmo_cards.each do |gmo_card| %>
-        <li class="c-link--small_text">
+        <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
             <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq] %>
           </div>
