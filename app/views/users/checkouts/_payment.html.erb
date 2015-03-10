@@ -9,16 +9,16 @@
     </div>
     <h2 class="c-links__title">お届先住所</h2>
     <ul class="c-links">
-        <% @addresses.each do |address| %>
-          <li class="c-link--small_text--nolink">
-            <div class="c-link__radio_div">
-              <%= radio_button_tag "order[payment_attributes[address_id]]", address.id %>
-            </div>
-            <span>
-              <%= address.city %><br><%= address.address %>
-            </span>
-          </li>
-        <% end %>
+      <% @addresses.each do |address| %>
+        <li class="c-link--small_text--nolink">
+          <div class="c-link__radio_div">
+            <%= radio_button_tag "order[payment_attributes[address_id]]", address.id %>
+          </div>
+          <span>
+            <%= address.city %><br><%= address.address %>
+          </span>
+        </li>
+      <% end %>
       <a href="<%= new_account_address_path %>">
        <li class="c-link">
         新規住所登録
