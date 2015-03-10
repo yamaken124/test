@@ -62,7 +62,6 @@ class PurchaseOrder < ActiveRecord::Base
                 raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) || attributes[:total] < 0  # invalid point error
                 single_order_detail.update!(attributes)
               when :confirm
-                gmo_transaction(single_order_detail.payment)
                 single_order_detail.payment.processing!
                 single_order_detail.payment.completed!
               end
@@ -84,13 +83,6 @@ class PurchaseOrder < ActiveRecord::Base
           attributes[:payment_attributes][:address_id] = attributes[:address_id]
         end
 
-        def gmo_transaction(payment)
-          payment.number = "s"+Time.now.strftime("%Y%m%d%H%M%S").to_s+payment.single_order_detail_id.to_s
-          access = GmoMultiPayment::Transaction.new(payment).auth_entry
-          payment.gmo_access_id = access[:access_id]
-          payment.gmo_access_pass = access[:access_pass]
-          raise if !GmoMultiPayment::Transaction.new(payment).exec(payment.gmo_card_seq_temporary)
-        end
       end
     end
   end
