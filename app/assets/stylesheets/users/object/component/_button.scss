@@ -38,9 +38,9 @@
   float:left;
 }
 .c-btn--submit--short{
-	@extend .c-btn;
+  @extend .c-btn;
   width:114px;
-  height:35px;
-  line-height:35px;    
-	float:right;
+  height:30px;
+  line-height:30px; 
+  float:right;
 }
