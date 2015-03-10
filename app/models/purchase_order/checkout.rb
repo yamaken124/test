@@ -52,16 +52,15 @@
 
         def update_from_params(params, permitted_params, request_env = {}, user_id)
           @updating_params = params
-          # begin
-          #   ActiveRecord::Base.transaction do
+          begin
+            ActiveRecord::Base.transaction do
               attributes = @updating_params[:order] ? @updating_params[:order].permit(permitted_params).delete_if { |k, v| v.nil? } : {}
               case "#{params[:state]}".to_sym
 
               when :payment
                 attributes[:total] = single_order_detail.item_total - attributes[:used_point].to_i
-                attributes[:payment_attributes] ||= {}
-                attributes[:payment_attributes] = payment_attributes_from_params(single_order_detail,attributes,user_id)
-                raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) || !point_smaller_than_price?(attributes) || !valid_payment_attributes?(attributes)  # invalid point error
+                attributes[:payment_attributes] = attributes[:payment_attributes].merge(payment_attributes_from_params(single_order_detail,attributes,user_id))
+                raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) || !point_smaller_than_price?(attributes[:total]) || !valid_payment_attributes?(attributes)  # invalid point error
                 single_order_detail.update!(attributes)
 
               when :confirm
@@ -71,22 +70,22 @@
               end
               send("#{checkout_steps[checkout_step_index(params[:state]) + 1]}!")
               self.reload
-          #   end
-          #   true
-          # rescue
-          #   false
-          # end
+            end
+            true
+          rescue
+            false
+          end
         end
 
         private
 
           def payment_attributes_from_params(single_order_detail,attributes,user_id)
-            payment_params ||= {}
-            payment_params[:id] = single_order_detail.payment.try(:id)
-            payment_params[:used_point] = attributes[:used_point]
-            payment_params[:amount] = attributes[:total]
-            payment_params[:user_id] = user_id
-            payment_params[:address_id] = attributes[:address_id]
+            payment_params = {}
+            payment_params["id"] = single_order_detail.payment.try(:id)
+            payment_params["used_point"] = attributes[:used_point]
+            payment_params["amount"] = attributes[:total]
+            payment_params["user_id"] = user_id
+            payment_params["address_id"] = attributes[:address_id]
             return payment_params
           end
 
@@ -94,8 +93,8 @@
             attributes[:payment_attributes][:address_id].present? && attributes[:payment_attributes][:gmo_card_seq_temporary].present?
           end
 
-          def point_smaller_than_price?(attributes)
-            attributes[:total] > 0
+          def point_smaller_than_price?(total)
+            total > 0
           end
 
       end
