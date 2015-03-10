@@ -15,11 +15,11 @@ class Payment < ActiveRecord::Base
           state :failed
           state :completed
 
-          event :processing do
+          event :processing, after: :pay_with_gmo_payment do
             transitions from: :checkout, to: :processing
           end
 
-          event :completed, after: :pay_with_gmo_payment do
+          event :completed do
             transitions from: [:processing, :pending], to: :completed
           end
 
@@ -34,11 +34,7 @@ class Payment < ActiveRecord::Base
         end
 
         def pay_with_gmo_payment
-          case aasm.from_state
-          when :processing
-            puts aasm.to_state
-            puts "#TODO gmo payment"
-          end
+          # puts aasm.to_state
         end
       end
     end

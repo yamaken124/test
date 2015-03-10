@@ -25,7 +25,8 @@ class Users::CheckoutsController < Users::BaseController
       if @order.completed?
         @current_order = nil
         flash['order_completed'] = true
-        redirect_to order_path(number: @order.number)
+        # redirect_to order_path(number: @order.number)
+        redirect_to orders_path
       else
         redirect_to checkout_state_path(@order.state)
       end

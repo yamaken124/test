@@ -1,4 +1,4 @@
-  class PurchaseOrder < ActiveRecord::Base
+class PurchaseOrder < ActiveRecord::Base
   module Checkout
     def self.included(klass)
       klass.class_eval do
@@ -62,8 +62,9 @@
                 raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) || attributes[:total] < 0  # invalid point error
                 single_order_detail.update!(attributes)
               when :confirm
-                single_order_detail.single_payment.processing!
-                single_order_detail.single_payment.completed!
+                gmo_transaction(single_order_detail.payment)
+                single_order_detail.payment.processing!
+                single_order_detail.payment.completed!
               end
               send("#{checkout_steps[checkout_step_index(params[:state]) + 1]}!")
               self.reload
@@ -81,6 +82,14 @@
           attributes[:payment_attributes][:amount] = attributes[:total]
           attributes[:payment_attributes][:user_id] = user_id
           attributes[:payment_attributes][:address_id] = attributes[:address_id]
+        end
+
+        def gmo_transaction(payment)
+          payment.number = "s"+Time.now.strftime("%Y%m%d%H%M%S").to_s+payment.single_order_detail_id.to_s
+          access = GmoMultiPayment::Transaction.new(payment).auth_entry
+          payment.gmo_access_id = access[:access_id]
+          payment.gmo_access_pass = access[:access_pass]
+          raise if !GmoMultiPayment::Transaction.new(payment).exec(payment.gmo_card_seq_temporary)
         end
       end
     end
