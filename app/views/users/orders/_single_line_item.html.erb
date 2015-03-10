@@ -1,6 +1,6 @@
 <% variant = single_line_item.variant %>
 
-<%= order_form.fields_for :single_line_items, single_line_item do |item_form| %>
+<%= order_form.fields_for 'single_line_items_attributes[]', single_line_item do |item_form| %>
   <div class="c-product_list">
     <div class="c-product_list__image">
       <%= image_tag variant.images.first.image.url %>

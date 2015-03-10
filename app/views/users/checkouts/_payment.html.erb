@@ -16,15 +16,16 @@
               <%= radio_button_tag "order[payment_attributes[address_id]]", address.id %>
             </div>
             <span>
-              <%= address.city %> <%= address.address %>
+              <%= address.city %><br><%= address.address %>
             </span>
           </li>
         <% end %>
       <% end %>
       <a href="<%= new_account_address_path %>">
-      <li class="c-link">
+       <li class="c-link">
         新規住所登録
-      </li>
+        </li>
+      </a>
     </ul>
     <h2 class="c-links__title">支払い方法</h2>
     <ul class="c-links u-margin__bottom_middle">
@@ -50,11 +51,13 @@
         <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
             <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq] %>
-            <%= gmo_card[:CardName] %> 番号：<%= gmo_card[:CardNo] %> <br />
-          <% end %>
-          <%= link_to "新規クレジットカード登録", new_profile_credit_card_path %>
-        </span>
-      </li>
+          </div>
+          <span>
+            番号：<%= gmo_card[:CardNo] %> <br />
+            有効期限： <%= gmo_card[:Expire] %>
+          </span>
+        </li>
+      <% end %>
     </ul>
     <h2 class="c-links__title">ポイント使用</h2>
     <ul class="p-payment_method_selections">
