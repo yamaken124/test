@@ -15,3 +15,4 @@
 //= require library/slider/modernizr.js
 //= require library/slider/jquery.easing.js
 //= require library/slider/jquery.flexslider.js
+//= require users/payments

@@ -48,8 +48,8 @@
       display:none;
       p{
         min-width:40px;
-        height:30px;
-        line-height:30px;
+        height:40px;
+        line-height:40px;
         float:left;
       }
       .p-payment_method__amount{
@@ -57,6 +57,7 @@
         border-radius:5px;
         width:45px;
         height:30px;
+        margin-top:5px;
         padding-left:5px;
         font-size:15px;
         color:$base_font_color;

@@ -15,9 +15,10 @@
     </div>
   </div>
   <div class="c-product_list__detail">
-    <% # TODO layout %>
-    <%= item_form.number_field :quantity, min: 0 %>
-    <p class="u-margin__left_short"><%= item_form.submit "数量変更", name: 'updated_quantity' %></p>
+    <%= item_form.select :quantity,  (1..100).map{|i| [i,i]} %>
+    <%= item_form.hidden_field :variant_id %>
+    <%= item_form.hidden_field :id %>
+    <%= item_form.submit "数量変更", class: "submit u-margin__left_short" %>
     <p class="u-margin__left_short"><%= link_to "削除", remove_item_cart_path(single_line_item.id), method: :patch %></p>
   </div>
 <% end %>
