@@ -15,7 +15,6 @@ class Users::OrdersController < Users::BaseController
   end
 
   def edit
-    @order = current_order || PurchaseOrder.incomplete.new
     associate_user
   end
 
@@ -23,11 +22,7 @@ class Users::OrdersController < Users::BaseController
     if @order.single_order_contents.update_cart(order_params) #TODO order_params
       respond_with(@order) do |format|
         format.html do
-          if params["updated_quantity"] #TODO switch to order_params
-            update_item
-            redirect_to cart_path
-          elsif params.has_key?(:checkout)
-            #TODO @order.next if @order.cart?
+          if params["checkout"]
             redirect_to checkout_state_path(state: @order.checkout_steps.first)\
           else
             redirect_to cart_path
@@ -91,8 +86,8 @@ class Users::OrdersController < Users::BaseController
   private
 
       def order_params
-        if params[:order]
-          params[:order].permit(*permitted_order_attributes)
+        if params[:purchase_order]
+          params[:purchase_order].permit(*permitted_order_attributes)
         else
           {}
         end
@@ -107,8 +102,7 @@ class Users::OrdersController < Users::BaseController
       end
 
       def permitted_order_attributes
-        # { :coupon_code, :email, :shipping_method_id, :special_instructions, :use_billing
-          # line_items_attributes: permitted_line_item_attributes }
+        [ single_line_items_attributes: permitted_line_item_attributes ]
       end
 
       def permitted_line_item_attributes
