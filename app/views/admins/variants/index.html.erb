@@ -6,45 +6,50 @@
     </div>
   </h3>
 </div>
-<section class="content col-md-9">
+<section class="content col-md-10">
+  <h4 class="box-title">Variantリスト</h4>
   <% if !@variants.blank? %>
-  <table class="table c-table_new">
-    <thead>
-      <tr>
-        <th>sku</th>
-        <th>注文タイプ</th>
-        <th>price</th>
-        <th></th>
-      </tr>
-    </thead>
+    <table class="table c-table_new">
+      <thead>
+        <tr>
+          <th>sku</th>
+          <th>IMAGE</th>
+          <th>注文タイプ</th>
+          <th>price</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
       <tbody>
-        <% @variants.each do |v| %>
-          <tr>
-            <td><%= v.sku %></td>
-            <td>
-              <% if !v.order_type.nil? %>
-                <%= t('order_type.'+v.order_type) %>
-              <% end %></td>
-            <td>
-              <% v.prices.each do |p| %><%= p.amount %><% end %>
-            </td>
-            <td><%= t(v.classify_validity) %></td>
-            <td><a href="<%= edit_admins_product_variant_path(id: v.id) %>">variant#edit</a></td>
-            <td><a href="<%= admins_product_variant_path(id: v.id) %>"data-method="delete"><%= "variant#delete" %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% else %>
-      <p>現在variantは登録されていません</p>
-    <% end %>
-  </div>
-  </section>
-  <section class="content col-md-2 float-right">
-  <ul class="nav nav-pills nav-stacked">
-    <li <%= 'class=active' if request.fullpath == edit_admins_product_path(params[:product_id])  %>><a href="<%= edit_admins_product_path(params[:product_id]) %>">商品詳細</a></li>
-    <li <%= 'class=active' if request.fullpath == admins_product_variants_path(params[:product_id])  %>><a href="<%= admins_product_variants_path(params[:product_id])%>">Variants詳細</a></li>
-    <li><a href="<%= %>">画像詳細</a></li>
-    <li><a href="<%= %>">在庫管理</a></li>
-  </ul>
-  </section>
+      <% @variants.each do |v| %>
+        <tr>
+          <td><%= v.sku %></td>
+          <td><%= image_tag v.images.try(:image).try(:url) %></td>
+          <td>
+            <% if !v.order_type.nil? %>
+              <%= t('order_type.'+v.order_type) %>
+            <% end %></td>
+          <td>
+            <% v.prices.each do |p| %><%= p.amount %><% end %>
+          </td>
+          <td><%= t(v.classify_validity) %></td>
+          <td>
+            <a href="<%= admins_variant_images_path(v.id) %>" class="btn btn-info btn-sm">
+              <i class="fa fa-file-o"></i>
+            </a>  
+            <a href="<%= edit_admins_product_variant_path(@product.id, v.id) %>" class="btn btn-warning btn-sm">
+              <i class="fa fa-edit"></i>
+            </a>  
+            <a href="<%= admins_product_variant_path(@product.id, v.id) %>" class="btn btn-success btn-sm" data-method="delete" data-confirm="本当に削除しますか？">
+              <i class="fa fa-trash-o"></i>
+            </a>  
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>現在variantは登録されていません</p>
+  <% end %>
+</section>
+<%= render partial: '/admins/products/nav', locals: { product: @product } %>

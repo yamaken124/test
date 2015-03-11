@@ -61,7 +61,7 @@ class Admins::VariantsController < ApplicationController
     end
 
     def price_params
-      params[:variant].require(:prices).permit(:amount)
+      params.require(:variant).require(:prices).permit(:amount)
     end
 
     def set_product

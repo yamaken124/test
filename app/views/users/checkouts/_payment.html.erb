@@ -1,6 +1,4 @@
 <%= form_tag(checkout_state_path(state: :payment), :method => :patch) do %>
-  <% max_point = 20 %> <%# TODO change user.points %>
-
   <div class="p-wrapper--have_padding">
     <h2 class="title">
       カート小計(<%=@detail.item_count%>個の商品):
@@ -11,33 +9,66 @@
     </div>
     <h2 class="c-links__title">お届先住所</h2>
     <ul class="c-links">
-      <li class="c-link--small_text">
-        <span>
-          <% if @addresses.present? %>
-            <% @addresses.each do |address| %>
+      <% @addresses.each_with_index do |address, i| %>
+        <li class="c-link--small_text--nolink">
+          <div class="c-link__radio_div">
+            <% if i == 0 %>  
+              <%= radio_button_tag "order[payment_attributes[address_id]]", address.id, checked: "checked" %>
+            <% else %>
               <%= radio_button_tag "order[payment_attributes[address_id]]", address.id %>
-              <%= address.address %><br />
             <% end %>
-          <% end %>
-          <%= link_to "新規住所登録", new_account_address_path %>
-        </span>
-      </li>
+          </div>
+          <span>
+            <%= address.city %><br><%= address.address %>
+          </span>
+        </li>
+      <% end %>
+      <%= link_to(new_account_address_path) do %>
+       <li class="c-link">
+        新規住所登録
+        </li>
+      <% end %>
     </ul>
     <h2 class="c-links__title">支払い方法</h2>
-    <ul class="c-links">
-      <li class="c-link--small_text">
-        <span>
-          クレジットカード<br>
-          <% if @gmo_cards %>
-            <% @gmo_cards.each do |gmo_card| %>
-              <%= radio_button_tag "order[payment_attributes[source_id]]", gmo_card[:CardSeq] %>
-              <%= gmo_card[:CardName] %> 番号：<%= gmo_card[:CardNo] %> <br />
-            <% end %>
-          <% end %>
-          <%= link_to "新規クレジットカード登録", new_profile_credit_card_path %>
-          <%#= radio_button_tag "order[payment_attributes[source_id]]", false %><%#後払い%>
-        </span>
+    <ul class="c-links u-margin__bottom_middle">
+      <li class="c-link--nolink">
+        <div class="c-link__radio_div">
+          <%= radio_button_tag "payment_method_id", 1, nil, :onclick=> "payment_method_change(this.value)", checked: "checked" %>
+        </div>      
+        <p>
+         クレジット
+        </p>
       </li>
+      <li class="c-link--nolink">
+        <div class="c-link__radio_div">
+          <%= radio_button_tag "payment_method_id", 2, nil, :onclick=> "payment_method_change(this.value)" %>
+        </div>      
+        <p>
+        後払い決済
+        </p>
+      </li>
+    </ul>
+    <ul class="c-links js-credit">
+      <% @gmo_cards.each_with_index do |gmo_card, i| %>
+        <li class="c-link--small_text--nolink">
+          <div class="c-link__radio_div">
+            <% if i == 0 %>  
+              <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq], checked: "checked" %>
+            <% else %>
+              <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq] %>
+            <% end %>
+          </div>
+          <span>
+            番号：<%= gmo_card[:CardNo] %> <br />
+            有効期限： <%= gmo_card[:Expire] %>
+          </span>
+        </li>
+      <% end %>
+      <%= link_to(new_profile_credit_card_path) do %>
+       <li class="c-link">
+        新規クレジット登録
+        </li>
+      <% end %>
     </ul>
     <h2 class="c-links__title">ポイント使用</h2>
     <ul class="p-payment_method_selections">
@@ -46,7 +77,7 @@
           <%= radio_button_tag "order[use_all_point]", true %>
         </div>
         <p class="p-payment_method_selection__title">全て使用</p>
-        <p class="p-payment_method_selection__price"><%= max_point %>Pt</p>
+        <p class="p-payment_method_selection__price"><%= @wellness_mileage %>Pt</p>
       </li>
       <li class="p-payment_method_selection">
         <div class="p-payment_method_selection__radio">
@@ -55,7 +86,7 @@
         <p class="p-payment_method_selection__title">一部を使用</p>
         <div class="p-payment_method__detail is-active">
           <p>ポイント: </p>
-          <%= number_field_tag "order[used_point]", 1, min: 0, max: max_point, class: 'p-payment_method__amount' %>
+          <%= number_field_tag "order[used_point]", 0, min: 0, max: @wellness_mileage, class: 'p-payment_method__amount' %>
           <p class="u-margin_short">Pt</p>
         </div>
       </li>

@@ -1,6 +1,6 @@
 class SingleOrderContents
   delegate :single_order, to: :order
-  attr_accessor :order, :detail, :bill
+  attr_accessor :order, :detail
 
   def initialize(order)
     @order = order.single_order || order.build_single_order
@@ -17,29 +17,18 @@ class SingleOrderContents
   end
 
   def update_cart(params)
-    if detail.update(filter_order_items(params))
+    if detail.update(params)
       detail.single_line_items = detail.single_line_items.select { |li| li.quantity > 0 }
       # Update totals, then check if the order is eligible for any cart promotions.
       # If we do not update first, then the item total will be wrong and ItemTotal
       # promotion rules would not be triggered.
       reload_totals
-      issue_bill
       detail.ensure_updated_shipments
       reload_totals
-      issue_bill
       true
     else
       false
     end
-  end
-
-  def issue_bill
-    @bill = detail.bill || detail.build_bill
-    @bill.update_bill
-  end
-
-  def bill
-    @bill = detail.bill || detail.build_bill
   end
 
   def detail
@@ -53,20 +42,6 @@ class SingleOrderContents
   def after_add_or_remove(line_item, options = {})
     reload_totals
     line_item
-  end
-
-  def filter_order_items(params)
-    filtered_params = params.symbolize_keys
-    return filtered_params if filtered_params[:line_items_attributes].nil? || filtered_params[:line_items_attributes][:id]
-
-    line_item_ids = order.single_order.single_order_detail.single_line_items.pluck(:id)
-
-    params[:line_items_attributes].each_pair do |id, value|
-      unless line_item_ids.include?(value[:id].to_i) || value[:variant_id].present?
-        filtered_params[:line_items_attributes].delete(id)
-      end
-    end
-    filtered_params
   end
 
   def order_updater

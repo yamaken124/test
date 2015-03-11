@@ -1,5 +1,5 @@
 module Users::CheckoutsHelper
   def permitted_checkout_attributes
-    [:address_id, :used_point, :payment_method_id]
+    [{ payment_attributes: [:address_id, :gmo_card_seq_temporary] }, :used_point]
   end
 end
