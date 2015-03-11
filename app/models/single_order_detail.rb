@@ -35,7 +35,7 @@ class SingleOrderDetail < ActiveRecord::Base
 
   validates :used_point,
     numericality: {
-      less_than: :total
+      less_than_or_equal_to: :total
     }
 
   def single_payment
