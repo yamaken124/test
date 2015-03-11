@@ -34,7 +34,7 @@ class Payment < ActiveRecord::Base
         end
 
         def pay_with_gmo_payment
-          self.number = "s" + Time.now.strftime("%Y%m%d%H%M%S").to_s + self.single_order_detail_id.to_s
+          self.number = set_number
           access = GmoMultiPayment::Transaction.new(self).sales_entry
           self.gmo_access_id = access[:access_id]
           self.gmo_access_pass = access[:access_pass]
