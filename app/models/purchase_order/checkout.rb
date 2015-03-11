@@ -58,6 +58,7 @@ class PurchaseOrder < ActiveRecord::Base
               case "#{params[:state]}".to_sym
 
               when :payment
+                single_order_detail.payment.update!(used_point: attributes[:used_point]) #to calculate order_update
                 attributes[:total] = OrderUpdater.new(single_order_detail).update_totals
                 attributes[:payment_attributes] = attributes[:payment_attributes].merge(payment_attributes_from_params(single_order_detail,attributes))
                 if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
