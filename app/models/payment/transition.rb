@@ -19,7 +19,7 @@ class Payment < ActiveRecord::Base
             transitions from: :checkout, to: :processing
           end
 
-          event :completed do
+          event :completed, after: :register_shipment do
             transitions from: [:processing, :pending], to: :completed
           end
 
@@ -38,6 +38,10 @@ class Payment < ActiveRecord::Base
           self.gmo_access_id = access[:access_id]
           self.gmo_access_pass = access[:access_pass]
           return GmoMultiPayment::Transaction.new(self).exec(self.gmo_card_seq_temporary)
+        end
+
+        def register_shipment
+          Shipment.new(set_shipment_params).save!
         end
       end
     end
