@@ -13,7 +13,7 @@ class Shipment < ActiveRecord::Base
     state :canceled
 
     event :ready do
-      transitions from: :pending, to: :ready
+      transitions from: [:pending, :shipped], to: :ready
     end
 
     event :shipped  do

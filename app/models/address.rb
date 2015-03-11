@@ -23,4 +23,8 @@ class Address < ActiveRecord::Base
   validates :phone, presence: true
   
   belongs_to :user
+
+  def name
+    "#{self.last_name} #{self.first_name}"
+  end
 end
