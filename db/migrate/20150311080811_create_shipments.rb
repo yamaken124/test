@@ -4,7 +4,7 @@ class CreateShipments < ActiveRecord::Migration
       t.references :payment, index: true
       t.references :address, index: true
       t.datetime :shopped_at
-      t.integer :state
+      t.integer :state, :default => 0
 
       t.timestamps null: false
     end

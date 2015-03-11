@@ -142,9 +142,9 @@ ActiveRecord::Schema.define(version: 20150311080811) do
     t.integer  "payment_id", limit: 4
     t.integer  "address_id", limit: 4
     t.datetime "shopped_at"
-    t.integer  "state",      limit: 4
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.integer  "state",      limit: 4, default: 0
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   add_index "shipments", ["address_id"], name: "index_shipments_on_address_id", using: :btree
