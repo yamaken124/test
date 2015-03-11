@@ -33,21 +33,13 @@
       background-repeat:no-repeat;
     }
   }
-<<<<<<< HEAD
-	.c-link--nolink{
-=======
   .c-link--nolink{
->>>>>>> 1418a9e480f3ca1f53ff6565d10133348120af18
     @extend .c-link_base;
     &:last-child{
       border-bottom:none;
     }
   }
-<<<<<<< HEAD
-	.c-link--small_text--nolink{
-=======
   .c-link--small_text--nolink{
->>>>>>> 1418a9e480f3ca1f53ff6565d10133348120af18
     @extend .c-link_base;
     line-height:14px;
     font-size:12px;
