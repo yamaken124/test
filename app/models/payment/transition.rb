@@ -15,11 +15,11 @@ class Payment < ActiveRecord::Base
           state :failed
           state :completed
 
-          event :processing do
+          event :processing, after: :pay_with_gmo_payment do
             transitions from: :checkout, to: :processing
           end
 
-          event :completed, after: :pay_with_gmo_payment do
+          event :completed do
             transitions from: [:processing, :pending], to: :completed
           end
 
@@ -34,11 +34,10 @@ class Payment < ActiveRecord::Base
         end
 
         def pay_with_gmo_payment
-          case aasm.from_state
-          when :processing
-            puts aasm.to_state
-            puts "#TODO gmo payment"
-          end
+          access = GmoMultiPayment::Transaction.new(self).sales_entry
+          self.gmo_access_id = access[:access_id]
+          self.gmo_access_pass = access[:access_pass]
+          return GmoMultiPayment::Transaction.new(self).exec(self.gmo_card_seq_temporary)
         end
       end
     end
