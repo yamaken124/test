@@ -16,6 +16,8 @@ class PurchaseOrder < ActiveRecord::Base
 
   belongs_to :user
   has_one    :single_order
+  has_one    :single_order_detail, through: :single_order
+  has_many   :single_line_items, through: :single_order_detail
   has_many   :subscription_orders
   has_many   :subscription_order_details, through: :subscription_orders
 
