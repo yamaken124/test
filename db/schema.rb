@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150311080811) do
+ActiveRecord::Schema.define(version: 20150311163225) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -27,6 +27,24 @@ ActiveRecord::Schema.define(version: 20150311080811) do
   end
 
   add_index "addresses", ["user_id"], name: "index_addresses_on_user_id", using: :btree
+
+  create_table "admins", force: :cascade do |t|
+    t.string   "email",                  limit: 255, default: "", null: false
+    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "reset_password_token",   limit: 255
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          limit: 4,   default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "admins", ["email"], name: "index_admins_on_email", unique: true, using: :btree
+  add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true, using: :btree
 
   create_table "images", force: :cascade do |t|
     t.integer  "imageable_id",   limit: 4
@@ -72,13 +90,14 @@ ActiveRecord::Schema.define(version: 20150311080811) do
     t.integer  "amount",                 limit: 4
     t.integer  "source_id",              limit: 4
     t.string   "source_type",            limit: 255
-    t.integer  "gmo_access_id",          limit: 4
+    t.string   "gmo_access_id",          limit: 255
     t.string   "gmo_access_pass",        limit: 255
     t.integer  "gmo_card_seq_temporary", limit: 4
     t.integer  "used_point",             limit: 4,   default: 0, null: false
     t.integer  "payment_method_id",      limit: 4
     t.integer  "address_id",             limit: 4
     t.integer  "single_order_detail_id", limit: 4
+    t.string   "number",                 limit: 255
     t.integer  "user_id",                limit: 4
     t.integer  "state",                  limit: 4,   default: 0
     t.datetime "created_at",                                     null: false
