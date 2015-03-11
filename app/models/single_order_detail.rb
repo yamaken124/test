@@ -33,6 +33,11 @@ class SingleOrderDetail < ActiveRecord::Base
   accepts_nested_attributes_for :single_line_items
   accepts_nested_attributes_for :payment, update_only: false
 
+  validates :used_point,
+    numericality: {
+      less_than_or_equal_to: :total
+    }
+
   def single_payment
     payment ||= self.build_payment
   end
@@ -62,4 +67,5 @@ class SingleOrderDetail < ActiveRecord::Base
       tax_rate
     end
   end
+
 end
