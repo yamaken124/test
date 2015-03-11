@@ -19,7 +19,7 @@
           </span>
         </li>
       <% end %>
-      <%= link_to(new_account_address_path) do %>
+      <%= link_to(new_account_address_path(continue: checkout_state_path(state: :payment))) do %>
        <li class="c-link">
         新規住所登録
         </li>
