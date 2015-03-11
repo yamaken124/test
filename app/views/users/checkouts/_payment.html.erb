@@ -9,27 +9,31 @@
     </div>
     <h2 class="c-links__title">お届先住所</h2>
     <ul class="c-links">
-      <% @addresses.each do |address| %>
+      <% @addresses.each_with_index do |address, i| %>
         <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
-            <%= radio_button_tag "order[payment_attributes[address_id]]", address.id %>
+            <% if i == 0 %>  
+              <%= radio_button_tag "order[payment_attributes[address_id]]", address.id, checked: "checked" %>
+            <% else %>
+              <%= radio_button_tag "order[payment_attributes[address_id]]", address.id %>
+            <% end %>
           </div>
           <span>
             <%= address.city %><br><%= address.address %>
           </span>
         </li>
       <% end %>
-      <a href="<%= new_account_address_path %>">
+      <%= link_to(new_account_address_path) do %>
        <li class="c-link">
         新規住所登録
         </li>
-      </a>
+      <% end %>
     </ul>
     <h2 class="c-links__title">支払い方法</h2>
     <ul class="c-links u-margin__bottom_middle">
       <li class="c-link--nolink">
         <div class="c-link__radio_div">
-          <%= radio_button_tag "payment_method_id", 1, nil, :onclick=> "payment_method_change(this.value)" %>
+          <%= radio_button_tag "payment_method_id", 1, nil, :onclick=> "payment_method_change(this.value)", checked: "checked" %>
         </div>      
         <p>
          クレジット
@@ -45,15 +49,24 @@
       </li>
     </ul>
     <ul class="c-links js-credit">
-      <% @gmo_cards.each do |gmo_card| %>
+      <% @gmo_cards.each_with_index do |gmo_card, i| %>
         <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
-            <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq] %>
+            <% if i == 0 %>  
+              <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq], checked: "checked" %>
+            <% else %>
+              <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq] %>
+            <% end %>
           </div>
           <span>
             番号：<%= gmo_card[:CardNo] %> <br />
             有効期限： <%= gmo_card[:Expire] %>
           </span>
+        </li>
+      <% end %>
+      <%= link_to(new_profile_credit_card_path) do %>
+       <li class="c-link">
+        新規クレジット登録
         </li>
       <% end %>
     </ul>
