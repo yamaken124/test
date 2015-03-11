@@ -10,7 +10,7 @@ class Users::OrdersController < Users::BaseController
 
   def thanks
     @number = params[:number]
-    raise ActiveRecord::RecordNotFound if !Payment.where(number: @number).first.state == "completed"
+    raise ActiveRecord::RecordNotFound if !Payment.where(number: @number).first.completed?
   end
 
   def edit
