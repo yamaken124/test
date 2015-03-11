@@ -17,7 +17,7 @@ class Users::AddressesController < Users::BaseController
   def create
     @address = Address.new(address_params)
     if @address.save
-      redirect_to continue_params
+      redirect_to redirect_params
     else
       render :edit
     end
@@ -46,16 +46,21 @@ class Users::AddressesController < Users::BaseController
     end
 
     def set_continue
-      if params[:continue]
-        @continue = params.permit(:continue)[:continue]
-      elsif request.referer.include?("checkout/payment")
-        @continue = checkout_state_path(state: :payment)
+      if params[:continue].present?
+        @continue = params[:continue]
       else
         @continue = account_addresses_path
       end
     end
 
-    def continue_params
-      params.permit(:continue)[:continue]
+    def redirect_params
+      if params[:continue].include?("checkout/payment")
+        checkout_state_path("payment")
+      elsif params[:continue].include?("profile/credit_cards/new")
+        new_profile_credit_card_path
+      else
+        account_addresses_path
+      end
     end
+
 end
