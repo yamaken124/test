@@ -62,7 +62,7 @@ class PurchaseOrder < ActiveRecord::Base
                 OrderUpdater.new(single_order_detail).update_totals
                 attributes[:payment_attributes] = attributes[:payment_attributes].merge(payment_attributes_from_params(single_order_detail,attributes))
                 if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
-                  if !point_smaller_than_price?(attributes[:total]) || !valid_payment_attributes?(attributes)
+                  if !valid_payment_attributes?(attributes)
                     raise # error
                   end
                 end
@@ -87,7 +87,7 @@ class PurchaseOrder < ActiveRecord::Base
           def payment_attributes_from_params(single_order_detail,attributes)
             payment_params = {}
             payment_params["id"] = single_order_detail.payment.try(:id)
-            payment_params["amount"] = single_order_detail.try(:total)
+            payment_params["amount"] = single_order_detail.total
             payment_params["user_id"] = single_order_detail.payment.user_id
             return payment_params
           end
