@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
 
   def wellness_mileage
     if total_points = me_in_finc_app['total_points']
-       total_points.to_i - self.used_point_total
+      total_points.to_i - self.used_point_total
     else
       0
     end

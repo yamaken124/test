@@ -1,9 +1,0 @@
-<section class="content col-md-2 float-right">
-<ul class="nav nav-pills nav-stacked">
-  <li <%= 'class=active' if request.fullpath == "/admins/bills/regular_purchase/laundering_planned"%> ><a href="<%=regular_purchase_admins_bills_path("laundering_planned") %>">洗替予定一覧</a></li>
-  <li <%= 'class=active' if request.fullpath == '/admins/bills/regular_purchase/laundering_success'%>><a href="<%= regular_purchase_admins_bills_path("laundering_success")%>">洗替成功一覧</a></li>
-  <li <%= 'class=active' if request.fullpath == '/admins/bills/regular_purchase/laundering_failure' %>><a href="<%= regular_purchase_admins_bills_path("laundering_failure")%>">洗替失敗一覧</a></li>
-  <li <%= 'class=active' if request.fullpath == '/admins/bills/regular_purchase/complete'%>><a href="<%= regular_purchase_admins_bills_path("complete")%>">売上計上済み一覧</a></li>
-</ul>
-</section>
-

@@ -12,22 +12,14 @@
       <% @addresses.each_with_index do |address, i| %>
         <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
-            <% if i == 0 %>
-              <%= radio_button_tag "order[payment_attributes[address_id]]", address.id, checked: "checked" %>
-            <% else %>
-              <%= radio_button_tag "order[payment_attributes[address_id]]", address.id %>
-            <% end %>
+            <%= radio_button_tag "order[payment_attributes[address_id]]", address.id, i == 0 ? 'checked: "checked"' : nil %>
           </div>
-          <span>
-            <%= address.city %><br><%= address.address %>
-          </span>
+          <%= label_tag "order_payment_attributes_address_id_#{address.id}", "#{address.city}<br>#{address.address}".html_safe %>
         </li>
       <% end %>
       <% if @addresses.length < 3 %>
-        <%= link_to(new_account_address_path) do %>
-         <li class="c-link">
-          新規住所登録
-          </li>
+        <%= link_to(new_account_address_path(continue: checkout_state_path(state: :payment))) do %>
+          <li class="c-link">新規住所登録</li>
         <% end %>
       <% else %>
         <li class="c-link">住所は最大３つまで登録できます</li>
@@ -40,27 +32,35 @@
           <%= radio_button_tag "payment_method_id", 1, nil, :onclick=> "payment_method_change(this.value)", checked: "checked" %>
         </div>
         <p>
-         クレジット
-        </p>
+        <%= label_tag "payment_method_id_1", "クレジット" %>
       </li>
       <li class="c-link--nolink">
         <div class="c-link__radio_div">
           <%= radio_button_tag "payment_method_id", 2, nil, :onclick=> "payment_method_change(this.value)" %>
         </div>
-        <p>
-        後払い決済
-        </p>
+        <%= label_tag "payment_method_id_2", "後払い決済" %>
       </li>
     </ul>
     <ul class="c-links js-credit">
       <% @gmo_cards.each_with_index do |gmo_card, i| %>
         <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
-            <% if i == 0 %>
-              <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq], checked: "checked" %>
-            <% else %>
-              <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq] %>
-            <% end %>
+            <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq], i == 0 ? 'checked: "checked"' : nil %>
+          </div>
+          <%= label_tag "order_payment_attributes_gmo_card_seq_temporary_#{gmo_card[:CardSeq]}", "番号：#{gmo_card[:CardNo]}<br />有効期限：#{gmo_card[:Expire]}".html_safe %>
+        </li>
+      <% end %>
+      <%= link_to(new_profile_credit_card_path) do %>
+       <li class="c-link">
+        新規クレジット登録
+        </li>
+      <% end %>
+    </ul>
+    <ul class="c-links js-cresit">
+      <% @gmo_cards.each do |gmo_card| %>
+        <li class="c-link--small_text--nolink">
+          <div class="c-link__radio_div">
+            <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq] %>
           </div>
           <span>
             番号：<%= gmo_card[:CardNo] %> <br />
@@ -69,13 +69,13 @@
         </li>
       <% end %>
       <% if @gmo_cards.length < 5 %>
-        <%= link_to(new_profile_credit_card_path) do %>
-         <li class="c-link">
-          新規クレジット登録
+        <%= link_to new_profile_credit_card_path  do %>
+          <li class="c-link">
+            新規クレジットカード登録
           </li>
         <% end %>
       <% else %>
-       <li class="c-link">クレジットカードは最大５枚まで登録できます</li>
+        <li class="c-link">クレジットカードは最大５枚まで登録できます</li>
       <% end %>
     </ul>
     <h2 class="c-links__title">ポイント使用</h2>
@@ -84,14 +84,14 @@
         <div class="p-payment_method_selection__radio">
           <%= radio_button_tag "order[use_all_point]", true %>
         </div>
-        <p class="p-payment_method_selection__title">全て使用</p>
+        <%= label_tag "order_use_all_point_true", "全て使用", class: "p-payment_method_selection__title" %>
         <p class="p-payment_method_selection__price"><%= @wellness_mileage %>Pt</p>
       </li>
       <li class="p-payment_method_selection">
         <div class="p-payment_method_selection__radio">
           <%= radio_button_tag "order[use_all_point]", false %>
         </div>
-        <p class="p-payment_method_selection__title">一部を使用</p>
+        <%= label_tag "order_use_all_point_false", "一部を使用", class: "p-payment_method_selection__title" %>
         <div class="p-payment_method__detail is-active">
           <p>ポイント: </p>
           <%= number_field_tag "order[used_point]", 0, min: 0, max: @wellness_mileage, class: 'p-payment_method__amount' %>
