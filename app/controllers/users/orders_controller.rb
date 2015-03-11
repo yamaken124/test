@@ -9,9 +9,8 @@ class Users::OrdersController < Users::BaseController
   end
 
   def thanks
-    address_ids = current_user.addresses.pluck(:id)
-    @single_order_detail = SingleOrderDetail.where(address_id: address_ids).where(number: params[:number]).first
-    raise ActiveRecord::RecordNotFound if @single_order_detail.blank?
+    @number = params[:number]
+    raise ActiveRecord::RecordNotFound if !Payment.where(number: @number).first.completed?
   end
 
   def edit
@@ -108,4 +107,5 @@ class Users::OrdersController < Users::BaseController
       def permitted_line_item_attributes
         [:id, :variant_id, :quantity]
       end
+
 end

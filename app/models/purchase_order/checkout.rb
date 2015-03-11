@@ -66,8 +66,8 @@ class PurchaseOrder < ActiveRecord::Base
                 single_order_detail.update!(attributes)
 
               when :confirm
-                single_order_detail.single_payment.processing!
-                single_order_detail.single_payment.completed!
+                single_order_detail.payment.processing!
+                single_order_detail.payment.completed!
 
               end
               send("#{checkout_steps[checkout_step_index(params[:state]) + 1]}!")
@@ -78,6 +78,7 @@ class PurchaseOrder < ActiveRecord::Base
             false
           end
         end
+
 
         private
 

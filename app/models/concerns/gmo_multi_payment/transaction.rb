@@ -11,7 +11,7 @@ class GmoMultiPayment::Transaction
     response = HTTParty.post( url, {body:
                   { :ShopID => GmoMultiPayment::ShopID,
                     :ShopPass => GmoMultiPayment::ShopPass,
-                    :OrderID => @payment.single_order_detail_id,
+                    :OrderID => @payment.number,
                     :JobCd => GmoMultiPayment::Auth,
                     :Amount => @payment.amount }
     })
@@ -24,7 +24,7 @@ class GmoMultiPayment::Transaction
     response = HTTParty.post( url, {body:
                   { :ShopID => GmoMultiPayment::ShopID,
                     :ShopPass => GmoMultiPayment::ShopPass,
-                    :OrderID => @payment.single_order_detail_id,
+                    :OrderID => @payment.number,
                     :JobCd => GmoMultiPayment::Capture,
                     :Amount => @payment.amount }
     })
@@ -37,7 +37,7 @@ class GmoMultiPayment::Transaction
     response = HTTParty.post( url, {body:
                   {:AccessID   => @payment.gmo_access_id,
                    :AccessPass => @payment.gmo_access_pass,
-                   :OrderID    => @payment.single_order_detail_id,
+                   :OrderID    => @payment.number,
                    :Method     => "1",
                    :SiteID     => GmoMultiPayment::SiteID,
                    :SitePass   => GmoMultiPayment::SitePass,
