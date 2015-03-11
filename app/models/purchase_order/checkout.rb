@@ -89,7 +89,7 @@ class PurchaseOrder < ActiveRecord::Base
             payment_params["id"] = single_order_detail.payment.try(:id)
             payment_params["amount"] = single_order_detail.total
             payment_params["user_id"] = single_order_detail.payment.user_id
-            return payment_params
+            payment_params
           end
 
           def valid_payment_attributes?(attributes)
