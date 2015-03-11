@@ -1,17 +1,12 @@
-<section class="content-header">
-<h1>
-  発送管理
-</h1>
-</section>
+<div class="content-header">
+  <h3>
+    発送管理
+  </h3>
+</div>
 <section class="content col-md-9">
-<h2>発送済み一覧</h2>
-<h3 class="box-title">検索</h3>
-<h3 class="box-title">注文リスト</h3>
-
-<%= render partial: 'table' %>
-
+  <h4 class="box-title">発送済み一覧</h4>
+  <%= render partial: 'table' %>
 </section>
-
-<%= render partial: 'status_bar', locals: {} %>
-
+<section>
+  <%= render partial: 'nav', locals: {} %>
 </section>

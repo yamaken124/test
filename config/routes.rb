@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users, :controllers => {
-    :sessions => 'users/sessions', 
+    :sessions => 'users/sessions',
     :passwords => "users/passwords",
     :registrations => 'users/registrations'
   }
@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     resources :orders, only: [:index, :show] do
       collection do
         post :populate
-        get  ':number/thanks', action: :thanks
+        get  ':number/thanks', action: :thanks, :as => :thanks
       end
     end
 
@@ -41,17 +41,16 @@ Rails.application.routes.draw do
       resources :images,only: [:index, :new, :create, :edit, :update, :destroy], controller: :images, imageable_type: 'Variant'
     end
     resources :purchase_orders,only:[:index] do
-      collection do 
+      collection do
         get'shipped'
         get'unshipped'
       end
     end
-    resources :bills do 
-      collection do
-        get'post_payment'
-        get'credit'
-        get'regular_purchase/:state', action: :regular_purchase, as: :regular_purchase
-      end
+    #TODO routing setting
+    namespace :bills do 
+      resources :credits
+      resources :post_payments
+      resources :subscriptions
     end
   end
 
