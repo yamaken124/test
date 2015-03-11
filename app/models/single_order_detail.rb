@@ -62,4 +62,9 @@ class SingleOrderDetail < ActiveRecord::Base
       tax_rate
     end
   end
+
+  def point_smaller_than_price?(total)
+    total > 0
+  end
+
 end
