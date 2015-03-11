@@ -21,6 +21,10 @@ class Address < ActiveRecord::Base
   validates :city, presence: true
   validates :zipcode, presence: true
   validates :phone, presence: true
-  
+
   belongs_to :user
+
+  def too_many_addresses?(user)
+	Address.where(user_id: user.id).count >= 3
+  end
 end

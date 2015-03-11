@@ -36,11 +36,10 @@ class User < ActiveRecord::Base
     #TODO
     "name1"
   end
-  
+
   def last_incomplete_order
     purchase_orders.incomplete.order('created_at DESC').first
   end
-
 
   def wellness_mileage
     if total_points = me_in_finc_app['total_points']
@@ -48,5 +47,9 @@ class User < ActiveRecord::Base
     else
       0
     end
+  end
+
+  def too_many_credit_cards?(user)
+    CreditCard.where(user_id: user.id).count >= 5
   end
 end

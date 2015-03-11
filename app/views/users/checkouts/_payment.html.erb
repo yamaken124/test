@@ -12,7 +12,7 @@
       <% @addresses.each_with_index do |address, i| %>
         <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
-            <% if i == 0 %>  
+            <% if i == 0 %>
               <%= radio_button_tag "order[payment_attributes[address_id]]", address.id, checked: "checked" %>
             <% else %>
               <%= radio_button_tag "order[payment_attributes[address_id]]", address.id %>
@@ -23,10 +23,14 @@
           </span>
         </li>
       <% end %>
-      <%= link_to(new_account_address_path) do %>
-       <li class="c-link">
-        新規住所登録
-        </li>
+      <% if @addresses.length < 3 %>
+        <%= link_to(new_account_address_path) do %>
+         <li class="c-link">
+          新規住所登録
+          </li>
+        <% end %>
+      <% else %>
+        <li class="c-link">住所は最大３つまで登録できます</li>
       <% end %>
     </ul>
     <h2 class="c-links__title">支払い方法</h2>
@@ -34,7 +38,7 @@
       <li class="c-link--nolink">
         <div class="c-link__radio_div">
           <%= radio_button_tag "payment_method_id", 1, nil, :onclick=> "payment_method_change(this.value)", checked: "checked" %>
-        </div>      
+        </div>
         <p>
          クレジット
         </p>
@@ -42,7 +46,7 @@
       <li class="c-link--nolink">
         <div class="c-link__radio_div">
           <%= radio_button_tag "payment_method_id", 2, nil, :onclick=> "payment_method_change(this.value)" %>
-        </div>      
+        </div>
         <p>
         後払い決済
         </p>
@@ -52,7 +56,7 @@
       <% @gmo_cards.each_with_index do |gmo_card, i| %>
         <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
-            <% if i == 0 %>  
+            <% if i == 0 %>
               <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq], checked: "checked" %>
             <% else %>
               <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq] %>
@@ -64,10 +68,14 @@
           </span>
         </li>
       <% end %>
-      <%= link_to(new_profile_credit_card_path) do %>
-       <li class="c-link">
-        新規クレジット登録
-        </li>
+      <% if @gmo_cards.length < 5 %>
+        <%= link_to(new_profile_credit_card_path) do %>
+         <li class="c-link">
+          新規クレジット登録
+          </li>
+        <% end %>
+      <% else %>
+       <li class="c-link">クレジットカードは最大５枚まで登録できます</li>
       <% end %>
     </ul>
     <h2 class="c-links__title">ポイント使用</h2>

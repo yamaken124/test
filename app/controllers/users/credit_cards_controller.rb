@@ -14,13 +14,17 @@ class Users::CreditCardsController < Users::BaseController
   end
 
   def create
-    gmo_card = GmoMultiPayment::Card.new(@user)
-    is_success = gmo_card.create(params[:card_no], params[:expire])
-    if is_success
-      redirect_to profile_credit_cards_path
+    if !@address.too_many_addresses?(current_user)
+      gmo_card = GmoMultiPayment::Card.new(@user)
+      is_success = gmo_card.create(params[:card_no], params[:expire])
+      if is_success
+        redirect_to profile_credit_cards_path
+      else
+        flash[:notice] = "カード情報または、有効期限が不正です。"
+        render :new
+      end
     else
-      flash[:notice] = "カード情報または、有効期限が不正です。"
-      render :new
+      redirect_to profile_credit_cards_path
     end
   end
 
@@ -47,10 +51,10 @@ class Users::CreditCardsController < Users::BaseController
     def check_multi_payment_user
       @user = current_user
       gmo_member = GmoMultiPayment::Member.new(@user)
-      if gmo_member.search 
+      if gmo_member.search
         is_success = true
       else
-        is_success = gmo_member.create 
+        is_success = gmo_member.create
       end
       if !is_success
         session.delete(:user)

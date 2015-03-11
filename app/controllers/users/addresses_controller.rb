@@ -15,17 +15,21 @@ class Users::AddressesController < Users::BaseController
 
   def create
     @address = Address.new(address_params)
-    if @address.save
-      redirect_to account_addresses_path 
+    if !@address.too_many_addresses?(current_user)
+      if @address.save
+        redirect_to account_addresses_path
+      else
+        render :edit
+      end
     else
-      render :edit
+      redirect_to account_addresses_path
     end
   end
 
   def update
     @address = Address.find(params[:id])
     if @address.update(address_params)
-      redirect_to account_addresses_path 
+      redirect_to account_addresses_path
     else
       render :edit
     end
