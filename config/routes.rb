@@ -46,12 +46,11 @@ Rails.application.routes.draw do
         get'unshipped'
       end
     end
-    resources :bills do 
-      collection do
-        get'post_payment'
-        get'credit'
-        get'regular_purchase/:state', action: :regular_purchase, as: :regular_purchase
-      end
+    #TODO routing setting
+    namespace :bills do 
+      resources :credits
+      resources :post_payments
+      resources :subscriptions
     end
   end
 
