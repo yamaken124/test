@@ -7,7 +7,6 @@
         購入形式: <%= t('order_type.single_order') %>
       </div>
       <%= render partial: 'single_line_item', collection: order_form.object.single_line_items, locals: { order_form: order_form } %>
-
       <% # TODO 定期購買 %>
     </div>
   <% end %>

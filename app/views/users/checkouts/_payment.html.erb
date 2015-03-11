@@ -62,6 +62,24 @@
         </li>
       <% end %>
     </ul>
+    <ul class="c-links js-cresit">
+      <% @gmo_cards.each do |gmo_card| %>
+        <li class="c-link--small_text--nolink">
+          <div class="c-link__radio_div">
+            <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq] %>
+          </div>
+          <span>
+            番号：<%= gmo_card[:CardNo] %> <br />
+            有効期限： <%= gmo_card[:Expire] %>
+          </span>
+        </li>
+      <% end %>
+      <%= link_to new_profile_credit_card_path  do %>
+        <li class="c-link">
+          新規クレジットカード登録
+        </li>
+      <% end %>
+    </ul>
     <h2 class="c-links__title">ポイント使用</h2>
     <ul class="p-payment_method_selections">
       <li class="p-payment_method_selection">
