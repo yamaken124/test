@@ -1,16 +1,17 @@
 <%= form_for([:admins, image.variant, image]) do |i| %>
-
- <div class="field">
-    <% if @image.image? %>
-      <%= image_tag @image.image.url %>
-    <% end %><br>
-    <%= i.label :image %><br>
-    <%= i.file_field :image %>
-    <%= i.hidden_field :image_cache %>
-  </div>
-
-  <div class="actions">
-    <%= i.submit "登録", class: "submit" %>
-  </div>
-
+  <section class="content">
+    <div class="box-body col-md-6">
+      <div class="form-group">
+        <% if @image.image? %>
+          <%= image_tag @image.image.url %>
+        <% end %><br>
+        <%= i.label :image %><br>
+        <%= i.file_field :image %>
+        <%= i.hidden_field :image_cache %>
+      </div>
+      <div class="actions">
+        <%= i.submit "登録", class: "submit" %>
+      </div>
+    </div>
+  </section>
 <% end %>

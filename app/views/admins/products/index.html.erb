@@ -28,8 +28,16 @@
               <td><a href="<%= admins_product_path(id: product.id) %>"><%= product.name %></a></td>
               <td><%= product.description %></td>
               <td><%= t(product.classify_validity) %></td>
-              <td><a href="<%= edit_admins_product_path(id: product.id) %>"><%= "product#edit" %></td>
-              <td><a href="<%= admins_product_path(id: product.id) %>"data-method="delete"><%= "product#delete" %></td>
+              <td>
+                <a href="<%= edit_admins_product_path(id: product.id) %>" class="btn btn-warning btn-sm">
+                  <i class="fa fa-edit"></i>編集
+                </a>  
+              </td>
+              <td>
+                <a href="<%= admins_product_path(id: product.id) %>" class="btn btn-success btn-sm" data-method="delete">
+                  <i class="fa fa-trash-o"></i>削除
+                </a>  
+              </td>
             </tr>
           <% end %>
         </tbody>

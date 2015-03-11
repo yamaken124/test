@@ -1,5 +1,6 @@
 class Admins::ImagesController < ApplicationController
   before_action :set_image, only: [:edit, :update, :destroy]
+  before_action :set_imageable, only: [:show, :edit, :new, :index]
   layout "admins/admins"
 
   def index
@@ -62,4 +63,7 @@ class Admins::ImagesController < ApplicationController
       @image = Image.find(params[:id])
     end
 
+    def set_imageable
+      @imageable = imageable_class.find(params[imageable_key])
+    end
 end

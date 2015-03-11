@@ -7,30 +7,30 @@
   border-bottom:1px solid $finc_color;
 }
 .p-product__price_wrapper{
-	width:100%;
-	min-height:10px;
-	overflow:hidden;
-	.p-product__price{
-		width:170px;
-		height:21px;
-		margin-top:5px;
-		float:right;
+  width:100%;
+  min-height:10px;
+  overflow:hidden;
+  .p-product__price{
+    width:170px;
+    height:21px;
+    margin-top:5px;
+    float:right;
     clear:both;
-		.p-product__price_title{
-			width:60px;
-			font-size:14px;
-			color:$base_font_color;
-			margin-top:5px;
-			float:left;
-		}
-		.p-product__price_value{
-			font-size:20px;
-			color:$finc_color;
-			float:left;
-			.p-product__price_unit{
-				color:$finc_color;
-				font-size:10px;
-			}
-		}
-	}
+    .p-product__price_title{
+      width:60px;
+      font-size:14px;
+      color:$base_font_color;
+      margin-top:5px;
+      float:left;
+    }
+    .p-product__price_value{
+      font-size:20px;
+      color:$finc_color;
+      float:left;
+      .p-product__price_unit{
+        color:$finc_color;
+        font-size:10px;
+      }
+    }
+  }
 }
