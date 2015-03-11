@@ -61,8 +61,8 @@ class PurchaseOrder < ActiveRecord::Base
                 single_order_detail.used_point = params[:order][:used_point]
                 OrderUpdater.new(single_order_detail).update_totals
                 attributes[:payment_attributes] = attributes[:payment_attributes].merge(payment_attributes_from_params(attributes))
-                raise InvalidPointError if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
-                raise InvalidPaymentAttribute unless valid_payment_attributes?(attributes)
+                raise "InvalidPointError" if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
+                raise "InvalidPaymentAttribute" unless valid_payment_attributes?(attributes)
                 single_order_detail.update!(attributes)
 
               when :confirm
