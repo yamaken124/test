@@ -1,5 +1,4 @@
-class Admins::PurchaseOrdersController < ApplicationController
-  layout "admins/admins"
+class Admins::PurchaseOrdersController < Admins::BaseController
   def index
   end
   def show
