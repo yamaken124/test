@@ -1,5 +1,6 @@
 class Users::AddressesController < Users::BaseController
   before_action :set_user
+  before_action :set_continue, only: [:new]
 
   def index
     @addresses = Address.where(user_id: @user.id)
@@ -16,11 +17,7 @@ class Users::AddressesController < Users::BaseController
   def create
     @address = Address.new(address_params)
     if @address.save
-      if referer_params[:referer].include?("checkout/payment")
-        redirect_to checkout_state_path(state: :payment)
-      else
-        redirect_to account_addresses_path
-      end
+      redirect_to continue_params
     else
       render :edit
     end
@@ -48,7 +45,17 @@ class Users::AddressesController < Users::BaseController
       params.require(:address).permit(:last_name, :first_name, :zipcode, :address, :city, :phone).merge(user_id: @user.id)
     end
 
-    def referer_params
-      params.permit(:referer)
+    def set_continue
+      if params[:continue]
+        @continue = params.permit(:continue)[:continue]
+      elsif request.referer.include?("checkout/payment")
+        @continue = checkout_state_path(state: :payment)
+      else
+        @continue = account_addresses_path
+      end
+    end
+
+    def continue_params
+      params.permit(:continue)[:continue]
     end
 end

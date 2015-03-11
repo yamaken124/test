@@ -34,7 +34,7 @@
     <%= f.label :phone, "電話番号" %>
     <%= f.text_field :phone, class: "form__text--long", placeholder: "08012341234" %>
   </div>
-  <%= hidden_field_tag "referer", request.referer %>
+  <%= hidden_field_tag "continue", @continue %>
   <div class="form__field">
     <%= f.submit "登録", class: "c-btn--submit" %>
   </div>
