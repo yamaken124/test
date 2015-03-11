@@ -58,15 +58,11 @@ class PurchaseOrder < ActiveRecord::Base
               case "#{params[:state]}".to_sym
 
               when :payment
-                # single_order_detail.payment.update!(used_point: attributes[:used_point]) #to calculate order_update
                 single_order_detail.used_point = params[:order][:used_point]
                 OrderUpdater.new(single_order_detail).update_totals
                 attributes[:payment_attributes] = attributes[:payment_attributes].merge(payment_attributes_from_params(attributes))
-                if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
-                  if !valid_payment_attributes?(attributes)
-                    raise # error
-                  end
-                end
+                raise InvalidPointError if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
+                raise InvalidPaymentAttribute unless valid_payment_attributes?(attributes)
                 single_order_detail.update!(attributes)
 
               when :confirm
@@ -89,7 +85,7 @@ class PurchaseOrder < ActiveRecord::Base
             payment_params = {}
             payment_params["id"] = single_order_detail.payment.try(:id)
             payment_params["amount"] = single_order_detail.total
-            payment_params["user_id"] = single_order_detail.payment.user_id
+            payment_params["user_id"] = single_order_detail.single_order.purchase_order.user_id
             payment_params
           end
 
