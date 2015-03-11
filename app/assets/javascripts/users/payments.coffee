@@ -1,6 +1,6 @@
 @payment_method_change = (value) ->
   if value/1 == 1
-    $('.js-cresit').show()
+    $('.js-credit').show()
   else
-    $('.js-cresit').hide()
+    $('.js-credit').hide()
   return

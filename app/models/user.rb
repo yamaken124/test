@@ -36,15 +36,14 @@ class User < ActiveRecord::Base
     #TODO
     "name1"
   end
-  
+
   def last_incomplete_order
     purchase_orders.incomplete.order('created_at DESC').first
   end
 
-
   def wellness_mileage
     if total_points = me_in_finc_app['total_points']
-       total_points.to_i - self.used_point_total
+      total_points.to_i - self.used_point_total
     else
       0
     end

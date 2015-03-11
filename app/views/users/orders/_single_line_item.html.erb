@@ -14,7 +14,6 @@
     </div>
   </div>
   <div class="c-product_list__detail">
-    <% # TODO layout %>
     <%= item_form.select :quantity,  (1..100).map{|i| [i,i]} %>
     <%= item_form.hidden_field :variant_id %>
     <%= item_form.hidden_field :id %>

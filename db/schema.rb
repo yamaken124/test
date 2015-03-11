@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150309062547) do
+ActiveRecord::Schema.define(version: 20150311080811) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -137,6 +137,18 @@ ActiveRecord::Schema.define(version: 20150309062547) do
   end
 
   add_index "purchase_orders", ["user_id"], name: "index_purchase_orders_on_user_id", using: :btree
+
+  create_table "shipments", force: :cascade do |t|
+    t.integer  "payment_id", limit: 4
+    t.integer  "address_id", limit: 4
+    t.datetime "shopped_at"
+    t.integer  "state",      limit: 4, default: 0
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+  end
+
+  add_index "shipments", ["address_id"], name: "index_shipments_on_address_id", using: :btree
+  add_index "shipments", ["payment_id"], name: "index_shipments_on_payment_id", using: :btree
 
   create_table "single_line_items", force: :cascade do |t|
     t.integer  "variant_id",             limit: 4
@@ -306,6 +318,8 @@ ActiveRecord::Schema.define(version: 20150309062547) do
   add_foreign_key "products_taxons", "products"
   add_foreign_key "profiles", "users"
   add_foreign_key "purchase_orders", "users"
+  add_foreign_key "shipments", "addresses"
+  add_foreign_key "shipments", "payments"
   add_foreign_key "single_line_items", "single_order_details"
   add_foreign_key "single_line_items", "variants"
   add_foreign_key "single_order_details", "addresses"

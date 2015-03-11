@@ -1,4 +1,4 @@
-  class PurchaseOrder < ActiveRecord::Base
+class PurchaseOrder < ActiveRecord::Base
   module Checkout
     def self.included(klass)
       klass.class_eval do
@@ -56,17 +56,20 @@
             ActiveRecord::Base.transaction do
               attributes = @updating_params[:order] ? @updating_params[:order].permit(permitted_params).delete_if { |k, v| v.nil? } : {}
               case "#{params[:state]}".to_sym
-              when :payment
-                attributes[:payment_attributes] ||= {}
-                attributes[:payment_attributes][:id] = single_order_detail.payment.try(:id)
-                attributes[:payment_attributes][:used_point] = attributes[:used_point]
-                raise if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i) # invalid point error
-                single_order_detail.update!(attributes)
-              when :confirm
-                single_order_detail.single_payment.processing!
-                single_order_detail.single_payment.completed!
-              end
 
+              when :payment
+                single_order_detail.used_point = params[:order][:used_point]
+                OrderUpdater.new(single_order_detail).update_totals
+                attributes[:payment_attributes] = attributes[:payment_attributes].merge(payment_attributes_from_params(attributes))
+                raise "InvalidPointError" if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
+                raise "InvalidPaymentAttribute" unless valid_payment_attributes?(attributes)
+                single_order_detail.update!(attributes)
+
+              when :confirm
+                single_order_detail.payment.processing!
+                single_order_detail.payment.completed!
+
+              end
               send("#{checkout_steps[checkout_step_index(params[:state]) + 1]}!")
               self.reload
             end
@@ -75,6 +78,22 @@
             false
           end
         end
+
+
+        private
+
+          def payment_attributes_from_params(attributes)
+            payment_params = {}
+            payment_params["id"] = single_order_detail.payment.try(:id)
+            payment_params["amount"] = single_order_detail.total
+            payment_params["user_id"] = single_order_detail.single_order.purchase_order.user_id
+            payment_params
+          end
+
+          def valid_payment_attributes?(attributes)
+            attributes[:payment_attributes][:address_id].present? && attributes[:payment_attributes][:gmo_card_seq_temporary].present?
+          end
+
       end
     end
   end
