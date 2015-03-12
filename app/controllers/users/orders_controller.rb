@@ -11,9 +11,6 @@ class Users::OrdersController < Users::BaseController
   def thanks
     @number = params[:number]
     raise ActiveRecord::RecordNotFound if !Payment.where(number: @number).first.completed?
-    @detail = SingleOrderDetail
-    .where(id: Payment.where(number: @number).first.single_order_detail_id)
-    .includes(:single_line_items).first
     set_item_and_prouct
   end
 
