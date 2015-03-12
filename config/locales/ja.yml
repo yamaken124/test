@@ -226,3 +226,7 @@ ja:
       next: "次ページ"
       last: "最後"
       truncate: "..."
+
+  validate_registration:
+    address: "登録件数が上限に達しています"
+    credit_card: "登録枚数が上限に達しています"
