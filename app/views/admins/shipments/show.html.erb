@@ -19,6 +19,42 @@
 </div>
 
 <section class="content">
+
+  <div class="content col-md-9">
+    <h4 class="box-title">購入商品</h4>
+    <%= form_tag regist_tracking_code_admins_shipment_path(@shipment), method: "patch" do %>
+      <table class="table c-table">
+        <thead>
+          <tr>
+            <th>名前</th>
+            <th>画像</th>
+            <th>値段</th>
+            <th>個数</th>
+            <th>合計</th>
+          </tr>
+          <% @shipment.payment.single_order_detail.single_line_items.each do |single_line_item| %>
+            <tr>
+              <td><%= single_line_item.variant.sku %></td>
+              <td><%= image_tag single_line_item.variant.images.first.try(:image).try(:url), class: "thumb" %></td>
+              <td><%= single_line_item.price %></td>
+              <td><%= single_line_item.quantity %></td>
+              <td><%= single_line_item.quantity * single_line_item.price %>円</td>
+            </tr>
+          <% end %>
+          <tr>
+            <td><%= label_tag :tracking, "Tracking" %></td>
+            <td colspan="3">
+              <%= text_field_tag :tracking, @shipment.tracking, class: "form-control", placeholder: "Enter tracking code" %>
+            </td>
+            <td>
+              <%= submit_tag "登録", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
+            </td>
+          </tr>
+        </thead>
+      </table>
+    <% end %>
+  </div>
+
   <div class="content col-md-9">
     <h4 class="box-title">お届先情報</h4>
     <table class="table c-table">
@@ -43,30 +79,6 @@
           <th>電話番号</th>
           <th><%= @shipment.payment.address.phone %></th>
         </tr>
-      </thead>
-    </table>
-  </div>
-
-  <div class="content col-md-9">
-    <h4 class="box-title">購入商品</h4>
-    <table class="table c-table">
-      <thead>
-        <tr>
-          <th>名前</th>
-          <th>画像</th>
-          <th>値段</th>
-          <th>個数</th>
-          <th>合計</th>
-        </tr>
-        <% @shipment.payment.single_order_detail.single_line_items.each do |single_line_item| %>
-          <tr>
-            <td><%= single_line_item.variant.sku %></td>
-            <td><%= image_tag single_line_item.variant.images.first.try(:image).try(:url), class: "thumb" %></td>
-            <td><%= single_line_item.price %></td>
-            <td><%= single_line_item.quantity %></td>
-            <td><%= single_line_item.quantity * single_line_item.price %>円</td>
-          </tr>
-        <% end %>
       </thead>
     </table>
   </div>

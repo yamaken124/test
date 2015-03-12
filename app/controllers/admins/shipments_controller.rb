@@ -1,5 +1,5 @@
 class Admins::ShipmentsController < Admins::BaseController
-  before_filter :set_shipment, only: [:show, :update]
+  before_filter :set_shipment, only: [:show, :update, :regist_tracking_code]
 
   def index
     @shipments = Shipment.all.includes(payment: [:payment_method, :user])
@@ -17,6 +17,12 @@ class Admins::ShipmentsController < Admins::BaseController
     when :canceled
       @shipment.calceled
     end
+    @shipment.save!
+    redirect_to admins_shipment_path(@shipment)
+  end
+
+  def regist_tracking_code
+    @shipment.tracking = params[:tracking]
     @shipment.save!
     redirect_to admins_shipment_path(@shipment)
   end
