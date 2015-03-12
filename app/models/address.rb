@@ -32,7 +32,7 @@ class Address < ActiveRecord::Base
 
   def address_count
     if Address.where(user_id: self.user_id).length >= 3
-      errors.add(:base, "登録件数が上限に達しています")
+      errors.add(:base, I18n.t("validate_registration.address"))
     end
   end
 
