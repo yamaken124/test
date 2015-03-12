@@ -109,6 +109,7 @@ class Users::CheckoutsController < Users::BaseController
 
     def before_confirm
       @payment = detail.payment
+      @address = Address.where(id: @payment.address_id).first
       if @payment.gmo_card_seq_temporary
         gmo_cards = GmoMultiPayment::Card.new(current_user).search
         @gmo_card = gmo_cards[@payment.gmo_card_seq_temporary]
