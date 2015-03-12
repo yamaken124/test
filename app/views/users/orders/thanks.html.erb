@@ -4,21 +4,21 @@
 </div>
 
 <h2 class="c-links__title">購入詳細</h2>
-<% @items.each do |item| %>
+<% @variants.each do |variant| %>
   <div class="c-product_list">
     <div class="c-product_list__image">
-      <%= image_tag item.images.first.image.url %>
+      <%= image_tag variant.images.first.image.url %>
     </div>
     <div class="c-product__list_detail_wrapper">
       <div class="c-product_list__title">
-        <%= @products.where(id: item.product_id).name %>
+        <%= @products.where(id: variant.product_id).name %>
       </div>
       <div class="c-product_list__price">
-        ￥<%= item.prices.first.amount %>(<%= @detail.single_line_items.where(variant_id: item.id).first.quantity %>個)
+        ￥<%= variant.prices.first.amount %>(<%= @items.where(variant_id: variant.id).first.quantity %>個)
       </div>
     </div>
   </div>
   <div class="c-product_list__detail">
-  <p class="u-margin__left_short"><%= link_to "削除", cancel_orders_path(@number), method: :patch %></p>
-</div>
+    <p class="u-margin__left_short"><%= link_to "削除", cancel_orders_path(@number), method: :patch %></p>
+  </div>
 <% end %>

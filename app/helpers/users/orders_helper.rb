@@ -59,13 +59,16 @@ module Users::OrdersHelper
     @last_incomplete_order ||= try_current_user.last_incomplete_order
   end
 
-  def set_item_and_prouct #checkout_controller の set_common_parameterとかぶっているー＞concernsのorderの中とか？
-    @items = Variant
-    .where(id: @detail.single_line_items.pluck(:variant_id))
+  def set_item_and_prouct
+    detail = SingleOrderDetail.find(Payment.where(number: @number).pluck(:single_order_detail_id).first)
+    @items = SingleLineItem.where(single_order_detail_id: detail.id)
+
+    @variants = Variant
+    .where(id: @items.pluck(:variant_id))
     .includes(:images)
     .includes(:prices)
     @products = Product
-    .where(id: @items.pluck(:product_id))
+    .where(id: @variants.pluck(:product_id))
   end
 
 end
