@@ -41,9 +41,11 @@
     </ul>
 
     <h2 class="c-links__title">購入詳細</h2>
-    <div class="c-payment_method_section">
-      購入形式: <%= t('order_type.single_order') %>
-    </div>
+    <% if false #TODO %>
+      <div class="c-payment_method_section">
+        購入形式: <%= t('order_type.single_order') %>
+      </div>
+    <% end %>
     <% @items.each do |item| %>
       <div class="c-product_list">
         <div class="c-product_list__image">

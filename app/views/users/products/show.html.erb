@@ -12,7 +12,11 @@
     <% @product.variants.single_order.each do |single| %>
       <% if single.variant_available? %>
         <div class="p-product__price">
-          <p class="p-product__price_title"><%=t('order_type.single_order')%></p>
+          <p class="p-product__price_title">
+            <% if(@product.subscription_master_price.present?) %>
+              <%=t('order_type.single_order')%>
+            <% end %>
+          </p>
           <p class="p-product__price_value">
             <%= single.prices.pluck(:amount).first %>円
             <span class="p-product__price_unit">(税込)</span>
@@ -24,7 +28,11 @@
     <% @product.variants.subscription_order.each do |subscription| %>
       <% if subscription.variant_available? %>
         <div class="p-product__price">
-          <p class="p-product__price_title"><%=t('order_type.subscription_order')%></p>
+          <p class="p-product__price_title">
+            <% if(@product.single_master_price.present?) %>
+              <%=t('order_type.subscription_order')%>
+            <% end %>
+          </p>
           <p class="p-product__price_value">
             <%= subscription.prices.pluck(:amount).first %>円
             <span class="p-product__price_unit">(税込)</span>
@@ -37,36 +45,44 @@
     <ul class="p-payment_method_selections">
       <% @product.variants.single_order.each do |single| %>
         <% if single.variant_available? %>
-          <li class="p-payment_method_selection">
-            <div class="p-payment_method_selection__radio">
-              <%= radio_button_tag :variant_id, single.id %>
-            </div>
-            <p class="p-payment_method_selection__title">
-              <%=t('order_type.single_order')%>
-            </p>
-            <p class="p-payment_method_selection__price">
-              <%= single.prices.pluck(:amount).first %>円
-            </p>
-          </li>
+          <% if(@product.subscription_master_price.present?) %>
+            <li class="p-payment_method_selection">
+              <div class="p-payment_method_selection__radio">
+                  <%= radio_button_tag :variant_id, single.id %>
+              </div>
+              <p class="p-payment_method_selection__title">
+                <%=t('order_type.single_order')%>
+              </p>
+              <p class="p-payment_method_selection__price">
+                <%= single.prices.pluck(:amount).first %>円
+              </p>
+            </li>
+          <% else %>
+            <%= hidden_field_tag :variant_id, single.id %>
+          <% end %>
         <% end %>
       <% end %>
 
       <% @product.variants.subscription_order.each do |subscription| %>
         <% if subscription.variant_available? %>
-          <li class="p-payment_method_selection">
-            <div class="p-payment_method_selection__radio">
-              <%= radio_button_tag :variant_id, subscription.id %>
-            </div>
-            <p class="p-payment_method_selection__title">
-              <%=t('order_type.subscription_order')%>
-            </p>
-            <p class="p-payment_method_selection__price">
-              <%= subscription.prices.pluck(:amount).first %>円
-            </p>
-            <p class="p-payment_method_selection__attention">
-              ※初回2ヶ月分の料金をいただきます。
-            </p>
-          </li>
+          <% if(@product.single_master_price.present?) %>
+            <li class="p-payment_method_selection">
+              <div class="p-payment_method_selection__radio">
+                <%= radio_button_tag :variant_id, subscription.id %>
+              </div>
+              <p class="p-payment_method_selection__title">
+                <%=t('order_type.subscription_order')%>
+              </p>
+              <p class="p-payment_method_selection__price">
+                <%= subscription.prices.pluck(:amount).first %>円
+              </p>
+              <p class="p-payment_method_selection__attention">
+                ※初回2ヶ月分の料金をいただきます。
+              </p>
+            </li>
+          <% else %>
+            <%= hidden_field_tag :variant_id, subscription.id %>
+          <% end %>
         <% end %>
       <% end %>
       <li class="p-payment_method_selection">
@@ -87,7 +103,7 @@
         <%= image_tag "users/icon_yuka.png" %>
       </div>
       <div class="p-list__fincrew_description">
-        いいいいいいい 
+        いいいいいいい
       </div>
       </li>
       <li class="p-list">
