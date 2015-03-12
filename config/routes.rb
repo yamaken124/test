@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       collection do
         post :populate
         get  ':number/thanks', action: :thanks, :as => :thanks
+        patch '/cancel/:id' => 'orders#cancel', :as => :cancel
       end
     end
 
@@ -48,7 +49,7 @@ Rails.application.routes.draw do
       end
     end
     #TODO routing setting
-    namespace :bills do 
+    namespace :bills do
       resources :credits
       resources :post_payments
       resources :subscriptions

@@ -25,7 +25,7 @@ module Users::OrdersHelper
       single_order.save!
       single_order.build_single_order_detail.save!
     end
- 
+
     @current_order
   end
 
@@ -58,4 +58,14 @@ module Users::OrdersHelper
   def last_incomplete_order
     @last_incomplete_order ||= try_current_user.last_incomplete_order
   end
+
+  def set_item_and_prouct #checkout_controller の set_common_parameterとかぶっているー＞concernsのorderの中とか？
+    @items = Variant
+    .where(id: @detail.single_line_items.pluck(:variant_id))
+    .includes(:images)
+    .includes(:prices)
+    @products = Product
+    .where(id: @items.pluck(:product_id))
+  end
+
 end

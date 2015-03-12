@@ -31,6 +31,10 @@ class Payment < ActiveRecord::Base
             transitions from: :pending, to: :failed
           end
 
+          event :canceled, after: :cancel_order do
+            transitions from: :completed, to: :failed
+          end
+
         end
 
         def pay_with_gmo_payment
@@ -42,6 +46,10 @@ class Payment < ActiveRecord::Base
 
         def register_shipment
           Shipment.new(set_shipment_params).save!
+        end
+
+        def cancel_order
+          raise unless GmoMultiPayment::Transaction.new(self).transaction_void
         end
       end
     end
