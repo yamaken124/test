@@ -1,5 +1,4 @@
-class Admins::Bills::CreditsController < ApplicationController
-  layout "admins/admins"
+class Admins::Bills::CreditsController < Admins::BaseController
   def index
   end
 end

@@ -1,8 +1,7 @@
-class Admins::VariantsController < ApplicationController
+class Admins::VariantsController < Admins::BaseController
   before_action :set_variant, only: [:edit, :update, :destroy]
   before_action :set_price, only: [:update]
   before_action :set_product,only: [:index,:new,:edit]
-  layout "admins/admins"
 
   def index
     @variants = Variant.includes(:prices) \

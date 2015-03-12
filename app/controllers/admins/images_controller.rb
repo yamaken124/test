@@ -1,7 +1,6 @@
-class Admins::ImagesController < ApplicationController
+class Admins::ImagesController < Admins::BaseController
   before_action :set_image, only: [:edit, :update, :destroy]
   before_action :set_imageable, only: [:show, :edit, :new, :index]
-  layout "admins/admins"
 
   def index
     @images = Image.includes(imageable_model).where(images: {imageable_id: params[imageable_key]})
