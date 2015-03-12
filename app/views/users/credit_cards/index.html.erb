@@ -1,7 +1,7 @@
 <div class="p-wrapper--have_padding">
   <h2 class="title">クレジット登録管理</h2>
   <% if @gmo_cards.count > 4 %>
-    <p class="u-base_font_color">※クレジット登録枚数は最大5枚です。</p>
+    <p class="u-base_font_color">※<%= t('validate_registration.credit_card') %></p>
   <% else %>
     <%= link_to new_profile_credit_card_path do %>
 	    <div class="c-btn--submit u-margin__bottom_middle">

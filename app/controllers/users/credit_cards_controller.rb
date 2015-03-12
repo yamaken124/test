@@ -14,7 +14,7 @@ class Users::CreditCardsController < Users::BaseController
   end
 
   def create
-    if !@address.too_many_addresses?(current_user)
+    if GmoMultiPayment::Card.new(@user).search.length < 5
       gmo_card = GmoMultiPayment::Card.new(@user)
       is_success = gmo_card.create(params[:card_no], params[:expire])
       if is_success

@@ -49,7 +49,4 @@ class User < ActiveRecord::Base
     end
   end
 
-  def too_many_credit_cards?(user)
-    CreditCard.where(user_id: user.id).count >= 5
-  end
 end

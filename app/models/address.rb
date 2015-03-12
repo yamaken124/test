@@ -22,9 +22,18 @@ class Address < ActiveRecord::Base
   validates :zipcode, presence: true
   validates :phone, presence: true
 
+  validate :address_count
+
   belongs_to :user
 
   def too_many_addresses?(user)
-	Address.where(user_id: user.id).count >= 3
+    Address.where(user_id: user.id).count >= 3
   end
+
+  def address_count
+    if Address.where(user_id: self.user_id).length >= 3
+      errors.add(:base, "登録件数が上限に達しています")
+    end
+  end
+
 end
