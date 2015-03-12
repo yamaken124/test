@@ -6,7 +6,10 @@ class Admins::ShipmentsController < Admins::BaseController
   end
 
   def show
-    @single_line_items = SingleLineItem.where(single_order_detail_id: @shipment.payment.single_order_detail_id)
+    @single_line_items = SingleLineItem.where(single_order_detail_id: @shipment.payment.single_order_detail_id).includes(:variant)
+    @address = Address.find(@shipment.payment.address_id)
+    @single_order_detail = SingleOrderDetail.find(@shipment.payment.single_order_detail_id)
+    @purchase_user = User.find(@shipment.payment.user_id)
   end
 
   def update

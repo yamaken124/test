@@ -25,23 +25,23 @@
       <thead>
         <tr>
           <th>名前</th>
-          <th><%= @shipment.payment.address.name %></th>
+          <th><%= @address.name %></th>
         </tr>
         <tr>
           <th>郵便番号</th>
-          <th><%= @shipment.payment.address.zipcode %></th>
+          <th><%= @address.zipcode %></th>
         </tr>
         <tr>
           <th>都道府県</th>
-          <th><%= @shipment.payment.address.city %></th>
+          <th><%= @address.city %></th>
         </tr>
         <tr>
           <th>住所</th>
-          <th><%= @shipment.payment.address.address %></th>
+          <th><%= @address.address %></th>
         </tr>
         <tr>
           <th>電話番号</th>
-          <th><%= @shipment.payment.address.phone %></th>
+          <th><%= @address.phone %></th>
         </tr>
       </thead>
     </table>
@@ -91,15 +91,15 @@
         </tr>
         <tr>
           <th>配送料</th>
-          <th><%= @shipment.payment.single_order_detail.shipment_total %>円</th>
+          <th><%= @single_order_detail.shipment_total %>円</th>
         </tr>
         <tr>
           <th>税金</th>
-          <th><%= @shipment.payment.single_order_detail.additional_tax_total %>円</th>
+          <th><%= @single_order_detail.additional_tax_total %>円</th>
         </tr>
         <tr>
           <th>使用ポイント</th>
-          <th><%= @shipment.payment.single_order_detail.used_point %>Pt</th>
+          <th><%= @single_order_detail.used_point %>Pt</th>
         </tr>
         <tr>
           <th>合計金額</th>
@@ -110,15 +110,15 @@
         </tr>
         <tr>
           <th>名前</th>
-          <th><%= @shipment.payment.user.name %></th>
+          <th><%= @purchase_user.name %></th>
         </tr>
         <tr>
           <th>電話番号</th>
-          <th><%= @shipment.payment.user.email %></th>
+          <th><%= @purchase_user.email %></th>
         </tr>
         <tr>
           <th>Email</th>
-          <th><%= @shipment.payment.user.email %></th>
+          <th><%= @purchase_user.email %></th>
         </tr>
       </thead>
     </table>
