@@ -15,8 +15,8 @@
       <a href="<%= edit_account_address_path(address) %>">
         <li class="c-link--small_text">
         <span>
-          <%= address.last_name %><br>
-          <%= address.address %>
+          <%= address.last_name %>&nbsp;<%= address.first_name %><br>
+          <%= address.zipcode %>&nbsp;<%= address.city %>&nbsp;<%= address.address %><br>
         </span>
         </li>
       </a>

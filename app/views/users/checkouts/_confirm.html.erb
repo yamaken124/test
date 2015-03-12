@@ -25,8 +25,8 @@
     <ul class="p-payment_method_selections">
       <li class="p-payment_method_selection">
         <span>
-          <%= @payment.address.last_name %><br>
-          <%= @payment.address.address %>
+          <%= @address.last_name %>&nbsp;<%= @address.first_name %><br>
+          <%= @address.zipcode %>&nbsp;<%= @address.city %>&nbsp;<%= @address.address %><br>
         </span>
       </li>
     </ul>

@@ -14,7 +14,9 @@
           <div class="c-link__radio_div">
             <%= radio_button_tag "order[payment_attributes[address_id]]", address.id, i == 0 ? 'checked: "checked"' : nil %>
           </div>
-          <%= label_tag "order_payment_attributes_address_id_#{address.id}", "#{address.city}<br>#{address.address}".html_safe %>
+          <%= label_tag "order_payment_attributes_address_id_#{address.id}",
+           "#{address.last_name}&nbsp;#{address.first_name}<br>
+           #{address.zipcode}&nbsp;#{address.city}&nbsp;#{address.address}".html_safe %>
         </li>
       <% end %>
       <% if @addresses.length < 3 %>
