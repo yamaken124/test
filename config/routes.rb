@@ -43,9 +43,7 @@ Rails.application.routes.draw do
     end
     resources :shipments, only:[:index, :show, :update] do
       collection do
-        get 'ready'
-        get 'shipped'
-        get 'canceled'
+        get 'state/:state', :to => 'shipments#index', :as => :state
       end
       member do
         patch 'regist_tracking_code'

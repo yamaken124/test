@@ -1,42 +1,17 @@
 class Admins::ShipmentsController < Admins::BaseController
+  before_filter :ensure_valid_state
   before_filter :set_shipment, only: [:show, :update, :regist_tracking_code]
+  before_filter :set_title, only: [:index]
+  before_filter :set_shipments, only: [:index]
 
   def index
-    @title = "発送リスト"
-    @shipments = Shipment.all.includes(payment: [:payment_method, :user])
-  end
-  
-  def ready
-    @title = "未発送リスト"
-    @shipments = Shipment.ready.includes(payment: [:payment_method, :user])
-    render :action => :index
-  end
-
-  def shipped
-    @title = "発送済リスト"
-    @shipments = Shipment.shipped.includes(payment: [:payment_method, :user])
-    render :action => :index
-  end
-
-  def canceled
-    @title = "キャンセルリスト"
-    @shipments = Shipment.canceled.includes(payment: [:payment_method, :user])
-    render :action => :index
-  end
+  end 
 
   def show
   end
 
   def update
-    case params[:state].to_sym
-    when :ready
-      @shipment.ready
-    when :shipped
-      @shipment.shipped
-    when :canceled
-      @shipment.canceled
-    end
-    @shipment.save!
+    @shipment.send("#{params[:state]}!")
     redirect_to admins_shipment_path(@shipment)
   end
 
@@ -47,7 +22,23 @@ class Admins::ShipmentsController < Admins::BaseController
   end
 
   private
-   def set_shipment
-     @shipment = Shipment.includes(payment: [:user, :address, :single_order_detail => :single_line_items]).find(params[:id])
-   end
+    def set_shipment
+      @shipment = Shipment.includes(payment: [:user, :address, :single_order_detail => :single_line_items]).find(params[:id])
+    end
+
+    def set_title
+      @title = params[:state] ? "ステータス : #{params[:state]}" : "全発送リスト一覧"
+    end
+
+    def set_shipments 
+      @shipments = params[:state] ? Shipment.send(params[:state]).includes(payment: [:payment_method, :user]) : Shipment.all.includes(payment: [:payment_method, :user])
+    end
+
+    def ensure_valid_state
+      raise "Invalid State" if params[:state] && !unknown_state?
+    end
+
+    def unknown_state?
+      Shipment.states.keys.include?(params[:state])
+    end
 end

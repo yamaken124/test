@@ -1,8 +1,16 @@
 <section class="content col-md-2 float-right">
 <ul class="nav nav-pills nav-stacked">
-  <li <%= 'class=active' if request.path_info == admins_shipments_path %>><a href="<%= admins_shipments_path %>">注文一覧</a></li>
-  <li <%= 'class=active' if request.path_info == ready_admins_shipments_path %>><a href="<%= ready_admins_shipments_path %>">未発送一覧</a></li>
-  <li <%= 'class=active' if request.path_info == shipped_admins_shipments_path %>><a href="<%= shipped_admins_shipments_path %>">発送済み一覧</a></li>
-  <li <%= 'class=active' if request.path_info == canceled_admins_shipments_path %>><a href="<%= canceled_admins_shipments_path %>">キャンセル一覧</a></li>
+  <li <%= 'class=active' if request.path_info == admins_shipments_path %>>
+    <a href="<%= admins_shipments_path %>">全発送リスト一覧</a>
+  </li>
+  <li <%= 'class=active' if request.path_info == state_admins_shipments_path(state: "ready") %>>
+    <a href="<%= state_admins_shipments_path(state: "ready") %>">未発送一覧</a>
+  </li>
+  <li <%= 'class=active' if request.path_info == state_admins_shipments_path(state: "shipped") %>>
+    <a href="<%= state_admins_shipments_path(state: "shipped") %>">発送済み一覧</a>
+  </li>
+  <li <%= 'class=active' if request.path_info == state_admins_shipments_path(state: "canceled") %>>
+    <a href="<%= state_admins_shipments_path(state: "canceled") %>">キャンセル一覧</a>
+  </li>
 </ul>
 </section>
