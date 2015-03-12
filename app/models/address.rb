@@ -22,18 +22,12 @@ class Address < ActiveRecord::Base
   validates :zipcode, presence: true
   validates :phone, presence: true
 
-  validate :address_count
+  validates_with AddressCountValidator
 
   belongs_to :user
 
   def too_many_addresses?(user)
     Address.where(user_id: user.id).count >= 3
-  end
-
-  def address_count
-    if Address.where(user_id: self.user_id).length >= 3
-      errors.add(:base, I18n.t("validate_registration.address"))
-    end
   end
 
 end
