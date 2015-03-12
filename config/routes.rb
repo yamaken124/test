@@ -43,8 +43,12 @@ Rails.application.routes.draw do
     end
     resources :shipments, only:[:index, :show, :update] do
       collection do
-        get'ready'
-        get'shipped'
+        get 'ready'
+        get 'shipped'
+        get 'canceled'
+      end
+      member do
+        patch 'regist_tracking_code'
       end
     end
     #TODO routing setting

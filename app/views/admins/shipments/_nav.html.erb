@@ -3,5 +3,6 @@
   <li <%= 'class=active' if request.path_info == admins_shipments_path %>><a href="<%= admins_shipments_path %>">注文一覧</a></li>
   <li <%= 'class=active' if request.path_info == ready_admins_shipments_path %>><a href="<%= ready_admins_shipments_path %>">未発送一覧</a></li>
   <li <%= 'class=active' if request.path_info == shipped_admins_shipments_path %>><a href="<%= shipped_admins_shipments_path %>">発送済み一覧</a></li>
+  <li <%= 'class=active' if request.path_info == canceled_admins_shipments_path %>><a href="<%= canceled_admins_shipments_path %>">キャンセル一覧</a></li>
 </ul>
 </section>

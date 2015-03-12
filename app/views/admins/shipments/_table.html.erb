@@ -18,7 +18,7 @@
         <td><%= shipment.state %></td>
         <td><%= shipment.payment.payment_method.name %></td>
         <td><%= shipment.payment.user.name %></td>
-        <td><%= shipment.payment.amount %>円</td>
+        <td><%= number_to_currency(shipment.payment.amount) %></td>
         <td>
           <a href="<%= admins_shipment_path(shipment) %>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
         </td>
