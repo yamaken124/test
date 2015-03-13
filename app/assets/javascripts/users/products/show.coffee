@@ -1,3 +1,3 @@
 $(window).load ->
-  $('.flexslider').flexslider animation: 'slide'
-	  return
+	$('.flexslider').flexslider animation: 'slide'
+	return
