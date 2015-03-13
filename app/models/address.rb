@@ -21,6 +21,11 @@ class Address < ActiveRecord::Base
   validates :city, presence: true
   validates :zipcode, presence: true
   validates :phone, presence: true
-  
+
   belongs_to :user
+
+  scope :abc, lambda { |user_id, is_main|
+      where("user_id = ?", user_id).where("is_main = ?", is_main)
+    }
+
 end

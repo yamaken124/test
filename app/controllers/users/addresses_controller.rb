@@ -1,6 +1,7 @@
 class Users::AddressesController < Users::BaseController
   before_action :set_user
   before_action :set_continue, only: [:new]
+  before_action :set_is_main, only: [:create, :update]
 
   def index
     @addresses = Address.where(user_id: @user.id)
@@ -37,16 +38,26 @@ class Users::AddressesController < Users::BaseController
   end
 
   private
+
     def set_user
       @user = User.find(current_user.id)
     end
 
-    def address_params
-      if Address.where(user_id: @user.id).size == 0
-        params.require(:address).permit(:last_name, :first_name, :zipcode, :address, :city, :phone).merge(user_id: @user.id, default: true)
+    def set_is_main
+      if params[:address][:is_main] && Address.where(user_id: @user.id).size > 0
+        @address_is_main = true
+        if exist_main_address = Address.abc(@user.id, true).present?
+          exist_main_address.first.update(is_main: false)
+        end
+      elsif Address.where(user_id: @user.id).size == 0
+        @address_is_main = true
       else
-        params.require(:address).permit(:last_name, :first_name, :zipcode, :address, :city, :phone).merge(user_id: @user.id)
+        @address_is_main = false
       end
+    end
+
+    def address_params
+      params.require(:address).permit(:last_name, :first_name, :zipcode, :address, :city, :phone).merge(user_id: @user.id, is_main: @address_is_main)
     end
 
     def set_continue
