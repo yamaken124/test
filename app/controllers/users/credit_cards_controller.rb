@@ -1,5 +1,6 @@
 class Users::CreditCardsController < Users::BaseController
   before_action :check_multi_payment_user
+  before_action :set_credit_card_upper_limit, only: [:index, :create]
 
   def index
     @gmo_cards = GmoMultiPayment::Card.new(@user).search
@@ -14,10 +15,8 @@ class Users::CreditCardsController < Users::BaseController
   end
 
   def create
-    if GmoMultiPayment::Card.new(@user).search.length < 5
-      gmo_card = GmoMultiPayment::Card.new(@user)
-      is_success = gmo_card.create(params[:card_no], params[:expire])
-      if is_success
+    if GmoMultiPayment::Card.new(@user).search.length < @upper_limit
+      if GmoMultiPayment::Card.new(@user).create(params[:card_no], params[:expire])
         redirect_to profile_credit_cards_path
       else
         flash[:notice] = "カード情報または、有効期限が不正です。"
@@ -30,9 +29,7 @@ class Users::CreditCardsController < Users::BaseController
 
   def update
     @card_seq = params[:id]
-    gmo_card = GmoMultiPayment::Card.new(@user)
-    is_success = gmo_card.update(params[:card_no], params[:expire], params[:card_seq], params[:default_flag])
-    if is_success
+    if GmoMultiPayment::Card.new(@user).update(params[:card_no], params[:expire], params[:card_seq], params[:default_flag])
       redirect_to profile_credit_cards_path
     else
       flash[:notice] = "カード情報または、有効期限が不正です。"
@@ -61,4 +58,9 @@ class Users::CreditCardsController < Users::BaseController
         redirect_to new_user_session_path
       end
     end
+
+    def set_credit_card_upper_limit
+      @upper_limit = 5
+    end
+
 end

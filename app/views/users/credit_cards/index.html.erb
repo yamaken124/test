@@ -1,6 +1,6 @@
 <div class="p-wrapper--have_padding">
   <h2 class="title">クレジット登録管理</h2>
-  <% if @gmo_cards.count > 4 %>
+  <% if @gmo_cards.count >= @upper_limit %>
     <p class="u-base_font_color">※<%= t('validate_registration.credit_card') %></p>
   <% else %>
     <%= link_to new_profile_credit_card_path do %>

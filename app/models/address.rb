@@ -22,12 +22,13 @@ class Address < ActiveRecord::Base
   validates :zipcode, presence: true
   validates :phone, presence: true
 
-  validates_with AddressCountValidator
+  validates_with AddressCountValidator, on: :create
 
   belongs_to :user
 
-  def too_many_addresses?(user)
-    Address.where(user_id: user.id).count >= 3
+  def reach_upper_limit?(user)
+    upper_limit = 3
+    Address.where(user_id: user.id).count >= upper_limit
   end
 
 end

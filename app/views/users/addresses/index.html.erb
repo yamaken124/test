@@ -1,6 +1,6 @@
 <div class="p-wrapper--have_padding">
   <h2 class="title">住所管理</h2>
-  <% if @addresses.count >= 3 %>
+  <% if @addresses.first.reach_upper_limit?(current_user) %>
     <p class="u-base_font_color"><%= t('validate_registration.address') %></p>
   <% else %>
     <%= link_to new_account_address_path do %>
