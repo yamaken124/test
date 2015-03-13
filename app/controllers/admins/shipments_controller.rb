@@ -2,7 +2,6 @@ class Admins::ShipmentsController < Admins::BaseController
   before_filter :ensure_valid_state
   before_filter :set_shipment, only: [:show, :update_state, :update_tracking_code]
   before_filter :setup_for_current_state, only: [:index]
-  before_filter :set_shipments_by_state, only: [:index]
 
   def index
     @title ||= "全発送リスト"
@@ -30,6 +29,8 @@ class Admins::ShipmentsController < Admins::BaseController
     def setup_for_current_state
       method_name = :"before_#{params[:state]}"
       send(method_name) if respond_to?(method_name, true)
+      @shipments = params[:state] ? Shipment.send(params[:state]).includes(payment: [:payment_method, :user]) : \
+        Shipment.all.includes(payment: [:payment_method, :user])
     end
 
     def before_ready
@@ -42,11 +43,6 @@ class Admins::ShipmentsController < Admins::BaseController
 
     def before_canceled
       @title = "キャンセルリスト"
-    end
-
-    def set_shipments_by_state 
-      @shipments = params[:state] ? Shipment.send(params[:state]).includes(payment: [:payment_method, :user]) : \
-        Shipment.all.includes(payment: [:payment_method, :user])
     end
 
     def ensure_valid_state
