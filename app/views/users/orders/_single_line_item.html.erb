@@ -6,7 +6,7 @@
     </div>
     <div class="c-product__list_detail_wrapper">
       <div class="c-product_list__title">
-        <%= link_to variant.product.name, product_path(variant.product) %>
+        <%= link_to variant.name, product_path(variant.product_id) %>
       </div>
       <div class="c-product_list__price">
         <%= "￥#{variant.prices.first.amount}" %>
