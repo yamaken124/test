@@ -26,9 +26,10 @@ class Address < ActiveRecord::Base
 
   belongs_to :user
 
+  UpperLimit = 3
+
   def reach_upper_limit?(user)
-    upper_limit = 3
-    Address.where(user_id: user.id).count >= upper_limit
+    Address.where(user_id: user.id).count >= UpperLimit
   end
 
 end

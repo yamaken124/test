@@ -19,7 +19,7 @@
            #{address.zipcode}&nbsp;#{address.city}&nbsp;#{address.address}".html_safe %>
         </li>
       <% end %>
-      <% if @addresses.blank? || !@addresses.first.reach_upper_limit?(current_user) %>
+      <% if @addresses.size < Address::UpperLimit %>
         <%= link_to(new_account_address_path(continue: checkout_state_path(state: :payment))) do %>
           <li class="c-link">新規住所登録</li>
         <% end %>
@@ -52,10 +52,12 @@
           <%= label_tag "order_payment_attributes_gmo_card_seq_temporary_#{gmo_card[:CardSeq]}", "番号：#{gmo_card[:CardNo]}<br />有効期限：#{gmo_card[:Expire]}".html_safe %>
         </li>
       <% end %>
-      <%= link_to(new_profile_credit_card_path) do %>
-       <li class="c-link">
-        新規クレジット登録
-        </li>
+      <% if @gmo_cards.size < GmoMultiPayment::Card::UpperLimit %>
+        <%= link_to(new_profile_credit_card_path) do %>
+          <li class="c-link">新規クレジット登録</li>
+        <% end %>
+      <% else %>
+        <li class="c-link"><%= t('validate_registration.address') %></li>
       <% end %>
     </ul>
     <ul class="c-links js-cresit">
@@ -69,15 +71,6 @@
             有効期限： <%= gmo_card[:Expire] %>
           </span>
         </li>
-      <% end %>
-      <% if @gmo_cards.size < GmoMultiPayment::Card::UpperLimit %>
-        <%= link_to new_profile_credit_card_path  do %>
-          <li class="c-link">
-            新規クレジットカード登録
-          </li>
-        <% end %>
-      <% else %>
-        <li class="c-link"><%= t('validate_registration.address') %></li>
       <% end %>
     </ul>
     <h2 class="c-links__title">ポイント使用</h2>
