@@ -24,7 +24,11 @@ class Payment < ActiveRecord::Base
     end
 
     def set_shipment_params
-      {payment_id: self.id, address_id: self.address_id, state: :ready} #TODO shipment.state for 洗替
+      if self.payment_method_id == 1
+        {payment_id: self.id, address_id: self.address_id, state: :ready}
+      else
+        {payment_id: self.id, address_id: self.address_id, state: :pending}
+      end
     end
 
 end
