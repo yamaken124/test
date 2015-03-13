@@ -14,6 +14,7 @@ class Payment < ActiveRecord::Base
   include Payment::Transition
   belongs_to :payment_method
   belongs_to :address
+  belongs_to :user
 
   before_create :set_number
 
