@@ -42,7 +42,11 @@ class Users::AddressesController < Users::BaseController
     end
 
     def address_params
-      params.require(:address).permit(:last_name, :first_name, :zipcode, :address, :city, :phone).merge(user_id: @user.id)
+      if Address.where(user_id: @user.id).size == 0
+        params.require(:address).permit(:last_name, :first_name, :zipcode, :address, :city, :phone).merge(user_id: @user.id, default: true)
+      else
+        params.require(:address).permit(:last_name, :first_name, :zipcode, :address, :city, :phone).merge(user_id: @user.id)
+      end
     end
 
     def set_continue
