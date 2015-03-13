@@ -3,7 +3,7 @@
     <%= link_to '発送管理', admins_shipments_path %> / <%= @shipment.payment.number %>
       <div class="u-float_right">
         <% if @shipment.state != "canceled" %>
-          <%= form_tag admins_shipment_path(@shipment), method: "patch", class: "u-float_left" do %>
+          <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left" do %>
             <% if @shipment.state != "shipped" %>
               <%= hidden_field_tag :state, "shipped" %>
               <%= submit_tag "発送完了", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
@@ -12,7 +12,7 @@
               <%= submit_tag "発送準備に戻す", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
             <% end %>
           <% end %>
-          <%= form_tag admins_shipment_path(@shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
+          <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
             <%= hidden_field_tag :state, "canceled" %>
             <%= submit_tag "キャンセル", class: "btn btn-warning", data: { confirm: "本当に実行しますか？" } %>
           <% end %>
@@ -27,7 +27,7 @@
 
   <div class="content col-md-9">
     <h4 class="box-title">購入商品</h4>
-    <%= form_tag regist_tracking_code_admins_shipment_path(@shipment), method: "patch" do %>
+    <%= form_tag update_tracking_code_admins_shipment_path(@shipment), method: "patch" do %>
       <table class="table c-table">
         <thead>
           <tr>

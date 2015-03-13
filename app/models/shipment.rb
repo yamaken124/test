@@ -29,4 +29,7 @@ class Shipment < ActiveRecord::Base
     end
   end
 
+  def self.transitionable_states
+    ['ready', 'shipped', 'canceled']
+  end
 end

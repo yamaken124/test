@@ -46,7 +46,8 @@ Rails.application.routes.draw do
         get 'state/:state', :to => 'shipments#index', :as => :state
       end
       member do
-        patch 'regist_tracking_code'
+        patch 'update_state'
+        patch 'update_tracking_code'
       end
     end
     #TODO routing setting
