@@ -1,6 +1,6 @@
 <div class="p-wrapper--have_padding">
   <h2 class="title">クレジット登録管理</h2>
-  <% if @gmo_cards.count >= @upper_limit %>
+  <% if @gmo_cards.count >= GmoMultiPayment::Card::UpperLimit %>
     <p class="u-base_font_color">※<%= t('validate_registration.credit_card') %></p>
   <% else %>
     <%= link_to new_profile_credit_card_path do %>
@@ -15,7 +15,7 @@
       <a href="<%= edit_profile_credit_card_path(gmo_card[:CardSeq], card_no: gmo_card[:CardNo], default_flag: gmo_card[:DefaultFlag]) %>">
         <li class="c-link--small_text">
         <span>
-          カード番号<%= "(定期購買時使用)" if gmo_card[:DefaultFlag].to_i == 1 %><br>
+          カード番号<%= "(標準仕様)" if gmo_card[:DefaultFlag].to_i == 1 %><br>
           <%= gmo_card[:CardNo] %>
         </span>
         </li>

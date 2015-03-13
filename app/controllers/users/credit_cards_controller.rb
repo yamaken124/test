@@ -1,6 +1,5 @@
 class Users::CreditCardsController < Users::BaseController
   before_action :check_multi_payment_user
-  before_action :set_credit_card_upper_limit, only: [:index, :create]
 
   def index
     @gmo_cards = GmoMultiPayment::Card.new(@user).search
@@ -15,7 +14,7 @@ class Users::CreditCardsController < Users::BaseController
   end
 
   def create
-    if GmoMultiPayment::Card.new(@user).search.length < @upper_limit
+    if GmoMultiPayment::Card.new(@user).search.size < GmoMultiPayment::Card::UpperLimit
       if GmoMultiPayment::Card.new(@user).create(params[:card_no], params[:expire])
         redirect_to profile_credit_cards_path
       else
@@ -57,10 +56,6 @@ class Users::CreditCardsController < Users::BaseController
         session.delete(:user)
         redirect_to new_user_session_path
       end
-    end
-
-    def set_credit_card_upper_limit
-      @upper_limit = 5
     end
 
 end

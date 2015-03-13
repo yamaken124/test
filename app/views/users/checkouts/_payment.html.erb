@@ -19,7 +19,7 @@
            #{address.zipcode}&nbsp;#{address.city}&nbsp;#{address.address}".html_safe %>
         </li>
       <% end %>
-      <% if @addresses.length < 3 %>
+      <% if @addresses.blank? || !@addresses.first.reach_upper_limit?(current_user) %>
         <%= link_to(new_account_address_path(continue: checkout_state_path(state: :payment))) do %>
           <li class="c-link">新規住所登録</li>
         <% end %>
@@ -70,7 +70,7 @@
           </span>
         </li>
       <% end %>
-      <% if @gmo_cards.length < 5 %>
+      <% if @gmo_cards.size < GmoMultiPayment::Card::UpperLimit %>
         <%= link_to new_profile_credit_card_path  do %>
           <li class="c-link">
             新規クレジットカード登録
