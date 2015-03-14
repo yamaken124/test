@@ -3,6 +3,7 @@ class Users::OrdersController < Users::BaseController
   include Users::OrdersHelper
 
   before_action :assign_order_with_lock, only: [:edit, :update, :remove_item]
+  before_action :set_variants, only: [:edit]
   # before_action :apply_coupon_code, only: :update
 
   def index
@@ -106,6 +107,12 @@ class Users::OrdersController < Users::BaseController
 
       def permitted_line_item_attributes
         [:id, :variant_id, :quantity]
+      end
+
+      def set_variants
+        @variants = @order.variants
+        .includes(:prices)
+        .includes(:images)
       end
 
 end
