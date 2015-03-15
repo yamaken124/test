@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150311163225) do
+ActiveRecord::Schema.define(version: 20150312024430) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -160,10 +160,11 @@ ActiveRecord::Schema.define(version: 20150311163225) do
   create_table "shipments", force: :cascade do |t|
     t.integer  "payment_id", limit: 4
     t.integer  "address_id", limit: 4
-    t.datetime "shopped_at"
-    t.integer  "state",      limit: 4, default: 0
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.string   "tracking",   limit: 255
+    t.datetime "shipped_at"
+    t.integer  "state",      limit: 4,   default: 0
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   add_index "shipments", ["address_id"], name: "index_shipments_on_address_id", using: :btree

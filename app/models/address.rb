@@ -32,4 +32,7 @@ class Address < ActiveRecord::Base
     Address.where(user_id: user.id).count >= UpperLimit
   end
 
+  def name
+    "#{self.last_name} #{self.first_name}"
+  end
 end

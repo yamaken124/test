@@ -41,10 +41,13 @@ Rails.application.routes.draw do
     resources :variants, only: [] do
       resources :images,only: [:index, :new, :create, :edit, :update, :destroy], controller: :images, imageable_type: 'Variant'
     end
-    resources :purchase_orders,only:[:index] do
+    resources :shipments, only:[:index, :show, :update] do
       collection do
-        get'shipped'
-        get'unshipped'
+        get 'state/:state', :to => 'shipments#index', :as => :state
+      end
+      member do
+        patch 'update_state'
+        patch 'update_tracking_code'
       end
     end
     #TODO routing setting
