@@ -3,9 +3,11 @@
   <h2 class="p-product_title"><%= @product.name %></h2>
   <div class="flexslider">
     <ul class="slides">
-      <li>
-        <%= image_tag @product.images.first.image.url %>
-      </li>
+      <% @product.images.each do |image| %>
+        <li>
+          <%= image_tag image.image.url %>
+        </li>
+      <% end %>
     </ul>
   </div>
   <div class="p-product__price_wrapper">

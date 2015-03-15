@@ -16,6 +16,7 @@ class Payment < ActiveRecord::Base
   belongs_to :address
   belongs_to :user
   belongs_to :single_order_detail
+
   before_create :set_number
 
   private
