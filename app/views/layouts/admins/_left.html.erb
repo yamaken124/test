@@ -9,7 +9,7 @@
   </a>
   </li>
   <li>
-  <a href="<%= admins_purchase_orders_path %>">
+  <a href="<%= admins_shipments_path %>">
     <i class="fa fa-inbox"></i>
     <span>発送管理</span>
   </a>
@@ -22,9 +22,9 @@
       <i class="fa fa-angle-left pull-right"></i>
     </a>
     <ul class="treeview-menu">
-      <li><a href="<%= post_payment_admins_bills_path %>"><i class="fa fa-angle-double-right"></i>後払い管理</a></li>
-      <li><a href="<%= credit_admins_bills_path %>"><i class="fa fa-angle-double-right"></i>クレジット管理</a></li>
-      <li><a href="<%= regular_purchase_admins_bills_path("laundering_planned")%>"><i class="fa fa-angle-double-right"></i>洗替管理</a></li>
+      <li><a href="<%= admins_bills_credits_path %>"><i class="fa fa-angle-double-right"></i>クレジット管理</a></li>
+      <li><a href="<%= admins_bills_post_payments_path %>"><i class="fa fa-angle-double-right"></i>後払い管理</a></li>
+      <li><a href="<%= admins_bills_subscriptions_path %>"><i class="fa fa-angle-double-right"></i>洗替管理</a></li>
     </ul>
     </li>
   <% else %>
@@ -35,8 +35,8 @@
       <i class="fa fa-angle-left pull-right"></i>
     </a>
     <ul class="treeview-menu">
-      <li><a href="<%= post_payment_admins_bills_path %>"><i class="fa fa-angle-double-right"></i>後払い管理</a></li>
       <li><a href="<%= credit_admins_bills_path %>"><i class="fa fa-angle-double-right"></i>クレジット管理</a></li>
+      <li><a href="<%= post_payment_admins_bills_path %>"><i class="fa fa-angle-double-right"></i>後払い管理</a></li>
       <li><a href="<%= regular_purchase_admins_bills_path("laundering_planned")%>"><i class="fa fa-angle-double-right"></i>洗替管理</a></li>
     </ul>
     </li>

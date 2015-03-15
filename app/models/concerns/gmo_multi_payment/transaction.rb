@@ -77,13 +77,14 @@ class GmoMultiPayment::Transaction
 
   def transaction_void(access_id, access_pass)
     url = GmoMultiPayment::Domain + "/payment/AlterTran.idPass"
-    HTTParty.post( url, {body:
+    response = HTTParty.post( url, {body:
                   {:SiteID      => GmoMultiPayment::SiteID,
                    :SitePass    => GmoMultiPayment::SitePass,
                    :AccessID    => access_id,
                    :AccessPass  => access_pass,
                    :JobCd       => GmoMultiPayment::Void}
     })
+    response.parsed_response.index("ErrCode").blank? ? true : false
   end
 
   def tracsaction_return(access_id, access_pass)

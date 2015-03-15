@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :admins
   devise_for :users, :controllers => {
     :sessions => 'users/sessions',
     :passwords => "users/passwords",
@@ -40,18 +41,20 @@ Rails.application.routes.draw do
     resources :variants, only: [] do
       resources :images,only: [:index, :new, :create, :edit, :update, :destroy], controller: :images, imageable_type: 'Variant'
     end
-    resources :purchase_orders,only:[:index] do
+    resources :shipments, only:[:index, :show, :update] do
       collection do
-        get'shipped'
-        get'unshipped'
+        get 'state/:state', :to => 'shipments#index', :as => :state
+      end
+      member do
+        patch 'update_state'
+        patch 'update_tracking_code'
       end
     end
-    resources :bills do
-      collection do
-        get'post_payment'
-        get'credit'
-        get'regular_purchase/:state', action: :regular_purchase, as: :regular_purchase
-      end
+    #TODO routing setting
+    namespace :bills do 
+      resources :credits
+      resources :post_payments
+      resources :subscriptions
     end
   end
 

@@ -9,7 +9,7 @@
 <section class="content col-md-10">
   <h4 class="box-title">Variantリスト</h4>
   <% if !@variants.blank? %>
-    <table class="table c-table_new">
+    <table class="table c-table">
       <thead>
         <tr>
           <th>sku</th>
@@ -24,7 +24,7 @@
       <% @variants.each do |v| %>
         <tr>
           <td><%= v.sku %></td>
-          <td><%= image_tag v.images.try(:image).try(:url) %></td>
+          <td><%= image_tag v.images.first.try(:image).try(:url), class: "thumb" %>(<%= v.images.count %>)</td>
           <td>
             <% if !v.order_type.nil? %>
               <%= t('order_type.'+v.order_type) %>

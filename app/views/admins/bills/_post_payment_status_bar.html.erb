@@ -1,8 +1,0 @@
-<section class="content col-md-2 float-right">
-<ul class="nav nav-pills nav-stacked">
-  <li <%= 'class=active' if request.fullpath == "/admins/bills/post_payment" %>><a href="<%= post_payment_admins_bills_path%>">後払い一覧</a></li>
-  <li <%= 'class=active' if request.fullpath == "/admins/bills/post_payment?state=unexamined" %>><a href="<%= post_payment_admins_bills_path%>?state=unexamined">未審査一覧</a></li>
-  <li <%= 'class=active' if request.fullpath == "/admins/bills/post_payment?state=examining"  %>><a href="<%= post_payment_admins_bills_path%>?state=examining">審査中一覧</a></li>
-  <li <%= 'class=active' if request.fullpath == "/admins/bills/post_payment?state=examined" %>><a href="<%= post_payment_admins_bills_path%>?state=examined">審査済み一覧</a></li>
-</ul>
-</section>

@@ -3,11 +3,12 @@
     <h2 class="title">カート小計(<%=@order.single_order_detail.item_count%>個の商品): <span>￥<%=@order.single_order_detail.item_total%></span></h2>
     <%= order_form.submit "レジに進む", name: 'checkout', class: 'c-btn--submit' %>
     <div class="p-wrapper--have_padding">
+    <% if false #TODO %>
       <div class="c-payment_method_section">
         購入形式: <%= t('order_type.single_order') %>
       </div>
+    <% end %>
       <%= render partial: 'single_line_item', collection: order_form.object.single_line_items, locals: { order_form: order_form } %>
-
       <% # TODO 定期購買 %>
     </div>
   <% end %>
