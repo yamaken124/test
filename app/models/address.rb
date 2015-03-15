@@ -28,8 +28,8 @@ class Address < ActiveRecord::Base
 
   UpperLimit = 3
 
-  def self.reach_upper_limit?(user_id)
-    self.where(user_id: user_id).count >= UpperLimit
+  def self.reach_upper_limit?(user)
+    self.where(user_id: user.id).count >= UpperLimit
   end
 
 end
