@@ -5,7 +5,9 @@
     <ul class="slides">
       <% @product.images.each do |image| %>
         <li>
-          <%= image_tag image.image.url %>
+          <% if image.variant.order_type == "single_order" %>
+            <%= image_tag image.image.url %>
+          <% end %>
         </li>
       <% end %>
     </ul>
