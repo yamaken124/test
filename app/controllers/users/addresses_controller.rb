@@ -17,10 +17,14 @@ class Users::AddressesController < Users::BaseController
 
   def create
     @address = Address.new(address_params)
-    if @address.save
-      redirect_to continue_path
+    if !Address.reach_upper_limit?(current_user)
+      if @address.save
+        redirect_to continue_path
+      else
+        render :edit
+      end
     else
-      render :edit
+      redirect_to account_addresses_path
     end
   end
 
@@ -44,12 +48,12 @@ class Users::AddressesController < Users::BaseController
     end
 
     def set_is_main
-      if params[:address][:is_main] && Address.where(user_id: @user.id).size > 0
+      if params[:address] && params[:address][:is_main] && Address.where(user_id: @user.id).count > 0
         @address_is_main = true
         if exist_main_address = Address.abc(@user.id, true).present?
           exist_main_address.first.update(is_main: false)
         end
-      elsif Address.where(user_id: @user.id).size == 0
+      elsif Address.where(user_id: @user.id).count == 0
         @address_is_main = true
       else
         @address_is_main = false
