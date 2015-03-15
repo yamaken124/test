@@ -32,6 +32,13 @@ class Address < ActiveRecord::Base
     Address.where(user_id: user.id).count >= UpperLimit
   end
 
+  def self.set_main_address_false(user)
+    current_main_address = Address.where(user_id: user.id).where(is_main: true)
+    if current_main_address.present?
+      Address.find(current_main_address.ids.first).update(is_main: false)
+    end
+  end
+
   def name
     "#{self.last_name} #{self.first_name}"
   end
