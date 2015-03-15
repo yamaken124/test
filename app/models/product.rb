@@ -39,4 +39,8 @@ class Product < ActiveRecord::Base
     Product.where(id: available_product_id)
   end
 
+  def preview_images
+    Image.where(imageable_id: variants.where(order_type: 1).pluck(:id))
+  end 
+
 end
