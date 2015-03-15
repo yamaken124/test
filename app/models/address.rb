@@ -21,8 +21,16 @@ class Address < ActiveRecord::Base
   validates :city, presence: true
   validates :zipcode, presence: true
   validates :phone, presence: true
-  
+
+  validates_with AddressCountValidator, on: :create
+
   belongs_to :user
+
+  UpperLimit = 3
+
+  def self.reach_upper_limit?(user)
+    Address.where(user_id: user.id).count >= UpperLimit
+  end
 
   def name
     "#{self.last_name} #{self.first_name}"

@@ -16,10 +16,14 @@ class Users::AddressesController < Users::BaseController
 
   def create
     @address = Address.new(address_params)
-    if @address.save
-      redirect_to continue_path
+    if !Address.reach_upper_limit?(current_user)
+      if @address.save
+        redirect_to continue_path
+      else
+        render :edit
+      end
     else
-      render :edit
+      redirect_to account_addresses_path
     end
   end
 
