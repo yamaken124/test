@@ -76,4 +76,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Set marking ribbon to know which environment you use
+  config.rack_dev_mark.enable = true
 end
