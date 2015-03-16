@@ -40,11 +40,7 @@ class Product < ActiveRecord::Base
   end
 
   def preview_images
-    Image.where(imageable_id: variants.single_order.pluck(:id))
+    Image.where(imageable_id: variants.single_order.pluck(:id)).where(imageable_type: "Variant")
   end 
-
-  def single_order
-    (single_order! && imageable_type == "variant")
-  end
 
 end
