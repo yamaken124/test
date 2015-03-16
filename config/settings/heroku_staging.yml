@@ -1,0 +1,5 @@
+db:
+  default:
+    username:
+    password:
+    socket:
