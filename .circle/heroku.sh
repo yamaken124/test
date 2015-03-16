@@ -7,3 +7,4 @@ git commit -m 'Add pg'
 git push -f git@heroku.com:fincstore.git master
 heroku run rake db:migrate --app fincstore
 heroku run rake db:seed_fu --app fincstore
+heroku run rake db:seed    --app fincstore
