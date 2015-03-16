@@ -14,12 +14,6 @@ class Users::OrdersController < Users::BaseController
     set_item_and_prouct
   end
 
-  def cancel
-    @detail = SingleOrderDetail.where(id: Payment.where(number: params[:id]).first.single_order_detail_id).first
-    @detail.payment.canceled!
-    redirect_to products_path
-  end
-
   def edit
     associate_user
   end
@@ -87,6 +81,12 @@ class Users::OrdersController < Users::BaseController
       SingleLineItem.find(param[p.to_s]["id"]).update(quantity: param[p.to_s]["quantity"])
     }
     params["updated_quantity"] = nil
+  end
+
+  def cancel
+    @detail = SingleOrderDetail.where(id: Payment.where(number: params[:id]).first.single_order_detail_id).first
+    @detail.payment.canceled!
+    redirect_to products_path
   end
 
   private
