@@ -8,7 +8,6 @@ RSpec.describe Admins::ImagesController, type: :controller do
     @product = create(:product)
     @variant = create(:variant, product_id: @product.id )
     @image = Image.create(:image=> File.open(File.join(Rails.root, '/spec/fixtures/sample.png')), id: 1, imageable_id: @variant.id, imageable_type: "Variant" )
-    p @image.inspect
   end 
 
   describe 'GET #index' do  
@@ -42,7 +41,7 @@ RSpec.describe Admins::ImagesController, type: :controller do
   end    
 
   describe 'DELETE #destroy' do
-    it "deltes" do
+    it "deletes" do
       expect{ delete :destroy, :imageable_type => "Variant", variant_id: @variant.id, id: @image.id}.to change(Image, :count).by(-1)
     end 
   end   
