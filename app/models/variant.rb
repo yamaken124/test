@@ -24,7 +24,7 @@ class Variant < ActiveRecord::Base
     uniqueness: {
       scope: [:order_type]
     }
-  validates :sku, :order_type, :product_id, :is_valid_at, :is_invalid_at, presence: true
+  validates :sku, :name, :order_type, :product_id, :is_valid_at, :is_invalid_at, presence: true
 
   def variant_available?
     (prices.present? && images.present?)
