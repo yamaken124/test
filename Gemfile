@@ -84,6 +84,8 @@ group :development, :staging, :heroku_staging do
   gem 'rack-dev-mark'
 end
 
+gem 'rails_12factor', group: :heroku_staging
+
 # seed
 gem 'seed-fu'
 gem 'annotate'
