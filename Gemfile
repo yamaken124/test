@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+ruby '2.2.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
@@ -82,6 +83,8 @@ end
 group :development, :staging, :heroku_staging do
   gem 'rack-dev-mark'
 end
+
+gem 'rails_12factor', group: :heroku_staging
 
 # seed
 gem 'seed-fu'

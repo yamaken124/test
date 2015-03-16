@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Admins::ProductsController, type: :controller do
+  before do
+    admin_sign_in create(:admin)
+  end
 
   describe 'GET #index' do
     let(:product) { create(:product) }

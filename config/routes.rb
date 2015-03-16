@@ -1,14 +1,27 @@
 Rails.application.routes.draw do
   devise_for :admins
-  devise_for :users, :controllers => {
-    :sessions => 'users/sessions',
-    :passwords => "users/passwords",
-    :registrations => 'users/registrations'
-  }
+
+  if Rails.env.development?
+    devise_for :users, :controllers => {
+      :sessions => 'users/sessions',
+      :passwords => "users/passwords",
+      :registrations => 'users/registrations'
+    }
+  else
+    devise_for :users,
+      :controllers => { :sessions => 'users/sessions' },
+      :only => [ :session ]
+  end
+
+  root 'users/accounts#show'
 
   scope module: :users do
     namespace :oauth do
-      resource :authorization, only: [:create]
+      resource :authorization, only: [:create] do
+        if Rails.env.heroku_staging?
+          get '/', action: :create
+        end
+      end
     end
     resource :account, only: [:show] do
       resources :addresses, only: [:index, :edit, :update, :new, :create]
@@ -41,10 +54,13 @@ Rails.application.routes.draw do
     resources :variants, only: [] do
       resources :images,only: [:index, :new, :create, :edit, :update, :destroy], controller: :images, imageable_type: 'Variant'
     end
-    resources :purchase_orders,only:[:index] do
+    resources :shipments, only:[:index, :show, :update] do
       collection do
-        get'shipped'
-        get'unshipped'
+        get 'state/:state', :to => 'shipments#index', :as => :state
+      end
+      member do
+        patch 'update_state'
+        patch 'update_tracking_code'
       end
     end
     #TODO routing setting

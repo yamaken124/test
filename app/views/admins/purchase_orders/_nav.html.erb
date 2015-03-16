@@ -1,7 +1,0 @@
-<section class="content col-md-2 float-right">
-<ul class="nav nav-pills nav-stacked">
-  <li <%= 'class=active' if request.path_info == admins_purchase_orders_path %>><a href="<%= admins_purchase_orders_path %>">注文一覧</a></li>
-  <li <%= 'class=active' if request.path_info == unshipped_admins_purchase_orders_path %>><a href="<%= unshipped_admins_purchase_orders_path %>">未発送一覧</a></li>
-  <li <%= 'class=active' if request.path_info == shipped_admins_purchase_orders_path %>><a href="<%= shipped_admins_purchase_orders_path %>">発送済み一覧</a></li>
-</ul>
-</section>

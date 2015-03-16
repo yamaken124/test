@@ -1,6 +1,7 @@
 class Users::AddressesController < Users::BaseController
   before_action :set_user
   before_action :set_continue, only: [:new]
+  before_action :set_is_main, only: [:create, :update]
 
   def index
     @addresses = Address.where(user_id: @user.id)
@@ -16,10 +17,14 @@ class Users::AddressesController < Users::BaseController
 
   def create
     @address = Address.new(address_params)
-    if @address.save
-      redirect_to continue_path
+    if !Address.reach_upper_limit?(current_user)
+      if @address.save
+        redirect_to continue_path
+      else
+        render :edit
+      end
     else
-      render :edit
+      redirect_to account_addresses_path
     end
   end
 
@@ -37,12 +42,24 @@ class Users::AddressesController < Users::BaseController
   end
 
   private
+
     def set_user
       @user = User.find(current_user.id)
     end
 
+    def set_is_main
+      if params[:address] && params[:address][:is_main]
+        @address_is_main = true
+        Address.update_all_not_main(@user)
+      elsif Address.where(user_id: @user.id).count == 0
+        @address_is_main = true
+      else
+        @address_is_main = false
+      end
+    end
+
     def address_params
-      params.require(:address).permit(:last_name, :first_name, :zipcode, :address, :city, :phone).merge(user_id: @user.id)
+      params.require(:address).permit(:last_name, :first_name, :zipcode, :address, :city, :phone).merge(user_id: @user.id, is_main: @address_is_main)
     end
 
     def set_continue
