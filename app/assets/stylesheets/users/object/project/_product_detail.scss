@@ -1,3 +1,5 @@
+@import "../../foundation/setting";
+@import "../../foundation/mixin";
 .p-product_title{
   @include calc(width, "100%-8px");
   color:$finc_color;
