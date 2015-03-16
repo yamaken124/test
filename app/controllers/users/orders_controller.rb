@@ -85,9 +85,17 @@ class Users::OrdersController < Users::BaseController
   end
 
   def cancel
-    @detail = SingleOrderDetail.where(id: Payment.where(number: params[:id]).first.single_order_detail_id).first
-    @detail.payment.canceled!
-    redirect_to products_path
+    detail = SingleOrderDetail.where(id: Payment.where(number: params[:id]).first.single_order_detail_id).first
+    begin
+      ActiveRecord::Base.transaction do
+        detail.payment.shipment.canceled!
+        detail.payment.canceled!
+      end
+      true
+    rescue
+      false
+    end
+    redirect_to products_path #TODO redirect_to order_history
   end
 
   private

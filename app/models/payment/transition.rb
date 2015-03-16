@@ -5,7 +5,7 @@ class Payment < ActiveRecord::Base
         include AASM
 
         enum state: {
-          checkout: 0, completed: 10, processing: 20, pending: 30, failed: 40
+          checkout: 0, completed: 10, processing: 20, pending: 30, failed: 40, canceled: 50
         }
 
         aasm column: :state do
@@ -14,6 +14,7 @@ class Payment < ActiveRecord::Base
           state :pending
           state :failed
           state :completed
+          state :canceled
 
           event :processing, after: :pay_with_gmo_payment do
             transitions from: :checkout, to: :processing
@@ -32,7 +33,7 @@ class Payment < ActiveRecord::Base
           end
 
           event :canceled, after: :cancel_order do
-            transitions from: :completed, to: :failed
+            transitions from: :completed, to: :canceled
           end
 
         end
