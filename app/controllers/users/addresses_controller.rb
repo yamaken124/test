@@ -50,7 +50,7 @@ class Users::AddressesController < Users::BaseController
     def set_is_main
       if params[:address] && params[:address][:is_main]
         @address_is_main = true
-        Address.update_exist_address_false(@user)
+        Address.update_all_not_main(@user)
       elsif Address.where(user_id: @user.id).count == 0
         @address_is_main = true
       else

@@ -32,7 +32,7 @@ class Address < ActiveRecord::Base
     Address.where(user_id: user.id).count >= UpperLimit
   end
 
-  def self.update_exist_address_false(user)
+  def self.update_all_not_main(user)
     Address.where(user_id: user.id).update_all(is_main: false)
   end
 
