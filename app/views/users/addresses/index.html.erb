@@ -15,7 +15,11 @@
       <a href="<%= edit_account_address_path(address) %>">
         <li class="c-link--small_text">
         <span>
-          <%= address.last_name %>&nbsp;<%= address.first_name %><br>
+          <%= address.last_name %>&nbsp;<%= address.first_name %>
+          <% if address.is_main %>
+            <%= "メインの住所" %> <%# TODO 文言デザイン %>
+          <% end %>
+          <br>
           <%= address.zipcode %>&nbsp;<%= address.city %>&nbsp;<%= address.address %><br>
         </span>
         </li>
