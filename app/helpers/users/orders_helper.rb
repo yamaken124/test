@@ -58,4 +58,14 @@ module Users::OrdersHelper
   def last_incomplete_order
     @last_incomplete_order ||= try_current_user.last_incomplete_order
   end
+
+  def set_variants_and_items
+    detail = SingleOrderDetail.find(Payment.where(number: @number).pluck(:single_order_detail_id).first)
+    @items_indexed_by_variant_id = SingleLineItem.where(single_order_detail_id: detail.id).index_by(&:variant_id)
+    @variants = Variant
+    .where(id: @items.keys)
+    .includes(:images)
+    .includes(:prices)
+  end
+
 end

@@ -12,6 +12,7 @@
 
 class Payment < ActiveRecord::Base
   include Payment::Transition
+  has_one :shipment
   belongs_to :payment_method
   belongs_to :address
   belongs_to :user

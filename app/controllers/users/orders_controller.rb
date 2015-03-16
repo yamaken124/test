@@ -12,6 +12,7 @@ class Users::OrdersController < Users::BaseController
   def thanks
     @number = params[:number]
     raise ActiveRecord::RecordNotFound if !Payment.where(number: @number).first.completed?
+    set_variants_and_items
   end
 
   def edit
@@ -81,6 +82,17 @@ class Users::OrdersController < Users::BaseController
       SingleLineItem.find(param[p.to_s]["id"]).update(quantity: param[p.to_s]["quantity"])
     }
     params["updated_quantity"] = nil
+  end
+
+  def cancel
+    detail = SingleOrderDetail.where(id: Payment.where(number: params[:number]).first.single_order_detail_id).first
+    begin
+      ActiveRecord::Base.transaction do
+        detail.payment.shipment.canceled!
+        detail.payment.canceled!
+      end
+    end
+    redirect_to products_path #TODO redirect_to order_history
   end
 
   private
