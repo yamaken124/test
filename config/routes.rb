@@ -39,7 +39,7 @@ Rails.application.routes.draw do
       collection do
         post :populate
         get  ':number/thanks', action: :thanks, :as => :thanks
-        patch '/cancel/:id' => 'orders#cancel', :as => :cancel
+        delete '/cancel/:number' => 'orders#cancel', :as => :cancel
       end
     end
 

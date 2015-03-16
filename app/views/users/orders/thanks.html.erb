@@ -11,14 +11,14 @@
     </div>
     <div class="c-product__list_detail_wrapper">
       <div class="c-product_list__title">
-        <%= @products.where(id: variant.product_id).name %>
+        <%= variant.name %>
       </div>
       <div class="c-product_list__price">
-        ￥<%= variant.prices.first.amount %>(<%= @items.where(variant_id: variant.id).first.quantity %>個)
+        ￥<%= variant.prices.first.amount %>(<%= @items[variant.id].quantity %>個)
       </div>
     </div>
   </div>
   <div class="c-product_list__detail">
-    <p class="u-margin__left_short"><%= link_to "注文をキャンセルする", cancel_orders_path(@number), method: :patch %></p>
+    <p class="u-margin__left_short"><%= link_to "注文をキャンセルする", cancel_orders_path(@number), method: :delete %></p>
   </div>
 <% end %>
