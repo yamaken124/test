@@ -1,10 +1,19 @@
 Rails.application.routes.draw do
   devise_for :admins
-  devise_for :users, :controllers => {
-    :sessions => 'users/sessions',
-    :passwords => "users/passwords",
-    :registrations => 'users/registrations'
-  }
+
+  if Rails.env.development?
+    devise_for :users, :controllers => {
+      :sessions => 'users/sessions',
+      :passwords => "users/passwords",
+      :registrations => 'users/registrations'
+    }
+  else
+    devise_for :users,
+      :controllers => { :sessions => 'users/sessions' },
+      :only => [ :session ]
+  end
+
+  root 'users/accounts#show'
 
   scope module: :users do
     namespace :oauth do
