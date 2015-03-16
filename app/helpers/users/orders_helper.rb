@@ -25,7 +25,7 @@ module Users::OrdersHelper
       single_order.save!
       single_order.build_single_order_detail.save!
     end
- 
+
     @current_order
   end
 

@@ -1,12 +1,12 @@
-<% variant = single_line_item.variant %>
 <%= order_form.fields_for 'single_line_items_attributes[]', single_line_item do |item_form| %>
+  <% variant = @variants.where(id: single_line_item.variant_id).first %>
   <div class="c-product_list">
     <div class="c-product_list__image">
       <%= image_tag variant.images.first.image.url %>
     </div>
     <div class="c-product__list_detail_wrapper">
       <div class="c-product_list__title">
-        <%= link_to variant.product.name, product_path(variant.product) %>
+        <%= link_to variant.name, product_path(variant.product_id) %>
       </div>
       <div class="c-product_list__price">
         <%= "￥#{variant.prices.first.amount}" %>

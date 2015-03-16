@@ -22,6 +22,7 @@ class Admins::VariantsController < Admins::BaseController
       end
       redirect_to admins_product_variants_path(product_id: params[:product_id])
     rescue
+      @product = Product.find(@variant.product_id)
       render :new
     end
   end
@@ -37,6 +38,7 @@ class Admins::VariantsController < Admins::BaseController
       end
       redirect_to admins_product_variants_path
     rescue
+      @product = Product.find(@variant.product_id)
       render :edit
     end
   end
@@ -48,7 +50,7 @@ class Admins::VariantsController < Admins::BaseController
 
   private
     def variant_params
-      params.require(:variant).permit(:is_valid_at, :is_invalid_at, :order_type, :sku).merge(product_id: params[:product_id])
+      params.require(:variant).permit(:is_valid_at, :is_invalid_at, :order_type, :sku, :name).merge(product_id: params[:product_id])
     end
 
     def set_variant

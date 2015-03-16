@@ -121,8 +121,6 @@ class Users::CheckoutsController < Users::BaseController
       .where(id: @detail.single_line_items.pluck(:variant_id))
       .includes(:images)
       .includes(:prices)
-      @products = Product
-      .where(id: @items.pluck(:product_id))
       @single_line_items = @detail.single_line_items
     end
 end
