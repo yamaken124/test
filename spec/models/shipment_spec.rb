@@ -29,7 +29,7 @@ RSpec.describe Shipment, type: :model do
 
       let(:shipped) { build(:shipment, state: 'shipped') }
       it { expect(shipped.may_pending?).to be_falsy }
-      it { expect(shipped.may_ready?).to be_falsy }
+      it { expect(shipped.may_ready?).to be_truthy }
       it { expect(shipped.may_shipped?).to be_falsy }
       it { expect(shipped.may_canceled?).to be_truthy }
 

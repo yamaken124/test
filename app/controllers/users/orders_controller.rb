@@ -3,6 +3,7 @@ class Users::OrdersController < Users::BaseController
   include Users::OrdersHelper
 
   before_action :assign_order_with_lock, only: [:edit, :update, :remove_item]
+  before_action :set_variants, only: [:edit]
   # before_action :apply_coupon_code, only: :update
 
   def index
@@ -15,6 +16,7 @@ class Users::OrdersController < Users::BaseController
   def thanks
     @number = params[:number]
     raise ActiveRecord::RecordNotFound if !Payment.where(number: @number).first.completed?
+    set_variants_and_items
   end
 
   def edit
@@ -86,6 +88,17 @@ class Users::OrdersController < Users::BaseController
     params["updated_quantity"] = nil
   end
 
+  def cancel
+    detail = SingleOrderDetail.where(id: Payment.where(number: params[:number]).first.single_order_detail_id).first
+    begin
+      ActiveRecord::Base.transaction do
+        detail.payment.shipment.canceled!
+        detail.payment.canceled!
+      end
+    end
+    redirect_to products_path #TODO redirect_to order_history
+  end
+
   private
 
       def order_params
@@ -110,6 +123,12 @@ class Users::OrdersController < Users::BaseController
 
       def permitted_line_item_attributes
         [:id, :variant_id, :quantity]
+      end
+
+      def set_variants
+        @variants = @order.variants
+        .includes(:prices)
+        .includes(:images)
       end
 
 end

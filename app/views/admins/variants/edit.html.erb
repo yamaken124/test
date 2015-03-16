@@ -1,4 +1,4 @@
-<div class = "content-header">
+<div class="content-header">
   <h3>
     <%= link_to "商品一覧", admins_products_path %> / <%= @product.name %>
     <div class="u-float_right">
@@ -6,5 +6,4 @@
     </div>
   </h3>
 </div>
-
 <%= render partial: 'form', locals: { variant: @variant } %>

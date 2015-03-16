@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Admins::VariantsController, type: :controller do
 
   before do
+    admin_sign_in create(:admin)
     @product = create(:product)
     @variant = create(:variant, product_id: @product.id)
     @unique_product = create(:product)

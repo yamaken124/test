@@ -20,8 +20,9 @@ class PurchaseOrder < ActiveRecord::Base
   has_many   :single_line_items, through: :single_order_detail
   has_many   :subscription_orders
   has_many   :subscription_order_details, through: :subscription_orders
+  has_many   :variants, through: :single_line_items
 
-  accepts_nested_attributes_for :single_order 
+  accepts_nested_attributes_for :single_order
 
   def self.incomplete
     PurchaseOrder.where.not(id: PurchaseOrder.complete.pluck(:id))

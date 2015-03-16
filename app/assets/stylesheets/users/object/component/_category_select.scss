@@ -1,3 +1,5 @@
+@import "../../foundation/setting";
+@import "../../foundation/mixin";
 .c-category_select{
   @include calc("width", "100%-22px");
   height:30px;

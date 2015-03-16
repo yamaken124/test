@@ -1,13 +1,13 @@
 <div class="p-wrapper--have_padding">
   <h2 class="title">住所管理</h2>
-  <% if @addresses.count > 2 %>
-    <p class="u-base_font_color">最大登録住所は3箇所です。</p>
-  <% else %>
+  <% if @addresses.size < Address::UpperLimit %>
     <%= link_to new_account_address_path do %>
      <div class="c-btn--submit u-margin__bottom_middle">
        新規住所登録
       </div>
     <% end %>
+  <% else %>
+    <p class="u-base_font_color"><%= t('validate_registration.address') %></p>
   <% end %>
   <h2 class="c-links__title">登録住所</h2>
   <ul class="c-links">
@@ -15,7 +15,11 @@
       <a href="<%= edit_account_address_path(address) %>">
         <li class="c-link--small_text">
         <span>
-          <%= address.last_name %>&nbsp;<%= address.first_name %><br>
+          <%= address.last_name %>&nbsp;<%= address.first_name %>
+          <% if address.is_main %>
+            <%= "メインの住所" %> <%# TODO 文言デザイン %>
+          <% end %>
+          <br>
           <%= address.zipcode %>&nbsp;<%= address.city %>&nbsp;<%= address.address %><br>
         </span>
         </li>

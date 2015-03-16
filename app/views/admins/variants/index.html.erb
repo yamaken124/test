@@ -12,6 +12,7 @@
     <table class="table c-table">
       <thead>
         <tr>
+          <th>名前</th>
           <th>sku</th>
           <th>IMAGE</th>
           <th>注文タイプ</th>
@@ -23,6 +24,7 @@
       <tbody>
       <% @variants.each do |v| %>
         <tr>
+          <td><%= v.name %></td>
           <td><%= v.sku %></td>
           <td><%= image_tag v.images.first.try(:image).try(:url), class: "thumb" %>(<%= v.images.count %>)</td>
           <td>
@@ -36,13 +38,13 @@
           <td>
             <a href="<%= admins_variant_images_path(v.id) %>" class="btn btn-info btn-sm">
               <i class="fa fa-file-o"></i>
-            </a>  
+            </a>
             <a href="<%= edit_admins_product_variant_path(@product.id, v.id) %>" class="btn btn-warning btn-sm">
               <i class="fa fa-edit"></i>
-            </a>  
+            </a>
             <a href="<%= admins_product_variant_path(@product.id, v.id) %>" class="btn btn-success btn-sm" data-method="delete" data-confirm="本当に削除しますか？">
               <i class="fa fa-trash-o"></i>
-            </a>  
+            </a>
           </td>
         </tr>
       <% end %>

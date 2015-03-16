@@ -55,7 +55,8 @@ RSpec.describe Users::AddressesController, type: :controller do
           address: "xxxx", 
           city: "xxxx", 
           phone: "xxxx"
-        }
+        },
+        continue: checkout_state_path(state: :payment)
       }
     }
     it "create new record" do
