@@ -1,6 +1,8 @@
-<section class="content-header">
-  <h1>クレジット払い管理</h1>
-</section>
+<div class="content-header">
+  <h3>
+    クレジット支払い管理
+  </h3>
+</div>
 <section class="content">
   <h4 class="box-title">注文リスト</h4>
   <table class="table c-table">
@@ -16,17 +18,19 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-          <a href="<%= %>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
-        </td>
-      </tr>
+      <% @payments.each do |payment| %>
+        <tr>
+          <td><%= payment.created_at.strftime("%Y/%m/%d %H:%M")%></td>
+          <td><%= payment.number  %></td>
+          <td><%= payment.state %></td>
+          <td><%= payment.payment_method.name %></td>
+          <td><%= payment.user.email %></td>
+          <td><%= payment.amount %>円</td>
+          <td>
+            <a href="<%= %>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
+          </td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 </section>

@@ -13,4 +13,5 @@
 #
 
 class PaymentMethod < ActiveRecord::Base
+  CreditCard = 1
 end
