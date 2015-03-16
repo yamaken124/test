@@ -4,6 +4,10 @@ db:
     password:
     socket:
 
+internal_api:
+  finc_app:
+    host: 'http://fincapp.herokuapp.com'
+
 oauth_applications:
   finc_app:
     consumer_key: 'M4HXT1y4-xuyoKE1DgHu4wtWyYX4P5BaTxsWf7Kp'
