@@ -61,7 +61,7 @@ module Users::OrdersHelper
 
   def set_variants_and_items
     detail = SingleOrderDetail.find(Payment.where(number: @number).pluck(:single_order_detail_id).first)
-    @items = SingleLineItem.where(single_order_detail_id: detail.id).index_by(&:variant_id)
+    @items_indexed_by_variant_id = SingleLineItem.where(single_order_detail_id: detail.id).index_by(&:variant_id)
     @variants = Variant
     .where(id: @items.keys)
     .includes(:images)
