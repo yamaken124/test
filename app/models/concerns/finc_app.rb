@@ -14,12 +14,12 @@ module FincApp
   end
 
   def self.filter_user_params(finc_app_user_params)
-    update_params = { profile_attributes: {} }
-    update_params[:profile_attributes][:last_name] = finc_app_user_params['last_name']
-    update_params[:profile_attributes][:first_name] = finc_app_user_params['first_name']
-    update_params[:profile_attributes][:last_name_kana] = finc_app_user_params['last_name_kana']
-    update_params[:profile_attributes][:first_name_kana] = finc_app_user_params['first_name_kana']
-    update_params[:profile_attributes][:phone] = finc_app_user_params['telephone']
-    update_params
+    { profile_attributes: {} }.tap do |update_params|
+      %w(last_name first_name last_name_kana first_name_kana telephone).each do |attribute|
+        if finc_app_user_params[attribute].present?
+          update_params[:profile_attributes][attribute.to_sym] = finc_app_user_params[attribute]
+        end
+      end
+    end
   end
 end
