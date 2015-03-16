@@ -16,6 +16,7 @@ FactoryGirl.define do
   factory :variant do
 
     sku "all"
+    name "Mystring"
     is_valid_at Date.yesterday
     is_invalid_at Date.tomorrow
     order_type "single_order"
