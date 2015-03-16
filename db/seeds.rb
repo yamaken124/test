@@ -30,10 +30,12 @@ def create_initial_user
   {}.tap do |oauth_access_token_params|
     oauth_access_token_params[:oauth_application_id] = 1
     oauth_access_token_params[:token] = 'YJDGsLfWz-cHL3qXB2QS'
-    ap user.oauth_access_tokens.new
     user.oauth_access_tokens.new(oauth_access_token_params).save
   end
 
+
+  access_token = user.oauth_access_tokens.first
+  oauth_application = OauthApplication.find(1)
   puts 'User created !'
   print 'Please login via '
   puts "#{Rails.application.routes.url_helpers.oauth_authorization_path(access_token: access_token.token, consumer_key: oauth_application.consumer_key)}"
