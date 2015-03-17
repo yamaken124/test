@@ -47,4 +47,7 @@ namespace :deploy do
     end
   end
 
+  before :starting, 'deploy:linked_files:database'
+  before :starting, 'deploy:linked_files:secrets'
+
 end
