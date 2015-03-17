@@ -55,7 +55,7 @@ class SingleOrderDetail < ActiveRecord::Base
   end
 
   def set_completed_on
-    self.completed_on = self.completed_at.to_date if !self.completed_at.nil?
+    self.completed_on = self.completed_at.to_date unless self.completed_at.nil?
   end
 
   def update_tax_adjustments

@@ -37,11 +37,11 @@ class Address < ActiveRecord::Base
   end
 
   def name
-    "#{self.last_name} #{self.first_name}"
+    "#{last_name} #{first_name}"
   end
 
   def full_address
-    "#{self.zipcode} #{self.city} #{self.address}"
+    "#{zipcode} #{city} #{address}"
   end
 
 end
