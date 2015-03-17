@@ -12,7 +12,7 @@
       <% @addresses.each do |address| %>
         <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
-            <%= radio_button_tag "order[payment_attributes[address_id]]", address.id, address.is_main ? 'checked: "checked"' : nil %>
+            <%= radio_button_tag "order[address_id]", address.id, address.is_main ? 'checked: "checked"' : nil %>
           </div>
           <%= label_tag "order_attributes_address_id_#{address.id}",
            "#{address.last_name}&nbsp;#{address.first_name}<br>

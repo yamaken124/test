@@ -9,8 +9,7 @@ class Users::OrdersController < Users::BaseController
   def index
     @details = SingleOrderDetail.where(id: Payment.where(user_id: current_user.id).pluck(:single_order_detail_id))
     .includes(:address).includes(:single_line_items)
-    @variants = Variant.where(id: SingleLineItem.where(single_order_detail_id: @details.pluck(:id)).pluck(:variant_id)).includes(:images).includes(:prices)
-    @products = Product.where(id: @variants.pluck(:product_id))
+    @variants = Variant.where(id: SingleLineItem.where(single_order_detail_id: @details.pluck(:id)).pluck(:variant_id)).includes(:images).includes(:prices).index_by(&:id)
   end
 
   def thanks
@@ -101,34 +100,34 @@ class Users::OrdersController < Users::BaseController
 
   private
 
-      def order_params
-        if params[:purchase_order]
-          params[:purchase_order].permit(*permitted_order_attributes)
-        else
-          {}
-        end
+    def order_params
+      if params[:purchase_order]
+        params[:purchase_order].permit(*permitted_order_attributes)
+      else
+        {}
       end
+    end
 
-      def assign_order_with_lock
-        @order = current_order({lock: true, create_order_if_necessary: true})
-        unless @order
-          flash[:error] = :order_not_found
-          redirect_to cart_path and return
-        end
+    def assign_order_with_lock
+      @order = current_order({lock: true, create_order_if_necessary: true})
+      unless @order
+        flash[:error] = :order_not_found
+        redirect_to cart_path and return
       end
+    end
 
-      def permitted_order_attributes
-        [ single_line_items_attributes: permitted_line_item_attributes ]
-      end
+    def permitted_order_attributes
+      [ single_line_items_attributes: permitted_line_item_attributes ]
+    end
 
-      def permitted_line_item_attributes
-        [:id, :variant_id, :quantity]
-      end
+    def permitted_line_item_attributes
+      [:id, :variant_id, :quantity]
+    end
 
-      def set_variants
-        @variants = @order.variants
-        .includes(:prices)
-        .includes(:images)
-      end
+    def set_variants
+      @variants = @order.variants
+      .includes(:prices)
+      .includes(:images)
+    end
 
 end

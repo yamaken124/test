@@ -10,14 +10,14 @@
     <p>お届け先:<br><%= detail.address.last_name%>&nbsp<%= detail.address.first_name%>&nbsp<%= detail.address.zipcode%>&nbsp<%= detail.address.city%>&nbsp<%= detail.address.address%>&nbsp</p>
   </div>
   <% detail.single_line_items.each do |item|%>
-    <% variant = @variants.where(id: item.variant_id).first %>
+    <% variant = @variants[item.variant_id] %>
     <div class="c-product_list">
     	<div class="c-product_list__image">
         <%= image_tag variant.images.first.image.url %>
       </div>
       <div class="c-product__list_detail_wrapper">
     	  <div class="c-product_list__title">
-          <%= @products.where(id: variant.product_id).first.name %>
+          <%= variant.name %>
     	  </div>
     	  <div class="c-product_list__price">
           <%= variant.prices.first.amount %>円

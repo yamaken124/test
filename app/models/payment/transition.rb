@@ -20,7 +20,7 @@ class Payment < ActiveRecord::Base
             transitions from: :checkout, to: :processing
           end
 
-          event :completed, after: :register_shipment do
+          event :completed, after: :register_shipment_and_set_dealed_datetime do
             transitions from: [:processing, :pending], to: :completed
           end
 
@@ -45,13 +45,16 @@ class Payment < ActiveRecord::Base
           return GmoMultiPayment::Transaction.new(self).exec(self.gmo_card_seq_temporary)
         end
 
-        def register_shipment
+        def register_shipment_and_set_dealed_datetime
           Shipment.new(set_shipment_params).save!
+          order_detail = SingleOrderDetail.find(self.single_order_detail)
+          order_detail.update(date: Date.today, completed_at: Time.now)
         end
 
         def cancel_order
           raise unless GmoMultiPayment::Transaction.new(self).transaction_void
         end
+
       end
     end
   end
