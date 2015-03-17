@@ -5,9 +5,9 @@
 </div>
 <% @details.each do |detail| %>
   <div class="c-order_title">
-    <p>注文日:<br><%= detail.date %></p>
+    <p>注文日:<br><%= detail.completed_on %></p>
     <p>合計:<br>¥<%= detail.total %></p>
-    <p>お届け先:<br><%= detail.address.last_name%>&nbsp<%= detail.address.first_name%>&nbsp<%= detail.address.zipcode%>&nbsp<%= detail.address.city%>&nbsp<%= detail.address.address%>&nbsp</p>
+    <p>お届け先:<br><%= "#{detail.address.name} #{detail.address.full_address}" %></p>
   </div>
   <% detail.single_line_items.each do |item|%>
     <% variant = @variants[item.variant_id] %>

@@ -29,6 +29,7 @@ class SingleOrderDetail < ActiveRecord::Base
 
   before_save :ensure_updated_shipments
   before_save :ensure_updated_adjustment
+  before_save :set_completed_on
 
   accepts_nested_attributes_for :single_line_items
   accepts_nested_attributes_for :payment, update_only: false
@@ -51,6 +52,10 @@ class SingleOrderDetail < ActiveRecord::Base
   end
 
   def ensure_updated_adjustment
+  end
+
+  def set_completed_on
+    self.completed_on = self.completed_at.to_date if !self.completed_at.nil?
   end
 
   def update_tax_adjustments

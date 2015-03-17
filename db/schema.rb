@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150317034431) do
+ActiveRecord::Schema.define(version: 20150317100942) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(version: 20150317034431) do
     t.integer  "item_total",           limit: 4, default: 0, null: false
     t.integer  "tax_rate_id",          limit: 4
     t.integer  "total",                limit: 4, default: 0, null: false
+    t.date     "completed_on"
     t.datetime "completed_at"
     t.integer  "address_id",           limit: 4
     t.integer  "shipment_total",       limit: 4, default: 0, null: false
@@ -197,7 +198,6 @@ ActiveRecord::Schema.define(version: 20150317034431) do
     t.integer  "used_point",           limit: 4, default: 0
     t.integer  "adjustment_total",     limit: 4, default: 0, null: false
     t.integer  "item_count",           limit: 4, default: 0, null: false
-    t.date     "date"
     t.integer  "lock_version",         limit: 4, default: 0, null: false
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false

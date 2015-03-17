@@ -40,4 +40,8 @@ class Address < ActiveRecord::Base
     "#{self.last_name} #{self.first_name}"
   end
 
+  def full_address
+    "#{self.zipcode} #{self.city} #{self.address}"
+  end
+
 end
