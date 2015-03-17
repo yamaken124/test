@@ -7,7 +7,7 @@ if ! ip_addr
   ip_addr = `curl -s ifconfig.me`
 end
 ip_addr = ip_addr.chomp
-security_group = 'sg-026cd767'
+security_group = 'sg-ec64df89'
 
 code =<<EOF
 set -ex
