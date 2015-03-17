@@ -1,26 +1,47 @@
 <%= form_for([:admins, product]) do |p| %>
+  <% if @product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= @product.errors.count %>件のエラーが発生しました。</h2>
+      <ul>
+      <% @product.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
   <section class="content">
-  <div class="box-body col-md-6">
-    <div class="form-group">
-      <%= p.label :name %><br>
-      <%= p.text_field :name, class: "form-control", placeholder: "Enter name" %>
+    <div class="box-body col-md-6">
+      <div class="form-group">
+        <%= p.label :name %><br>
+        <%= p.text_field :name, class: "form-control", placeholder: "Enter name" %>
+      </div>
+      <div class="form-group">
+        <%= p.label :description %><br>
+        <%= p.text_field :description, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= p.label :product_is_valid_at %><br>
+        <%= p.date_select :is_valid_at,{},{:class=>"form-control"} %>
+      </div>
+      <div class="field">
+        <%= p.label :product_is_invalid_at %><br>
+        <p><%= p.date_select :is_invalid_at,{},{:class=>"form-control"} %></p>
+      </div>
+      <%= p.fields_for :products_taxons do |t| %>
+        <div class="form-group">
+          <p><%= t.label "category" + (t.options[:child_index]+1).to_s %></p>
+          <p><%= t.collection_select :taxon_id, Taxon.all, :id, :name, :include_blank => true %></p>
+        </div>
+        <% if product.products_taxons.size == t.options[:child_index]+1 && params["action"] == "edit" %>
+          <div class="form-group">
+            <p><%= t.label :new_category %></p>
+            <p><%= select_tag :new_taxon_id, options_from_collection_for_select(Taxon.all, :id, :name), :include_blank => true %></p>
+          </div>
+        <% end %>
+      <% end %>
+      <div class="actions">
+        <%= p.submit "登録", class: "btn" %>
+      </div>
     </div>
-    <div class="form-group">
-      <%= p.label :description %><br>
-      <%= p.text_field :description, class: "form-control" %>
-    </div>
-    <div class="form-group">
-      <%= p.label :product_is_valid_at %><br>
-      <%= p.date_select :is_valid_at,{},{:class=>"form-control"} %>
-    </div>
-    <div class="field">
-      <%= p.label :product_is_invalid_at %><br>
-      <p><%= p.date_select :is_invalid_at,{},{:class=>"form-control"} %></p>
-    </div>
-    <div class="actions">
-      <%= p.submit "登録", class: "btn" %>
-    </div>
-  </div>
-
+  </section>
 <% end %>
-</section>

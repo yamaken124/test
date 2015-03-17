@@ -18,6 +18,12 @@
       <th>名前</th>
       <td><%= @product.name %></td>
     </tr>
+    <% @taxons.each.with_index(1) do |taxon, i| %>
+      <tr>
+        <th><%= "カテゴリ"+i.to_s %></th>
+        <td><%= taxon.name %></td>
+      </tr>
+    <% end %>
     <tr>
       <th>説明</th>
       <td><%= @product.description %></td>

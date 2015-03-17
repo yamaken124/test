@@ -17,6 +17,7 @@
             <th>名前</th>
             <th>説明</th>
             <th>状態</th>
+            <th>カテゴリ</th>
             <th></th>
             <th></th>
           </tr>
@@ -29,14 +30,25 @@
               <td><%= product.description %></td>
               <td><%= t(product.classify_validity) %></td>
               <td>
+                <% product.products_taxons.each.with_index(1) do |products_taxon, i| %>
+                  <% if i > 3 %>
+                    ...(<%=product.products_taxons.count%>)
+                    <% break %>
+                  <% end %>
+                  <%if products_taxon && products_taxon.taxon_id %>
+                    <%= @taxons.where(id: products_taxon.taxon_id).first.name %>/
+                  <% end %>
+                <% end %>
+              </td>
+              <td>
                 <a href="<%= edit_admins_product_path(id: product.id) %>" class="btn btn-warning btn-sm">
                   <i class="fa fa-edit"></i>編集
-                </a>  
+                </a>
               </td>
               <td>
                 <a href="<%= admins_product_path(id: product.id) %>" class="btn btn-success btn-sm" data-method="delete">
                   <i class="fa fa-trash-o"></i>削除
-                </a>  
+                </a>
               </td>
             </tr>
           <% end %>
