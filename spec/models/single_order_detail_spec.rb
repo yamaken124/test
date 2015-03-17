@@ -22,5 +22,15 @@
 require 'rails_helper'
 
 RSpec.describe SingleOrderDetail, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  describe 'defined methods' do
+    let(:single_order_detail) {create(:single_order_detail)}
+
+    it 'set_completed_on' do
+      @single_order_detail = create(:single_order_detail)
+      @single_order_detail.completed_on = nil
+      expect(@single_order_detail.set_completed_on).to eq single_order_detail.completed_on
+    end
+  end
+
 end

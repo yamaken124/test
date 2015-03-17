@@ -7,9 +7,10 @@ class Users::OrdersController < Users::BaseController
   # before_action :apply_coupon_code, only: :update
 
   def index
-    @details = SingleOrderDetail.where(id: Payment.where(user_id: current_user.id).pluck(:single_order_detail_id))
-    .includes(:address).includes(:single_line_items)
-    @variants = Variant.where(id: SingleLineItem.where(single_order_detail_id: @details.pluck(:id)).pluck(:variant_id)).includes(:images).includes(:prices).index_by(&:id)
+    single_order_detail_id = Payment.where(user_id: current_user.id).pluck(:single_order_detail_id)
+    @details = SingleOrderDetail.where(id: single_order_detail_id).includes(:address).includes(:single_line_items)
+    variant_ids = SingleLineItem.where(single_order_detail_id: @details.pluck(:id)).pluck(:variant_id)
+    @variants_indexed_by_id = Variant.where(id: variant_ids).includes(:images).includes(:prices).index_by(&:id)
   end
 
   def thanks

@@ -10,7 +10,7 @@
     <p>お届け先:<br><%= "#{detail.address.name} #{detail.address.full_address}" %></p>
   </div>
   <% detail.single_line_items.each do |item|%>
-    <% variant = @variants[item.variant_id] %>
+    <% variant = @variants_indexed_by_id[item.variant_id] %>
     <div class="c-product_list">
     	<div class="c-product_list__image">
         <%= image_tag variant.images.first.image.url %>
