@@ -27,7 +27,7 @@ RSpec.describe Users::OrdersController, type: :controller do
     end
     it 'assings variants' do
       get :index, id: single_line_item.variant_id
-      expect(assigns(:variants)[single_line_item.variant_id]).to eq variant
+      expect(assigns(:variants_indexed_by_id)[single_line_item.variant_id]).to eq variant
     end
   end
 
