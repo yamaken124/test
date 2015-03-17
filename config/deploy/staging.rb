@@ -2,8 +2,8 @@ set :stage, :staging
 set :branch, 'master'
 set :rbenv_type, :user
 set :rbenv_ruby, '2.2.1'
-set :rails_env, 'production'
-set :unicorn_rack_env, 'production'
+set :rails_env, 'staging'
+set :unicorn_rack_env, 'staging'
 set :bundle_without,  [:development, :test, :heroku_staging]
 
 set :application_server_addrs, [
