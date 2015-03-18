@@ -88,7 +88,10 @@
       <li class="p-payment_method_selection">
         <div class="p-payment_method__detail is-active">
           <p>数量: </p>
-          <%= number_field_tag :quantity, nil, min: 1, class: 'p-payment_method__amount' %>
+          <% if false %>
+            <%= number_field_tag :quantity, nil, min: 1, class: 'p-payment_method__amount' %>
+          <% end %>
+          <%= select_tag :quantity, options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
           <p class="u-margin__left_short">個</p>
           <%= submit_tag 'カートへ', class: 'c-btn--submit--short u-margin__top5' %>
         </div>
