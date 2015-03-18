@@ -48,7 +48,7 @@
           <% if(@product.subscription_master_price.present?) %>
             <li class="p-payment_method_selection">
               <div class="p-payment_method_selection__radio">
-                  <%= radio_button_tag :variant_id, single.id %>
+                  <%= radio_button_tag :variant_id, single.id, {:checked => true} %>
               </div>
               <p class="p-payment_method_selection__title">
                 <%=t('order_type.single_order')%>
