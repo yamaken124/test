@@ -60,15 +60,16 @@ class Users::CreditCardsController < Users::BaseController
     end
 
     def set_continue
-      if params[:continue].present?
-        @continue = params[:continue]
-      else
-        @continue = profile_credit_cards_path
-      end
+      @continue = \
+        if params[:continue].present?
+          params[:continue]
+        else
+          profile_credit_cards_path
+        end
     end
 
     def continue_path
-      if params[:continue].include?("checkout/payment")
+      if params[:continue].to_s.include?("checkout/payment")
         checkout_state_path("payment")
       else
         profile_credit_cards_path
