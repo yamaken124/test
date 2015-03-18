@@ -22,12 +22,13 @@ class Admins::ProductsController < Admins::BaseController
   def update
     begin
       ActiveRecord::Base.transaction do
-        raise if invalid_products_taxons_attributes?
         @product.update!(attributes_params)
+        raise if invalid_products_taxons_attributes?
       end
       redirect_to admins_product_path(params[:id])
     rescue
       @product.products_taxons.build
+      set_reef_taxons
       render :edit
     end
   end
@@ -35,13 +36,13 @@ class Admins::ProductsController < Admins::BaseController
   def create
     begin
       ActiveRecord::Base.transaction do
-        raise if invalid_products_taxons_attributes?
         @product = Product.new(attributes_params)
         @product.save!
+        raise if invalid_products_taxons_attributes?
       end
       redirect_to admins_product_path(id: @product.id)
     rescue
-      @product.products_taxons.build
+      set_reef_taxons
       render :new
     end
   end

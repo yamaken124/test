@@ -16,12 +16,41 @@ RSpec.describe Admins::ProductsController, type: :controller do
   end
 
   describe 'POST #create' do
-    let(:params) { { product: attributes_for(:product) } }
+    let(:product) { create(:product) }
+    let(:products_taxon) { create(:products_taxon, product_id: product.id) }
+    let(:params) do
+      {
+        product: attributes_for(:product, name: "updated_name", products_taxons_attributes: { "0" => {taxon_id: products_taxon.id} })
+      }
+    end
+    before { post :create, params }
 
-    it { expect { post :create, params }.to change(Product, :count).by(1) }
-    it do
-      post :create, params
-      expect(response).to redirect_to edit_admins_product_path(id: assigns(:product).id)
+    it 'redirect to #show' do
+      expect(response).to redirect_to admins_product_path(id: assigns(:product).id)
+    end
+  end
+
+  describe 'PATCH #update' do
+    let(:product) { create(:product) }
+    let(:products_taxon) { create(:products_taxon, product_id: product.id) }
+    let(:params) do
+      {
+        id: product.id,
+        product: attributes_for(:product, name: "updated_name", products_taxons_attributes: { "0" => {id: products_taxon.id, taxon_id: products_taxon.id} })
+      }
+    end
+    before { patch :update, params }
+
+    it 'assigns fincrew' do
+      expect(assigns(:product)).to eq product
+    end
+
+    it 'update' do
+      expect{ patch :update, params; product.reload }.to change(product, :name).to('updated_name')
+    end
+
+    it 'redirects to edit_path' do
+      expect(response).to redirect_to admins_product_path(id: assigns(:product).id)
     end
   end
 
@@ -44,28 +73,6 @@ RSpec.describe Admins::ProductsController, type: :controller do
     it { expect(response).to render_template :edit }
   end
 
-  describe 'PATCH #update' do
-    let(:product) { create(:product) }
-    let(:params) do
-      {
-        id: product.id,
-        product: attributes_for(:product, name: "updated_name")
-      }
-    end
-    before { patch :update, params }
-
-    it 'assigns fincrew' do
-      expect(assigns(:product)).to eq product
-    end
-
-    it 'update' do
-      expect{ patch :update, params; product.reload }.to change(product, :name).to('updated_name')
-    end
-
-    it 'redirects to edit_path' do
-      expect(response).to redirect_to edit_admins_product_path(id: assigns(:product).id)
-    end
-  end
 
   describe 'DELETE #destroy' do
     let(:product) { create(:product) }
