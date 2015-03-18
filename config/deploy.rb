@@ -47,6 +47,8 @@ namespace :deploy do
     end
   end
 
+  after :migrate, 'db:seed_fu'
+  after 'db:seed_fu', 'db:seed'
   after :publishing, 'unicorn:restart'
 
 end
