@@ -4,3 +4,7 @@ aws:
   access_key_id: AKIAI6ENXQOVSQDPHO4A
   secret_access_key: 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
   fog_directory: 'store-finc-co-jp'
+
+http_basic:
+  user: adminfinc@finc.co.jp
+  pass: admin20120411pass
