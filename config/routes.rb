@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  devise_for :admins
 
   if Rails.env.development?
     devise_for :users, :controllers => {
@@ -7,8 +6,13 @@ Rails.application.routes.draw do
       :passwords => "users/passwords",
       :registrations => 'users/registrations'
     }
+    devise_for :admins,
+      :controllers => { :sessions => 'users/sessions' }
   else
     devise_for :users,
+      :controllers => { :sessions => 'users/sessions' },
+      :only => [ :session ]
+    devise_for :admins,
       :controllers => { :sessions => 'users/sessions' },
       :only => [ :session ]
   end
