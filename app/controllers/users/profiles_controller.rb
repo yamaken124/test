@@ -40,7 +40,7 @@ class Users::ProfilesController < Users::BaseController
     end
 
     def continue_path
-      if params[:continue].include?("checkout/payment")
+      if params[:continue] && params[:continue].include?("checkout/payment")
         checkout_state_path("payment")
       else
         edit_profile_path
