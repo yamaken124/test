@@ -106,8 +106,13 @@ gem 'httparty'
 # bootstrap
 gem 'adminlte-rails'
 
-#setting
+# image uploader
 gem 'carrierwave'
+gem 'rmagick'
+gem 'fog'
+gem 'unf' # due to a fog warning
+
+# pager
 gem "kaminari"
 
 # state machines
