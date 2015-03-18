@@ -37,6 +37,10 @@ RSpec.describe Address, type: :model do
       expect(address.name).to eq address.last_name + " " + address.first_name
     end
 
+    it 'expect full address' do
+      expect(address.full_address).to eq address.zipcode + " " + address.city + " " + address.address
+    end
+
     it 'not reach_upper_limit' do
       expect(Address.reach_upper_limit?(user)).to eq false
     end
