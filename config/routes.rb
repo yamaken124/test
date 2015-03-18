@@ -7,13 +7,13 @@ Rails.application.routes.draw do
       :registrations => 'users/registrations'
     }
     devise_for :admins,
-      :controllers => { :sessions => 'users/sessions' }
+      :controllers => { :sessions => 'admins/sessions' }
   else
     devise_for :users,
       :controllers => { :sessions => 'users/sessions' },
       :only => [ :session ]
     devise_for :admins,
-      :controllers => { :sessions => 'users/sessions' },
+      :controllers => { :sessions => 'admins/sessions' },
       :only => [ :session ]
   end
 
