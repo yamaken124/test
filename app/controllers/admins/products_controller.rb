@@ -22,7 +22,7 @@ class Admins::ProductsController < Admins::BaseController
   def update
     begin
       ActiveRecord::Base.transaction do
-        @product.update!(attributes_params)
+        @product.update(attributes_params)
         raise if invalid_products_taxons_attributes?
       end
       redirect_to admins_product_path(params[:id])
@@ -37,7 +37,7 @@ class Admins::ProductsController < Admins::BaseController
     begin
       ActiveRecord::Base.transaction do
         @product = Product.new(attributes_params)
-        @product.save!
+        @product.save
         raise if invalid_products_taxons_attributes?
       end
       redirect_to admins_product_path(id: @product.id)

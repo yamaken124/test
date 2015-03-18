@@ -41,7 +41,7 @@ class ProductsTaxon < ActiveRecord::Base
   end
 
   def self.create_new_category(product,params)
-    ProductsTaxon.new(product_id: product.id, taxon_id: params[:new_taxon_id]).save!
+    ProductsTaxon.new(product_id: product.id, taxon_id: params[:new_taxon_id]).save
   end
 
 end
