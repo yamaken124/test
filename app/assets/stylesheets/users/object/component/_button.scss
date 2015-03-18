@@ -42,6 +42,7 @@
   @extend .c-btn;
   width:114px;
   height:30px;
-  line-height:30px; 
+  line-height:30px;
   float:right;
+  background-color:$base_border_color;
 }
