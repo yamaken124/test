@@ -38,10 +38,11 @@ class Admins::ProductsController < Admins::BaseController
       ActiveRecord::Base.transaction do
         raise if ProductsTaxon.without_products_taxon?(params)
         attributes_params = set_attributes_params
-        product = Product.new(attributes_params)
-        product.save!
+        @product = Product.new(attributes_params)
+        @product.save!
+        p @product
       end
-      redirect_to admins_product_path(id: product.id)
+      redirect_to admins_product_path(id: @product.id)
     rescue
       set_new_product
       render :new
