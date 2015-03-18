@@ -12,4 +12,8 @@ class Admins::SessionsController < Devise::SessionsController
     def development_env?
       Rails.env.development?
     end
+
+    def after_sign_in_path_for(resource)
+      admins_products_path
+    end
 end
