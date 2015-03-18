@@ -1,5 +1,6 @@
 class Users::CreditCardsController < Users::BaseController
   before_action :check_multi_payment_user
+  before_action :set_continue, only: [:new]
 
   def index
     @gmo_cards = GmoMultiPayment::Card.new(@user).search
@@ -16,7 +17,7 @@ class Users::CreditCardsController < Users::BaseController
   def create
     if GmoMultiPayment::Card.new(@user).search.size < GmoMultiPayment::Card::UpperLimit
       if GmoMultiPayment::Card.new(@user).create(params[:card_no], params[:expire])
-        redirect_to profile_credit_cards_path
+        redirect_to continue_path
       else
         flash[:notice] = "カード情報または、有効期限が不正です。"
         render :new
@@ -55,6 +56,22 @@ class Users::CreditCardsController < Users::BaseController
       if !is_success
         session.delete(:user)
         redirect_to new_user_session_path
+      end
+    end
+
+    def set_continue
+      if params[:continue].present?
+        @continue = params[:continue]
+      else
+        @continue = profile_credit_cards_path
+      end
+    end
+
+    def continue_path
+      if params[:continue].include?("checkout/payment")
+        checkout_state_path("payment")
+      else
+        profile_credit_cards_path
       end
     end
 
