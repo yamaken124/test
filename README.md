@@ -50,3 +50,7 @@ $ brew install imagemagick # for mac
 		2. Where to see.
 		3. How you tested manually.
 5. Good luck !!
+
+## Wiki
+
+Wiki is [here](https://github.com/FiNCDeveloper/finc_store/wiki)
