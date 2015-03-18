@@ -55,7 +55,7 @@
         </li>
       <% end %>
       <% if @gmo_cards.size < GmoMultiPayment::Card::UpperLimit %>
-        <%= link_to(new_profile_credit_card_path) do %>
+        <%= link_to(new_profile_credit_card_path(continue: checkout_state_path(state: :payment))) do %>
           <li class="c-link">新規クレジット登録</li>
         <% end %>
       <% else %>

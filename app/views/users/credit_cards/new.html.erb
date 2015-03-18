@@ -9,6 +9,7 @@
       <%= label_tag :expire, "有効期限" %>
       <%= text_field_tag :expire, nil, class: "form__text--short", placeholder: "1901(年月-無し)" %>
     </div>
+    <%= hidden_field_tag "continue", @continue %>
     <div class="form__field">
       <div class="c-btn--submit u-margin__bottom_middle" onclick="$('form').submit()">
        登録
