@@ -19,9 +19,14 @@ class Admins::ProductsController < Admins::BaseController
   end
 
   def update
-    if @product.update(attributes_params)
+    begin
+      ActiveRecord::Base.transaction do
+        raise if invalid_products_taxons_attributes?
+        @product.update!(attributes_params)
+      end
       redirect_to admins_product_path(params[:id])
-    else
+    rescue
+      @product.products_taxons.build
       render :edit
     end
   end
@@ -29,8 +34,8 @@ class Admins::ProductsController < Admins::BaseController
   def create
     begin
       ActiveRecord::Base.transaction do
+        raise if invalid_products_taxons_attributes?
         @product = Product.new(attributes_params)
-        raise if attributes_params[:products_taxons_attributes].blank?
         @product.save!
       end
       redirect_to admins_product_path(id: @product.id)
@@ -58,6 +63,10 @@ class Admins::ProductsController < Admins::BaseController
 
     def set_product
       @product = Product.find(params[:id])
+    end
+
+    def invalid_products_taxons_attributes?
+      attributes_params[:products_taxons_attributes].blank?
     end
 
 end
