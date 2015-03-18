@@ -8,7 +8,7 @@ RSpec.describe Users::ProductsController, type: :controller do
     @product = create(:product)
     @variant = create(:variant, product_id: @product.id)
     @price = create(:price, variant_id: @variant.id)
-    @image = create(:image, imageable_id: @variant.id)
+    @image = create(:image, imageable_id: @variant.id, imageable_type: 'Variant')
   end
 
   describe 'GET #index' do
@@ -25,5 +25,5 @@ RSpec.describe Users::ProductsController, type: :controller do
 
     it { expect(assigns(:product)).to eq @product } 
     it { expect(response).to render_template :show } 
-end
+  end
 end

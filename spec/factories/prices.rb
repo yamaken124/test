@@ -11,9 +11,6 @@
 
 FactoryGirl.define do
   factory :price do
-    created_at Date.yesterday
-    updated_at Date.today
     amount 100
   end
-
 end
