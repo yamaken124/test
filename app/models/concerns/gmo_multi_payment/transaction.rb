@@ -75,13 +75,13 @@ class GmoMultiPayment::Transaction
       job_cd: response.parsed_response.split("&")[3].split("=")[1] } : { is_exist: false }
   end
 
-  def transaction_void(access_id, access_pass)
+  def transaction_void
     url = GmoMultiPayment::Domain + "/payment/AlterTran.idPass"
     response = HTTParty.post( url, {body:
-                  {:SiteID      => GmoMultiPayment::SiteID,
-                   :SitePass    => GmoMultiPayment::SitePass,
-                   :AccessID    => access_id,
-                   :AccessPass  => access_pass,
+                  {:ShopID      => GmoMultiPayment::ShopID,
+                   :ShopPass    => GmoMultiPayment::ShopPass,
+                   :AccessID    => @payment.gmo_access_id,
+                   :AccessPass  => @payment.gmo_access_pass,
                    :JobCd       => GmoMultiPayment::Void}
     })
     response.parsed_response.index("ErrCode").blank? ? true : false

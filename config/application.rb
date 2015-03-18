@@ -19,6 +19,7 @@ module FincStore
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
+    config.autoload_paths += Dir["#{config.root}/app/validators"]
     config.i18n.default_locale = :ja
 
     # Do not swallow errors in after_commit/after_rollback callbacks.

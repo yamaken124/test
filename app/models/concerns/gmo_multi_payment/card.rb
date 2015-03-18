@@ -1,14 +1,17 @@
 class GmoMultiPayment::Card
+
+  UpperLimit = 5
+
   def initialize(user)
     @user = user
   end
 
   def create(card_no, expire)
     url = GmoMultiPayment::Domain + "/payment/SaveCard.idPass"
-    response = HTTParty.post( url, {body: 
-                  {:SiteID => GmoMultiPayment::SiteID, 
-                    :SitePass => GmoMultiPayment::SitePass, 
-                    :MemberID => @user.id, 
+    response = HTTParty.post( url, {body:
+                  {:SiteID => GmoMultiPayment::SiteID,
+                    :SitePass => GmoMultiPayment::SitePass,
+                    :MemberID => @user.id,
                     :CardNo => card_no,
                     :Expire => expire,
                     :DefaultFlag => 1}
@@ -18,10 +21,10 @@ class GmoMultiPayment::Card
 
   def update(card_no, expire, card_seq, default_flag)
     url = GmoMultiPayment::Domain + "/payment/SaveCard.idPass"
-    response = HTTParty.post( url, {body: 
-                  {:SiteID => GmoMultiPayment::SiteID, 
-                    :SitePass => GmoMultiPayment::SitePass, 
-                    :MemberID => @user.id, 
+    response = HTTParty.post( url, {body:
+                  {:SiteID => GmoMultiPayment::SiteID,
+                    :SitePass => GmoMultiPayment::SitePass,
+                    :MemberID => @user.id,
                     :CardNo => card_no,
                     :Expire => expire,
                     :CardSeq => card_seq,
@@ -33,10 +36,10 @@ class GmoMultiPayment::Card
 
   def search
      url = GmoMultiPayment::Domain + "/payment/SearchCard.idPass"
-     response = HTTParty.post( url, {body: 
-                  {:SiteID => GmoMultiPayment::SiteID, 
-                    :SitePass => GmoMultiPayment::SitePass, 
-                    :MemberID => @user.id, 
+     response = HTTParty.post( url, {body:
+                  {:SiteID => GmoMultiPayment::SiteID,
+                    :SitePass => GmoMultiPayment::SitePass,
+                    :MemberID => @user.id,
                     :SeqMode => 0 }
      })
      response.parsed_response.index("ErrCode").blank? ? GmoMultiPayment::Card.parse_response(response.parsed_response) : []
@@ -44,10 +47,10 @@ class GmoMultiPayment::Card
 
   def delete(card_seq)
      url = GmoMultiPayment::Domain + "/payment/DeleteCard.idPass"
-     HTTParty.post( url, {body: 
-                  {:SiteID => GmoMultiPayment::SiteID, 
-                    :SitePass => GmoMultiPayment::SitePass, 
-                    :MemberID => @user.id, 
+     HTTParty.post( url, {body:
+                  {:SiteID => GmoMultiPayment::SiteID,
+                    :SitePass => GmoMultiPayment::SitePass,
+                    :MemberID => @user.id,
                     :CardSeq => card_seq}
     })
   end

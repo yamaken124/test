@@ -15,15 +15,15 @@ default: &default
   pool: 5
   username: <%= Settings.db.default.username %>
   password: <%= Settings.db.default.password %>
-  socket: <%= Settings.db.default.socket %>
 
 development:
   <<: *default
   database: finc_store_development
+  socket: <%= Settings.db.default.socket %>
 
 staging:
   <<: *default
-  database: fincrew_manager_staging
+  database: finc_store_staging
   host: <%= Settings.db.default.host %>
   port: <%= Settings.db.default.port %>
 
@@ -33,6 +33,7 @@ staging:
 test:
   <<: *default
   database: finc_store_test
+  socket: <%= Settings.db.default.socket %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -55,7 +56,7 @@ test:
 #
 production:
   <<: *default
-  database: fincrew_manager_production
+  database: finc_store_production
   username: <%= Settings.db.default.username %>
   password: <%= Settings.db.default.password %>
   host: <%= Settings.db.default.host %>

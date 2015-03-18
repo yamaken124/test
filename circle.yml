@@ -1,0 +1,15 @@
+deployment:
+  heroku:
+    branch: master
+    commands:
+      - .circle/heroku.sh:
+          timeout: 300
+  staging:
+    branch: 'deploy/staging'
+    commands:
+      - .circle/deploy_staging.rb:
+          timeout: 300
+
+dependencies:
+  pre:
+    - sudo pip install awscli

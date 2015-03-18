@@ -3,14 +3,20 @@ class Users::OrdersController < Users::BaseController
   include Users::OrdersHelper
 
   before_action :assign_order_with_lock, only: [:edit, :update, :remove_item]
+  before_action :set_variants, only: [:edit]
   # before_action :apply_coupon_code, only: :update
 
   def index
+    single_order_detail_id = Payment.where(user_id: current_user.id).pluck(:single_order_detail_id)
+    @details = SingleOrderDetail.where(id: single_order_detail_id).includes(:address).includes(:single_line_items)
+    variant_ids = SingleLineItem.where(single_order_detail_id: @details.pluck(:id)).pluck(:variant_id)
+    @variants_indexed_by_id = Variant.where(id: variant_ids).includes(:images).includes(:prices).index_by(&:id)
   end
 
   def thanks
     @number = params[:number]
     raise ActiveRecord::RecordNotFound if !Payment.where(number: @number).first.completed?
+    set_variants_and_items
   end
 
   def edit
@@ -82,30 +88,47 @@ class Users::OrdersController < Users::BaseController
     params["updated_quantity"] = nil
   end
 
+  def cancel
+    detail = SingleOrderDetail.where(id: Payment.where(number: params[:number]).first.single_order_detail_id).first
+    begin
+      ActiveRecord::Base.transaction do
+        detail.payment.shipment.canceled!
+        detail.payment.canceled!
+      end
+    end
+    redirect_to products_path #TODO redirect_to order_history
+  end
+
   private
 
-      def order_params
-        if params[:purchase_order]
-          params[:purchase_order].permit(*permitted_order_attributes)
-        else
-          {}
-        end
+    def order_params
+      if params[:purchase_order]
+        params[:purchase_order].permit(*permitted_order_attributes)
+      else
+        {}
       end
+    end
 
-      def assign_order_with_lock
-        @order = current_order({lock: true, create_order_if_necessary: true})
-        unless @order
-          flash[:error] = :order_not_found
-          redirect_to cart_path and return
-        end
+    def assign_order_with_lock
+      @order = current_order({lock: true, create_order_if_necessary: true})
+      unless @order
+        flash[:error] = :order_not_found
+        redirect_to cart_path and return
       end
+    end
 
-      def permitted_order_attributes
-        [ single_line_items_attributes: permitted_line_item_attributes ]
-      end
+    def permitted_order_attributes
+      [ single_line_items_attributes: permitted_line_item_attributes ]
+    end
 
-      def permitted_line_item_attributes
-        [:id, :variant_id, :quantity]
-      end
+    def permitted_line_item_attributes
+      [:id, :variant_id, :quantity]
+    end
+
+    def set_variants
+      @variants = @order.variants
+      .includes(:prices)
+      .includes(:images)
+    end
 
 end

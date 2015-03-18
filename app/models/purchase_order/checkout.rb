@@ -64,7 +64,6 @@ class PurchaseOrder < ActiveRecord::Base
                 raise "InvalidPointError" if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
                 raise "InvalidPaymentAttribute" unless valid_payment_attributes?(attributes)
                 single_order_detail.update!(attributes)
-
               when :confirm
                 single_order_detail.payment.processing!
                 single_order_detail.payment.completed!
@@ -87,6 +86,7 @@ class PurchaseOrder < ActiveRecord::Base
             payment_params["id"] = single_order_detail.payment.try(:id)
             payment_params["amount"] = single_order_detail.total
             payment_params["user_id"] = single_order_detail.single_order.purchase_order.user_id
+            payment_params["address_id"] = attributes[:address_id]
             payment_params
           end
 

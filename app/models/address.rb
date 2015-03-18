@@ -16,11 +16,32 @@
 #
 
 class Address < ActiveRecord::Base
+
+  belongs_to :user
+
   validates :last_name, presence: true
   validates :first_name, presence: true
   validates :city, presence: true
   validates :zipcode, presence: true
   validates :phone, presence: true
-  
-  belongs_to :user
+  validates_with AddressCountValidator, on: :create
+
+  UpperLimit = 3
+
+  def self.reach_upper_limit?(user)
+    Address.where(user_id: user.id).count >= UpperLimit
+  end
+
+  def self.update_all_not_main(user)
+    Address.where(user_id: user.id).update_all(is_main: false)
+  end
+
+  def name
+    "#{last_name} #{first_name}"
+  end
+
+  def full_address
+    "#{zipcode} #{city} #{address}"
+  end
+
 end

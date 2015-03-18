@@ -9,20 +9,22 @@
     </div>
     <h2 class="c-links__title">お届先住所</h2>
     <ul class="c-links">
-      <% @addresses.each_with_index do |address, i| %>
+      <% @addresses.each do |address| %>
         <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
-            <%= radio_button_tag "order[payment_attributes[address_id]]", address.id, i == 0 ? 'checked: "checked"' : nil %>
+            <%= radio_button_tag "order[address_id]", address.id, address.is_main ? 'checked: "checked"' : nil %>
           </div>
-          <%= label_tag "order_payment_attributes_address_id_#{address.id}",
-           "#{address.last_name}&nbsp;#{address.first_name}<br>
-           #{address.zipcode}&nbsp;#{address.city}&nbsp;#{address.address}".html_safe %>
+          <%= label_tag "order_attributes_address_id_#{address.id}",
+           "#{address.name}<br>
+           #{address.full_address}".html_safe %>
         </li>
       <% end %>
-      <%= link_to(new_account_address_path(continue: checkout_state_path(state: :payment))) do %>
-       <li class="c-link">
-        新規住所登録
-        </li>
+      <% if @addresses.size < Address::UpperLimit %>
+        <%= link_to(new_account_address_path(continue: checkout_state_path(state: :payment))) do %>
+          <li class="c-link">新規住所登録</li>
+        <% end %>
+      <% else %>
+        <li class="c-link"><%= t('validate_registration.address') %></li>
       <% end %>
     </ul>
     <h2 class="c-links__title">支払い方法</h2>
@@ -50,10 +52,12 @@
           <%= label_tag "order_payment_attributes_gmo_card_seq_temporary_#{gmo_card[:CardSeq]}", "番号：#{gmo_card[:CardNo]}<br />有効期限：#{gmo_card[:Expire]}".html_safe %>
         </li>
       <% end %>
-      <%= link_to(new_profile_credit_card_path) do %>
-       <li class="c-link">
-        新規クレジット登録
-        </li>
+      <% if @gmo_cards.size < GmoMultiPayment::Card::UpperLimit %>
+        <%= link_to(new_profile_credit_card_path) do %>
+          <li class="c-link">新規クレジット登録</li>
+        <% end %>
+      <% else %>
+        <li class="c-link"><%= t('validate_registration.address') %></li>
       <% end %>
     </ul>
     <ul class="c-links js-cresit">
@@ -66,11 +70,6 @@
             番号：<%= gmo_card[:CardNo] %> <br />
             有効期限： <%= gmo_card[:Expire] %>
           </span>
-        </li>
-      <% end %>
-      <%= link_to new_profile_credit_card_path  do %>
-        <li class="c-link">
-          新規クレジットカード登録
         </li>
       <% end %>
     </ul>
@@ -108,7 +107,7 @@
         </div>
         <div class="c-product__list_detail_wrapper">
           <div class="c-product_list__title">
-            <%= @products.where(id: item.product_id).name %>
+            <%= item.name %>
           </div>
           <div class="c-product_list__price">
             ￥<%= item.prices.first.amount %>(<%= @single_line_items.where(variant_id: item.id).pluck(:quantity).first %>個)
