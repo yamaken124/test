@@ -36,12 +36,14 @@
         <p>
         <%= label_tag "payment_method_id_1", "クレジット" %>
       </li>
+<% if false %>
       <li class="c-link--nolink">
         <div class="c-link__radio_div">
           <%= radio_button_tag "order[payment_attributes[payment_method_id]]", 2, nil, :onclick=> "payment_method_change(this.value)" %>
         </div>
         <%= label_tag "payment_method_id_2", "後払い決済" %>
       </li>
+<% end %>
     </ul>
     <ul class="c-links js-credit">
       <% @gmo_cards.each_with_index do |gmo_card, i| %>

@@ -16,6 +16,8 @@ class Users::ProductsController < Users::BaseController
       .includes(:prices) \
       .where(id: params[:id]).first
 
+    @available_quantity = *(1..@product.available_quantity)
+
     if @product.blank? || !@product.product_available
       redirect_to products_path
     end
