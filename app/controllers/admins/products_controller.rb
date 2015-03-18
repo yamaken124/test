@@ -1,5 +1,6 @@
 class Admins::ProductsController < Admins::BaseController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_reef_taxons, only: [:new, :edit]
 
   def index
     @products = Product.includes(:products_taxons)
@@ -67,6 +68,10 @@ class Admins::ProductsController < Admins::BaseController
 
     def invalid_products_taxons_attributes?
       attributes_params[:products_taxons_attributes].blank?
+    end
+
+    def set_reef_taxons
+      @reef_taxons = Taxon.reef_taxons
     end
 
 end
