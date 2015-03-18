@@ -48,7 +48,7 @@
           <% if(@product.subscription_master_price.present?) %>
             <li class="p-payment_method_selection">
               <div class="p-payment_method_selection__radio">
-                  <%= radio_button_tag :variant_id, single.id %>
+                  <%= radio_button_tag :variant_id, single.id, {:checked => true} %>
               </div>
               <p class="p-payment_method_selection__title">
                 <%=t('order_type.single_order')%>
@@ -88,7 +88,10 @@
       <li class="p-payment_method_selection">
         <div class="p-payment_method__detail is-active">
           <p>数量: </p>
-          <%= number_field_tag :quantity, nil, min: 1, class: 'p-payment_method__amount' %>
+          <% if false #FIXME%>
+            <%= number_field_tag :quantity, nil, min: 1, class: 'p-payment_method__amount' %>
+          <% end %>
+          <%= select_tag :quantity, options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
           <p class="u-margin__left_short">個</p>
           <%= submit_tag 'カートへ', class: 'c-btn--submit--short u-margin__top5' %>
         </div>
@@ -97,6 +100,7 @@
 
     <h2 class="u-margin__top25">この商品について</h2>
     <ul class="p-lists">
+<% if false #FIXME%>
       <li class="p-list">
       <p>栄養士からの説明</p>
       <div class="p-list__fincrew">
@@ -106,6 +110,7 @@
         いいいいいいい
       </div>
       </li>
+<% end %>
       <li class="p-list">
       <p>商品詳細</p>
       <div class="p-list__description">

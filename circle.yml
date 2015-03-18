@@ -9,6 +9,11 @@ deployment:
     commands:
       - .circle/deploy_staging.rb:
           timeout: 300
+  rollback_staging:
+    branch: 'deploy/rollback_staging'
+    commands:
+      - .circle/rollback_staging.rb:
+          timeout: 300
 
 dependencies:
   pre:

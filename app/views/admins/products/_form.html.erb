@@ -32,7 +32,7 @@
           <p><%= t.label "category" + (t.options[:child_index]+1).to_s %></p>
           <p><%= t.collection_select :taxon_id, @reef_taxons, :id, :name, :include_blank => true %></p>
         </div>
-        <% if product.products_taxons.size == t.options[:child_index]+1 && params["action"] == "edit" %>
+        <% if product.products_taxons.size == t.options[:child_index]+1 && params["action"] == "edit" || "update" %>
           <div class="form-group">
             <p><%= t.label :new_category %></p>
             <p><%= select_tag :new_taxon_id, options_from_collection_for_select(@reef_taxons, :id, :name), :include_blank => true %></p>

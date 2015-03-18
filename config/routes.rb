@@ -15,12 +15,12 @@ Rails.application.routes.draw do
 
   root 'users/accounts#show'
 
+  resource :health_check, only: [:show]
+
   scope module: :users do
     namespace :oauth do
       resource :authorization, only: [:create] do
-        if Rails.env.heroku_staging?
-          get '/', action: :create
-        end
+        get '/', action: :create
       end
     end
     resource :account, only: [:show] do
