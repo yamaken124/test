@@ -8,3 +8,6 @@ aws:
 http_basic:
   user: adminfinc@finc.co.jp
   pass: admin20120411pass
+
+secrets:
+  secret_key_base:
