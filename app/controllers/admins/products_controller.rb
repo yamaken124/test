@@ -1,6 +1,6 @@
 class Admins::ProductsController < Admins::BaseController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
-  before_action :set_reef_taxons, only: [:edit]
+  before_action :set_reef_taxons, only: [:new, :edit]
   before_action :set_new_product, only: [:new]
 
   def index
@@ -15,6 +15,22 @@ class Admins::ProductsController < Admins::BaseController
   def new
   end
 
+  def create
+    begin
+      ActiveRecord::Base.transaction do
+        raise if ProductsTaxon.without_products_taxon?(params)
+        attributes_params = set_attributes_params
+        @product = Product.new(attributes_params)
+        @product.save!
+      end
+      redirect_to admins_product_path(id: @product.id)
+    rescue
+      set_new_product
+      set_reef_taxons
+      render :new
+    end
+  end
+
   def edit
   end
 
@@ -23,29 +39,13 @@ class Admins::ProductsController < Admins::BaseController
       ActiveRecord::Base.transaction do
         attributes_params = set_attributes_params
         raise if invalid_products_taxons_attributes?(attributes_params)
-        ProductsTaxon.create_new_products_taxon(params)
+        ProductsTaxon.create_products_taxon(params)
         @product.update!(attributes_params)
       end
       redirect_to admins_product_path(params[:id])
     rescue
       set_reef_taxons
       render :edit
-    end
-  end
-
-  def create
-    begin
-      ActiveRecord::Base.transaction do
-        raise if ProductsTaxon.without_products_taxon?(params)
-        attributes_params = set_attributes_params
-        @product = Product.new(attributes_params)
-        @product.save!
-        p @product
-      end
-      redirect_to admins_product_path(id: @product.id)
-    rescue
-      set_new_product
-      render :new
     end
   end
 
@@ -59,7 +59,7 @@ class Admins::ProductsController < Admins::BaseController
     def set_attributes_params
       products_taxons_attributes = ProductsTaxon.set_products_taxons_attributes(params)
       attributes = params.require(:product).permit(:name, :description, :is_valid_at, :is_invalid_at)
-      attributes = attributes.merge(products_taxons_attributes)
+      attributes.merge(products_taxons_attributes)
     end
 
     def set_product
@@ -77,7 +77,6 @@ class Admins::ProductsController < Admins::BaseController
     def set_new_product
       @product = Product.new
       @product.products_taxons.build
-      set_reef_taxons
     end
 
 end

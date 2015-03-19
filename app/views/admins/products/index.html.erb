@@ -31,12 +31,13 @@
               <td><%= t(product.classify_validity) %></td>
               <td>
                 <% product.products_taxons.each.with_index(1) do |products_taxon, i| %>
-                  <% if i > 3 %>
+                  <% if i <= 3 %>
+                    <%if products_taxon && products_taxon.taxon_id %>
+                      <%= @taxons.where(id: products_taxon.taxon_id).first.name %>/
+                    <% end %>
+                  <% else %>
                     ...(<%=product.products_taxons.count%>)
                     <% break %>
-                  <% end %>
-                  <%if products_taxon && products_taxon.taxon_id %>
-                    <%= @taxons.where(id: products_taxon.taxon_id).first.name %>/
                   <% end %>
                 <% end %>
               </td>
