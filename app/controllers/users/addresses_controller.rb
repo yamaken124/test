@@ -73,7 +73,7 @@ class Users::AddressesController < Users::BaseController
     def continue_path
       if params[:continue] && params[:continue].include?("checkout/payment")
         checkout_state_path("payment")
-      elsif params[:continue].include?("profile/credit_cards/new")
+      elsif params[:continue] && params[:continue].include?("profile/credit_cards/new")
         new_profile_credit_card_path
       else
         account_addresses_path
