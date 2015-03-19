@@ -43,6 +43,7 @@ class Users::CheckoutsController < Users::BaseController
 
     def detail
       @detail ||= @order.single_order_detail
+      redirect_to cart_path and return if @detail.item_total == 0
     end
 
     def set_state_if_present
