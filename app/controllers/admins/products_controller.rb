@@ -18,7 +18,7 @@ class Admins::ProductsController < Admins::BaseController
   def create
     begin
       ActiveRecord::Base.transaction do
-        raise if ProductsTaxon.without_products_taxon?(params)
+        raise if without_products_taxon?
         @product = Product.new(attribute_params)
         @product.save!
       end
@@ -37,7 +37,7 @@ class Admins::ProductsController < Admins::BaseController
     begin
       ActiveRecord::Base.transaction do
         raise if invalid_products_taxons_attributes?(attribute_params)
-        ProductsTaxon.create_products_taxon(params)
+        ProductsTaxon.create_products_taxon(params[:id],params[:new_taxon_id])
         @product.update!(attribute_params)
       end
       redirect_to admins_product_path(params[:id])
@@ -55,7 +55,7 @@ class Admins::ProductsController < Admins::BaseController
   private
 
     def attribute_params
-      return @attribute_params if @attribute_params
+      return @attribute_params if @attribute_params.present?
       products_taxons_attributes = ProductsTaxon.set_products_taxons_attributes(params)
       attributes = params.require(:product).permit(:name, :description, :is_valid_at, :is_invalid_at)
       @attribute_params = attributes.merge(products_taxons_attributes)
@@ -74,8 +74,12 @@ class Admins::ProductsController < Admins::BaseController
     end
 
     def set_new_product
-      @product = Product.new
+      @product ||= Product.new
       @product.products_taxons.build
+    end
+
+    def without_products_taxon?
+      params[:product][:products_taxons_attributes]["0"][:taxon_id].blank?
     end
 
 end
