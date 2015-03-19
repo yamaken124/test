@@ -36,12 +36,13 @@ RSpec.describe Admins::ProductsController, type: :controller do
     let(:params) do
       {
         id: product.id,
-        product: attributes_for(:product, name: "updated_name", products_taxons_attributes: { "0" => {id: products_taxon.id, taxon_id: products_taxon.id} })
+        product: attributes_for(:product, name: "updated_name", products_taxons_attributes: { "0" => {id: products_taxon.id, taxon_id: products_taxon.id} }),
+        new_taxon_id: ''
       }
     end
     before { patch :update, params }
 
-    it 'assigns fincrew' do
+    it 'assigns product' do
       expect(assigns(:product)).to eq product
     end
 

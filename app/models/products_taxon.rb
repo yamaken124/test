@@ -28,8 +28,8 @@ class ProductsTaxon < ActiveRecord::Base
   end
 
   def self.create_products_taxon(product_id, taxon_id)
-    if params[:new_taxon_id].present?
-      ProductsTaxon.new(product_id: params[:id], taxon_id: params[:new_taxon_id]).save!
+    if taxon_id.present?
+      ProductsTaxon.new(product_id: product_id, taxon_id: taxon_id).save!
     end
   end
 
