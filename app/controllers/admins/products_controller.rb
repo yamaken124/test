@@ -1,6 +1,6 @@
 class Admins::ProductsController < Admins::BaseController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
-  before_action :set_reef_taxons, only: [:new, :edit]
+  before_action :set_leaf_taxons, only: [:new, :edit]
   before_action :set_new_product, only: [:new]
 
   def index
@@ -26,7 +26,7 @@ class Admins::ProductsController < Admins::BaseController
       redirect_to admins_product_path(id: @product.id)
     rescue
       set_new_product
-      set_reef_taxons
+      set_leaf_taxons
       render :new
     end
   end
@@ -44,7 +44,7 @@ class Admins::ProductsController < Admins::BaseController
       end
       redirect_to admins_product_path(params[:id])
     rescue
-      set_reef_taxons
+      set_leaf_taxons
       render :edit
     end
   end
@@ -70,8 +70,8 @@ class Admins::ProductsController < Admins::BaseController
       attributes_params[:products_taxons_attributes].blank?
     end
 
-    def set_reef_taxons
-      @reef_taxons = Taxon.reef_taxons
+    def set_leaf_taxons
+      @leaf_taxons = Taxon.leaf_taxons
     end
 
     def set_new_product

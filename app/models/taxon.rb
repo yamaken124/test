@@ -17,7 +17,7 @@ class Taxon < ActiveRecord::Base
   belongs_to :taxonomy
   belongs_to :parent, class_name: 'Taxon'
 
-  def self.reef_taxons
+  def self.leaf_taxons
     taxons = Taxon.where.not(id: Taxon.pluck(:parent_id))
   end
 
