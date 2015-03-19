@@ -31,7 +31,7 @@ Rails.application.routes.draw do
       resources :addresses, only: [:index, :edit, :update, :new, :create]
     end
     resource :profile, only: [:edit, :create, :update] do
-      resources :credit_cards
+      resources :credit_cards, only: [:index, :new, :edit, :create, :destroy]
     end
     resources :products, only: [:index, :show]
     resource :cart, only: [:update], controller: :orders do
