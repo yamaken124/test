@@ -46,10 +46,10 @@ Rails.application.routes.draw do
         delete '/cancel/:number' => 'orders#cancel', :as => :cancel
       end
     end
+    resources :taxons, only: [:index, :show]
 
     get '/checkout/:state', :to => 'checkouts#edit', :as => :checkout_state
     patch '/checkout/:state', :to => 'checkouts#update', :as => :update_checkout
-    get '/t/*id', :to => 'taxons#show', :as => :nested_taxon
   end
 
   namespace :admins do
