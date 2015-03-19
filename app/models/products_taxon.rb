@@ -22,9 +22,9 @@ class ProductsTaxon < ActiveRecord::Base
 
   extend PrivateClassMethod
 
-  def self.set_products_taxons_attributes(params)
+  def self.products_taxons_attributes(params)
     products_taxons_attributes = { products_taxons_attributes: {} }
-    products_taxons_attributes = filter_attributes(params, products_taxons_attributes)
+    filter_attributes(params, products_taxons_attributes)
   end
 
   def self.create_products_taxon(product_id, taxon_id)

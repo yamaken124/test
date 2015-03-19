@@ -56,7 +56,7 @@ class Admins::ProductsController < Admins::BaseController
 
     def attribute_params
       return @attribute_params if @attribute_params.present?
-      products_taxons_attributes = ProductsTaxon.set_products_taxons_attributes(params)
+      products_taxons_attributes = ProductsTaxon.products_taxons_attributes(params)
       attributes = params.require(:product).permit(:name, :description, :is_valid_at, :is_invalid_at)
       @attribute_params = attributes.merge(products_taxons_attributes)
     end
