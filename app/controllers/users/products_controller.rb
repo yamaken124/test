@@ -1,11 +1,14 @@
 class Users::ProductsController < Users::BaseController
   def index
-    @products = Product \
-      .active \
-      .having_images_and_variants \
-      .where(id: Variant.active.pluck(:product_id)) \
-      .page(params[:page]) \
-      .includes(:images)
+    valid_variant_ids = Variant.valid_variant_ids
+    set_products(valid_variant_ids)
+
+    displayed_variants = valid_variant_ids & Variant.where(product_id: @products.pluck(:id)).pluck(:id)
+    variants = Variant.where(id: displayed_variants)
+    @variants_indexed_by_product_id = variants.index_by(&:product_id)
+
+    set_prices(variants)
+    set_images(variants)
   end
 
   def show
@@ -22,5 +25,22 @@ class Users::ProductsController < Users::BaseController
       redirect_to products_path
     end
   end
+
+  private
+    def set_products(valid_variant_ids)
+      @products = Product.active.where(id: Variant.where(id: valid_variant_ids).pluck(:product_id)).page(params[:page])
+    end
+
+    def set_prices(variants)
+      single_variants = variants.single_order
+      @single_prices = Price.where(id: single_variants.ids).index_by(&:variant_id)
+
+      subscription_variants = variants.subscription_order
+      @subscription_prices = Price.where(id: subscription_variants.ids).index_by(&:variant_id)
+    end
+
+    def set_images(variants)
+      @images_indexed_by_variant_id = Image.where(imageable_id: variants.ids).index_by(&:imageable_id) #TODO 両方写真があるとき！！
+    end
 
 end

@@ -1,28 +1,29 @@
 <a href="<%= product_path(id: product.id) %>">
   <div class="c-product">
 
-    <%= image_tag product.images.first.image.url, class: "c-product__image" %>
+    <%= image_tag @images_indexed_by_variant_id[@variants_indexed_by_product_id[product.id].id].image.url, class: "c-product__image" %>
+
     <div class="c-product__left_wrapper">
       <div class="c-product__title">
         <%= product.name %>
       </div>
       <div class="c-product__price">
-        <%if(product.single_master_price.present?) %>
-          <% if(product.subscription_master_price.present?) %>
+        <%if(@single_prices[@variants_indexed_by_product_id[product.id].id].present?) %>
+          <% if(@subscription_prices[@variants_indexed_by_product_id[product.id].id].present?) %>
             <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
           <% end %>
           <p class="c-product__price_value">
-            <%= product.single_master_price %>円
+            <%= @single_prices[@variants_indexed_by_product_id[product.id].id].amount %>円
           </p>
         <% end %>
       </div>
       <div class="c-product__price">
-        <%if(product.subscription_master_price.present?) %>
-          <% if(product.single_master_price.present?) %>
+        <%if(@subscription_prices[@variants_indexed_by_product_id[product.id].id].present?) %>
+          <% if(@subscription_prices[@variants_indexed_by_product_id[product.id].id].present?) %>
             <p class="c-product__price_title"><%=t('order_type.subscription_order')%></p>
           <% end %>
           <p class="c-product__price_value">
-            <%= product.subscription_master_price %>円
+            <%= @single_prices[@variants_indexed_by_product_id[product.id].id].amount %>円
           </p>
         <% end %>
       </div>

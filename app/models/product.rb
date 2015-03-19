@@ -24,14 +24,6 @@ class Product < ActiveRecord::Base
     (prices.present? && images.present?)
   end
 
-  def single_master_price
-    Price.where(variant_id: variants.single_order.pluck(:id)).first.try(:amount)
-  end
-
-  def subscription_master_price
-    Price.where(variant_id: variants.subscription_order.pluck(:id)).first.try(:amount)
-  end
-
   def self.having_images_and_variants
     available_variant_id = Image.where(imageable_type: 'Variant').pluck(:imageable_id) & Price.pluck(:variant_id)
     available_product_id = Variant.active.where(id: available_variant_id).pluck(:product_id).uniq
@@ -45,6 +37,14 @@ class Product < ActiveRecord::Base
 
   def available_quantity
     12
+  end
+
+  def single_price
+    single_variants = variants.single_order
+    Price.where(id: single_variants.ids).index_by(&:variant_id)
+  end
+
+  def subcscription_price
   end
 
 end
