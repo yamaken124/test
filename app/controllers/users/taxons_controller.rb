@@ -1,7 +1,7 @@
 class Users::TaxonsController < Users::BaseController
 
   def index
-    @taxons = Taxon.where(id: Taxon.all.pluck(:parent_id))
+    @taxons = Taxon.where(parent_id: nil)
   end
 
   def show
