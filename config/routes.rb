@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       end
     end
     resource :account, only: [:show] do
-      resources :addresses, only: [:index, :edit, :update, :new, :create]
+      resources :addresses, only: [:index, :edit, :update, :new, :create, :destroy]
     end
     resource :profile, only: [:edit, :create, :update] do
       resources :credit_cards

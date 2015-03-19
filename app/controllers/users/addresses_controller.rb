@@ -37,8 +37,9 @@ class Users::AddressesController < Users::BaseController
     end
   end
 
-  def delete
+  def destroy
     Address.where(id: params[:id]).destroy_all
+    redirect_to account_addresses_path
   end
 
   private
