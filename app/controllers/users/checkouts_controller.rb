@@ -103,7 +103,7 @@ class Users::CheckoutsController < Users::BaseController
 
     def before_payment
       @gmo_cards = GmoMultiPayment::Card.new(current_user).search
-      @addresses = current_user.addresses.where(is_deleted: false)
+      @addresses = current_user.addresses.active
       @wellness_mileage = current_user.wellness_mileage
     end
 
