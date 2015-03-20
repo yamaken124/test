@@ -8,6 +8,7 @@
       <% end %>
     </ul>
   </div>
+<% if false #FIXME%>
   <div class="p-product__price_wrapper">
     <% @product.variants.single_order.each do |single| %>
       <% if single.variant_available? %>
@@ -18,7 +19,7 @@
             <% end %>
           </p>
           <p class="p-product__price_value">
-            <%= single.prices.pluck(:amount).first %>円
+            <%= number_to_jpy(single.prices.pluck(:amount).first) %>
             <span class="p-product__price_unit">(税込)</span>
           </p>
         </div>
@@ -34,13 +35,14 @@
             <% end %>
           </p>
           <p class="p-product__price_value">
-            <%= subscription.prices.pluck(:amount).first %>円
+            <%= number_to_jpy(subscription.prices.pluck(:amount).first) %>円
             <span class="p-product__price_unit">(税込)</span>
           </p>
         </div>
       <% end %>
     <% end %>
   </div>
+<% end %>
   <div class="p-wrapper--have_padding">
     <ul class="p-payment_method_selections">
       <% @product.variants.single_order.each do |single| %>
@@ -54,7 +56,7 @@
                 <%=t('order_type.single_order')%>
               </p>
               <p class="p-payment_method_selection__price">
-                <%= single.prices.pluck(:amount).first %>円
+                <%= number_to_jpy(single.prices.pluck(:amount).first) %>
               </p>
             </li>
           <% else %>
@@ -74,7 +76,7 @@
                 <%=t('order_type.subscription_order')%>
               </p>
               <p class="p-payment_method_selection__price">
-                <%= subscription.prices.pluck(:amount).first %>円
+                <%= number_to_jpy(subscription.prices.pluck(:amount).first) %>
               </p>
               <p class="p-payment_method_selection__attention">
                 ※初回2ヶ月分の料金をいただきます。
