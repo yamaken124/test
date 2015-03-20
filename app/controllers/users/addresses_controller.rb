@@ -19,7 +19,7 @@ class Users::AddressesController < Users::BaseController
     @address = Address.new(address_params)
     if !Address.reach_upper_limit?(current_user)
       if @address.save
-        redirect_to continue_path
+        continue_path
       else
         render :edit
       end
@@ -63,20 +63,15 @@ class Users::AddressesController < Users::BaseController
     end
 
     def set_continue
-      if params[:continue].present?
-        @continue = params[:continue]
-      else
-        @continue = account_addresses_path
-      end
+      @continue = params[:continue] if params[:continue].present?
     end
 
     def continue_path
+      redirect_to account_addresses_path and return if params[:continue].blank?
       if params[:continue].include?("checkout/payment")
-        checkout_state_path("payment")
-      elsif params[:continue].include?("profile/credit_cards/new")
-        new_profile_credit_card_path
-      else
-        account_addresses_path
+        redirect_to checkout_state_path("payment")
+      else # params[:continue].include?("profile/credit_cards/new")
+        redirect_to new_profile_credit_card_path
       end
     end
 

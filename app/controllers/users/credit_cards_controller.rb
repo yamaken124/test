@@ -27,17 +27,6 @@ class Users::CreditCardsController < Users::BaseController
     end
   end
 
-  def update
-    @card_seq = params[:id]
-    if GmoMultiPayment::Card.new(@user).update(params[:card_no], params[:expire], params[:card_seq], params[:default_flag])
-      redirect_to profile_credit_cards_path
-    else
-      flash[:notice] = "カード情報または、有効期限が不正です。"
-      @card_no = params[:prevent_card_no]
-      render :edit
-    end
-  end
-
   def destroy
     gmo_card = GmoMultiPayment::Card.new(@user)
     gmo_card.delete(params[:id])
@@ -69,7 +58,7 @@ class Users::CreditCardsController < Users::BaseController
     end
 
     def continue_path
-      if params[:continue].to_s.include?("checkout/payment")
+      if params[:continue] && params[:continue].to_s.include?("checkout/payment")
         checkout_state_path("payment")
       else
         profile_credit_cards_path

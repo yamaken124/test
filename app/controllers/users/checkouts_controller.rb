@@ -2,6 +2,7 @@ class Users::CheckoutsController < Users::BaseController
   include Users::OrdersHelper
   include Users::CheckoutsHelper
 
+  before_action :redirect_to_profile_if_without_any, only: [:edit]
   before_action :load_order_with_lock
   before_action :detail
   before_action :set_state_if_present
@@ -36,6 +37,12 @@ class Users::CheckoutsController < Users::BaseController
 
   private
 
+    def redirect_to_profile_if_without_any
+      if current_user.profile.blank?
+        redirect_to edit_profile_path(continue: checkout_state_path(state: :payment))
+      end
+    end
+
     def load_order_with_lock
       @order = current_order
       redirect_to cart_path and return unless @order
@@ -64,7 +71,7 @@ class Users::CheckoutsController < Users::BaseController
     end
 
     def ensure_sufficient_stock_lines
-      # TODO implement
+      redirect_to cart_path and return if @detail.item_total.zero?
     end
 
     def ensure_valid_state
@@ -123,4 +130,5 @@ class Users::CheckoutsController < Users::BaseController
       .includes(:prices)
       @single_line_items = @detail.single_line_items
     end
+
 end

@@ -29,6 +29,14 @@ FactoryGirl.define do
       is_valid_at Date.tomorrow
     end
 
+    factory :single_variant do
+      order_type "single_order"
+    end
+
+    factory :subscription_variant do
+      order_type "subscription_order"
+    end
+
   end
 
 end

@@ -9,14 +9,14 @@
     <ul class="p-payment_method_selections">
       <li class="p-payment_method_selection">
         <span>
-        商品: ¥<%= @detail.item_total + @detail.additional_tax_total %>円<br>
-        配送料手数料: ¥<%= @detail.shipment_total %>円
+        商品: <%= number_to_jpy(@detail.item_total + @detail.additional_tax_total) %><br>
+        配送料手数料: <%= number_to_jpy(@detail.shipment_total) %>
         </span>
       </li>
       <li class="p-payment_method_selection">
         <span>
           使用ポイント:<%= @payment.used_point %>pt<br>
-          注文合計: ¥<%= @payment.amount %>円
+          注文合計: <%= number_to_jpy(@payment.amount) %>
         </span>
       </li>
     </ul>
@@ -56,7 +56,7 @@
             <%= item.name %>
           </div>
           <div class="c-product_list__price">
-            ￥<%= item.prices.first.amount %>(<%= @single_line_items.where(variant_id: item.id).first.quantity %>個)
+            <%= number_to_jpy(item.prices.first.amount) %>(<%= @single_line_items.where(variant_id: item.id).first.quantity %>個)
           </div>
         </div>
       </div>

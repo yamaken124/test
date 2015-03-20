@@ -14,6 +14,10 @@
 #
 
 class Taxon < ActiveRecord::Base
-  belongs_to :taxonomy
+  has_many :products_taxon
+
+  acts_as_nested_set parent_column: :parent_id, left_column: :lft, right_column: :rgt
+
   belongs_to :parent, class_name: 'Taxon'
+
 end
