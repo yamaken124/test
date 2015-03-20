@@ -13,8 +13,8 @@ RSpec.describe Users::AddressesController, type: :controller do
       get :index
       expect(assigns(:user)).to eq @user
     end
-    
-    it "assign profile" do
+
+    it "assign address" do
       get :index
       expect(assigns(:addresses)).to eq [@address1]
     end
@@ -25,7 +25,7 @@ RSpec.describe Users::AddressesController, type: :controller do
       get :new
       expect(assigns(:user)).to eq @user
     end
-    
+
     it "assign address" do
       get :new
       expect(assigns(:address)).to be_new_record
@@ -38,7 +38,7 @@ RSpec.describe Users::AddressesController, type: :controller do
       get :edit, params
       expect(assigns(:user)).to eq @user
     end
-    
+
     it "assign address" do
       get :edit, params
       expect(assigns(:address)).to eq @address1
@@ -47,13 +47,13 @@ RSpec.describe Users::AddressesController, type: :controller do
 
   describe 'POST #create' do
     let(:params){
-      { 
+      {
         address: {
-          last_name: "xxxx", 
-          first_name: "xxxx", 
-          zipcode: "xxxx", 
-          address: "xxxx", 
-          city: "xxxx", 
+          last_name: "xxxx",
+          first_name: "xxxx",
+          zipcode: "xxxx",
+          address: "xxxx",
+          city: "xxxx",
           phone: "xxxx"
         },
         continue: checkout_state_path(state: :payment)
@@ -65,4 +65,46 @@ RSpec.describe Users::AddressesController, type: :controller do
       }.to change(Address, :count).by(1)
     end
   end
+
+  describe 'PATCH #update' do
+    let(:address) { create(:address, user_id: @user.id) }
+    let(:params) do
+      {
+        id: address.id,
+        address: attributes_for(:address, address: "updated_address")
+      }
+    end
+
+    before { patch :update, params }
+    it "assign address" do
+      expect(assigns(:address)).to eq address
+    end
+    it "updates" do
+      expect{ patch :update, params; address.reload }.to change(address, :address).to('updated_address')
+    end
+    it 'account_addresses_path' do
+      expect(response).to redirect_to account_addresses_path
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let(:address) { create(:address, user_id: @user.id) }
+    let(:params) do
+      {
+        id: address.id,
+        address: attributes_for(:address, is_active: false)
+      }
+    end
+    before { patch :destroy, params }
+
+    it 'updates' do
+      address.reload
+      expect(address.is_active).to eq false
+    end
+    it 'redirects to account_addresses_path' do
+      expect(response).to redirect_to account_addresses_path
+    end
+
+  end
+
 end
