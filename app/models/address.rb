@@ -21,15 +21,16 @@ class Address < ActiveRecord::Base
 
   validates :last_name, presence: true
   validates :first_name, presence: true
-  validates :city, presence: true
   validates :zipcode, presence: true
+  validates :city, presence: true
+  validates :address, presence: true
   validates :phone, presence: true
   validates_with AddressCountValidator, on: :create
 
   UpperLimit = 3
 
   def self.reach_upper_limit?(user)
-    Address.where(user_id: user.id).count >= UpperLimit
+    Address.where(user_id: user.id, is_deleted: false).count >= UpperLimit
   end
 
   def self.update_all_not_main(user)

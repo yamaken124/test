@@ -4,7 +4,7 @@ class Users::AddressesController < Users::BaseController
   before_action :set_is_main, only: [:create, :update]
 
   def index
-    @addresses = Address.where(user_id: @user.id)
+    @addresses = Address.where(user_id: @user.id, is_deleted: false)
   end
 
   def new
@@ -38,7 +38,8 @@ class Users::AddressesController < Users::BaseController
   end
 
   def destroy
-    Address.where(id: params[:id]).destroy_all
+    address = Address.where(id: params[:id], user_id: current_user.id).first
+    address.update(is_deleted: true)
     redirect_to account_addresses_path
   end
 
