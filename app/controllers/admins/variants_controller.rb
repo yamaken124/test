@@ -4,7 +4,7 @@ class Admins::VariantsController < Admins::BaseController
   before_action :set_product,only: [:index,:new,:edit]
 
   def index
-    @variants = Variant.includes(:prices) \
+    @variants = Variant.includes(:price) \
       .where(product_id: params[:product_id] )
   end
 

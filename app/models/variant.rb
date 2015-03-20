@@ -30,11 +30,12 @@ class Variant < ActiveRecord::Base
     (price.present? && images.present?)
   end
 
-  def self.valid_variant_ids
+  def self.valid_variants
+    return @valid_variants if @valid_variants.present?
     variant_id_having_images_and_prices = Image.where(imageable_type: 'Variant').pluck(:imageable_id) & Price.pluck(:variant_id)
     active_variant_id = Variant.active.pluck(:id)
 
-    variant_id_having_images_and_prices & active_variant_id
+    @valid_variants = Variant.where(id: (variant_id_having_images_and_prices & active_variant_id))
   end
 
 end
