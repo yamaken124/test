@@ -43,7 +43,6 @@ class Users::CheckoutsController < Users::BaseController
 
     def detail
       @detail ||= @order.single_order_detail
-      redirect_to cart_path and return if @detail.item_total == 0
     end
 
     def set_state_if_present
@@ -65,7 +64,7 @@ class Users::CheckoutsController < Users::BaseController
     end
 
     def ensure_sufficient_stock_lines
-      # TODO implement
+      redirect_to cart_path and return if @detail.item_total.zero?
     end
 
     def ensure_valid_state
