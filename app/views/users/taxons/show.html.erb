@@ -1,22 +1,24 @@
-<% if @nested_taxons.present? %>
+<% if @taxon.child? %>
+  <a href="<%= taxons_path(id: @taxon.parent.id) %>">
+    <div class="c-category_select">
+      <%= @taxon.parent.name %>へ
+    </div>
+  </a>
+<% end %>
+<% if @products.blank? %>
   <div class="p-wrapper--have_padding">
     <h2 class="c-links__title">カテゴリ一覧</h2>
     <ul class="c-links">
-      <% @nested_taxons.each do |nested_taxon| %>
-        <a href="<%= taxon_path(id: nested_taxon.id) %>">
+      <% @taxon.children.each do |child_taxon| %>
+        <a href="<%= taxons_path(id: child_taxon.id) %>">
           <li class="c-link">
-            <%= nested_taxon.name %>
+            <%= child_taxon.name %>
           </li>
         </a>
       <% end %>
     </ul>
   </div>
 <% else %>
-  <a href="<%= taxon_path(id: @taxon.id) %>">
-    <div class="c-category_select">
-      <%= @taxon.name %>
-    </div>
-  </a>
   <% @products.each do |product| %>
     <%= render partial: 'users/products/product', locals: {product: product} %>
   <% end %>
