@@ -24,9 +24,9 @@ class Variant < ActiveRecord::Base
     uniqueness: {
       scope: [:order_type]
     }
-  validates :sku, :name, :order_type, :product_id, :is_valid_at, :is_invalid_at, presence: true
+    validates :sku, :name, :order_type, :product_id, :is_valid_at, :is_invalid_at, presence: true
 
-  def variant_available?
+  def available?
     (price.present? && images.present?)
   end
 
@@ -36,6 +36,18 @@ class Variant < ActiveRecord::Base
     active_variant_id = Variant.active.pluck(:id)
 
     @valid_variants = Variant.where(id: (variant_id_having_images_and_prices & active_variant_id))
+  end
+
+  def self.single_variant
+    find_by(order_type: Variant.order_types['single_order'])
+  end
+
+  def self.hoge(order_type)
+    find_by(order_type: Variant.order_types[:order_type])
+  end
+
+  def self.subscription_variant
+    find_by(order_type: Variant.order_types[:subscription_order])
   end
 
 end

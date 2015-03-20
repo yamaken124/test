@@ -65,7 +65,6 @@ module Users::OrdersHelper
     @variants = Variant
     .where(id: @items_indexed_by_variant_id.keys)
     .includes(:images)
-    .includes(:prices)
   end
 
 end

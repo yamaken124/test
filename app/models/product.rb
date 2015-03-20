@@ -24,12 +24,16 @@ class Product < ActiveRecord::Base
 
   include TimeValidityChecker
 
-  def product_available
+  def available?
     (prices.present? && images.present?)
   end
 
   def preview_images
-    Image.where(imageable_id: variants.single_order.pluck(:id)).where(imageable_type: "Variant")
+    if variants.single_order.present? && variants.single_order.first.available?
+      images.where(imageable_id: variants.single_order.first.id).where(imageable_type: "Variant")
+    else
+      images.where(imageable_id: variants.subscription_order.first.id).where(imageable_type: "Variant")
+    end
   end
 
   def available_quantity

@@ -11,10 +11,13 @@ class Users::ProductsController < Users::BaseController
   end
 
   def show
-    @product = Product.active.includes(:variants).includes(:images).includes(:prices).where(id: params[:id]).first
+    @product = Product.find(params[:id])
+
     @available_quantity = *(1..@product.available_quantity)
 
-    if @product.blank? || !@product.product_available
+    @preview_images = @product.preview_images
+
+    if @product.blank? || !@product.available?
       redirect_to products_path
     end
   end
