@@ -14,7 +14,7 @@
         <% end %>
         <% if single_price %>
           <p class="c-product__price_value">
-            <%= single_price.amount %>円
+            <%= number_to_jpy(single_price.amount) %>
           </p>
         <% end %>
       </div>
@@ -24,7 +24,7 @@
         <% end %>
         <% if(subscription_price) %>
           <p class="c-product__price_value">
-            <%= subscription_price.amount %>円
+            <%= number_to_jpy(subscription_price.amount) %>
           </p>
         <% end %>
       </div>

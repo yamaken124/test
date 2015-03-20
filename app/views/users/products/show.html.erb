@@ -8,7 +8,7 @@
       <% end %>
     </ul>
   </div>
-<% if false %>
+<% if false #FIXME%>
   <div class="p-product__price_wrapper">
     <% @product.variants.single_order.each do |single| %>
       <% if single.variant_available? %>
@@ -19,7 +19,7 @@
             <% end %>
           </p>
           <p class="p-product__price_value">
-            <%= single.prices.pluck(:amount).first %>円
+            <%= number_to_jpy(single.prices.pluck(:amount).first) %>
             <span class="p-product__price_unit">(税込)</span>
           </p>
         </div>
@@ -35,7 +35,7 @@
             <% end %>
           </p>
           <p class="p-product__price_value">
-            <%= subscription.prices.pluck(:amount).first %>円
+            <%= number_to_jpy(subscription.prices.pluck(:amount).first) %>円
             <span class="p-product__price_unit">(税込)</span>
           </p>
         </div>
@@ -56,7 +56,7 @@
                 <%=t('order_type.single_order')%>
               </p>
               <p class="p-payment_method_selection__price">
-                <%= single.prices.pluck(:amount).first %>円
+                <%= number_to_jpy(single.prices.pluck(:amount).first) %>
               </p>
             </li>
           <% else %>
@@ -76,7 +76,7 @@
                 <%=t('order_type.subscription_order')%>
               </p>
               <p class="p-payment_method_selection__price">
-                <%= subscription.prices.pluck(:amount).first %>円
+                <%= number_to_jpy(subscription.prices.pluck(:amount).first) %>
               </p>
               <p class="p-payment_method_selection__attention">
                 ※初回2ヶ月分の料金をいただきます。
@@ -90,7 +90,7 @@
       <li class="p-payment_method_selection">
         <div class="p-payment_method__detail is-active">
           <p>数量: </p>
-          <% if false %>
+          <% if false #FIXME%>
             <%= number_field_tag :quantity, nil, min: 1, class: 'p-payment_method__amount' %>
           <% end %>
           <%= select_tag :quantity, options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
@@ -102,7 +102,7 @@
 
     <h2 class="u-margin__top25">この商品について</h2>
     <ul class="p-lists">
-<% if false %>
+<% if false #FIXME%>
       <li class="p-list">
       <p>栄養士からの説明</p>
       <div class="p-list__fincrew">

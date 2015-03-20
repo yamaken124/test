@@ -1,6 +1,6 @@
 class Users::ProductsController < Users::BaseController
-  def index
 
+  def index
     set_products(Variant.valid_variants)
 
     displayed_variant_ids = Variant.valid_variants.ids & Variant.where(product_id: @products.pluck(:id)).pluck(:id)
@@ -11,13 +11,7 @@ class Users::ProductsController < Users::BaseController
   end
 
   def show
-    @product = Product \
-      .active \
-      .includes(:variants) \
-      .includes(:images) \
-      .includes(:prices) \
-      .where(id: params[:id]).first
-
+    @product = Product.active.includes(:variants).includes(:images).includes(:prices).where(id: params[:id]).first
     @available_quantity = *(1..@product.available_quantity)
 
     if @product.blank? || !@product.product_available
