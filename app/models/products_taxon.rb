@@ -40,7 +40,7 @@ class ProductsTaxon < ActiveRecord::Base
         products_taxons_params = params[:product][:products_taxons_attributes].require(i.to_s).permit(:taxon_id, :id)
         if products_taxons_params[:taxon_id].blank?
           destroyed_products_taxon = ProductsTaxon.find(params[:product][:products_taxons_attributes][i.to_s][:id])
-          destroyed_products_taxon.destroy!
+          destroyed_products_taxon.destroy! if destroyed_products_taxon.present?
         else
           products_taxons_attributes[:products_taxons_attributes][i.to_s] = products_taxons_params
         end
