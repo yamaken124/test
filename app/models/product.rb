@@ -16,6 +16,7 @@ class Product < ActiveRecord::Base
   has_many :products_taxons
   has_many :prices, :through => :variants
   has_many :images, :through => :variants
+  has_many :taxons, :through => :products_taxons
   has_one :products_taxon
   paginates_per 5
   validates :name, :is_valid_at, :is_invalid_at, presence: true

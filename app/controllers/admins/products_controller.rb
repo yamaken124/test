@@ -4,8 +4,7 @@ class Admins::ProductsController < Admins::BaseController
   before_action :set_new_product, only: [:new]
 
   def index
-    @products = Product.includes(:products_taxons)
-    @taxons = Taxon.all
+    @products = Product.includes(:taxons)
   end
 
   def show
@@ -70,7 +69,7 @@ class Admins::ProductsController < Admins::BaseController
     end
 
     def set_leaf_taxons
-      @leaf_taxons = Taxon.leaf_taxons
+      @leaf_taxons = Taxon.leaves
     end
 
     def set_new_product
