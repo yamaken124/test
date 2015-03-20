@@ -8,6 +8,7 @@
       <% end %>
     </ul>
   </div>
+<% if false %>
   <div class="p-product__price_wrapper">
     <% @product.variants.single_order.each do |single| %>
       <% if single.variant_available? %>
@@ -41,6 +42,7 @@
       <% end %>
     <% end %>
   </div>
+<% end %>
   <div class="p-wrapper--have_padding">
     <ul class="p-payment_method_selections">
       <% @product.variants.single_order.each do |single| %>

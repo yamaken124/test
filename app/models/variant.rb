@@ -13,7 +13,7 @@
 
 class Variant < ActiveRecord::Base
   belongs_to :product
-  has_many :prices
+  has_one :price
   has_many :images, :as => :imageable
   has_many :single_line_items
 
@@ -27,7 +27,7 @@ class Variant < ActiveRecord::Base
   validates :sku, :name, :order_type, :product_id, :is_valid_at, :is_invalid_at, presence: true
 
   def variant_available?
-    (prices.present? && images.present?)
+    (price.present? && images.present?)
   end
 
   def self.valid_variant_ids

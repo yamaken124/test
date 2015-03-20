@@ -3,12 +3,12 @@ class Users::ProductsController < Users::BaseController
     valid_variant_ids = Variant.valid_variant_ids
     set_products(valid_variant_ids)
 
-    displayed_variants = valid_variant_ids & Variant.where(product_id: @products.pluck(:id)).pluck(:id)
-    variants = Variant.where(id: displayed_variants)
-    @variants_indexed_by_product_id = variants.index_by(&:product_id)
+    displayed_variants_id = valid_variant_ids & Variant.where(product_id: @products.pluck(:id)).pluck(:id)
+    variants_records = Variant.where(id: displayed_variants_id)
+    @variants = variants_records.index_by(&:product_id)
 
-    set_prices(variants)
-    set_images(variants)
+    set_prices(variants_records)
+    set_images(variants_records)
   end
 
   def show
@@ -40,7 +40,7 @@ class Users::ProductsController < Users::BaseController
     end
 
     def set_images(variants)
-      @images_indexed_by_variant_id = Image.where(imageable_id: variants.ids).index_by(&:imageable_id) #TODO 両方写真があるとき！！
+      @images = Image.where(imageable_id: variants.ids).index_by(&:imageable_id) #TODO 両方写真があるとき！！
     end
 
 end
