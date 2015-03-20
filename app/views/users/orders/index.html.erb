@@ -6,7 +6,7 @@
 <% @details.each do |detail| %>
   <div class="c-order_title">
     <p>注文日:<br><%= detail.completed_on %></p>
-    <p>合計:<br>¥<%= detail.total %></p>
+    <p>合計:<br><%="￥#{number_to_jpy(detail.total)}"%></p>
     <p>お届け先:<br><%= "#{detail.address.name} #{detail.address.full_address}" %></p>
   </div>
   <% detail.single_line_items.each do |item|%>
@@ -20,7 +20,7 @@
           <%= variant.name %>
     	  </div>
     	  <div class="c-product_list__price">
-          <%= variant.prices.first.amount %>円
+          <%="￥#{number_to_jpy(variant.prices.first.amount)}"%>
         </div>
       </div>
     </div>
