@@ -19,7 +19,7 @@
             <% end %>
           </p>
           <p class="p-product__price_value">
-            <%= "￥#{number_to_jpy(single.prices.pluck(:amount).first)}" %>
+            <%= number_to_jpy(single.prices.pluck(:amount).first) %>
             <span class="p-product__price_unit">(税込)</span>
           </p>
         </div>
@@ -35,7 +35,7 @@
             <% end %>
           </p>
           <p class="p-product__price_value">
-            <%= "￥#{number_to_jpy(subscription.prices.pluck(:amount).first)}" %>円
+            <%= number_to_jpy(subscription.prices.pluck(:amount).first) %>円
             <span class="p-product__price_unit">(税込)</span>
           </p>
         </div>
@@ -56,7 +56,7 @@
                 <%=t('order_type.single_order')%>
               </p>
               <p class="p-payment_method_selection__price">
-                <%= "￥#{number_to_jpy(single.prices.pluck(:amount).first)}" %>
+                <%= number_to_jpy(single.prices.pluck(:amount).first) %>
               </p>
             </li>
           <% else %>
@@ -76,7 +76,7 @@
                 <%=t('order_type.subscription_order')%>
               </p>
               <p class="p-payment_method_selection__price">
-                <%= "￥#{number_to_jpy(subscription.prices.pluck(:amount).first)}" %>
+                <%= number_to_jpy(subscription.prices.pluck(:amount).first) %>
               </p>
               <p class="p-payment_method_selection__attention">
                 ※初回2ヶ月分の料金をいただきます。

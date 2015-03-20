@@ -14,7 +14,7 @@
         <%= variant.name %>
       </div>
       <div class="c-product_list__price">
-        <%="￥#{number_to_jpy(variant.prices.first.amount)}"%>(<%= @items_indexed_by_variant_id[variant.id].quantity %>個)
+        <%= number_to_jpy(variant.prices.first.amount) %>(<%= @items_indexed_by_variant_id[variant.id].quantity %>個)
       </div>
     </div>
   </div>
