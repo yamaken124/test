@@ -27,10 +27,12 @@ class Address < ActiveRecord::Base
   validates :phone, presence: true
   validates_with AddressCountValidator, on: :create
 
+  scope :active, -> { where('is_active = ?', true) }
+
   UpperLimit = 3
 
   def self.reach_upper_limit?(user)
-    Address.where(user_id: user.id, is_deleted: false).count >= UpperLimit
+    Address.where(user_id: user.id).active.count >= UpperLimit
   end
 
   def self.update_all_not_main(user)

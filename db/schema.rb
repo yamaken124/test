@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150320013057) do
+ActiveRecord::Schema.define(version: 20150320030455) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -23,9 +23,9 @@ ActiveRecord::Schema.define(version: 20150320013057) do
     t.string   "phone",             limit: 255
     t.string   "alternative_phone", limit: 255
     t.boolean  "is_main",           limit: 1,   default: false, null: false
+    t.boolean  "is_active",         limit: 1,   default: true,  null: false
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
-    t.boolean  "is_deleted",        limit: 1,   default: false, null: false
   end
 
   add_index "addresses", ["user_id"], name: "index_addresses_on_user_id", using: :btree
