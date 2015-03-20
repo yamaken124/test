@@ -23,7 +23,7 @@ RSpec.describe Users::ProductsController, type: :controller do
   describe 'GET #show' do
     before { get :show, id: @product.id }
 
-    it { expect(assigns(:product)).to eq @product } 
-    it { expect(response).to render_template :show } 
+    it { expect(assigns(:product)).to eq @product }
+    it { expect(response).to render_template :show }
   end
 end

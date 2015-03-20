@@ -22,11 +22,11 @@ FactoryGirl.define do
     order_type "single_order"
 
     factory :expired_variant do
-      is_invalid_at Date.yesterday
+      is_invalid_at Time.now.last_month
     end
 
     factory :preparing_variant do
-      is_valid_at Date.tomorrow
+      is_valid_at Time.now.next_month
     end
 
     factory :single_variant do
