@@ -14,6 +14,9 @@
 #
 
 class Taxon < ActiveRecord::Base
+
+  acts_as_nested_set
+
   belongs_to :taxonomy
   belongs_to :parent, class_name: 'Taxon'
 
