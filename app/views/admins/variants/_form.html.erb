@@ -30,7 +30,7 @@
       <%= v.fields_for :price do |p| %>
         <div class="form-group">
           <p><%= p.label :amount %></p>
-          <p><%= p.text_field :amount, class: "form-control", value: variant.price.amount %></p>
+          <p><%= p.text_field :amount, class: "form-control", value: variant.price.try(:amount) %></p>
         </div>
       <% end %>
       <div class="actions">

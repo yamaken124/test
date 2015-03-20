@@ -17,8 +17,8 @@ FactoryGirl.define do
 
     sku "all"
     name "Mystring"
-    is_valid_at Date.yesterday
-    is_invalid_at Date.tomorrow
+    is_valid_at Time.now.last_month
+    is_invalid_at Time.now.next_month
     order_type "single_order"
 
     factory :expired_variant do

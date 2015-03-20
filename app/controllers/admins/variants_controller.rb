@@ -17,7 +17,7 @@ class Admins::VariantsController < Admins::BaseController
       ActiveRecord::Base.transaction do
         @variant = Variant.new(variant_params)
         @variant.save!
-        price = @variant.prices.build(price_params)
+        price = Price.new(price_params)
         price.save!
       end
       redirect_to admins_product_variants_path(product_id: params[:product_id])
@@ -62,7 +62,7 @@ class Admins::VariantsController < Admins::BaseController
     end
 
     def price_params
-      params.require(:variant).require(:prices).permit(:amount)
+      params.require(:variant).require(:price).permit(:amount).merge(variant_id: @variant.id)
     end
 
     def set_product
