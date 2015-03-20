@@ -288,9 +288,9 @@ ActiveRecord::Schema.define(version: 20150320062756) do
     t.string   "permalink",   limit: 255
     t.text     "description", limit: 65535
     t.integer  "lft",         limit: 4,     null: false
+    t.integer  "rgt",         limit: 4,     null: false
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
-    t.integer  "rgt",         limit: 4,     null: false
   end
 
   add_index "taxons", ["lft"], name: "index_taxons_on_lft", using: :btree
