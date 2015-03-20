@@ -71,7 +71,7 @@ class Users::CheckoutsController < Users::BaseController
     end
 
     def ensure_sufficient_stock_lines
-      # TODO implement
+      redirect_to cart_path and return if @detail.item_total.zero?
     end
 
     def ensure_valid_state
