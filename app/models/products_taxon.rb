@@ -39,17 +39,13 @@ class ProductsTaxon < ActiveRecord::Base
       params[:product][:products_taxons_attributes].size.times { |i|
         products_taxons_params = params[:product][:products_taxons_attributes].require(i.to_s).permit(:taxon_id, :id)
         if products_taxons_params[:taxon_id].blank?
-          delete_products_taxon(params[:product][:products_taxons_attributes][i.to_s][:id])
+          destroyed_products_taxon = ProductsTaxon.find(params[:product][:products_taxons_attributes][i.to_s][:id])
+          destroyed_products_taxon.destroy!
         else
           products_taxons_attributes[:products_taxons_attributes][i.to_s] = products_taxons_params
         end
       }
       products_taxons_attributes
-    end
-
-    def self.delete_products_taxon(products_taxon_id)
-      destroyed_products_taxon = ProductsTaxon.find(products_taxon_id)
-      destroyed_products_taxon.destroy!
     end
 
 end
