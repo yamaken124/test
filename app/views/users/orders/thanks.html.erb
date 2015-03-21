@@ -14,11 +14,8 @@
         <%= variant.name %>
       </div>
       <div class="c-product_list__price">
-        ￥<%= variant.prices.first.amount %>(<%= @items_indexed_by_variant_id[variant.id].quantity %>個)
+        <%= number_to_jpy(variant.prices.first.amount) %>(<%= @items_indexed_by_variant_id[variant.id].quantity %>個)
       </div>
     </div>
-  </div>
-  <div class="c-product_list__detail">
-    <p class="u-margin__left_short"><%= link_to "注文をキャンセルする", cancel_orders_path(@number), method: :delete %></p>
   </div>
 <% end %>
