@@ -10,7 +10,7 @@ module Users
         else
           # finc_app 以外の認証も対応する必要が出たら実装する
           sign_up_with_fincapp(oauth_application, params[:access_token])
-          redirect_to edit_profile_path
+          redirect_to edit_profile_path(continue: :credit_cards)
         end
       end
 

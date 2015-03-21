@@ -23,7 +23,7 @@ RSpec.describe Users::Oauth::AuthorizationsController, type: :controller do
       before { stub_request(:get, "#{Settings.internal_api.finc_app.host}/v2/me").to_return(body: { user: { last_name: 'shino', email: 'mockuser@finc.co.jp' } }.to_json) }
       context 'valid consumer_key' do
         let(:params) { { consumer_key: 'cons', access_token: 'access' } }
-        it { post :create, params; expect(response).to redirect_to edit_profile_path }
+        it { post :create, params; expect(response).to redirect_to edit_profile_path(continue: :credit_cards) }
         it { expect{ post :create, params }.to change(User, :count).by(1) }
         it { expect{ post :create, params }.to change(OauthAccessToken, :count).by(1) }
       end
