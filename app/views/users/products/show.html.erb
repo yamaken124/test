@@ -15,9 +15,9 @@
 
   <div class="p-wrapper--have_padding">
     <ul class="p-payment_method_selections">
-      <% if single.available? %>
+      <% if single.present? && single.available? %>
           <li class="p-payment_method_selection">
-          <% if subscription.available? %>
+          <% if subscription.present? && subscription.available? %>
             <div class="p-payment_method_selection__radio">
               <%= radio_button_tag :variant_id, single.id, {:checked => true} %>
             </div>
@@ -33,9 +33,9 @@
           </li>
       <% end %>
 <% if false #FIXME %>
-      <% if subscription.available? %>
+      <% if subscription.present? && subscription.available? %>
         <li class="p-payment_method_selection">
-        <% if single.available? %>
+        <% if single.present? && single.available? %>
           <div class="p-payment_method_selection__radio">
             <%= radio_button_tag :variant_id, subscription.id %>
           </div>
