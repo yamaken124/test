@@ -1,5 +1,7 @@
 class Users::ProductsController < Users::BaseController
 
+  before_action :set_tax_rate
+
   def index
     set_products(Variant.valid_variants)
 
@@ -8,6 +10,7 @@ class Users::ProductsController < Users::BaseController
 
     set_prices(displayed_variant_ids)
     set_images(displayed_variant_ids)
+
   end
 
   def show
@@ -37,6 +40,10 @@ class Users::ProductsController < Users::BaseController
 
     def set_images(variant_ids)
       @images = Image.where(imageable_id: variant_ids, imageable_type: 'Variant').index_by(&:imageable_id) #TODO 両方写真があるとき！！
+    end
+
+    def set_tax_rate
+      @tax_rate = TaxRate.rating
     end
 
 end
