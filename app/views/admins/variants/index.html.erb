@@ -32,7 +32,7 @@
               <%= t('order_type.'+v.order_type) %>
             <% end %></td>
           <td>
-            <% v.prices.each do |p| %><%= p.amount %><% end %>
+            <%= v.price.try(:amount) %>
           </td>
           <td><%= t(v.classify_validity) %></td>
           <td>

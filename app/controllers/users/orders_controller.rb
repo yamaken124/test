@@ -10,7 +10,7 @@ class Users::OrdersController < Users::BaseController
     single_order_detail_id = Payment.where(user_id: current_user.id).pluck(:single_order_detail_id)
     @details = SingleOrderDetail.where(id: single_order_detail_id).includes(:address).includes(:single_line_items)
     variant_ids = SingleLineItem.where(single_order_detail_id: @details.pluck(:id)).pluck(:variant_id)
-    @variants_indexed_by_id = Variant.where(id: variant_ids).includes(:images).includes(:prices).index_by(&:id)
+    @variants_indexed_by_id = Variant.where(id: variant_ids).includes(:images).index_by(&:id)
   end
 
   def thanks
@@ -127,7 +127,6 @@ class Users::OrdersController < Users::BaseController
 
     def set_variants
       @variants = @order.variants
-      .includes(:prices)
       .includes(:images)
     end
 

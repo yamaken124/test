@@ -1,28 +1,30 @@
+<% single_price = @single_prices_indexed_by_variant_id[@variants_indexed_by_product_id[product.id].id] %>
+<% subscription_price = @subscription_prices_indexed_by_variant_id[@variants_indexed_by_product_id[product.id].id] %>
+
 <a href="<%= product_path(id: product.id) %>">
   <div class="c-product">
-
-    <%= image_tag product.images.first.image.url, class: "c-product__image" %>
+    <%= image_tag @images[@variants_indexed_by_product_id[product.id].id].image.url, class: "c-product__image" %>
     <div class="c-product__left_wrapper">
       <div class="c-product__title">
         <%= product.name %>
       </div>
       <div class="c-product__price">
-        <%if(product.single_master_price.present?) %>
-          <% if(product.subscription_master_price.present?) %>
-            <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
-          <% end %>
+        <% if(single_price && subscription_price) %>
+          <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
+        <% end %>
+        <% if single_price %>
           <p class="c-product__price_value">
-            <%= number_to_jpy(product.single_master_price) %>
+            <%= number_to_jpy(single_price.amount) %>
           </p>
         <% end %>
       </div>
       <div class="c-product__price">
-        <%if(product.subscription_master_price.present?) %>
-          <% if(product.single_master_price.present?) %>
+        <%if( subscription_price && single_price ) %>
             <p class="c-product__price_title"><%=t('order_type.subscription_order')%></p>
-          <% end %>
+        <% end %>
+        <% if(subscription_price) %>
           <p class="c-product__price_value">
-            <%= number_to_jpy(product.subscription_master_price) %>
+            <%= number_to_jpy(subscription_price.amount) %>
           </p>
         <% end %>
       </div>

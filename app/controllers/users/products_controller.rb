@@ -1,27 +1,42 @@
 class Users::ProductsController < Users::BaseController
 
   def index
-    @products = Product.active.where(id: set_searched_product_id).page(params[:page]).includes(:images)
+    set_products(Variant.valid_variants)
+
+    displayed_variant_ids = Variant.valid_variants.ids & Variant.where(product_id: @products.pluck(:id)).pluck(:id)
+    @variants_indexed_by_product_id = Variant.where(id: displayed_variant_ids).index_by(&:product_id)
+
+    set_prices(displayed_variant_ids)
+    set_images(displayed_variant_ids)
   end
 
   def show
-    @product = Product.active.includes(:variants).includes(:images).includes(:prices).where(id: params[:id]).first
+    @product = Product.find(params[:id])
+
     @available_quantity = *(1..@product.available_quantity)
 
-    if @product.blank? || !@product.product_available
+    @preview_images = @product.preview_images
+
+    if @product.blank? || !@product.available?
       redirect_to products_path
     end
   end
 
   private
+    def set_products(valid_variants)
+      @products = Product.active.where(id: Variant.where(id: valid_variants.ids).pluck(:product_id)).page(params[:page])
+    end
 
-    def set_searched_product_id
-      searched_id = Product.active.having_images_and_variants.pluck(:id) && Variant.active.pluck(:product_id)
-      if params[:taxon].present?
-        searched_id && ProductsTaxon.where(taxon_id: params[:taxon]).pluck(:product_id)
-      else
-        searched_id
-      end
+    def set_prices(variant_ids)
+      single_variants = Variant.where(id: variant_ids).single_order
+      @single_prices_indexed_by_variant_id = Price.where(variant_id: single_variants.ids).index_by(&:variant_id)
+
+      subscription_variants = Variant.where(id: variant_ids).subscription_order
+      @subscription_prices_indexed_by_variant_id = Price.where(variant_id: subscription_variants.ids).index_by(&:variant_id)
+    end
+
+    def set_images(variant_ids)
+      @images = Image.where(imageable_id: variant_ids, imageable_type: 'Variant').index_by(&:imageable_id) #TODO 両方写真があるとき！！
     end
 
 end
