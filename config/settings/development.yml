@@ -14,3 +14,10 @@ internal_api:
 oauth_applications:
   finc_app:
     consumer_key: 'M4HXT1y4-xuyoKE1DgHu4wtWyYX4P5BaTxsWf7Kp'
+
+mailer:
+  user_mailer:
+    user_name: 'info@finc.co.jp'
+    password: 20120411
+  test:
+    to: otani@finc.co.jp
