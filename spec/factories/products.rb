@@ -17,8 +17,8 @@ FactoryGirl.define do
 
     name "MyString"
     description "MyText"
-    is_valid_at Date.yesterday
-    is_invalid_at Date.tomorrow
+    is_valid_at Time.now.last_month
+    is_invalid_at Time.now.next_month
 
     factory :expired_product do
       is_invalid_at Date.yesterday

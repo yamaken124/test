@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       end
     end
     resource :account, only: [:show] do
-      resources :addresses, only: [:index, :edit, :update, :new, :create]
+      resources :addresses, only: [:index, :edit, :update, :new, :create, :destroy]
     end
     resource :profile, only: [:edit, :create, :update] do
       resources :credit_cards, only: [:index, :new, :edit, :create, :destroy]
@@ -43,6 +43,8 @@ Rails.application.routes.draw do
       collection do
         post :populate
         get  ':number/thanks', action: :thanks, :as => :thanks
+        get  ':number/sent_back', action: :sent_back, :as => :sent_back
+        post 'sent_back_report'
         delete '/cancel/:number' => 'orders#cancel', :as => :cancel
       end
     end

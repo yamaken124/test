@@ -62,7 +62,7 @@ class SingleOrderContents
     else
       line_item = detail.single_line_items.new(quantity: quantity,
                                                variant: variant,
-                                               price: variant.prices.pluck(:amount).first)
+                                               price: variant.price.amount)
     end
     line_item.target_shipment = options[:shipment] if options.has_key? :shipment
     line_item.save!

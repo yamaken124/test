@@ -29,4 +29,8 @@ class TaxRate < ActiveRecord::Base
   def invalid?
     !valid?
   end
+
+  def self.rating
+    self.valid.first.amount.to_f + 1
+  end
 end

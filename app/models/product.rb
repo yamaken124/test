@@ -24,16 +24,25 @@ class Product < ActiveRecord::Base
 
   include TimeValidityChecker
 
-  def product_available
+  def available?
     (prices.present? && images.present?)
   end
 
-  def single_master_price
-    Price.where(variant_id: variants.single_order.pluck(:id)).first.try(:amount)
+  def preview_images
+    if variants.single_order.present? && variants.single_order.first.available?
+      images.where(imageable_id: variants.single_order.first.id).where(imageable_type: "Variant")
+    else
+      images.where(imageable_id: variants.subscription_order.first.id).where(imageable_type: "Variant")
+    end
   end
 
-  def subscription_master_price
-    Price.where(variant_id: variants.subscription_order.pluck(:id)).first.try(:amount)
+  def available_quantity
+    12
+  end
+
+  def single_price
+    single_variants = variants.single_order
+    Price.where(id: single_variants.ids).index_by(&:variant_id)
   end
 
   def self.having_images_and_variants
@@ -41,14 +50,6 @@ class Product < ActiveRecord::Base
     available_product_id = Variant.active.where(id: available_variant_id).pluck(:product_id).uniq
 
     Product.where(id: available_product_id)
-  end
-
-  def preview_images
-    Image.where(imageable_id: variants.single_order.pluck(:id)).where(imageable_type: "Variant")
-  end
-
-  def available_quantity
-    12
   end
 
 end

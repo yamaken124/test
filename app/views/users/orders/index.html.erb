@@ -5,9 +5,9 @@
 </div>
 <% @details.each do |detail| %>
   <div class="c-order_title">
-    <p>注文日:<br><%= detail.completed_on %></p>
-    <p>合計:<br><%= number_to_jpy(detail.total) %></p>
-    <p>お届け先:<br><%= "#{detail.address.name} #{detail.address.full_address}" %></p>
+    <p class="order_day">注文日:<br><%= detail.completed_on %></p>
+    <p class="amount">合計:<br><%= number_to_jpy(detail.total) %></p>
+    <p class="address">お届け先:<br><%= "#{detail.address.full_address}" %></p>
   </div>
   <% detail.single_line_items.each do |item|%>
     <% variant = @variants_indexed_by_id[item.variant_id] %>
@@ -20,23 +20,40 @@
           <%= variant.name %>
     	  </div>
     	  <div class="c-product_list__price">
-          <%= number_to_jpy(variant.prices.first.amount) %>
+          <%= number_to_jpy(variant.price.amount * @tax_rate) %>
+          (<%=item.quantity%>)
         </div>
       </div>
     </div>
     <div class="p-wrapper--have_padding">
-      <ul class="c-links">
-        <a href="<%= products_path %>">
-          <li class="c-link">
-            商品を返品
+      <% if detail.payment.shipment.try(:shipped?) %>
+        <ul class="c-links">
+          <a href="<%= sent_back_orders_path(detail.payment.number) %>">
+            <li class="c-link">
+              商品を返品
+            </li>
+          </a>
+          <a href="#">
+            <li class="c-link--small_text--nolink">
+              <span>発送を完了しました<br>発送日:2014/12/25</span>
+            </li>
+          </a>
+        </ul>
+      <% elsif detail.payment.shipment.try(:canceled?) %>
+        <ul class="c-links">
+          <li class="c-link--nolink">
+            この注文はキャンセルされました。
           </li>
-        </a>
-        <a href="<%= products_path %>">
-          <li class="c-link--small_text--nolink">
-            <span>発送を完了しました<br>発送日:2014/12/25</span>
-          </li>
-        </a>
-      </ul>
+        </ul>
+      <% else %>
+        <ul class="c-links">
+          <%= link_to cancel_orders_path(detail.payment.number), data:{ method: "delete", confirm: "本当に商品をキャンセルしますか？" } do%>
+            <li class="c-link">
+              商品をキャンセル
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
     </div>
   <% end %>
 <% end %>
