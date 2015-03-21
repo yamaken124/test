@@ -13,8 +13,11 @@ class Users::ProfilesController < Users::BaseController
 
   def update
     @profile = Profile.where(user_id: @user.id).first
-    @profile.update(profile_params) unless @profile.blank?
-    render :edit
+    if @profile.present? && @profile.update(profile_params)
+      redirect_to account_path
+    else
+      render :edit
+    end
   end
 
   def edit
