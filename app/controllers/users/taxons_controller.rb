@@ -1,5 +1,7 @@
 class Users::TaxonsController < Users::BaseController
 
+  before_action :set_tax_rate
+
   def show
     @taxon = Taxon.find(params[:id])
     if @taxon.leaf?
@@ -17,6 +19,8 @@ class Users::TaxonsController < Users::BaseController
 
   end
 
+  private
+
     def set_products(valid_variants)
       selected_product_id = ProductsTaxon.where(taxon_id: @taxon.id).pluck(:product_id) & Variant.where(id: Variant.valid_variants.ids).pluck(:product_id)
       @products = Product.active.where(id: selected_product_id).page(params[:page])
@@ -32,6 +36,10 @@ class Users::TaxonsController < Users::BaseController
 
     def set_images(variant_ids)
       @images = Image.where(imageable_id: variant_ids, imageable_type: 'Variant').index_by(&:imageable_id) #TODO 両方写真があるとき！！
+    end
+
+    def set_tax_rate
+      @tax_rate = TaxRate.rating
     end
 
 end
