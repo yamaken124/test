@@ -14,7 +14,7 @@ set -ex
 
 trap "aws ec2 revoke-security-group-ingress --group-id #{security_group} --protocol tcp --port 22 --cidr #{ip_addr}/32" 0 1 2 3 15
 aws ec2 authorize-security-group-ingress --group-id #{security_group} --protocol tcp --port 22 --cidr #{ip_addr}/32
-bundle exec cap staging deploy
+bundle exec cap production deploy
 EOF
 `#{code}`
 
