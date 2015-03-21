@@ -1,5 +1,5 @@
 class Users::SessionsController < Devise::SessionsController
-  before_action :http_basic_auth, if: :staging_env?
+  # before_action :http_basic_auth, if: :staging_env?
 
   layout "users/users"
 
