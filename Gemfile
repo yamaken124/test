@@ -118,3 +118,5 @@ gem "kaminari"
 # state machines
 gem 'aasm'
 
+gem 'awesome_nested_set'
+

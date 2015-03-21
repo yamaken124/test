@@ -31,7 +31,7 @@ Rails.application.routes.draw do
       resources :addresses, only: [:index, :edit, :update, :new, :create]
     end
     resource :profile, only: [:edit, :create, :update] do
-      resources :credit_cards
+      resources :credit_cards, only: [:index, :new, :edit, :create, :destroy]
     end
     resources :products, only: [:index, :show]
     resource :cart, only: [:update], controller: :orders do
@@ -46,10 +46,11 @@ Rails.application.routes.draw do
         delete '/cancel/:number' => 'orders#cancel', :as => :cancel
       end
     end
+    # resources :taxons, only: [:index, :show]
 
     get '/checkout/:state', :to => 'checkouts#edit', :as => :checkout_state
     patch '/checkout/:state', :to => 'checkouts#update', :as => :update_checkout
-    get '/t/*id', :to => 'taxons#show', :as => :nested_taxon
+    get '/t/*id', :to => 'taxons#show', :as => :taxons #nested_taxon
   end
 
   namespace :admins do

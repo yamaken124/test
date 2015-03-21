@@ -1,10 +1,11 @@
 class Users::ProfilesController < Users::BaseController
   before_action :set_user
+  before_action :set_continue, only: [:edit]
 
   def create
     @profile = Profile.new(profile_params)
     if @profile.save
-      redirect_to edit_profile_path
+      redirect_to continue_path
     else
       render :edit
     end
@@ -21,7 +22,7 @@ class Users::ProfilesController < Users::BaseController
     @profile = Profile.where(user_id: @user.id).blank? ? Profile.new : Profile.where(user_id: @user.id).first
   end
 
-  private 
+  private
     def set_user
       @user = User.find(current_user.id)
     end
@@ -29,4 +30,21 @@ class Users::ProfilesController < Users::BaseController
     def profile_params
       params.require(:profile).permit(:last_name, :first_name, :last_name_kana, :first_name_kana, :phone).merge(user_id: @user.id)
     end
+
+    def set_continue
+      if params[:continue].present?
+        @continue = params[:continue]
+      else
+        @continue = edit_profile_path
+      end
+    end
+
+    def continue_path
+      if params[:continue] && params[:continue].include?("checkout/payment")
+        checkout_state_path("payment")
+      else
+        edit_profile_path
+      end
+    end
+
 end
