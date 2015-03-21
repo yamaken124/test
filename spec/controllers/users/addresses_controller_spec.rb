@@ -99,7 +99,7 @@ RSpec.describe Users::AddressesController, type: :controller do
 
     it 'updates' do
       address.reload
-      expect(address.is_active).to eq false
+      expect(address.deleted_at).not_to eq nil
     end
     it 'redirects to account_addresses_path' do
       expect(response).to redirect_to account_addresses_path
