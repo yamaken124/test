@@ -46,4 +46,14 @@
     font-size:12px;
     color:$base_font_color;
   }
+  .form__textarea--long{
+    @include calc(width, "98% - 2px");
+    border:1px solid $base_border_color;
+    font-size:18px;
+    height:300px;
+    margin-top:5px;
+    padding-left:2%;
+    border-radius:5px;
+    color:$base_font_color; 
+  }
 }
