@@ -97,7 +97,7 @@
         <% end %>
         <%= select_tag :quantity, options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
         <p class="u-margin__left_short">個</p>
-        <%= submit_tag 'カートへ', class: 'c-btn--submit--short u-margin__top5' %>
+        <%= submit_tag '追加', class: 'c-btn--submit--short u-margin__top5' %>
       </div>
       </li>
     </ul>
@@ -122,9 +122,9 @@
       </div>
       </li>
     </ul>
-    <a href="<%= products_path %>">
+    <a href="<%= cart_path %>">
       <div class="c-btn--submit">
-        レジへ進む
+        カートを見る
       </div>
     </a>
   </div>
