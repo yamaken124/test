@@ -20,7 +20,8 @@
           <%= variant.name %>
     	  </div>
     	  <div class="c-product_list__price">
-          <%= number_to_jpy(variant.price.amount) %>
+          <%= number_to_jpy(variant.price.amount * @tax_rate) %>
+          (<%=item.quantity%>)
         </div>
       </div>
     </div>

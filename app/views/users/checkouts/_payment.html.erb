@@ -2,7 +2,7 @@
   <div class="p-wrapper--have_padding">
     <h2 class="title">
       カート小計(<%=@detail.item_count%>個の商品):
-      <span><%=number_to_jpy(@detail.item_total)%></span>
+      <span><%=number_to_jpy(@detail.item_total * @tax_rate)%></span>
     </h2>
     <div class="c-btn--submit u-margin__bottom_middle">
       <%= submit_tag "購入確認画面へ", class: 'c-btn--submit' %>
@@ -112,7 +112,7 @@
             <%= item.name %>
           </div>
           <div class="c-product_list__price">
-            <%= number_to_jpy(item.price.amount) %>(<%= @single_line_items.where(variant_id: item.id).pluck(:quantity).first %>個)
+            <%= number_to_jpy(item.price.amount * @tax_rate) %>(<%= @single_line_items.where(variant_id: item.id).pluck(:quantity).first %>個)
           </div>
         </div>
       </div>

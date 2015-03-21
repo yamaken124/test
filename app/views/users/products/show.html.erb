@@ -28,7 +28,7 @@
               <%=t('order_type.price')%>
             </p>
             <p class="p-payment_method_selection__price">
-              <%= number_to_jpy(single.price.amount) %>
+              <%= number_to_jpy(single.price.amount * @tax_rate) %>
             </p>
           </li>
       <% end %>
@@ -46,7 +46,7 @@
               <%=t('order_type.subscription_order')%>
             </p>
             <p class="p-payment_method_selection__price">
-              <%= number_to_jpy(subscription.price.amount) %>
+              <%= number_to_jpy(subscription.price.amount * @tax_rate) %>
             </p>
             <p class="p-payment_method_selection__attention">
               ※初回2ヶ月分の料金をいただきます。
