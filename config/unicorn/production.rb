@@ -4,7 +4,7 @@ application_path = '/var/www/finc_store'
 current_path = "#{application_path}/current"
 shared_path  = "#{application_path}/shared"
 
-listen File.expand_path('unicorn.sock',  "#{applicatoin_path}/shared/tmp/sockets")
+listen File.expand_path('unicorn.sock',  "#{application_path}/shared/tmp/sockets")
 pid File.expand_path('unicorn.pid', "#{shared_path}/tmp/pids")
 
 stderr_path File.expand_path('unicorn.err', "#{shared_path}/log")
