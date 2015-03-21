@@ -1,8 +1,8 @@
 <%= javascript_include_tag 'users/products/show' %>
 <%= form_tag(populate_orders_path, :method => :post) do %>
 
-<% single = @product.variants.single_variant %>
-<% subscription = @product.variants.subscription_variant %>
+  <% single = @product.variants.single_variant %>
+  <% subscription = @product.variants.subscription_variant %>
 
   <h2 class="p-product_title"><%= @product.name %></h2>
   <div class="flexslider">
@@ -12,75 +12,109 @@
       <% end %>
     </ul>
   </div>
+  <% if false #FIXME%>
+    <div class="p-product__price_wrapper">
+      <% @product.variants.single_order.each do |single| %>
+        <% if single.variant_available? %>
+          <div class="p-product__price">
+            <p class="p-product__price_title">
+            <% if(@product.subscription_master_price.present?) %>
+              <%=t('order_type.single_order')%>
+            <% end %>
+            </p>
+            <p class="p-product__price_value">
+            <%= number_to_jpy(single.prices.pluck(:amount).first) %>
+            <span class="p-product__price_unit">(税込)</span>
+            </p>
+          </div>
+        <% end %>
+      <% end %>
 
+      <% @product.variants.subscription_order.each do |subscription| %>
+        <% if subscription.variant_available? %>
+          <div class="p-product__price">
+            <p class="p-product__price_title">
+            <% if(@product.single_master_price.present?) %>
+              <%=t('order_type.subscription_order')%>
+            <% end %>
+            </p>
+            <p class="p-product__price_value">
+            <%= number_to_jpy(subscription.prices.pluck(:amount).first) %>円
+            <span class="p-product__price_unit">(税込)</span>
+            </p>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
   <div class="p-wrapper--have_padding">
     <ul class="p-payment_method_selections">
       <% if single.present? && single.available? %>
-          <li class="p-payment_method_selection">
-          <% if subscription.present? && subscription.available? %>
-            <div class="p-payment_method_selection__radio">
-              <%= radio_button_tag :variant_id, single.id, {:checked => true} %>
-            </div>
-          <% else %>
-            <%= hidden_field_tag :variant_id, single.id %>
-          <% end %>
-            <p class="p-payment_method_selection__title">
-              <%=t('order_type.price')%>
-            </p>
-            <p class="p-payment_method_selection__price">
-              <%= number_to_jpy(single.price.amount * @tax_rate) %>
-            </p>
-          </li>
-      <% end %>
-<% if false #FIXME %>
-      <% if subscription.present? && subscription.available? %>
         <li class="p-payment_method_selection">
-        <% if single.present? && single.available? %>
+        <% if subscription.present? && subscription.available? %>
           <div class="p-payment_method_selection__radio">
-            <%= radio_button_tag :variant_id, subscription.id %>
+            <%= radio_button_tag :variant_id, single.id, {:checked => true} %>
           </div>
         <% else %>
-          <%= hidden_field_tag :variant_id, subscription.id %>
+          <%= hidden_field_tag :variant_id, single.id %>
         <% end %>
-            <p class="p-payment_method_selection__title">
-              <%=t('order_type.subscription_order')%>
-            </p>
-            <p class="p-payment_method_selection__price">
-              <%= number_to_jpy(subscription.price.amount * @tax_rate) %>
-            </p>
-            <p class="p-payment_method_selection__attention">
-              ※初回2ヶ月分の料金をいただきます。
-            </p>
-          </li>
+        <p class="p-payment_method_selection__title">
+        <%=t('order_type.price')%>
+        </p>
+        <p class="p-payment_method_selection__price">
+        <%= number_to_jpy(single.price.amount * @tax_rate) %>
+        </p>
+        </li>
       <% end %>
-<% end %>
+      <% if false #FIXME %>
+        <% if subscription.present? && subscription.available? %>
+          <li class="p-payment_method_selection">
+          <% if single.present? && single.available? %>
+            <div class="p-payment_method_selection__radio">
+              <%= radio_button_tag :variant_id, subscription.id %>
+            </div>
+          <% else %>
+            <%= hidden_field_tag :variant_id, subscription.id %>
+          <% end %>
+          <p class="p-payment_method_selection__title">
+          <%=t('order_type.subscription_order')%>
+          </p>
+          <p class="p-payment_method_selection__price">
+          <%= number_to_jpy(subscription.price.amount * @tax_rate) %>
+          </p>
+          <p class="p-payment_method_selection__attention">
+          ※初回2ヶ月分の料金をいただきます。
+          </p>
+          </li>
+        <% end %>
+      <% end %>
 
       <li class="p-payment_method_selection">
-        <div class="p-payment_method__detail is-active">
-          <p>数量: </p>
-          <% if false #FIXME%>
-            <%= number_field_tag :quantity, nil, min: 1, class: 'p-payment_method__amount' %>
-          <% end %>
-          <%= select_tag :quantity, options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
-          <p class="u-margin__left_short">個</p>
-          <%= submit_tag 'カートへ', class: 'c-btn--submit--short u-margin__top5' %>
-        </div>
+      <div class="p-payment_method__detail is-active">
+        <p>数量: </p>
+        <% if false #FIXME%>
+          <%= number_field_tag :quantity, nil, min: 1, class: 'p-payment_method__amount' %>
+        <% end %>
+        <%= select_tag :quantity, options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
+        <p class="u-margin__left_short">個</p>
+        <%= submit_tag 'カートへ', class: 'c-btn--submit--short u-margin__top5' %>
+      </div>
       </li>
     </ul>
 
     <h2 class="u-margin__top25">この商品について</h2>
     <ul class="p-lists">
-<% if false #FIXME%>
-      <li class="p-list">
-      <p>栄養士からの説明</p>
-      <div class="p-list__fincrew">
-        <%= image_tag "users/icon_yuka.png" %>
-      </div>
-      <div class="p-list__fincrew_description">
-        いいいいいいい
-      </div>
-      </li>
-<% end %>
+      <% if false #FIXME%>
+        <li class="p-list">
+        <p>栄養士からの説明</p>
+        <div class="p-list__fincrew">
+          <%= image_tag "users/icon_yuka.png" %>
+        </div>
+        <div class="p-list__fincrew_description">
+          いいいいいいい
+        </div>
+        </li>
+      <% end %>
       <li class="p-list">
       <p>商品詳細</p>
       <div class="p-list__description">
