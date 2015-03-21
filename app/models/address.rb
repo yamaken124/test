@@ -27,7 +27,7 @@ class Address < ActiveRecord::Base
   validates :phone, presence: true
   validates_with AddressCountValidator, on: :create
 
-  scope :active, -> { where('is_active = ?', true) }
+  scope :active, -> { where(:deleted_at => nil) }
 
   UpperLimit = 3
 

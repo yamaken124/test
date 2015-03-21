@@ -39,7 +39,7 @@ class Users::AddressesController < Users::BaseController
 
   def destroy
     address = @user.addresses.find(params[:id])
-    address.update(is_active: false)
+    address.update(deleted_at: Time.now)
     redirect_to account_addresses_path
   end
 
