@@ -4,13 +4,14 @@ class Users::OrdersController < Users::BaseController
 
   before_action :assign_order_with_lock, only: [:edit, :update, :remove_item]
   before_action :set_variants, only: [:edit]
+  before_action :set_tax_rate
   # before_action :apply_coupon_code, only: :update
 
   def index
     single_order_detail_id = Payment.where(user_id: current_user.id).pluck(:single_order_detail_id)
     @details = SingleOrderDetail.where(id: single_order_detail_id).includes(:address).includes(:single_line_items)
     variant_ids = SingleLineItem.where(single_order_detail_id: @details.pluck(:id)).pluck(:variant_id)
-    @variants_indexed_by_id = Variant.where(id: variant_ids).includes(:images).includes(:prices).index_by(&:id)
+    @variants_indexed_by_id = Variant.where(id: variant_ids).includes(:images).index_by(&:id)
   end
 
   def thanks
@@ -127,8 +128,11 @@ class Users::OrdersController < Users::BaseController
 
     def set_variants
       @variants = @order.variants
-      .includes(:prices)
       .includes(:images)
+    end
+
+    def set_tax_rate
+      @tax_rate = TaxRate.rating
     end
 
 end
