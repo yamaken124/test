@@ -6,7 +6,7 @@ db:
     port: 3306
 
 secrets:
-  secret_key_base: bd1e1296766e9131bc80688c728eddbe23a5de426d1d63c531b57f573a1f4f98dbb404bd99ef8f86320c1d59eac1261d864c1155e7f1b780d50d080bf6e43c4a
+  secret_key_base: 839790a6e899997a9c8e192e4d94b22495312aede238c9d7037ecfcc95c288ed9d5540f31f9fe28360679ecb9c597e0dc768b517f559610186ddcca6ad7a9cfd
 
 internal_api:
   finc_app:
