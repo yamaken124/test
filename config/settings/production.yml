@@ -1,0 +1,17 @@
+db:
+  default:
+    username: finc_store
+    password: kantaniten
+    host: 'finc-store-production.cdovlarfnsxf.ap-northeast-1.rds.amazonaws.com'
+    port: 3306
+
+secrets:
+  secret_key_base: 839790a6e899997a9c8e192e4d94b22495312aede238c9d7037ecfcc95c288ed9d5540f31f9fe28360679ecb9c597e0dc768b517f559610186ddcca6ad7a9cfd
+
+internal_api:
+  finc_app:
+    host: 'https://api-dietcoach.finc.co.jp'
+
+oauth_applications:
+  finc_app:
+    consumer_key: 'XM83nPQ114R2h21W6uq_xzCL_E-VtZzp-VgNxp7z'

@@ -1,5 +1,4 @@
 class Users::CheckoutsController < Users::BaseController
-  include Users::OrdersHelper
   include Users::CheckoutsHelper
 
   before_action :redirect_to_profile_if_without_any, only: [:edit]

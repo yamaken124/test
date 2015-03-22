@@ -5,5 +5,13 @@
     <% end %>
   </div>
   <div id="header__right_wrapper">
+    <div>
+      <p><%= @user.try(:name)  %></p>
+      <i class="profile"></i>
+    </div>
+    <div>
+      <p><%= @order.try(:single_order_detail).try(:item_count) %></p>
+      <i class="cart"></i>
+    </div>
   </div>
 </div>

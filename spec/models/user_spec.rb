@@ -25,7 +25,7 @@ RSpec.describe User, type: :model do
 
     it 'returns diff in total_points at finc_app_me and used_point_total' do
       allow_any_instance_of(User).to receive(:me_in_finc_app).and_return({ 'total_points' => 10 })
-      expect(user.wellness_mileage).to eq 5
+      expect(user.wellness_mileage).to eq 0
     end
 
     it 'returns 0 if me_at_finc_app is not found' do

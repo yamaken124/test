@@ -4,6 +4,11 @@ deployment:
     commands:
       - .circle/heroku.sh:
           timeout: 300
+  production:
+    branch: 'deploy/production'
+    commands:
+      - .circle/deploy_production.rb:
+          timeout: 300
   staging:
     branch: 'deploy/staging'
     commands:
