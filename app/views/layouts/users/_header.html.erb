@@ -6,11 +6,12 @@
   </div>
   <div id="header__right_wrapper">
     <div>
-      <p><%= @user.try(:name)  %></p>
+      <p><%#= Profile.find_by(user_id: current_user.id).name || '' %></p><%# TODO implement after #363 merged %>
       <i class="profile"></i>
     </div>
     <div>
-      <p><%= @order.try(:single_order_detail).try(:item_count) %></p>
+      <% @quantity = @order.try(:single_order_detail).try(:item_count) || 0 %>
+      <p>カート <%=@quantity%></p>
       <i class="cart"></i>
     </div>
   </div>
