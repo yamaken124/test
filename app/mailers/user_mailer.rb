@@ -13,7 +13,6 @@ class UserMailer < ApplicationMailer
     @payment = order.single_order_detail.payment
     @detail = order.single_order_detail
     @address = @detail.address
-    @variant = Variant.where(id: @detail.single_line_items.pluck(:variant_id))
 
     sleep 1
     @to = order.user.id
@@ -23,7 +22,7 @@ class UserMailer < ApplicationMailer
     @item = SingleLineItem.find(item_id)
     @payment = @item.single_order_detail.payment
     @profile = Profile.find_by(user_id: @payment.user_id)
-    @variant = Variant.where(id: @item.variant_id)
+    @variant = Variant.find_by(id: @item.variant_id)
 
     sleep 1
     @to = @payment.user.email
