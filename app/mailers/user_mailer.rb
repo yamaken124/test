@@ -20,7 +20,6 @@ class UserMailer < ApplicationMailer
   end
 
   def order_canceled_notification(item_id)
-
     @item = SingleLineItem.find(item_id)
     @payment = @item.single_order_detail.payment
     @profile = Profile.find_by(user_id: @payment.user_id)
