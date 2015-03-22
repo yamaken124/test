@@ -1,8 +1,11 @@
 class UserMailer < ApplicationMailer
   default from: Settings.mailer.try(:user_mailer).try(:from),
     bcc: Settings.mailer.try(:user_mailer).try(:bcc)
+  add_template_helper(ApplicationHelper)
   before_filter :user_mailer_smtp_settings
   after_filter :send_mail
+
+  include ApplicationHelper
 
   def send_order_accepted_notification(order)
     user_id = order.user_id
@@ -13,7 +16,18 @@ class UserMailer < ApplicationMailer
     @variant = Variant.where(id: @detail.single_line_items.pluck(:variant_id))
 
     sleep 1
-    @to = user.email
+    @to = order.user.id
+  end
+
+  def order_canceled_notification(item_id)
+
+    @item = SingleLineItem.find(item_id)
+    @payment = @item.single_order_detail.payment
+    @profile = Profile.find_by(user_id: @payment.user_id)
+    @variant = Variant.where(id: @item.variant_id)
+
+    sleep 1
+    @to = @payment.user.email
   end
 
   def send_items_shipped_notification(user, profile, shipment)

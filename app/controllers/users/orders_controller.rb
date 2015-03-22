@@ -95,14 +95,14 @@ class Users::OrdersController < Users::BaseController
   end
 
   def sent_back_report
-    #TODO send mail
     redirect_to orders_path
   end
 
   def cancel
     detail = SingleOrderDetail.where(id: Payment.where(number: params[:number]).first.single_order_detail_id).first
+    UserMailer.order_canceled_notification(params[:item_id]).deliver
     begin
-      ActiveRecord::Base.transaction do
+      ActiveRecord::Base.transaction do #TODO cancel for each item, not detail.
         detail.payment.shipment.canceled!
         detail.payment.canceled!
       end

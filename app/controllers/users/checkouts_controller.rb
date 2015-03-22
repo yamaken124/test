@@ -25,11 +25,9 @@ class Users::CheckoutsController < Users::BaseController
     if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env)
       if @order.completed?
         @current_order = nil
-          flash['order_completed'] = true
-
+        flash['order_completed'] = true
         send_order_accepted_mail(@order)
         redirect_to thanks_orders_path(number: @order.single_order_detail.payment.number)
-
       else
         redirect_to checkout_state_path(@order.state)
       end
@@ -39,10 +37,6 @@ class Users::CheckoutsController < Users::BaseController
   end
 
   private
-
-    def send_order_accepted_notification
-      cvbhjk
-    end
 
     def redirect_to_profile_if_without_any
       if current_user.profile.blank?

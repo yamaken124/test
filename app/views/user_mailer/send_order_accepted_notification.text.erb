@@ -1,8 +1,8 @@
 <%= @profile.name %>様
 
 FiNCストア ご注文の確認
-注文番号：<%= number %>
-<%= order_path(@payment.number) %>
+注文番号：<%= @payment.number %>
+<%= orders_url %>
 
 _________________________________________________________________________________
 
@@ -28,20 +28,20 @@ FiNCストア をご利用いただき、ありがとうございます。FiNC�
 注文番号：<%= @payment.number %>
 注文日：<%= @detail.completed_on %>
 
-<% @detail.single_line_item.each do |item| %>
+<% @detail.single_line_items.each do |item| %>
 <% variant = Variant.find(item.variant_id) %>
 【FiNCストア限定】<%= variant.name %>
-<%= number_to_jpy(variant.price) %>
-
+<%= number_to_jpy(variant.price.amount) %>
+<% end %>
 _________________________________________________________________________________
 
-商品の小計：<%= price %>
-配送料および取引手数料：<%= price %>
+商品の小計：<%= number_to_jpy(@detail.item_total-@detail.shipment_total) %>
+配送料および取引手数料：<%= number_to_jpy(@detail.shipment_total) %>
 
-注文合計：<%= price %>
+注文合計：<%= number_to_jpy(@detail.total) %>
 
 支払い方法
-クレジットカード：<%= price %>
+クレジットカード：<%= number_to_jpy(@detail.total) %>
 
 =================================================================================
 
