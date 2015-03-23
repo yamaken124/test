@@ -30,10 +30,10 @@
       <td><%= @product.description %></td>
     </tr>
     <tr>
-      <th>isValidAt</th><td><%= @product.is_valid_at.strftime("%Y/%m/%d %H:%M") %></td>
+      <th>販売開始</th><td><%= @product.is_valid_at.strftime("%Y/%m/%d %H:%M") %></td>
     </tr>
     <tr>
-      <th>isInValidAt</th><td><%= @product.is_invalid_at.strftime("%Y/%m/%d %H:%M") %></td>
+      <th>販売終了</th><td><%= @product.is_invalid_at.strftime("%Y/%m/%d %H:%M") %></td>
     </tr>
   </tbody>
 </table>
