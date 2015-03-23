@@ -7,16 +7,15 @@
   </h3>
 </div>
 <section class="content col-md-10">
-  <h4 class="box-title">Variantリスト</h4>
+  <h4 class="box-title">SKU一覧</h4>
   <% if !@variants.blank? %>
     <table class="table c-table">
       <thead>
         <tr>
-          <th>名前</th>
-          <th>sku</th>
-          <th>IMAGE</th>
+          <th>SKU</th>
+          <th>画像</th>
           <th>注文タイプ</th>
-          <th>price</th>
+          <th>値段</th>
           <th></th>
           <th></th>
         </tr>
@@ -25,7 +24,6 @@
       <% @variants.each do |v| %>
         <tr>
           <td><%= v.name %></td>
-          <td><%= v.sku %></td>
           <td><%= image_tag v.images.first.try(:image).try(:url), class: "thumb" %>(<%= v.images.count %>)</td>
           <td>
             <% if !v.order_type.nil? %>
