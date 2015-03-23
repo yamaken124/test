@@ -2,21 +2,20 @@
   <h3>
     <%= link_to "商品一覧", admins_products_path %> / <%= @product.name %>
     <div class="u-float_right">
-      <a href="<%= new_admins_product_variant_path %>" class="btn btn-primary">Variant追加</a>
+      <a href="<%= new_admins_product_variant_path %>" class="btn btn-primary">SKU追加</a>
     </div>
   </h3>
 </div>
 <section class="content col-md-10">
-  <h4 class="box-title">Variantリスト</h4>
+  <h4 class="box-title">SKU一覧</h4>
   <% if !@variants.blank? %>
     <table class="table c-table">
       <thead>
         <tr>
-          <th>名前</th>
-          <th>sku</th>
-          <th>IMAGE</th>
+          <th>SKU</th>
+          <th>画像</th>
           <th>注文タイプ</th>
-          <th>price</th>
+          <th>値段</th>
           <th></th>
           <th></th>
         </tr>
@@ -25,7 +24,6 @@
       <% @variants.each do |v| %>
         <tr>
           <td><%= v.name %></td>
-          <td><%= v.sku %></td>
           <td><%= image_tag v.images.first.try(:image).try(:url), class: "thumb" %>(<%= v.images.count %>)</td>
           <td>
             <% if !v.order_type.nil? %>
@@ -51,7 +49,7 @@
       </tbody>
     </table>
   <% else %>
-    <p>現在variantは登録されていません</p>
+    <p>現在SKUは登録されていません</p>
   <% end %>
 </section>
 <%= render partial: '/admins/products/nav', locals: { product: @product } %>

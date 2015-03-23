@@ -7,13 +7,12 @@
   </h3>
 </div>
 <section class="content col-md-10">
-<h4 class="box-title">画像リスト</h4>
+<h4 class="box-title">画像一覧</h4>
 <% if @images.present? %>
   <table class="table c-table">
     <thead>
       <tr>
-        <th>image</th>
-        <th>sku</th>
+        <th>画像</th>
         <th></th>
       </tr>
     </thead>
@@ -25,13 +24,12 @@
             <%= image_tag i.image.url,:size => "60x60" %>
           <% end %>
         </td>
-        <td><%= i.variant.sku %></td>
         <td>
           <a href="<%= edit_admins_variant_image_path(id: i.id ,imageable_id: params[:imageable_id]) %>" class="btn btn-warning btn-sm">
-            <i class="fa fa-edit"></i>
+            <i class="fa fa-edit"></i>変更
           </a>
           <a href="<%= admins_variant_image_path(id: i.id ,imageable_id: params[:imageable_id]) %>" class="btn btn-success btn-sm" data-method="delete" data-confirm="本当に削除しますか？">
-            <i class="fa fa-trash-o"></i>
+            <i class="fa fa-trash-o"></i>削除
           </a>
         </td>
       </tr>
