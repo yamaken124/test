@@ -1,12 +1,12 @@
 <div class = "content-header">
   <h3>
     <%= link_to "商品一覧", admins_products_path %> / <%= link_to @product.name, admins_product_path(@product) %>
-                <a href="<%= edit_admins_product_path(id: @product.id) %>" class="btn btn-warning btn-sm">
-                  <i class="fa fa-edit"></i>編集
-                </a>
-                 <a href="<%= admins_product_path(id: @product.id) %>" class="btn btn-success btn-sm" data-method="delete">
-                  <i class="fa fa-trash-o"></i>削除
-                </a>
+    <a href="<%= edit_admins_product_path(id: @product.id) %>" class="btn btn-warning btn-sm">
+      <i class="fa fa-edit"></i>編集
+    </a>
+    <a href="<%= admins_product_path(id: @product.id) %>" class="btn btn-success btn-sm" data-method="delete">
+      <i class="fa fa-trash-o"></i>削除
+    </a>
  
     <div class="u-float_right">
       <a href="<%= new_admins_product_path %>" class="btn btn-primary">商品追加</a>
