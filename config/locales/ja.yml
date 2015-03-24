@@ -211,7 +211,7 @@ ja:
         short: ! '%H:%M'
 
   order_type:
-    single_order: 単品購入
+    single_order: 通常購入
     subscription_order: 定期購入
     price: 商品価格 #定期購買を始めるまで
 

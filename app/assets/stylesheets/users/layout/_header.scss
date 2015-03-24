@@ -5,7 +5,7 @@
   padding:5px 0px;
   background-color:$finc_color;
   #header__left_wrapper{
-    width:83%;
+    width:50%;
     height:100%;
     float:left;
     #header__logo{
@@ -13,8 +13,39 @@
     }
   }
   #header__right_wrapper{
-    width:17%;
+    width:50%;
     height:100%; 
     float:right;
+    div{
+      width:150px;
+      float:right
+    }
+    p{
+      width:90px;
+      text-align:center;
+      color:white;
+      float:right; 
+      font-size:13px;
+      height:16px;
+      line-height:16px;
+      margin-right:10px;
+      margin-top:3px;
+    }
+    .profile{
+      width:16px;
+      height:16px;
+      float:right;
+      background-image:url(asset-path("users/man.png"));
+      background-size:contain;
+      margin-top:3px;
+    }
+    .cart{
+      width:16px;
+      height:16px;
+      float:right;
+      background-image:url(asset-path("users/cart.png"));
+      background-size:contain;
+      margin-top:3px;
+    }
   }
 }

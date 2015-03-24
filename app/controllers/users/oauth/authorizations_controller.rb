@@ -6,18 +6,18 @@ module Users
 
       def create
         if sign_in_with_access_token(persisted_access_token)
-          redirect_to products_path
+          redirect_to root_path
         else
           # finc_app 以外の認証も対応する必要が出たら実装する
           sign_up_with_fincapp(oauth_application, params[:access_token])
-          redirect_to edit_profile_path
+          redirect_to edit_profile_path(continue: :credit_cards)
         end
       end
 
       private
 
         def redirect_to_root_if_signed_in
-          redirect_to products_path and return if user_signed_in?
+          redirect_to root_path and return if user_signed_in?
         end
 
         def check_valid_key_and_token!
