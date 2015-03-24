@@ -35,7 +35,7 @@ class Admins::ImagesController < Admins::BaseController
       flash[:notice] = "販売期間中の商品の画像を0枚にすることはできません"
       redirect_to :back
     else
-      @image.delete
+      @image.destroy
       redirect_to admins_variant_images_path
     end
   end
