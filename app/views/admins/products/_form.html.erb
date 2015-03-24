@@ -25,7 +25,7 @@
       </div>
       <div class="field">
         <%= p.label :product_is_invalid_at %><br>
-        <p><%= p.date_select :is_invalid_at,{},{:class=>"form-control"} %></p>
+        <p><%= p.date_select :is_invalid_at,{:default => 5.years.from_now},{:class=>"form-control"} %></p>
       </div>
       <%= p.fields_for :products_taxons do |t| %>
         <div class="form-group">
