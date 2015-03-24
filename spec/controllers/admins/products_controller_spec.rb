@@ -25,8 +25,8 @@ RSpec.describe Admins::ProductsController, type: :controller do
     end
     before { post :create, params }
 
-    it 'redirect to #show' do
-      expect(response).to redirect_to admins_product_path(id: assigns(:product).id)
+    it 'redirect to varinants#index' do
+      expect(response).to redirect_to admins_product_variants_path(product_id: assigns(:product).id)
     end
   end
 
