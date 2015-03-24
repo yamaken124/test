@@ -1,6 +1,6 @@
 <div class="content-header">
   <h3>
-    <%= link_to "画像一覧", admins_variant_images_path(@imageable.id) %> / 画像登録
+    <%= link_to "画像一覧", admins_variant_images_path(imageable_id: @imageable.id) %> / 画像登録
   </h3>
 </div>
 <%= render partial: 'form', locals: { image: @image } %>
