@@ -22,6 +22,7 @@ class Admins::ProductsController < Admins::BaseController
         @product.save!
       end
        redirect_to admins_product_variants_path(@product.id)
+       flash[:notice] = "#{@product.name}が保存されました"
     rescue
       set_new_product
       set_leaf_taxons
