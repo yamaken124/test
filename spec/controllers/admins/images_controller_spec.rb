@@ -7,7 +7,7 @@ RSpec.describe Admins::ImagesController, type: :controller do
     admin_sign_in @admin
     @product = create(:product)
     @variant = create(:variant, product_id: @product.id )
-    @image = Image.create( image: File.open(File.join(Rails.root, '/spec/fixtures/sample.png')), id: 1, imageable_id: @variant.id, imageable_type: "Variant" )
+    @image = Image.create(image: File.open(File.join(Rails.root, '/spec/fixtures/sample.png')), id: 1, imageable_id: @variant.id, imageable_type: "Variant")
  
   end 
 
