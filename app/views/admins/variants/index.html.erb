@@ -36,13 +36,13 @@
           <td><%= t(v.classify_validity) %></td>
           <td>
             <a href="<%= admins_variant_images_path(v.id) %>" class="btn btn-info btn-sm">
-              <i class="fa fa-file-o"></i>
+              <i class="fa fa-file-o"></i>画像
             </a>
             <a href="<%= edit_admins_product_variant_path(@product.id, v.id) %>" class="btn btn-warning btn-sm">
-              <i class="fa fa-edit"></i>
+              <i class="fa fa-edit"></i>編集
             </a>
             <a href="<%= admins_product_variant_path(@product.id, v.id) %>" class="btn btn-success btn-sm" data-method="delete" data-confirm="本当に削除しますか？">
-              <i class="fa fa-trash-o"></i>
+              <i class="fa fa-trash-o"></i>削除
             </a>
           </td>
         </tr>
