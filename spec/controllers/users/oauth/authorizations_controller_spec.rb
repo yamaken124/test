@@ -7,7 +7,7 @@ RSpec.describe Users::Oauth::AuthorizationsController, type: :controller do
     let(:user) { create(:user) }
     context 'signed in' do
       before { user_sign_in user }
-      it { post :create; expect(response).to redirect_to products_path }
+      it { post :create; expect(response).to redirect_to root_path }
     end
 
     context 'invalid consumer_key' do
@@ -40,7 +40,7 @@ RSpec.describe Users::Oauth::AuthorizationsController, type: :controller do
       let!(:oauth_access_token) { create(:oauth_access_token, oauth_application_id: oauth_application.id, user_id: user.id, token: 'access') }
       let(:params) { { consumer_key: 'cons', access_token: 'access' } }
 
-      it { post :create, params; expect(response).to redirect_to products_path }
+      it { post :create, params; expect(response).to redirect_to root_path }
       it { expect{ post :create, params }.to change(User, :count).by(0) }
       it { expect{ post :create, params }.to change(OauthAccessToken, :count).by(0) }
     end
