@@ -4,7 +4,7 @@ class Users::ProfilesController < Users::BaseController
 
   def create
     @profile = Profile.new(profile_params)
-    if !profile_params.has_value?('') && @profile.save
+    if @profile.save
       redirect_to_continue_path
     else
       set_continue
@@ -14,7 +14,7 @@ class Users::ProfilesController < Users::BaseController
 
   def update
     @profile = Profile.where(user_id: @user.id).first
-    if @profile.present? && !profile_params.has_value?('') && @profile.update(profile_params)
+    if @profile.present? && @profile.update(profile_params)
       redirect_to_continue_path
     else
       set_continue
@@ -32,7 +32,6 @@ class Users::ProfilesController < Users::BaseController
     end
 
     def profile_params
-
       params.require(:profile).permit(:last_name, :first_name, :last_name_kana, :first_name_kana, :phone).merge(user_id: @user.id)
     end
 
