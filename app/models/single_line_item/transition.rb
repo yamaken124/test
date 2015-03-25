@@ -4,11 +4,11 @@ class SingleLineItem < ActiveRecord::Base
       klass.class_eval do
         include AASM
 
-        enum item_state: {
+        enum payment_state: {
           checkout: 0, completed: 10, pending: 20, failed: 30, canceled: 40
         }
 
-        aasm column: :item_state do
+        aasm column: :payment_state do
           state :checkout, initial: true
           state :processing
           state :pending
@@ -31,7 +31,7 @@ class SingleLineItem < ActiveRecord::Base
           unless detail.payment.canceled?
             OrderUpdater.new(detail).calculate_paid_total(self)
             detail.reload
-            raise unless GmoMultiPayment::Transaction.new(detail.payment).transaction_change(detail.paid_total)
+            raise unless GmoMultiPayment::Transaction.new(detail.payment).sales_change(detail.paid_total)
           end
         end
 

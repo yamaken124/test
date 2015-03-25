@@ -22,6 +22,8 @@ class SingleLineItem < ActiveRecord::Base
   belongs_to :single_order_detail
   belongs_to :tax_rate
 
+  scope :except_canceled, -> { where.not(payment_state: SingleLineItem.payment_states[:canceled]) }
+
   after_save :destroy_if_order_detail_is_blank, if: Proc.new { |item| item.quantity.zero? }
 
   def update_tax_adjustments
@@ -44,10 +46,8 @@ class SingleLineItem < ActiveRecord::Base
     self.quantity = 0 if quantity.nil? || quantity < 0
   end
 
-  def self.set_items_completed(single_order_detail)
-    single_order_detail.single_line_items.size.times do |i|
-      single_order_detail.single_line_items[i].completed!
-    end
+  def self.complete_items(single_order_detail)
+    single_order_detail.single_line_items.update_all(payment_state: self.payment_states[:completed])
   end
 
 end

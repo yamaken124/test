@@ -101,7 +101,7 @@ class OrderUpdater
   end
 
   def update_item_total
-    order_detail.item_total = order_detail.single_line_items.where.not(item_state: SingleLineItem.item_states[:canceled]).sum('price * quantity')
+    order_detail.item_total = order_detail.single_line_items.except_canceled.sum('price * quantity')
     update_order_total
   end
 

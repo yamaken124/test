@@ -67,7 +67,7 @@ class PurchaseOrder < ActiveRecord::Base
                 single_order_detail.update!(attributes)
 
               when :confirm
-                SingleLineItem.set_items_completed(single_order_detail)
+                SingleLineItem.complete_items(single_order_detail)
                 single_order_detail.payment.processing!
                 single_order_detail.payment.completed!
               end

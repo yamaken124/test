@@ -179,7 +179,7 @@ ActiveRecord::Schema.define(version: 20150324082450) do
     t.integer  "price",                  limit: 4
     t.integer  "tax_rate_id",            limit: 4
     t.integer  "additional_tax_total",   limit: 4
-    t.integer  "item_state",             limit: 4, default: 0
+    t.integer  "payment_state",          limit: 4, default: 0
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
   end

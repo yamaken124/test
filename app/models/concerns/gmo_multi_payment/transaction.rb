@@ -98,7 +98,8 @@ class GmoMultiPayment::Transaction
     })
   end
 
-  def transaction_change(amount)
+  # 決済額変更
+  def sales_change(amount)
     url = GmoMultiPayment::Domain + "/payment/ChangeTran.idPass"
     response = HTTParty.post( url, {body:
                   {:ShopID      => GmoMultiPayment::ShopID,

@@ -106,7 +106,7 @@ class Users::OrdersController < Users::BaseController
     begin
       ActiveRecord::Base.transaction do
         other_items = detail.single_line_items.where.not(id: params[:item_id])
-        if other_items.blank? || other_items.where.not(item_state: SingleLineItem.item_states[:canceled]).blank?
+        if other_items.blank? || other_items.except_canceled.blank?
           detail.payment.shipment.canceled!
           detail.payment.canceled!
         end
