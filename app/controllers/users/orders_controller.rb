@@ -91,10 +91,22 @@ class Users::OrdersController < Users::BaseController
 
   #single のみになっているので拡張
   def sent_back
-    @detail = SingleOrderDetail.where(id: Payment.where(number: params[:number]).first.single_order_detail_id).first
+    @item = SingleLineItem.find(params[:id])
   end
 
   def sent_back_report
+    raise unless current_user.id == SingleLineItem.find(params[:single_line_item_id]).single_order_detail.payment.user_id
+
+    begin
+      ActiveRecord::Base.transaction do
+        UserMailer.item_return_accepted_notification(params[:single_line_item_id]).deliver
+        ReturnedItem.create(
+          single_line_item_id: params[:single_line_item_id],
+          user_id: current_user.id,
+          message: params[:message]
+          )
+      end
+    end
     redirect_to orders_path
   end
 

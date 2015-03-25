@@ -4,7 +4,7 @@
     <div class="form__field">
       商品の返品に関しましてはこちらからお問い合わせください。
     </div>
-    <%= hidden_field_tag :single_order_detail_id, @detail.id %>
+    <%= hidden_field_tag :single_line_item_id, @item.id %>
     <div class="form__field">
       <%= text_area_tag :message, nil, placeholder:"お問い合せ内容をご入力ください。", class: "form__textarea--long" %>
     </div>

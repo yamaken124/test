@@ -43,7 +43,7 @@ Rails.application.routes.draw do
       collection do
         post :populate
         get  ':number/thanks', action: :thanks, :as => :thanks
-        get  ':number/sent_back', action: :sent_back, :as => :sent_back
+        get  ':id/sent_back', action: :sent_back, :as => :sent_back
         post 'sent_back_report'
         delete '/cancel/:number' => 'orders#cancel', :as => :cancel
       end

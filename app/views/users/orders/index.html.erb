@@ -28,7 +28,7 @@
     <div class="p-wrapper--have_padding">
       <% if detail.payment.shipment.try(:shipped?) %>
         <ul class="c-links">
-          <a href="<%= sent_back_orders_path(detail.payment.number) %>">
+          <a href="<%= sent_back_orders_path(id: item.id) %>">
             <li class="c-link">
               商品を返品
             </li>

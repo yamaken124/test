@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150324082450) do
+ActiveRecord::Schema.define(version: 20150325111606) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -158,6 +158,17 @@ ActiveRecord::Schema.define(version: 20150324082450) do
   end
 
   add_index "purchase_orders", ["user_id"], name: "index_purchase_orders_on_user_id", using: :btree
+
+  create_table "returned_items", force: :cascade do |t|
+    t.integer  "single_line_item_id", limit: 4,     null: false
+    t.integer  "user_id",             limit: 4,     null: false
+    t.text     "message",             limit: 65535
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+  end
+
+  add_index "returned_items", ["single_line_item_id"], name: "index_returned_items_on_single_line_item_id", unique: true, using: :btree
+  add_index "returned_items", ["user_id"], name: "index_returned_items_on_user_id", using: :btree
 
   create_table "shipments", force: :cascade do |t|
     t.integer  "payment_id", limit: 4
@@ -340,6 +351,8 @@ ActiveRecord::Schema.define(version: 20150324082450) do
   add_foreign_key "products_taxons", "products"
   add_foreign_key "profiles", "users"
   add_foreign_key "purchase_orders", "users"
+  add_foreign_key "returned_items", "single_line_items"
+  add_foreign_key "returned_items", "users"
   add_foreign_key "shipments", "addresses"
   add_foreign_key "shipments", "payments"
   add_foreign_key "single_line_items", "single_order_details"

@@ -28,6 +28,16 @@ class UserMailer < ApplicationMailer
     @to = @payment.user.email
   end
 
+  def item_return_accepted_notification(item_id)
+    @item = SingleLineItem.find(item_id)
+    @payment = @item.single_order_detail.payment
+    @profile = Profile.find_by(user_id: @payment.user_id)
+    @variant = Variant.find_by(id: @item.variant_id)
+
+    sleep 1
+    @to = @payment.user.email
+  end
+
   def send_items_shipped_notification(user, profile, shipment)
     sleep 1
     @to = profile.email
