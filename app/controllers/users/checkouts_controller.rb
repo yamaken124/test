@@ -132,7 +132,7 @@ class Users::CheckoutsController < Users::BaseController
     end
 
     def send_order_accepted_mail(order)
-      UserMailer.send_order_accepted_notification(order).deliver
+      UserMailer.delay.send_order_accepted_notification(order)
     end
 
 end

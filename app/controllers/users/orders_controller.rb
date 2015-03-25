@@ -97,16 +97,13 @@ class Users::OrdersController < Users::BaseController
   def sent_back_report
     raise unless current_user.id == SingleLineItem.find(params[:single_line_item_id]).single_order_detail.payment.user_id
 
-    begin
-      ActiveRecord::Base.transaction do
-        UserMailer.item_return_accepted_notification(params[:single_line_item_id]).deliver
-        ReturnedItem.create(
-          single_line_item_id: params[:single_line_item_id],
-          user_id: current_user.id,
-          message: params[:message]
-          )
-      end
-    end
+    ReturnedItem.create(
+      single_line_item_id: params[:single_line_item_id],
+      user_id: current_user.id,
+      message: params[:message]
+      )
+    UserMailer.delay.item_return_accepted_notification(params[:single_line_item_id])
+
     redirect_to orders_path
   end
 
@@ -123,6 +120,7 @@ class Users::OrdersController < Users::BaseController
         end
         item.canceled!
       end
+      UserMailer.delay.order_canceled_notification(params[:item_id])
     end
     redirect_to :back
   end

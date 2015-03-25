@@ -120,3 +120,8 @@ gem 'aasm'
 
 gem 'awesome_nested_set'
 
+#mailer
+gem "delayed_job"
+gem "delayed_job_active_record"
+gem "daemons"
+
