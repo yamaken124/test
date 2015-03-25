@@ -97,4 +97,18 @@ class GmoMultiPayment::Transaction
                    :JobCd       => GmoMultiPayment::Void}
     })
   end
+
+  # 決済額変更
+  def sales_change(amount)
+    url = GmoMultiPayment::Domain + "/payment/ChangeTran.idPass"
+    response = HTTParty.post( url, {body:
+                  {:ShopID      => GmoMultiPayment::ShopID,
+                   :ShopPass    => GmoMultiPayment::ShopPass,
+                   :AccessID    => @payment.gmo_access_id,
+                   :AccessPass  => @payment.gmo_access_pass,
+                   :JobCd       => GmoMultiPayment::Capture,
+                   :Amount     => amount}
+    })
+    response.parsed_response.index("ErrCode").blank? ? true : false
+  end
 end

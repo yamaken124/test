@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150321021313) do
+ActiveRecord::Schema.define(version: 20150324082450) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -179,8 +179,9 @@ ActiveRecord::Schema.define(version: 20150321021313) do
     t.integer  "price",                  limit: 4
     t.integer  "tax_rate_id",            limit: 4
     t.integer  "additional_tax_total",   limit: 4
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.integer  "payment_state",          limit: 4, default: 0
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
   end
 
   add_index "single_line_items", ["single_order_detail_id"], name: "index_single_line_items_on_single_order_detail_id", using: :btree
@@ -191,6 +192,7 @@ ActiveRecord::Schema.define(version: 20150321021313) do
     t.integer  "item_total",           limit: 4, default: 0, null: false
     t.integer  "tax_rate_id",          limit: 4
     t.integer  "total",                limit: 4, default: 0, null: false
+    t.integer  "paid_total",           limit: 4
     t.date     "completed_on"
     t.datetime "completed_at"
     t.integer  "address_id",           limit: 4
