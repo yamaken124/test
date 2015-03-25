@@ -25,7 +25,7 @@ class Users::CheckoutsController < Users::BaseController
       if @order.completed?
         @current_order = nil
         flash['order_completed'] = true
-        send_order_accepted_mail(@order)
+        UserMailer.delay.send_order_accepted_notification(@order)
         redirect_to thanks_orders_path(number: @order.single_order_detail.payment.number)
       else
         redirect_to checkout_state_path(@order.state)
@@ -129,10 +129,6 @@ class Users::CheckoutsController < Users::BaseController
       .includes(:images)
       @single_line_items = @detail.single_line_items
       @tax_rate = TaxRate.rating
-    end
-
-    def send_order_accepted_mail(order)
-      UserMailer.delay.send_order_accepted_notification(order)
     end
 
 end

@@ -15,6 +15,7 @@ class UserMailer < ApplicationMailer
     @address = @detail.address
 
     sleep 1
+    @subject = '【FiNCストア】 ご購入ありがとうございます '
     @to = order.user.id
   end
 
@@ -25,6 +26,7 @@ class UserMailer < ApplicationMailer
     @variant = Variant.find_by(id: @item.variant_id)
 
     sleep 1
+    @subject = '【FiNCストア】注文キャンセルを承りました'
     @to = @payment.user.email
   end
 
@@ -35,6 +37,7 @@ class UserMailer < ApplicationMailer
     @variant = Variant.find_by(id: @item.variant_id)
 
     sleep 1
+    @subject = '【FiNCストア】返品リクエストを承りました'
     @to = @payment.user.email
   end
 
