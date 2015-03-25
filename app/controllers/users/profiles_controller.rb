@@ -7,6 +7,7 @@ class Users::ProfilesController < Users::BaseController
     if @profile.save
       redirect_to_continue_path
     else
+      set_continue
       render :edit
     end
   end
@@ -16,12 +17,12 @@ class Users::ProfilesController < Users::BaseController
     if @profile.present? && @profile.update(profile_params)
       redirect_to_continue_path
     else
+      set_continue
       render :edit
     end
   end
 
   def edit
-    @user = User.find(current_user.id)
     @profile = Profile.where(user_id: @user.id).blank? ? Profile.new : Profile.where(user_id: @user.id).first
   end
 
@@ -45,6 +46,8 @@ class Users::ProfilesController < Users::BaseController
     def redirect_to_continue_path
       if params[:continue].present? && params[:continue].include?("credit_cards")
         redirect_to new_profile_credit_card_path
+      elsif params[:continue].present? && params[:continue].include?("checkout/payment")
+        redirect_to checkout_state_path("payment")
       else # params[:continue].include?("account") || params[:continue].blank?
         redirect_to account_path
       end
