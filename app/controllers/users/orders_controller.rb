@@ -99,12 +99,17 @@ class Users::OrdersController < Users::BaseController
   end
 
   def cancel
-    detail = SingleOrderDetail.where(id: Payment.where(number: params[:number]).first.single_order_detail_id).first
-    UserMailer.order_canceled_notification(params[:item_id]).deliver
+    payment = Payment.find_by(user_id: current_user.id, number: params[:number])
+    detail = payment.single_order_detail
+    item = detail.single_line_items.find_by(id: params[:item_id])
     begin
-      ActiveRecord::Base.transaction do #TODO cancel for each item, not detail.
-        detail.payment.shipment.canceled!
-        detail.payment.canceled!
+      ActiveRecord::Base.transaction do
+        other_items = detail.single_line_items.where.not(id: params[:item_id])
+        if other_items.blank? || other_items.except_canceled.blank?
+          detail.payment.shipment.canceled!
+          detail.payment.canceled!
+        end
+        item.canceled!
       end
     end
     redirect_to :back

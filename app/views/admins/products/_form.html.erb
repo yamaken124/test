@@ -20,12 +20,12 @@
         <%= p.text_field :description, class: "form-control" %>
       </div>
       <div class="form-group">
-        <%= p.label :product_is_valid_at %><br>
-        <%= p.date_select :is_valid_at,{},{:class=>"form-control"} %>
+        <%= p.label :is_valid_at %><br>
+        <%= p.date_select :is_valid_at, {}, { class: "form-control" } %>
       </div>
       <div class="field">
-        <%= p.label :product_is_invalid_at %><br>
-        <p><%= p.date_select :is_invalid_at,{},{:class=>"form-control"} %></p>
+        <%= p.label :is_invalid_at %><br>
+        <p><%= p.date_select :is_invalid_at, { default: 5.years.from_now }, { class: "form-control" } %></p>
       </div>
       <%= p.fields_for :products_taxons do |t| %>
         <div class="form-group">
