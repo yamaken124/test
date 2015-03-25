@@ -49,6 +49,7 @@ class Admins::ProductsController < Admins::BaseController
 
   def destroy
     @product.update(is_invalid_at: Time.now-1)
+    @product.variants.update_all(is_invalid_at: Time.now-1)
     redirect_to admins_products_path
   end
 
