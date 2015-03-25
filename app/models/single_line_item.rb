@@ -14,6 +14,9 @@
 #
 
 class SingleLineItem < ActiveRecord::Base
+
+  include SingleLineItem::Transition
+
   before_validation :invalid_quantity_check
   belongs_to :variant
   belongs_to :single_order_detail
@@ -40,4 +43,11 @@ class SingleLineItem < ActiveRecord::Base
   def invalid_quantity_check
     self.quantity = 0 if quantity.nil? || quantity < 0
   end
+
+  def self.set_items_completed(single_order_detail)
+    single_order_detail.single_line_items.size.times do |i|
+      single_order_detail.single_line_items[i].completed!
+    end
+  end
+
 end

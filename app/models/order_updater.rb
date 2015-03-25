@@ -51,6 +51,12 @@ class OrderUpdater
     update_adjustment_total
   end
 
+  def calculate_paid_total(item)
+    update_item_total
+    update_shipment_total
+    update_adjustment_total
+    persist_paid_totals
+  end
 
   # give each of the shipments a chance to update themselves
   def update_shipments
@@ -95,7 +101,7 @@ class OrderUpdater
   end
 
   def update_item_total
-    order_detail.item_total = order_detail.single_line_items.sum('price * quantity')
+    order_detail.item_total = order_detail.single_line_items.where.not(item_state: SingleLineItem.item_states[:canceled]).sum('price * quantity')
     update_order_total
   end
 
@@ -108,6 +114,13 @@ class OrderUpdater
       shipment_total: order_detail.shipment_total,
       total: order_detail.total,
       updated_at: Time.now
+    )
+  end
+
+  def persist_paid_totals
+    SingleOrderDetail.find(order_detail.id).update(
+      paid_total: order_detail.total,
+      shipment_total: order_detail.shipment_total,
     )
   end
 

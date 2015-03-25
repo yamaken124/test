@@ -60,7 +60,7 @@ class SingleOrderDetail < ActiveRecord::Base
 
   def update_tax_adjustments
     self.additional_tax_total = (item_total * valid_tax_rate.amount).floor
-    self.adjustment_total     = additional_tax_total
+    self.adjustment_total = additional_tax_total
   end
 
   def valid_tax_rate
