@@ -209,9 +209,17 @@ ja:
       en:
         default: ! '%H:%M:%S'
         short: ! '%H:%M'
+  
+  activerecord:
+    attributes:
+      product:
+        name: 名前
+        description: 説明
+        is_valid_at: 販売開始
+        is_invalid_at: 販売終了
 
   order_type:
-    single_order: 単品購入
+    single_order: 通常購入
     subscription_order: 定期購入
     price: 商品価格 #定期購買を始めるまで
 
