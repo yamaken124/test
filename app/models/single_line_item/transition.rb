@@ -29,7 +29,7 @@ class SingleLineItem < ActiveRecord::Base
         def change_paid_amount
           detail = self.single_order_detail
           unless detail.payment.canceled?
-            OrderUpdater.new(detail).calculate_paid_total(self)
+            OrderUpdater.new(detail).update
             detail.reload
             raise unless GmoMultiPayment::Transaction.new(detail.payment).sales_change(detail.paid_total)
           end

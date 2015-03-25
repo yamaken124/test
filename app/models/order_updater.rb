@@ -16,7 +16,7 @@ class OrderUpdater
   # associations try to save and then in turn try to call +update!+ again.)
   def update
     update_totals
-    if order.purchase_order.completed?
+    if order.purchase_order.completed? && order_detail.single_line_items.canceled_items.blank?
       update_payment_state
       update_shipments
       update_shipment_state
@@ -51,7 +51,7 @@ class OrderUpdater
     update_adjustment_total
   end
 
-  def calculate_paid_total(item)
+  def calculate_paid_total
     update_item_total
     update_shipment_total
     update_adjustment_total
@@ -103,18 +103,26 @@ class OrderUpdater
   def update_item_total
     order_detail.item_total = order_detail.single_line_items.except_canceled.sum('price * quantity')
     update_order_total
+
   end
 
   def persist_totals
-    order_detail.update(
-      item_total: order_detail.item_total,
-      item_count: order_detail.item_count,
-      adjustment_total: order_detail.adjustment_total,
-      additional_tax_total: order_detail.additional_tax_total,
-      shipment_total: order_detail.shipment_total,
-      total: order_detail.total,
-      updated_at: Time.now
-    )
+    if order_detail.single_line_items.canceled_items.blank?
+      order_detail.update(
+        item_total: order_detail.item_total,
+        item_count: order_detail.item_count,
+        adjustment_total: order_detail.adjustment_total,
+        additional_tax_total: order_detail.additional_tax_total,
+        shipment_total: order_detail.shipment_total,
+        total: order_detail.total,
+        updated_at: Time.now
+      )
+    else
+      SingleOrderDetail.find(order_detail.id).update(
+        paid_total: order_detail.total,
+        shipment_total: order_detail.shipment_total,
+      )
+    end
   end
 
   def persist_paid_totals

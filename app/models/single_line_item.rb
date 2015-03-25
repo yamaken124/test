@@ -23,6 +23,7 @@ class SingleLineItem < ActiveRecord::Base
   belongs_to :tax_rate
 
   scope :except_canceled, -> { where.not(payment_state: SingleLineItem.payment_states[:canceled]) }
+  scope :canceled_items, -> { where(payment_state: SingleLineItem.payment_states[:canceled]) }
 
   after_save :destroy_if_order_detail_is_blank, if: Proc.new { |item| item.quantity.zero? }
 
