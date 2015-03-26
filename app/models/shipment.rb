@@ -16,7 +16,7 @@ class Shipment < ActiveRecord::Base
       transitions from: [:pending, :shipped], to: :ready
     end
 
-    event :shipped  do
+    event :shipped, after: [:register_shipped_at]  do
       transitions from: [:ready, :pending], to: :shipped
     end
 
@@ -31,6 +31,10 @@ class Shipment < ActiveRecord::Base
 
   def self.transitionable_states
     ['ready', 'shipped', 'canceled']
+  end
+
+  def register_shipped_at
+    self.update(shipped_at: Time.now)
   end
 
 end

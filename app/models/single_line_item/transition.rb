@@ -21,7 +21,7 @@ class SingleLineItem < ActiveRecord::Base
           end
 
           event :canceled, after: :change_paid_amount do
-            transitions from: [:completed, :checkout, :canceled], to: :canceled
+            transitions from: [:completed], to: :canceled
           end
 
         end
