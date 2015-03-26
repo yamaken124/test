@@ -17,7 +17,7 @@
         <span>
           <%= address.last_name %>&nbsp;<%= address.first_name %>
           <% if address.is_main %>
-            <%= "メインの住所" %> <%# TODO 文言デザイン %>
+            <%="（#{t('address.is_main')}）"%>
           <% end %>
           <br>
           <%= address.zipcode %>&nbsp;<%= address.city %>&nbsp;<%= address.address %><br>

@@ -12,5 +12,8 @@
   <li <%= 'class=active' if request.path_info == state_admins_shipments_path(state: "canceled") %>>
     <a href="<%= state_admins_shipments_path(state: "canceled") %>">キャンセル一覧</a>
   </li>
+  <li <%= 'class=active' if request.path_info == return_request_admins_shipments_path %>>
+    <a href="<%= return_request_admins_shipments_path %>">返品要望一覧</a>
+  </li>
 </ul>
 </section>

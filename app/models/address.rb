@@ -11,11 +11,15 @@
 #  zipcode           :string(255)
 #  phone             :string(255)
 #  alternative_phone :string(255)
+#  is_main           :boolean          default(FALSE), not null
+#  deleted_at        :datetime
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
 
 class Address < ActiveRecord::Base
+
+  include UserInfo
 
   belongs_to :user
 
@@ -37,10 +41,6 @@ class Address < ActiveRecord::Base
 
   def self.update_all_not_main(user)
     Address.where(user_id: user.id).update_all(is_main: false)
-  end
-
-  def name
-    "#{last_name} #{first_name}"
   end
 
   def full_address

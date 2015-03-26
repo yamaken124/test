@@ -12,11 +12,13 @@ class Users::OrdersController < Users::BaseController
     @details = SingleOrderDetail.where(id: single_order_detail_id).includes(:address, payment: :shipment).includes(:single_line_items).order(completed_at: :desc)
     variant_ids = SingleLineItem.where(single_order_detail_id: @details.pluck(:id)).pluck(:variant_id)
     @variants_indexed_by_id = Variant.where(id: variant_ids).includes(:images, :price).index_by(&:id)
+    @returned_item_indexed_by_item_id = ReturnedItem.where(user_id: current_user.id).index_by(&:single_line_item_id)
   end
 
   def thanks
     @number = params[:number]
-    raise ActiveRecord::RecordNotFound if !Payment.where(number: @number).first.completed?
+    @payment = Payment.where(number: @number).first 
+    raise ActiveRecord::RecordNotFound if !@payment.completed?
     set_variants_and_items
   end
 
@@ -89,23 +91,20 @@ class Users::OrdersController < Users::BaseController
     params["updated_quantity"] = nil
   end
 
-  #single のみになっているので拡張
-  def sent_back
-    @detail = SingleOrderDetail.where(id: Payment.where(number: params[:number]).first.single_order_detail_id).first
-  end
-
-  def sent_back_report
-    #TODO send mail
-    redirect_to orders_path
-  end
-
   def cancel
-    detail = SingleOrderDetail.where(id: Payment.where(number: params[:number]).first.single_order_detail_id).first
+    payment = Payment.find_by(user_id: current_user.id, number: params[:number])
+    detail = payment.single_order_detail
+    item = detail.single_line_items.find_by(id: params[:item_id])
     begin
       ActiveRecord::Base.transaction do
-        detail.payment.shipment.canceled!
-        detail.payment.canceled!
+        other_items = detail.single_line_items.where.not(id: params[:item_id])
+        if other_items.blank? || other_items.except_canceled.blank?
+          detail.payment.shipment.canceled!
+          detail.payment.canceled!
+        end
+        item.canceled!
       end
+      UserMailer.delay.send_order_canceled_notification(item)
     end
     redirect_to :back
   end

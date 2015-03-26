@@ -56,6 +56,7 @@ class Payment < ActiveRecord::Base
 
         def cancel_order
           raise unless GmoMultiPayment::Transaction.new(self).transaction_void
+          self.single_order_detail.update(paid_total: 0, shipment_total: 0)
         end
 
       end

@@ -18,6 +18,6 @@
     <%= item_form.hidden_field :variant_id %>
     <%= item_form.hidden_field :id %>
     <%= item_form.submit "数量変更", class: "submit u-margin__left_short" %>
-    <p class="u-margin__left_short"><%= link_to "削除", remove_item_cart_path(single_line_item.id), method: :patch %></p>
+    <p class="u-margin__left_short"><%= link_to "カートから外す", remove_item_cart_path(single_line_item.id), data: { confirm: "本当にカートから商品を削除しますか？" }, method: :patch %></p>
   </div>
 <% end %>

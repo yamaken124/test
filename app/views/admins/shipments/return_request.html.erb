@@ -1,0 +1,33 @@
+<div class="content-header">
+  <h3>
+    発送管理
+  </h3>
+</div>
+
+<section class="content col-md-10">
+  <h4 class="box-title"><%= @title %></h4>
+  <table class="table c-table"><%# TODO 整理 %>
+    <thead>
+      <tr>
+        <th>item番号</th>
+        <th>user番号</th>
+        <th>メッセージ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @return_requested_items.present? %>
+        <% @return_requested_items.each do |item| %>
+          <tr>
+            <td><%= item.single_line_item_id %></td>
+            <td><%= item.user_id %></td>
+            <td><%= item.message %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <%= render partial: 'nav', locals: {} %>
+</section>

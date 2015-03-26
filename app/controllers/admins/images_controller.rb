@@ -31,8 +31,13 @@ class Admins::ImagesController < Admins::BaseController
   end
 
   def destroy
-    @image.delete
-    redirect_to admins_variant_images_path
+    if @image.variant.images.count == 1
+      flash[:notice] = "販売期間中の商品の画像を0枚にすることはできません"
+      redirect_to :back
+    else
+      @image.destroy
+      redirect_to admins_variant_images_path
+    end
   end
 
   private

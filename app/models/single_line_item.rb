@@ -9,15 +9,23 @@
 #  price                  :integer
 #  tax_rate_id            :integer
 #  additional_tax_total   :integer
+#  payment_state          :integer          default(0)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
 
 class SingleLineItem < ActiveRecord::Base
+
+  include SingleLineItem::Transition
+
   before_validation :invalid_quantity_check
+  has_many :returned_items
   belongs_to :variant
   belongs_to :single_order_detail
   belongs_to :tax_rate
+
+  scope :except_canceled, -> { where.not(payment_state: SingleLineItem.payment_states[:canceled]) }
+  scope :canceled_items, -> { where(payment_state: SingleLineItem.payment_states[:canceled]) }
 
   after_save :destroy_if_order_detail_is_blank, if: Proc.new { |item| item.quantity.zero? }
 
@@ -40,4 +48,9 @@ class SingleLineItem < ActiveRecord::Base
   def invalid_quantity_check
     self.quantity = 0 if quantity.nil? || quantity < 0
   end
+
+  def self.complete_items(single_order_detail)
+    single_order_detail.single_line_items.update_all(payment_state: self.payment_states[:completed])
+  end
+
 end

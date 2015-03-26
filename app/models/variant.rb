@@ -3,8 +3,10 @@
 # Table name: variants
 #
 #  id            :integer          not null, primary key
-#  sku           :string(255)
+#  sku           :string(255)      default("all"), not null
 #  product_id    :integer
+#  name          :string(255)
+#  order_type    :integer
 #  is_valid_at   :datetime
 #  is_invalid_at :datetime
 #  created_at    :datetime         not null
