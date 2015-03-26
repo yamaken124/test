@@ -8,35 +8,38 @@ class UserMailer < ApplicationMailer
   include ApplicationHelper
 
   def send_order_accepted_notification(order)
+    sleep 1
+
     user_id = order.user_id
     @profile = Profile.find_by(user_id: user_id)
     @payment = order.single_order_detail.payment
     @detail = order.single_order_detail
     @address = @detail.address
 
-    sleep 1
     @subject = '【FiNCストア】 ご購入ありがとうございます '
     @to = order.user.id
   end
 
-  def order_canceled_notification(item_id)
-    @item = SingleLineItem.find(item_id)
+  def send_order_canceled_notification(item)
+    sleep 1
+
+    @item = item
     @payment = @item.single_order_detail.payment
     @profile = Profile.find_by(user_id: @payment.user_id)
     @variant = Variant.find_by(id: @item.variant_id)
 
-    sleep 1
     @subject = '【FiNCストア】注文キャンセルを承りました'
     @to = @payment.user.email
   end
 
-  def item_return_accepted_notification(item_id)
-    @item = SingleLineItem.find(item_id)
+  def send_return_request_accepted_notification(item)
+    sleep 1
+
+    @item = item
     @payment = @item.single_order_detail.payment
     @profile = Profile.find_by(user_id: @payment.user_id)
     @variant = Variant.find_by(id: @item.variant_id)
 
-    sleep 1
     @subject = '【FiNCストア】返品リクエストを承りました'
     @to = @payment.user.email
   end

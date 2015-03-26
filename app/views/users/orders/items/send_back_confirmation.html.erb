@@ -1,10 +1,9 @@
-<%= form_tag sent_back_report_orders_path, id: "form" do %>
+<%= form_tag orders_item_request_send_back_path, id: "form" do %>
   <div class="p-wrapper--have_padding">
     <h2>商品の返品</h2>
     <div class="form__field">
       商品の返品に関しましてはこちらからお問い合わせください。
     </div>
-    <%= hidden_field_tag :single_line_item_id, @item.id %>
     <div class="form__field">
       <%= text_area_tag :message, nil, placeholder:"お問い合せ内容をご入力ください。", class: "form__textarea--long" %>
     </div>

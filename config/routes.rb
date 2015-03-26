@@ -43,9 +43,13 @@ Rails.application.routes.draw do
       collection do
         post :populate
         get  ':number/thanks', action: :thanks, :as => :thanks
-        get  ':id/sent_back', action: :sent_back, :as => :sent_back
-        post 'sent_back_report'
         delete '/cancel/:number' => 'orders#cancel', :as => :cancel
+      end
+    end
+    namespace :orders do
+      resources :items, only: [] do
+        get  'send_back_confirmation'
+        post 'request_send_back'
       end
     end
     # resources :taxons, only: [:index, :show]

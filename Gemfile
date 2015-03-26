@@ -120,7 +120,7 @@ gem 'aasm'
 
 gem 'awesome_nested_set'
 
-#mailer
+#background processing
 gem "delayed_job"
 gem "delayed_job_active_record"
 gem "daemons"
