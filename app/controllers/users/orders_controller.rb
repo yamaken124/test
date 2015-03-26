@@ -17,7 +17,8 @@ class Users::OrdersController < Users::BaseController
 
   def thanks
     @number = params[:number]
-    raise ActiveRecord::RecordNotFound if !Payment.where(number: @number).first.completed?
+    @payment = Payment.where(number: @number).first 
+    raise ActiveRecord::RecordNotFound if !@payment.completed?
     set_variants_and_items
   end
 
