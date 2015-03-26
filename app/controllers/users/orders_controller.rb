@@ -12,6 +12,7 @@ class Users::OrdersController < Users::BaseController
     @details = SingleOrderDetail.where(id: single_order_detail_id).includes(:address, payment: :shipment).includes(:single_line_items).order(completed_at: :desc)
     variant_ids = SingleLineItem.where(single_order_detail_id: @details.pluck(:id)).pluck(:variant_id)
     @variants_indexed_by_id = Variant.where(id: variant_ids).includes(:images, :price).index_by(&:id)
+    @returned_item_indexed_by_item_id = ReturnedItem.where(user_id: current_user.id).index_by(&:single_line_item_id)
   end
 
   def thanks
@@ -102,7 +103,7 @@ class Users::OrdersController < Users::BaseController
         end
         item.canceled!
       end
-      UserMailer.delay.order_canceled_notification(params[:item_id])
+      UserMailer.delay.send_order_canceled_notification(item)
     end
     redirect_to :back
   end

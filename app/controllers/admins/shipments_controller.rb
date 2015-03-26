@@ -5,13 +5,14 @@ class Admins::ShipmentsController < Admins::BaseController
 
   def index
     @title ||= "全発送リスト"
-  end 
+  end
 
   def show
   end
 
-  def update_state
-    @shipment.send("#{params[:state]}!")
+  def update_state # TODO extend to shipped -> ready
+    # @shipment.send("#{params[:state]}!")
+    UserMailer.delay.send_items_shipped_notification(@shipment)
     redirect_to admins_shipment_path(@shipment)
   end
 

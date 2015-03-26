@@ -26,7 +26,13 @@
       </div>
     </div>
     <div class="p-wrapper--have_padding">
-      <% if detail.payment.shipment.try(:shipped?) %>
+      <% if @returned_item_indexed_by_item_id && @returned_item_indexed_by_item_id[item.id].present? %>
+        <ul class="c-links">
+          <li class="c-link--nolink">
+            返品リクエストを受け付けました。
+          </li>
+        </ul>
+      <% elsif detail.payment.shipment.try(:shipped?) %>
         <ul class="c-links">
           <a href="<%= orders_item_send_back_confirmation_path(item.id) %>">
             <li class="c-link">

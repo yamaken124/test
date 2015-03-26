@@ -1,4 +1,4 @@
-class Users::Orders::ItemsController < Users::Orders::BaseController
+class Users::Orders::ItemsController < Users::BaseController
 
   #single のみになっているので拡張
   def send_back_confirmation

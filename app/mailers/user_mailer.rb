@@ -39,13 +39,17 @@ class UserMailer < ApplicationMailer
     @payment = @item.single_order_detail.payment
     @profile = Profile.find_by(user_id: @payment.user_id)
     @variant = Variant.find_by(id: @item.variant_id)
+    @returned_item = ReturnedItem.find_by(single_line_item_id: @item.id, user_id: @payment.user_id)
 
     @subject = '【FiNCストア】返品リクエストを承りました'
     @to = @payment.user.email
   end
 
-  def send_items_shipped_notification(user, profile, shipment)
+  def send_items_shipped_notification(shipment)
     sleep 1
+
+    @address = Address.find(shipment.address_id)
+    @payment = Payment.find(shipment.payment_id)
     @to = profile.email
   end
 
