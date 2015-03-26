@@ -6,7 +6,7 @@
   </div>
   <div id="header__right_wrapper">
     <div>
-      <p><%#= Profile.find_by(user_id: current_user.id).name || '' %></p><%# TODO implement after #363 merged %>
+      <p><%= Profile.find_by(user_id: current_user.id).try(:name) if current_user.present? %></p>
       <i class="profile"></i>
     </div>
     <div>
