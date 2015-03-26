@@ -11,6 +11,8 @@
 #  zipcode           :string(255)
 #  phone             :string(255)
 #  alternative_phone :string(255)
+#  is_main           :boolean          default(FALSE), not null
+#  deleted_at        :datetime
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

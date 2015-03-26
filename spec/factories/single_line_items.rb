@@ -9,6 +9,7 @@
 #  price                  :integer
 #  tax_rate_id            :integer
 #  additional_tax_total   :integer
+#  payment_state          :integer          default(0)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
