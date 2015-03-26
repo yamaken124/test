@@ -33,7 +33,7 @@ class Payment < ActiveRecord::Base
   private
 
     def set_number
-      self.number = "s" + Time.now.strftime("%Y%m%d%H%M%S").to_s + self.single_order_detail_id.to_s
+      self.number = "s" + Time.now.to_i.to_s + self.single_order_detail_id.to_s
     end
 
     def set_shipment_params
