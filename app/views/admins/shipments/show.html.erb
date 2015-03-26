@@ -8,8 +8,10 @@
               <%= hidden_field_tag :state, "shipped" %>
               <%= submit_tag "発送完了", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
             <% else %>
+<% if false #FIXME %>
               <%= hidden_field_tag :state, "ready" %>
               <%= submit_tag "発送準備に戻す", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
+<% end %>
             <% end %>
           <% end %>
           <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
@@ -26,7 +28,7 @@
 <section class="content">
 
   <div class="content col-md-9">
-    <h4 class="box-title">購入商品</h4>
+    <h4 class="box-title">購入商品<span style="color:red"><%= flash[:alert] %></span></h4>
     <%= form_tag update_tracking_code_admins_shipment_path(@shipment), method: "patch" do %>
       <table class="table c-table">
         <thead>

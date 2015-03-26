@@ -43,9 +43,13 @@ Rails.application.routes.draw do
       collection do
         post :populate
         get  ':number/thanks', action: :thanks, :as => :thanks
-        get  ':number/sent_back', action: :sent_back, :as => :sent_back
-        post 'sent_back_report'
         delete '/cancel/:number' => 'orders#cancel', :as => :cancel
+      end
+    end
+    namespace :orders do
+      resources :items, only: [] do
+        get  'send_back_confirmation'
+        post 'request_send_back'
       end
     end
     # resources :taxons, only: [:index, :show]
@@ -65,6 +69,7 @@ Rails.application.routes.draw do
     resources :shipments, only:[:index, :show, :update] do
       collection do
         get 'state/:state', :to => 'shipments#index', :as => :state
+        get 'return_request'
       end
       member do
         patch 'update_state'

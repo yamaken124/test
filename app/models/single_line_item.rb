@@ -18,6 +18,7 @@ class SingleLineItem < ActiveRecord::Base
   include SingleLineItem::Transition
 
   before_validation :invalid_quantity_check
+  has_many :returned_items
   belongs_to :variant
   belongs_to :single_order_detail
   belongs_to :tax_rate

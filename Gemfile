@@ -120,3 +120,8 @@ gem 'aasm'
 
 gem 'awesome_nested_set'
 
+#background processing
+gem "delayed_job"
+gem "delayed_job_active_record"
+gem "daemons"
+
