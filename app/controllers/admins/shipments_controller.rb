@@ -11,9 +11,14 @@ class Admins::ShipmentsController < Admins::BaseController
   end
 
   def update_state # TODO extend to shipped -> ready
-    @shipment.send("#{params[:state]}!")
-    UserMailer.delay.send_items_shipped_notification(@shipment)
-    redirect_to admins_shipment_path(@shipment)
+    if @shipment.tracking.present?
+      @shipment.send("#{params[:state]}!")
+      UserMailer.delay.send_items_shipped_notification(@shipment)
+      redirect_to admins_shipment_path(@shipment)
+    else
+      flash[:alert] = "追跡番号を入力してください"
+      redirect_to admins_shipment_path
+    end
   end
 
   def update_tracking_code
@@ -30,8 +35,8 @@ class Admins::ShipmentsController < Admins::BaseController
     def setup_for_current_state
       method_name = :"before_#{params[:state]}"
       send(method_name) if respond_to?(method_name, true)
-      @shipments = params[:state] ? Shipment.send(params[:state]).includes(payment: [:payment_method, :user]) : \
-        Shipment.all.includes(payment: [:payment_method, :user])
+      @shipments = params[:state] ? Shipment.send(params[:state]).includes(payment: [:payment_method, user: [:profile] ]) : \
+        Shipment.all.includes(payment: [:payment_method, user: [:profile] ])
     end
 
     def before_ready

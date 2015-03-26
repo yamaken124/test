@@ -50,7 +50,10 @@ class UserMailer < ApplicationMailer
 
     @address = Address.find(shipment.address_id)
     @payment = Payment.find(shipment.payment_id)
-    @to = profile.email
+    @carrier = '日本郵便株式会社' #TODO will change
+
+    @subject = '【FiNCストア】発送が完了しました'
+    @to = @payment.email
   end
 
   private

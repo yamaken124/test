@@ -34,14 +34,14 @@
         </ul>
       <% elsif detail.payment.shipment.try(:shipped?) %>
         <ul class="c-links">
-          <a href="<%= orders_item_send_back_confirmation_path(item.id) %>">
-            <li class="c-link">
-              商品を返品
-            </li>
-          </a>
           <a href="#">
             <li class="c-link--small_text--nolink">
               <span>発送を完了しました<br>発送日:2014/12/25</span>
+            </li>
+          </a>
+          <a href="<%= orders_item_send_back_confirmation_path(item.id) %>">
+            <li class="c-link">
+              商品を返品
             </li>
           </a>
         </ul>
