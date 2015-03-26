@@ -11,7 +11,7 @@ class Admins::ShipmentsController < Admins::BaseController
   end
 
   def update_state # TODO extend to shipped -> ready
-    # @shipment.send("#{params[:state]}!")
+    @shipment.send("#{params[:state]}!")
     UserMailer.delay.send_items_shipped_notification(@shipment)
     redirect_to admins_shipment_path(@shipment)
   end
