@@ -56,7 +56,6 @@ class Admins::ProductsController < Admins::BaseController
   end
 
   private
-
   def attribute_params
     return @attribute_params if @attribute_params.present?
     products_taxons_attributes = ProductsTaxon.products_taxons_attributes(params)
