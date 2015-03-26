@@ -39,11 +39,13 @@
               <span>発送を完了しました<br>発送日:2014/12/25</span>
             </li>
           </a>
-          <a href="<%= orders_item_send_back_confirmation_path(item.id) %>">
-            <li class="c-link">
-              商品を返品
-            </li>
-          </a>
+          <% if detail.can_send_back? %>
+            <a href="<%= orders_item_send_back_confirmation_path(item.id) %>">
+              <li class="c-link">
+                商品を返品
+              </li>
+            </a>
+          <% end %>
         </ul>
       <% elsif item.canceled? %>
         <ul class="c-links">

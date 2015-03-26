@@ -38,7 +38,7 @@ class Users::CheckoutsController < Users::BaseController
   private
 
     def redirect_to_profile_if_without_any
-      if current_user.profile.blank?
+      if current_user.profile.blank? || current_user.profile.invalid?(:preceed_to_payment)
         redirect_to edit_profile_path(continue: checkout_state_path(state: :payment))
       end
     end
