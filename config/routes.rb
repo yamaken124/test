@@ -69,6 +69,7 @@ Rails.application.routes.draw do
     resources :shipments, only:[:index, :show, :update] do
       collection do
         get 'state/:state', :to => 'shipments#index', :as => :state
+        get 'return_request'
       end
       member do
         patch 'update_state'

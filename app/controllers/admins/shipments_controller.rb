@@ -1,5 +1,5 @@
 class Admins::ShipmentsController < Admins::BaseController
-  before_filter :ensure_valid_state
+  before_filter :ensure_valid_state, except: [:return_request]
   before_filter :set_shipment, only: [:show, :update_state, :update_tracking_code]
   before_filter :setup_for_current_state, only: [:index]
 
@@ -25,6 +25,10 @@ class Admins::ShipmentsController < Admins::BaseController
     @shipment.tracking = params[:tracking]
     @shipment.save!
     redirect_to admins_shipment_path(@shipment)
+  end
+
+  def return_request
+    @return_requested_items = ReturnedItem.all
   end
 
   private
