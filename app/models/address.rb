@@ -17,6 +17,8 @@
 
 class Address < ActiveRecord::Base
 
+  include UserInfo
+
   belongs_to :user
 
   validates :last_name, presence: true
@@ -37,10 +39,6 @@ class Address < ActiveRecord::Base
 
   def self.update_all_not_main(user)
     Address.where(user_id: user.id).update_all(is_main: false)
-  end
-
-  def name
-    "#{last_name} #{first_name}"
   end
 
   def full_address

@@ -26,20 +26,26 @@
       </div>
     </div>
     <div class="p-wrapper--have_padding">
-      <% if detail.payment.shipment.try(:shipped?) %>
+      <% if @returned_item_indexed_by_item_id && @returned_item_indexed_by_item_id[item.id].present? %>
         <ul class="c-links">
-        <% if detail.can_send_back? %>
-          <a href="<%= sent_back_orders_path(detail.payment.number) %>">
-            <li class="c-link">
-              商品を返品
-            </li>
-          </a>
-        <% end %>
+          <li class="c-link--nolink">
+            返品リクエストを受け付けました。
+          </li>
+        </ul>
+      <% elsif detail.payment.shipment.try(:shipped?) %>
+        <ul class="c-links">
           <a href="#">
             <li class="c-link--small_text--nolink">
               <span>発送を完了しました<br>発送日:2014/12/25</span>
             </li>
           </a>
+          <% if detail.can_send_back? %>
+            <a href="<%= orders_item_send_back_confirmation_path(item.id) %>">
+              <li class="c-link">
+                商品を返品
+              </li>
+            </a>
+          <% end %>
         </ul>
       <% elsif item.canceled? %>
         <ul class="c-links">

@@ -25,6 +25,7 @@ class Users::CheckoutsController < Users::BaseController
       if @order.completed?
         @current_order = nil
         flash['order_completed'] = true
+        UserMailer.delay.send_order_accepted_notification(@order)
         redirect_to thanks_orders_path(number: @order.single_order_detail.payment.number)
       else
         redirect_to checkout_state_path(@order.state)

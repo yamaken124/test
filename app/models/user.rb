@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
   has_many :addresses
   has_one  :profile
   has_many :oauth_access_tokens
+  has_many :returned_items
 
   accepts_nested_attributes_for :profile
 
