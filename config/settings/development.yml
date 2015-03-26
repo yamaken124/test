@@ -19,5 +19,5 @@ mailer:
   user_mailer:
     user_name: 'info@finc.co.jp'
     password: 20120411
-  test:
-    to: otani@finc.co.jp
+  # test:
+  #   to: otani@finc.co.jp
