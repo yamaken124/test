@@ -74,7 +74,7 @@ class SingleOrderDetail < ActiveRecord::Base
   end
 
   def can_send_back?
-    Date.today - self.completed_on <= 10
+    Date.today - self.completed_on <= 14
   end
 
 end
