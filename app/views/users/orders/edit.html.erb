@@ -1,7 +1,11 @@
 <div class="p-wrapper--have_padding">
   <%= form_for @order, url: cart_path, html: { id: 'update-cart' } do |order_form| %>
     <h2 class="title">カート小計(<%=@order.single_order_detail.item_count%>個の商品): <span><%=number_to_jpy(@order.single_order_detail.item_total * @tax_rate)%></span>&nbsp;<span><%= flash[:notice] %></span></h2>
-    <%= order_form.submit "レジに進む", name: 'checkout', class: 'c-btn--submit' %>
+    <% if @order.single_order_detail.item_count > 0 %>
+      <%= order_form.submit "レジに進む", name: 'checkout', class: 'c-btn--submit' %>
+    <% else %>
+      <%= link_to '商品一覧を見る', products_path %>
+    <% end %>
     <div class="p-wrapper--have_padding">
     <% if false #TODO %>
       <div class="c-payment_method_section">
