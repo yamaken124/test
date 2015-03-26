@@ -209,7 +209,7 @@ ja:
       en:
         default: ! '%H:%M:%S'
         short: ! '%H:%M'
-  
+
   activerecord:
     attributes:
       product:
@@ -239,3 +239,6 @@ ja:
   validate_registration:
     address: "登録件数が上限に達しています"
     credit_card: "登録枚数が上限に達しています"
+
+  address:
+    is_main: "標準仕様"

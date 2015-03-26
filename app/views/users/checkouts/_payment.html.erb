@@ -14,7 +14,7 @@
           <div class="c-link__radio_div">
             <%= radio_button_tag "order[address_id]", address.id, address.is_main ? 'checked: "checked"' : nil %>
           </div>
-          <%= label_tag "order_attributes_address_id_#{address.id}",
+          <%= label_tag "order_address_id_#{address.id}",
            "#{address.name}<br>
            #{address.full_address}".html_safe %>
         </li>

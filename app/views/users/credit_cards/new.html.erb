@@ -3,11 +3,11 @@
   <%= form_tag(profile_credit_cards_path, method: :post, id: "form") do %>
     <div class="form__field">
       <%= label_tag :card_no, "クレジットカード番号" %>
-      <%= text_field_tag :card_no, nil, class: "form__text--long", placeholder: "0000000000000000(- 無し)" %>
+      <%= number_field_tag :card_no, nil, class: "form__text--long", placeholder: "0000000000000000" %>
     </div>
     <div class="form__field">
       <%= label_tag :expire, "有効期限" %>
-      <%= text_field_tag :expire, nil, class: "form__text--short", placeholder: "1901(年月-無し)" %>
+      <%= number_field_tag :expire, nil, class: "form__text--short", placeholder: "1901" %>
     </div>
     <%= hidden_field_tag "continue", @continue %>
     <div class="form__field">
