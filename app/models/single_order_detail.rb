@@ -4,17 +4,19 @@
 #
 #  id                   :integer          not null, primary key
 #  single_order_id      :integer
-#  number               :string(255)
-#  item_total           :integer
-#  total                :integer
+#  item_total           :integer          default(0), not null
+#  tax_rate_id          :integer
+#  total                :integer          default(0), not null
+#  paid_total           :integer
+#  completed_on         :date
 #  completed_at         :datetime
 #  address_id           :integer
-#  shipment_total       :integer
-#  additional_tax_total :integer
-#  adjustment_total     :integer
-#  item_count           :integer
-#  date                 :date
-#  lock_version         :integer
+#  shipment_total       :integer          default(0), not null
+#  additional_tax_total :integer          default(0), not null
+#  used_point           :integer          default(0)
+#  adjustment_total     :integer          default(0), not null
+#  item_count           :integer          default(0), not null
+#  lock_version         :integer          default(0), not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #
@@ -60,7 +62,7 @@ class SingleOrderDetail < ActiveRecord::Base
 
   def update_tax_adjustments
     self.additional_tax_total = (item_total * valid_tax_rate.amount).floor
-    self.adjustment_total     = additional_tax_total
+    self.adjustment_total = additional_tax_total
   end
 
   def valid_tax_rate
@@ -71,6 +73,10 @@ class SingleOrderDetail < ActiveRecord::Base
     else
       tax_rate
     end
+  end
+
+  def can_send_back?
+    Date.today - self.completed_on <= 14
   end
 
 end

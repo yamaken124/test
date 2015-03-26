@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: shipments
+#
+#  id         :integer          not null, primary key
+#  payment_id :integer
+#  address_id :integer
+#  tracking   :string(255)
+#  shipped_at :datetime
+#  state      :integer          default(0)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class Shipment < ActiveRecord::Base
   belongs_to :payment
   belongs_to :address
@@ -16,7 +30,7 @@ class Shipment < ActiveRecord::Base
       transitions from: [:pending, :shipped], to: :ready
     end
 
-    event :shipped  do
+    event :shipped, after: [:register_shipped_at]  do
       transitions from: [:ready, :pending], to: :shipped
     end
 
@@ -32,4 +46,9 @@ class Shipment < ActiveRecord::Base
   def self.transitionable_states
     ['ready', 'shipped', 'canceled']
   end
+
+  def register_shipped_at
+    self.update(shipped_at: Time.now)
+  end
+
 end

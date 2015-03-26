@@ -25,6 +25,7 @@ class Users::CheckoutsController < Users::BaseController
       if @order.completed?
         @current_order = nil
         flash['order_completed'] = true
+        UserMailer.delay.send_order_accepted_notification(@order)
         redirect_to thanks_orders_path(number: @order.single_order_detail.payment.number)
       else
         redirect_to checkout_state_path(@order.state)
@@ -37,7 +38,7 @@ class Users::CheckoutsController < Users::BaseController
   private
 
     def redirect_to_profile_if_without_any
-      if current_user.profile.blank?
+      if current_user.profile.blank? || current_user.profile.invalid?(:preceed_to_payment)
         redirect_to edit_profile_path(continue: checkout_state_path(state: :payment))
       end
     end
@@ -70,7 +71,7 @@ class Users::CheckoutsController < Users::BaseController
     end
 
     def ensure_sufficient_stock_lines
-      redirect_to cart_path and return if @detail.item_total.zero?
+      redirect_to cart_path, notice: '商品が選ばれていません' and return if @detail.item_total.zero?
     end
 
     def ensure_valid_state

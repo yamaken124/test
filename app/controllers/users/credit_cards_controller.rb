@@ -20,6 +20,7 @@ class Users::CreditCardsController < Users::BaseController
         redirect_to continue_path
       else
         flash[:notice] = "カード情報または、有効期限が不正です。"
+        set_continue
         render :new
       end
     else

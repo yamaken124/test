@@ -21,6 +21,7 @@ class Users::AddressesController < Users::BaseController
       if @address.save
         continue_path
       else
+        set_continue
         render :edit
       end
     else
@@ -33,6 +34,7 @@ class Users::AddressesController < Users::BaseController
     if @address.update(address_params)
       redirect_to account_addresses_path
     else
+      set_continue
       render :edit
     end
   end

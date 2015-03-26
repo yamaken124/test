@@ -1,24 +1,34 @@
 class Admins::ShipmentsController < Admins::BaseController
-  before_filter :ensure_valid_state
+  before_filter :ensure_valid_state, except: [:return_request]
   before_filter :set_shipment, only: [:show, :update_state, :update_tracking_code]
   before_filter :setup_for_current_state, only: [:index]
 
   def index
     @title ||= "全発送リスト"
-  end 
+  end
 
   def show
   end
 
-  def update_state
-    @shipment.send("#{params[:state]}!")
-    redirect_to admins_shipment_path(@shipment)
+  def update_state # TODO extend to shipped -> ready
+    if @shipment.tracking.present?
+      @shipment.send("#{params[:state]}!")
+      UserMailer.delay.send_items_shipped_notification(@shipment)
+      redirect_to admins_shipment_path(@shipment)
+    else
+      flash[:alert] = "追跡番号を入力してください"
+      redirect_to admins_shipment_path
+    end
   end
 
   def update_tracking_code
     @shipment.tracking = params[:tracking]
     @shipment.save!
     redirect_to admins_shipment_path(@shipment)
+  end
+
+  def return_request
+    @return_requested_items = ReturnedItem.all
   end
 
   private
@@ -29,8 +39,8 @@ class Admins::ShipmentsController < Admins::BaseController
     def setup_for_current_state
       method_name = :"before_#{params[:state]}"
       send(method_name) if respond_to?(method_name, true)
-      @shipments = params[:state] ? Shipment.send(params[:state]).includes(payment: [:payment_method, :user]) : \
-        Shipment.all.includes(payment: [:payment_method, :user])
+      @shipments = params[:state] ? Shipment.send(params[:state]).includes(payment: [:payment_method, user: [:profile] ]) : \
+        Shipment.all.includes(payment: [:payment_method, user: [:profile] ])
     end
 
     def before_ready
