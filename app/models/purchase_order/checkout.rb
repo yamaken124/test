@@ -62,8 +62,9 @@ class PurchaseOrder < ActiveRecord::Base
                 single_order_detail.paid_total = single_order_detail.total
                 OrderUpdater.new(single_order_detail).update_totals
                 attributes[:payment_attributes] = attributes[:payment_attributes].merge(payment_attributes_from_params(attributes))
-                raise "used_point.invalid_point" if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
-                raise "credit_card.not_registered" unless valid_payment_attributes?(attributes)
+                raise 'address_missing' unless has_address_attribtue?(attributes)
+                raise 'credit_card_missing' unless has_credit_card_attribtue?(attributes)
+                raise 'invalid_used_point' if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
                 single_order_detail.update!(attributes)
 
               when :confirm
@@ -94,8 +95,12 @@ class PurchaseOrder < ActiveRecord::Base
             payment_params
           end
 
-          def valid_payment_attributes?(attributes)
+          def has_credit_card_attribtue?(attributes)
             attributes[:payment_attributes][:gmo_card_seq_temporary].present?
+          end
+
+          def has_address_attribtue?(attributes)
+            attributes[:payment_attributes][:address_id].present?
           end
 
       end

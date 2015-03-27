@@ -2,7 +2,6 @@ class Users::CheckoutsController < Users::BaseController
   include Users::CheckoutsHelper
 
   before_action :redirect_to_profile_if_without_any, only: [:edit]
-  before_action :prohibit_proceeding_to_checkout_without_address, only: [:update]
 
   before_action :load_order_with_lock
   before_action :detail
@@ -42,12 +41,6 @@ class Users::CheckoutsController < Users::BaseController
     def redirect_to_profile_if_without_any
       if current_user.profile.blank? || current_user.profile.invalid?(:preceed_to_payment)
         redirect_to edit_profile_path(continue: checkout_state_path(state: :payment))
-      end
-    end
-
-    def prohibit_proceeding_to_checkout_without_address
-      if current_user.addresses.blank?
-        redirect_to checkout_state_path(@order.state), :flash => {:notice => t('address.not_registered') }
       end
     end
 

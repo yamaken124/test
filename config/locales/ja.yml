@@ -242,10 +242,8 @@ ja:
 
   address:
     is_main: "標準使用"
-    not_registered: "住所を登録してください"
 
-  credit_card:
-    not_registered: "クレジットカードを登録してください"
-
-  used_point:
-    invalid_point: "ポイントの値が正しくありません"
+  payment_attributes_error:
+    credit_card_missing: "クレジットカードを登録してください"
+    address_missing: "住所を登録してください"
+    invalid_used_point: "ポイントが正しくありません"
