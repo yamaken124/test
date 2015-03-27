@@ -6,8 +6,11 @@
       <%= number_field_tag :card_no, nil, class: "form__text--long", placeholder: "0000000000000000" %>
     </div>
     <div class="form__field">
-      <%= label_tag :expire, "有効期限" %>
-      <%= number_field_tag :expire, nil, class: "form__text--short", placeholder: "1901" %>
+      <%= label_tag :expire_month, "有効期限" %>
+      <%= select_tag :expire_month, options_for_select(1..12), class: 'form__text--short' %>
+      <%= select_tag :expire_year, options_for_select(@year_range), class: 'form__text--short' %>
+    </div>
+    <div class="form__field">
     </div>
     <%= hidden_field_tag "continue", @continue %>
     <div class="form__field">

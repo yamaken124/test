@@ -1,6 +1,7 @@
 class Users::CreditCardsController < Users::BaseController
   before_action :check_multi_payment_user
-  before_action :set_continue, only: [:new]
+  before_action :set_continue, only: [:new, :create]
+  before_action :year_range, only: [:new, :create]
 
   def index
     @gmo_cards = GmoMultiPayment::Card.new(@user).search
@@ -16,11 +17,11 @@ class Users::CreditCardsController < Users::BaseController
 
   def create
     if GmoMultiPayment::Card.new(@user).search.size < GmoMultiPayment::Card::UpperLimit
-      if GmoMultiPayment::Card.new(@user).create(params[:card_no], params[:expire])
+      expire = params[:expire_year][2,3] + format("%02d",params[:expire_month])
+      if GmoMultiPayment::Card.new(@user).create(params[:card_no], expire)
         redirect_to continue_path
       else
         flash[:notice] = "カード情報または、有効期限が不正です。"
-        set_continue
         render :new
       end
     else
@@ -64,6 +65,10 @@ class Users::CreditCardsController < Users::BaseController
       else
         profile_credit_cards_path
       end
+    end
+
+    def year_range
+      @year_range = *(Time.now.year..Time.now.year+20)
     end
 
 end

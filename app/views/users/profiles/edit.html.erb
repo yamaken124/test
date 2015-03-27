@@ -29,7 +29,7 @@
   </div>
   <div class="form__field">
     <%= f.label :phone, "電話番号(必須)" %>
-    <%= f.text_field :phone, class: "form__text--long", placeholder: "08012341234" %>
+    <%= f.telephone_field :phone, class: "form__text--long", placeholder: "08012341234" %>
   </div>
   <%= hidden_field_tag "continue", @continue %>
   <div class="form__field">

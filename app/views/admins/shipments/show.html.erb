@@ -16,7 +16,7 @@
           <% end %>
           <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
             <%= hidden_field_tag :state, "canceled" %>
-            <%= submit_tag "キャンセル", class: "btn btn-warning", data: { confirm: "本当に実行しますか？" } %>
+            <%= submit_tag "発送キャンセル", class: "btn btn-warning", data: { confirm: "本当に発送をキャンセルしますか？" } %>
           <% end %>
         <% else %>
           <div class="btn btn-danger">キャンセルされました。</div>
