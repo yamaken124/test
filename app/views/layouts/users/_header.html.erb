@@ -6,11 +6,11 @@
   </div>
   <div id="header__right_wrapper">
     <div>
-      <p><%= @user.try(:name)  %></p>
+      <p><%= Profile.find_by(user_id: current_user.id).try(:name) if user_signed_in? %></p>
       <i class="profile"></i>
     </div>
     <div>
-      <p><%= @order.try(:single_order_detail).try(:item_count) %></p>
+      <p>カート <%= @order.try(:single_order_detail).try(:item_count) || 0 %></p>
       <i class="cart"></i>
     </div>
   </div>
