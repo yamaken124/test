@@ -45,7 +45,6 @@ RSpec.describe Users::OrdersController, type: :controller do
       @payment.reload
       expect(assigns(:payment)).to eq @payment
     end
-    #@payment = Payment.where(number: @number).first 
   end
 
 end
