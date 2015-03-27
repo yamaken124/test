@@ -32,13 +32,20 @@ RSpec.describe Users::OrdersController, type: :controller do
   end
 
   describe 'GET #thanks' do
-    it 'render #thanks' do
+    before do
       @payment.state = 10
       @payment.save
       get :thanks, number: @payment.number
+    end
+
+    it 'render #thanks' do
       expect(response).to render_template :thanks
     end
+    it 'assigns payment' do
+      @payment.reload
+      expect(assigns(:payment)).to eq @payment
+    end
+    #@payment = Payment.where(number: @number).first 
   end
-
 
 end
