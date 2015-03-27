@@ -12,7 +12,7 @@
     </div>
     <div class="c-product__list_detail_wrapper">
       <div class="c-product_list__title">
-        <%= link_to variant.name, product_path(variant.product_id) %>
+        <%= link_to variant.name, product_path(variant.product_id), class: "u-base_font_color" %>
       </div>
       <div class="c-product_list__price">
         <%= number_to_jpy(variant.price.amount * @tax_rate) %>
@@ -24,6 +24,6 @@
     <%= item_form.hidden_field :variant_id %>
     <%= item_form.hidden_field :id %>
     <%= item_form.submit "数量変更", class: "submit u-margin__left_short" %>
-    <p class="u-margin__left_short"><%= link_to "カートから外す", remove_item_cart_path(single_line_item.id), data: { confirm: "本当にカートから商品を削除しますか？" }, method: :patch %></p>
+    <div class="u-margin__left50"><%= link_to "カートから外す", remove_item_cart_path(single_line_item.id), data: { confirm: "本当にカートから商品を削除しますか？" }, method: :patch, class: "u-finc_font_color u-font_size_small" %></div>
   </div>
 <% end %>
