@@ -18,13 +18,14 @@ class Shipment < ActiveRecord::Base
 
   include AASM
 
-  enum state: { pending: 0, ready: 10, shipped: 20, canceled: 30 }
+  enum state: { pending: 0, ready: 10, shipped: 20, canceled: 30, returned: 40 }
 
   aasm column: :state do
     state :pending, initial: true
     state :ready
     state :shipped
     state :canceled
+    state :returned
 
     event :ready do
       transitions from: [:pending, :shipped], to: :ready
@@ -41,10 +42,14 @@ class Shipment < ActiveRecord::Base
     event :canceled do
       transitions from: [:pending, :ready, :shipped], to: :canceled
     end
+
+    event :returned do
+      transitions from: :shipped, to: :returned
+    end
   end
 
   def self.transitionable_states
-    ['ready', 'shipped', 'canceled']
+    ['ready', 'shipped', 'canceled', 'returned']
   end
 
   def register_shipped_at

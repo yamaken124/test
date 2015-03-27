@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150326083102) do
+ActiveRecord::Schema.define(version: 20150327132324) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(version: 20150326083102) do
     t.datetime "updated_at",                                     null: false
   end
 
-  add_index "oauth_access_tokens", ["oauth_application_id"], name: "fk_rails_d33a3dd784", using: :btree
+  add_index "oauth_access_tokens", ["oauth_application_id"], name: "fk_rails_9ebbc58e9e", using: :btree
   add_index "oauth_access_tokens", ["user_id"], name: "index_oauth_access_tokens_on_user_id", using: :btree
 
   create_table "oauth_applications", force: :cascade do |t|
@@ -122,8 +122,8 @@ ActiveRecord::Schema.define(version: 20150326083102) do
     t.datetime "updated_at",                                     null: false
   end
 
-  add_index "payments", ["address_id"], name: "fk_rails_aea4487a03", using: :btree
-  add_index "payments", ["single_order_detail_id"], name: "fk_rails_e5f0360a9e", using: :btree
+  add_index "payments", ["address_id"], name: "fk_rails_cdc6260bb1", using: :btree
+  add_index "payments", ["single_order_detail_id"], name: "fk_rails_b4646ad0f2", using: :btree
 
   create_table "prices", force: :cascade do |t|
     t.integer  "variant_id", limit: 4
@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(version: 20150326083102) do
     t.integer  "single_line_item_id", limit: 4,     null: false
     t.integer  "user_id",             limit: 4,     null: false
     t.text     "message",             limit: 65535
+    t.datetime "returned_at"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
   end
@@ -235,7 +236,7 @@ ActiveRecord::Schema.define(version: 20150326083102) do
 
   add_index "single_order_details", ["address_id"], name: "index_single_order_details_on_address_id", using: :btree
   add_index "single_order_details", ["single_order_id"], name: "index_single_order_details_on_single_order_id", using: :btree
-  add_index "single_order_details", ["tax_rate_id"], name: "fk_rails_47d85e5e3e", using: :btree
+  add_index "single_order_details", ["tax_rate_id"], name: "fk_rails_dc685bcaa3", using: :btree
 
   create_table "single_orders", force: :cascade do |t|
     t.integer  "purchase_order_id", limit: 4
