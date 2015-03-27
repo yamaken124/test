@@ -62,8 +62,8 @@ class PurchaseOrder < ActiveRecord::Base
                 single_order_detail.paid_total = single_order_detail.total
                 OrderUpdater.new(single_order_detail).update_totals
                 attributes[:payment_attributes] = attributes[:payment_attributes].merge(payment_attributes_from_params(attributes))
-                raise "InvalidPointError" if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
-                raise "InvalidPaymentAttribute" unless valid_payment_attributes?(attributes)
+                raise "used_point.invalid_point" if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
+                raise "credit_card.not_registered" unless valid_payment_attributes?(attributes)
                 single_order_detail.update!(attributes)
 
               when :confirm
@@ -76,7 +76,8 @@ class PurchaseOrder < ActiveRecord::Base
               self.reload
             end
             true
-          rescue
+          rescue => e
+            params['error_message'] = e.message
             false
           end
         end
@@ -94,7 +95,7 @@ class PurchaseOrder < ActiveRecord::Base
           end
 
           def valid_payment_attributes?(attributes)
-            attributes[:payment_attributes][:address_id].present? && attributes[:payment_attributes][:gmo_card_seq_temporary].present?
+            attributes[:payment_attributes][:gmo_card_seq_temporary].present?
           end
 
       end

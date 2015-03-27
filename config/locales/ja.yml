@@ -242,3 +242,10 @@ ja:
 
   address:
     is_main: "標準使用"
+    not_registered: "住所を登録してください"
+
+  credit_card:
+    not_registered: "クレジットカードを登録してください"
+
+  used_point:
+    invalid_point: "ポイントの値が正しくありません"
