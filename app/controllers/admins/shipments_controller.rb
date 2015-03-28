@@ -1,5 +1,5 @@
 class Admins::ShipmentsController < Admins::BaseController
-  before_filter :ensure_valid_state, except: [:return_request]
+  before_filter :ensure_valid_state, except: [:return_requests]
   before_filter :set_shipment, only: [:show, :update_state, :update_tracking_code]
   before_filter :setup_for_current_state, only: [:index]
 
@@ -10,14 +10,26 @@ class Admins::ShipmentsController < Admins::BaseController
   def show
   end
 
-  def update_state # TODO extend to shipped -> ready
-    if @shipment.tracking.present?
-      @shipment.send("#{params[:state]}!")
-      UserMailer.delay.send_items_shipped_notification(@shipment)
+  def update_state
+    case params[:state]
+
+    when "shipped"
+      if @shipment.tracking.present?
+        UserMailer.delay.send_items_shipped_notification(@shipment)
+        @shipment.send("#{params[:state]}!")
+      else
+        flash[:alert] = "追跡番号を入力してください"
+      end
       redirect_to admins_shipment_path(@shipment)
-    else
-      flash[:alert] = "追跡番号を入力してください"
-      redirect_to admins_shipment_path
+
+    when "canceled"
+      @shipment.send("#{params[:state]}!")
+      redirect_to admins_shipment_path(@shipment)
+
+    when "returned"
+      ReturnedItem.find(params[:returned_item_id]).update(returned_at: Time.now)
+      @shipment.send("#{params[:state]}!")
+      redirect_to return_requests_admins_shipments_path
     end
   end
 
@@ -27,8 +39,9 @@ class Admins::ShipmentsController < Admins::BaseController
     redirect_to admins_shipment_path(@shipment)
   end
 
-  def return_request
-    @return_requested_items = ReturnedItem.all
+  def return_requests
+    @return_requested_items = ReturnedItem.includes(user: [:profile]).includes(single_line_item: [:variant, single_order_detail: [:payment]]).where(returned_at: nil)
+    @title = "返品要望リスト"
   end
 
   private
@@ -37,10 +50,10 @@ class Admins::ShipmentsController < Admins::BaseController
     end
 
     def setup_for_current_state
+      @shipments = params[:state] ? Shipment.send(params[:state]).includes(payment: [:payment_method, user: [:profile] ]) : \
+        Shipment.all.includes(payment: [:payment_method, user: [:profile] ]).order("id DESC")
       method_name = :"before_#{params[:state]}"
       send(method_name) if respond_to?(method_name, true)
-      @shipments = params[:state] ? Shipment.send(params[:state]).includes(payment: [:payment_method, user: [:profile] ]) : \
-        Shipment.all.includes(payment: [:payment_method, user: [:profile] ])
     end
 
     def before_ready
@@ -48,10 +61,12 @@ class Admins::ShipmentsController < Admins::BaseController
     end
 
     def before_shipped
+      @shipments = @shipments.order("id DESC")
       @title = "配送済リスト"
     end
 
     def before_canceled
+      @shipments = @shipments.order("id DESC")
       @title = "キャンセルリスト"
     end
 
@@ -62,4 +77,5 @@ class Admins::ShipmentsController < Admins::BaseController
     def unknown_state?
       Shipment.transitionable_states.include?(params[:state])
     end
+
 end

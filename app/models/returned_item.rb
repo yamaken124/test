@@ -17,4 +17,9 @@ class ReturnedItem < ActiveRecord::Base
 
   validates :single_line_item_id, :user_id, :message, presence: true
 
+  validates :single_line_item_id,
+  uniqueness: {
+    scope: [:user_id]
+  }
+
 end
