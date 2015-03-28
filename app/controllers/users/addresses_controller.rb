@@ -9,6 +9,7 @@ class Users::AddressesController < Users::BaseController
 
   def new
     @address = Address.new
+    @user
   end
 
   def edit

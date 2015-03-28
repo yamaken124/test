@@ -10,15 +10,7 @@
       </ul>
     </div>
   <% end %>
-  <div class="form__field">
-    <%= f.label :last_name, "姓" %>
-    <%= f.text_field :last_name, autofocus: true, class: "form__text--long", placeholder: "姓" %>
-  </div>
-  <div class="form__field">
-    <%= f.label :first_name, "名" %>
-    <%= f.text_field :first_name, class: "form__text--long", placeholder: "名" %>
-  </div>
-  <div class="form__field">
+ <div class="form__field">
     <%= f.label :zipcode, "郵便番号" %>
     <%= f.number_field :zipcode, autofocus: false, class: "form__text--long", placeholder: "1500000" %>
   </div>
@@ -33,6 +25,14 @@
   <div class="form__field">
     <%= f.label :phone, "電話番号" %>
     <%= f.telephone_field :phone, class: "form__text--long", placeholder: "08012341234" %>
+  </div>
+  <div class="form__field">
+    <%= f.label :last_name, "姓" %>
+    <%= f.text_field :last_name, value: @user.try(:profile).try(:last_name),  autofocus: true, class: "form__text--long" %>
+  </div>
+  <div class="form__field">
+    <%= f.label :first_name, "名" %>
+    <%= f.text_field :first_name, value: @user.try(:profile).try(:first_name), class: "form__text--long" %>
   </div>
   <div class="form__field">
     <%= f.check_box :is_main, {}, true, false %><%= f.label :is_main, "#{t('address.is_main')}に設定する"%>
