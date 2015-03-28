@@ -36,6 +36,8 @@ class SingleOrderDetail < ActiveRecord::Base
   accepts_nested_attributes_for :single_line_items
   accepts_nested_attributes_for :payment, update_only: false
 
+  paginates_per 5
+
   validates :used_point,
     numericality: {
       less_than_or_equal_to: :total
