@@ -4,7 +4,11 @@
     <% if @order.single_order_detail.item_count > 0 %>
       <%= order_form.submit "レジに進む", name: 'checkout', class: 'c-btn--submit' %>
     <% else %>
-      <%= link_to '商品一覧を見る', products_path %>
+      <ul class="c-links">
+        <li class="c-link">
+          <%= link_to '商品一覧を見る', products_path %>
+        </li>
+      </ul>
     <% end %>
     <div class="p-wrapper--have_padding">
     <% if false #TODO %>

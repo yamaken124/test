@@ -6,4 +6,4 @@
 <% @products.each do |product| %>
   <%= render partial: 'users/products/product', locals: {product: product} %>
 <% end %>
-<%= paginate(@products) %>
+<div class="c-pager"><%= paginate(@products) %></div>
