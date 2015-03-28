@@ -1,0 +1,11 @@
+@import "../../foundation/setting";
+
+.c-pager{
+  text-align:right;
+  .pagination{
+    padding: 12px 20px;
+    span{
+      padding-left: 2px;
+    }
+  }
+}
