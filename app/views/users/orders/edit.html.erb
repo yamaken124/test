@@ -5,9 +5,9 @@
       <%= order_form.submit "レジに進む", name: 'checkout', class: 'c-btn--submit' %>
     <% else %>
       <ul class="c-links">
-        <li class="c-link">
-          <%= link_to '商品一覧を見る', products_path %>
-        </li>
+        <%= link_to products_path do%>
+          <li class="c-link">商品一覧を見る</li>
+        <% end %>
       </ul>
     <% end %>
     <div class="p-wrapper--have_padding">
