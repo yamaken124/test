@@ -4,7 +4,7 @@
     <a href="<%= admins_shipments_path %>">全発送リスト一覧</a>
   </li>
   <li <%= 'class=active' if request.path_info == state_admins_shipments_path(state: "ready") %>>
-    <a href="<%= state_admins_shipments_path(state: "ready") %>">未発送一覧</a>
+    <a href="<%= state_admins_shipments_path(state: "ready") %>"><%="未発送一覧(#{Shipment.ready.count})"%></a>
   </li>
   <li <%= 'class=active' if request.path_info == state_admins_shipments_path(state: "shipped") %>>
     <a href="<%= state_admins_shipments_path(state: "shipped") %>">発送済み一覧</a>
@@ -12,8 +12,8 @@
   <li <%= 'class=active' if request.path_info == state_admins_shipments_path(state: "canceled") %>>
     <a href="<%= state_admins_shipments_path(state: "canceled") %>">キャンセル一覧</a>
   </li>
-  <li <%= 'class=active' if request.path_info == return_request_admins_shipments_path %>>
-    <a href="<%= return_request_admins_shipments_path %>">返品要望一覧</a>
+  <li <%= 'class=active' if request.path_info == return_requests_admins_shipments_path %>>
+    <a href="<%= return_requests_admins_shipments_path %>"><%="返品要望一覧(#{ReturnedItem.where(returned_at: nil).count})"%></a>
   </li>
 </ul>
 </section>

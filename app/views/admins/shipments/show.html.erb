@@ -18,9 +18,7 @@
             <%= hidden_field_tag :state, "canceled" %>
             <%= submit_tag "発送キャンセル", class: "btn btn-warning", data: { confirm: "本当に発送をキャンセルしますか？" } %>
           <% end %>
-        <% else %>
-          <div class="btn btn-danger">キャンセルされました。</div>
-        <% end %>
+
       <% elsif @shipment.state == "shipped" %>
         <div class="btn btn-warning">発送済み</div>
       <% else %><%# @shipment.state == "canceled" %>
