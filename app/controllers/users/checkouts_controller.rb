@@ -2,6 +2,7 @@ class Users::CheckoutsController < Users::BaseController
   include Users::CheckoutsHelper
 
   before_action :redirect_to_profile_if_without_any, only: [:edit]
+
   before_action :load_order_with_lock
   before_action :detail
   before_action :set_state_if_present

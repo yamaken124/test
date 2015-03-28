@@ -1,15 +1,25 @@
 <div class="content-header">
   <h3>
     <%= link_to '発送管理', admins_shipments_path %> / <%= @shipment.payment.number %>
-    <div class="u-float_right">
-      <% if @shipment.state == "ready" %>
-        <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left" do %>
-          <%= hidden_field_tag :state, "shipped" %>
-          <%= submit_tag "発送完了", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
-        <% end %>
-        <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
-          <%= hidden_field_tag :state, "canceled" %>
-          <%= submit_tag "注文キャンセル", class: "btn btn-warning", data: { confirm: "本当に実行しますか？" } %>
+      <div class="u-float_right">
+        <% if @shipment.state != "canceled" %>
+          <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left" do %>
+            <% if @shipment.state != "shipped" %>
+              <%= hidden_field_tag :state, "shipped" %>
+              <%= submit_tag "発送完了", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
+            <% else %>
+<% if false #FIXME %>
+              <%= hidden_field_tag :state, "ready" %>
+              <%= submit_tag "発送準備に戻す", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
+<% end %>
+            <% end %>
+          <% end %>
+          <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
+            <%= hidden_field_tag :state, "canceled" %>
+            <%= submit_tag "発送キャンセル", class: "btn btn-warning", data: { confirm: "本当に発送をキャンセルしますか？" } %>
+          <% end %>
+        <% else %>
+          <div class="btn btn-danger">キャンセルされました。</div>
         <% end %>
       <% elsif @shipment.state == "shipped" %>
         <div class="btn btn-warning">発送済み</div>

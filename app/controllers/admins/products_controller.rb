@@ -21,8 +21,8 @@ class Admins::ProductsController < Admins::BaseController
         @product = Product.new(attribute_params)
         @product.save!
       end
-        redirect_to admins_product_variants_path(product_id: @product.id)
-        flash[:notice] = "#{@product.name}が保存されました"
+      redirect_to admins_product_variants_path(product_id: @product.id)
+      flash[:notice] = "#{@product.name}が保存されました"
     rescue
       set_new_product
       set_leaf_taxons
@@ -48,12 +48,14 @@ class Admins::ProductsController < Admins::BaseController
   end
 
   def destroy
-    @product.update(is_invalid_at: Time.now-1)
+    ActiveRecord::Base.transaction do
+      @product.update(is_invalid_at: Time.now-1)
+      @product.variants.update_all(is_invalid_at: Time.now-1)
+    end
     redirect_to admins_products_path
   end
 
   private
-
     def attribute_params
       return @attribute_params if @attribute_params.present?
       products_taxons_attributes = ProductsTaxon.products_taxons_attributes(params)

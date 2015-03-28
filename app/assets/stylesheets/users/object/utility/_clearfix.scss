@@ -1,0 +1,14 @@
+.u-clearfix:after {  
+  content: ".";   
+  display: block;   
+  height: 0;   
+  clear: both;   
+  visibility: hidden;  
+}  
+  
+.u-clearfix { display: inline-table; }  
+  
+/* Hides from IE-mac \*/  
+* html .u-clearfix { height: 1%; }  
+.u-clearfix { display: block; }  
+/* End hide from IE-mac */  

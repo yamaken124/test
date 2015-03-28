@@ -20,7 +20,7 @@
     }
     .c-product_list__price{
       margin-top:5px;
-      color:$finc_color;
+      color:$base_font_color;
     }
   }
 }
@@ -38,6 +38,7 @@
     -o-appearance: none;
     appearance: none;
     padding: 4px;	
+    margin:0;
     background: url(asset-path("users/drop.png")) no-repeat right, #fff;
     background-size:5px 12px;
     float:left;
@@ -55,6 +56,9 @@
       color:white;
       text-decoration:none;
     }
+  }
+  div{
+    float:left;
   }
   .submit{
     width:58px;
