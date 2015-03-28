@@ -33,7 +33,7 @@ class Admins::ShipmentsController < Admins::BaseController
 
   private
     def set_shipment
-      @shipment = Shipment.includes(payment: [:user, :address, :single_order_detail => :single_line_items]).find(params[:id])
+      @shipment = Shipment.includes(payment: [:user, :address, single_order_detail: [ single_line_items: [ variant: [:images ] ] ] ]).find(params[:id])
     end
 
     def setup_for_current_state
