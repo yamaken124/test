@@ -17,7 +17,7 @@ class Users::OrdersController < Users::BaseController
 
   def thanks
     @number = params[:number]
-    @payment = Payment.where(number: @number).first 
+    @payment = Payment.find_by(number: @number)
     raise ActiveRecord::RecordNotFound if !@payment.completed?
     set_variants_and_items
   end
@@ -93,20 +93,9 @@ class Users::OrdersController < Users::BaseController
 
   def cancel
     payment = Payment.find_by(user_id: current_user.id, number: params[:number])
-    detail = payment.single_order_detail
-    item = detail.single_line_items.find_by(id: params[:item_id])
-    begin
-      ActiveRecord::Base.transaction do
-        other_items = detail.single_line_items.where.not(id: params[:item_id])
-        if other_items.blank? || other_items.except_canceled.blank?
-          detail.payment.shipment.canceled!
-          detail.payment.canceled!
-        end
-        item.canceled!
-      end
-      UserMailer.delay.send_order_canceled_notification(item)
-    end
-    redirect_to :back
+    item = payment.single_order_detail.single_line_items.find_by(id: params[:item_id])
+    item.cancel_item(payment)
+    redirect_to orders_path
   end
 
   private

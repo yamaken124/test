@@ -53,4 +53,18 @@ class SingleLineItem < ActiveRecord::Base
     single_order_detail.single_line_items.update_all(payment_state: self.payment_states[:completed])
   end
 
+  def cancel_item(payment)
+    begin
+      ActiveRecord::Base.transaction do
+        other_items = payment.single_order_detail.single_line_items.where.not(id: self.id)
+        if other_items.blank? || other_items.except_canceled.blank? #注文自体をキャンセル
+          payment.shipment.canceled!
+          payment.canceled!
+        end
+        canceled!
+      end
+      UserMailer.delay.send_order_canceled_notification(self)
+    end
+  end
+
 end
