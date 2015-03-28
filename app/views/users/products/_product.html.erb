@@ -14,7 +14,7 @@
         <% end %>
         <% if single_price %>
           <p class="c-product__price_value">
-            <%= number_to_jpy(single_price.amount * @tax_rate) %>
+            <%= number_to_jpy(single_price.amount * @tax_rate) %> (税込)
           </p>
         <% end %>
       </div>
