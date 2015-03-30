@@ -223,6 +223,9 @@ ja:
     subscription_order: 定期購入
     price: 商品価格 #定期購買を始めるまで
 
+  tax:
+    included: (税込)
+
   time_validity:
     preparing: 準備中
     active: 有効
