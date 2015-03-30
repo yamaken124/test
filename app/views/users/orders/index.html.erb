@@ -10,17 +10,17 @@
     <p class="address">お届け先:<br><%= "#{detail.address.full_address}" %></p>
   </div>
   <% detail.single_line_items.each do |item|%>
-    <% variant = @variants_indexed_by_id[item.variant_id] %>
+   
     <div class="c-product_list">
     	<div class="c-product_list__image">
-        <%= image_tag variant.images.first.image.url %>
+        <%= image_tag item.variant.images.first.image.url %>
       </div>
       <div class="c-product__list_detail_wrapper">
     	  <div class="c-product_list__title">
-          <%= variant.name %>
+          <%= item.variant.name %>
     	  </div>
     	  <div class="c-product_list__price">
-          <%= number_to_jpy(variant.price.amount * @tax_rate) %>
+          <%= number_to_jpy(item.variant.price.amount * @tax_rate) %>
           (<%=item.quantity%>)
         </div>
       </div>
