@@ -25,10 +25,6 @@ RSpec.describe Users::OrdersController, type: :controller do
       get :index, id: @payment.single_order_detail_id
       expect(assigns(:details)).to eq [@detail]
     end
-    it 'assings variants' do
-      get :index, id: single_line_item.variant_id
-      expect(assigns(:variants_indexed_by_id)[single_line_item.variant_id]).to eq variant
-    end
   end
 
   describe 'GET #thanks' do
