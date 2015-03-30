@@ -17,12 +17,15 @@
     width:72px;
   }
   .amount{
-    width:54px;  
+    width:54px;
   }
   .address{
     width:155px;
     overflow:hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+  .number{
+    width:155px;
   }
 }

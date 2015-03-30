@@ -1,22 +1,23 @@
 <div class="p-wrapper--have_padding">
-  <h2 class="title">ご購入ありがとうございました。</h2>
-  <h2 class="title">注文番号: <%= @number %></h2>
-</div>
-
-<h2 class="c-links__title">購入商品</h2>
-<% @variants.each do |variant| %>
-  <div class="c-product_list">
-    <div class="c-product_list__image">
-      <%= image_tag variant.images.first.image.url %>
-    </div>
-    <div class="c-product__list_detail_wrapper">
-      <div class="c-product_list__title">
-        <%= variant.name %>
-      </div>
-      <div class="c-product_list__price">
-        <%= number_to_jpy(variant.price.amount * @tax_rate) %>(<%= @items_indexed_by_variant_id[variant.id].quantity %>個)
-      </div>
-    </div>
+  <h2 class="c-links__title">ご注文ありがとうございました</h2>
+  <div class="c-order_title">
+    <p class="number">注文番号:<br><%= @number %></p>
+    <p class="amount">合計:<br><%= number_to_jpy(@payment.amount) %></p>
   </div>
-<% end %>
-<h2>合計額：<%= number_to_jpy(@payment.single_order_detail.total) %>
+  <% @variants.each do |variant| %>
+    <div class="c-product_list">
+      <div class="c-product_list__image">
+        <%= image_tag variant.images.first.image.url %>
+      </div>
+      <div class="c-product__list_detail_wrapper">
+        <div class="c-product_list__title">
+          <%= variant.name %>
+        </div>
+        <div class="c-product_list__price">
+          <%= number_to_jpy(variant.price.amount * @tax_rate) %>
+          (<%=@payment.single_order_detail.single_line_items.count%>)
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
