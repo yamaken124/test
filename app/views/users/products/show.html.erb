@@ -24,7 +24,9 @@
             </p>
             <p class="p-product__price_value">
             <%= number_to_jpy(single.prices.pluck(:amount).first) %>
-            <span class="p-product__price_unit">(税込)</span>
+            <span class="p-product__price_unit">
+              <%=t('tax.included') %>
+            </span>
             </p>
           </div>
         <% end %>
@@ -40,7 +42,7 @@
             </p>
             <p class="p-product__price_value">
             <%= number_to_jpy(subscription.prices.pluck(:amount).first) %>円
-            <span class="p-product__price_unit">(税込)</span>
+            <span class="p-product__price_unit"><%=t('tax.included') %></span>
             </p>
           </div>
         <% end %>
@@ -62,7 +64,7 @@
         <%=t('order_type.price')%>
         </p>
         <p class="p-payment_method_selection__price">
-        <%= number_to_jpy(single.price.amount * @tax_rate) %> (税込)
+          <%= number_to_jpy(single.price.amount * @tax_rate) %><%=t('tax.included') %>
         </p>
         </li>
       <% end %>
