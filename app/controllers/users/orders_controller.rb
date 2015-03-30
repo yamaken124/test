@@ -9,9 +9,8 @@ class Users::OrdersController < Users::BaseController
 
   def index
     single_order_detail_id = Payment.where(user_id: current_user.id).pluck(:single_order_detail_id)
-    @details = SingleOrderDetail.where(id: single_order_detail_id).includes(:address, payment: :shipment).includes(:single_line_items).order(completed_at: :desc).page(params[:page])
+    @details = SingleOrderDetail.where(id: single_order_detail_id).includes(:address, payment: :shipment).includes(single_line_items:[variant: [:price]]).order(completed_at: :desc).page(params[:page])
     variant_ids = SingleLineItem.where(single_order_detail_id: @details.pluck(:id)).pluck(:variant_id)
-    @variants_indexed_by_id = Variant.where(id: variant_ids).includes(:images, :price).index_by(&:id)
     @returned_item_indexed_by_item_id = ReturnedItem.where(user_id: current_user.id).index_by(&:single_line_item_id)
   end
 
