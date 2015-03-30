@@ -40,7 +40,7 @@ class Admins::ShipmentsController < Admins::BaseController
   end
 
   def return_requests
-    @return_requested_items = ReturnedItem.includes(user: [:profile]).includes(single_line_item: [:variant, single_order_detail: [:payment]]).where(returned_at: nil)
+    @return_requested_items = ReturnedItem.includes(user: [:profile]).includes(single_line_item: [variant: [:product], single_order_detail: [:payment]]).where(returned_at: nil)
     @title = "返品要望リスト"
   end
 
