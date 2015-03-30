@@ -127,7 +127,7 @@ class Users::CheckoutsController < Users::BaseController
     def set_common_parameter
       @items = Variant
       .where(id: @detail.single_line_items.pluck(:variant_id))
-      .includes(:images)
+      .includes(:images, :price)
       @single_line_items = @detail.single_line_items
       @tax_rate = TaxRate.rating
     end
