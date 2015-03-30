@@ -64,7 +64,7 @@ module Users::OrdersHelper
     @items_indexed_by_variant_id = SingleLineItem.where(single_order_detail_id: detail.id).index_by(&:variant_id)
     @variants = Variant
     .where(id: @items_indexed_by_variant_id.keys)
-    .includes(:images)
+    .includes(:images, :price)
   end
 
 end
