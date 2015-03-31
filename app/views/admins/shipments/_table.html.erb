@@ -15,7 +15,7 @@
       <tr>
         <td><%= shipment.payment.created_at.strftime("%Y/%m/%d %H:%M") %></td>
         <td><%= shipment.payment.number %></td>
-        <td><%= shipment.state %></td>
+        <td><%= t("shipment.state.#{shipment.state}") %></td>
         <td><%= shipment.payment.payment_method.try(:name) %></td>
         <td><%= shipment.payment.user.profile.try(:name) %></td>
         <td><%= number_to_currency(shipment.payment.amount) %></td>
