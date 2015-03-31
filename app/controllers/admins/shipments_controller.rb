@@ -23,7 +23,8 @@ class Admins::ShipmentsController < Admins::BaseController
       redirect_to admins_shipment_path(@shipment)
 
     when "canceled"
-      @shipment.send("#{params[:state]}!")
+      item = SingleLineItem.find(params[:single_line_item_id])
+      item.cancel_item(item.single_order_detail.payment)
       redirect_to admins_shipment_path(@shipment)
 
     when "returned"
