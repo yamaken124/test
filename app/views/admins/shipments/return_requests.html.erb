@@ -21,7 +21,7 @@
         <% @return_requested_items.each do |item| %>
           <tr>
             <td><%= item.created_at.strftime("%Y/%m/%d %H:%M") %></td>
-            <td><%= link_to(item.single_line_item.variant.name, admins_product_variants_path(item.single_line_item.variant.id) ) %></td>
+            <td><%= link_to(item.single_line_item.variant.name, admins_product_variants_path(product_id: item.single_line_item.variant.product.id) ) %></td>
             <td><%= item.user.profile.name %></td>
             <td class="message"><%= item.message %></td>
             <td>
