@@ -24,6 +24,12 @@ class Users::ProfilesController < Users::BaseController
 
   def edit
     @profile = Profile.where(user_id: @user.id).blank? ? Profile.new : Profile.where(user_id: @user.id).first
+    @profile_title = 
+    if params[:continue].include?("payment")
+      "お客様情報をご入力ください"
+    else
+      "アカウント情報"
+    end
   end
 
   private
