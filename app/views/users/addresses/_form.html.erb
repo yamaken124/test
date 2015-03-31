@@ -28,11 +28,11 @@
   </div>
   <div class="form__field">
     <%= f.label :last_name, "姓" %>
-    <%= f.text_field :last_name, value: @user.try(:profile).try(:last_name),  autofocus: true, class: "form__text--long" %>
+    <%= f.text_field :last_name, value: current_user.try(:profile).try(:last_name),  autofocus: true, class: "form__text--long" %>
   </div>
   <div class="form__field">
     <%= f.label :first_name, "名" %>
-    <%= f.text_field :first_name, value: @user.try(:profile).try(:first_name), class: "form__text--long" %>
+    <%= f.text_field :first_name, value: current_user.try(:profile).try(:first_name), class: "form__text--long" %>
   </div>
   <div class="form__field">
     <%= f.check_box :is_main, {}, true, false %><%= f.label :is_main, "#{t('address.is_main')}に設定する"%>
