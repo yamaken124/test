@@ -34,10 +34,7 @@
     <%= f.label :first_name, "名" %>
     <%= f.text_field :first_name, value: current_user.try(:profile).try(:first_name), class: "form__text--long" %>
   </div>
-  <div class="form__field">
-    <%= f.check_box :is_main, {}, true, false %><%= f.label :is_main, "#{t('address.is_main')}に設定する"%>
-  </div>
-  <%= hidden_field_tag "continue", @continue %>
+ <%= hidden_field_tag "continue", @continue %>
   <div class="form__field">
     <% if @address.id.blank? %>
       <%= f.submit "登録", class: "c-btn--submit", :onclick=> "prevent_double_submit(this)" %>
