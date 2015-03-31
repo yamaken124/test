@@ -20,34 +20,34 @@
 
   <div class="content col-md-9">
     <h4 class="box-title">購入商品<span style="color:red"><%= flash[:alert] %></span></h4>
-      <table class="table c-table">
-        <thead>
+    <table class="table c-table">
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>画像</th>
+          <th>値段</th>
+          <th>個数</th>
+          <th>合計</th>
+          <th></th>
+        </tr>
+        <% @shipment.payment.single_order_detail.single_line_items.each do |single_line_item| %>
           <tr>
-            <th>名前</th>
-            <th>画像</th>
-            <th>値段</th>
-            <th>個数</th>
-            <th>合計</th>
-            <th></th>
-          </tr>
-          <% @shipment.payment.single_order_detail.single_line_items.each do |single_line_item| %>
-            <tr>
-              <td><%= single_line_item.variant.sku %></td>
-              <td><%= image_tag single_line_item.variant.images.first.try(:image).try(:url), class: "thumb" %></td>
-              <td><%= single_line_item.price %></td>
-              <td><%= single_line_item.quantity %></td>
-              <td><%= number_to_currency(single_line_item.quantity * single_line_item.price) %></td>
-              <td>
-                <% unless single_line_item.canceled? %>
-                  <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
-                    <%= hidden_field_tag :state, "canceled" %>
-                    <%= hidden_field_tag :single_line_item_id, single_line_item.id %>
-                    <%= submit_tag "発送キャンセル", class: "btn btn-warning", data: { confirm: "本当に発送をキャンセルしますか？" } %>
-                  <% end %>
+            <td><%= single_line_item.variant.sku %></td>
+            <td><%= image_tag single_line_item.variant.images.first.try(:image).try(:url), class: "thumb" %></td>
+            <td><%= single_line_item.price %></td>
+            <td><%= single_line_item.quantity %></td>
+            <td><%= number_to_currency(single_line_item.quantity * single_line_item.price) %></td>
+            <td>
+              <% unless single_line_item.canceled? %>
+                <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
+                  <%= hidden_field_tag :state, "canceled" %>
+                  <%= hidden_field_tag :single_line_item_id, single_line_item.id %>
+                  <%= submit_tag "発送キャンセル", class: "btn btn-warning", data: { confirm: "本当に発送をキャンセルしますか？" } %>
                 <% end %>
-              </td>
-            </tr>
-          <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
         <%= form_tag update_tracking_code_admins_shipment_path(@shipment), method: "patch" do %>
           <tr>
             <td><%= label_tag :tracking, "Tracking" %></td>
@@ -59,8 +59,8 @@
             </td>
           </tr>
         <% end %>
-        </thead>
-      </table>
+      </thead>
+    </table>
   </div>
 
   <div class="content col-md-9">
