@@ -240,6 +240,8 @@ ja:
       failed: 決済失敗
       completed: 決済完了
       canceled: キャンセル
+    method:
+      gmo_credit: GMOクレジットカード決済
 
   tax:
     included: (税込)
