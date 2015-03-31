@@ -24,11 +24,11 @@ class Users::ProfilesController < Users::BaseController
 
   def edit
     @profile = Profile.where(user_id: @user.id).blank? ? Profile.new : Profile.where(user_id: @user.id).first
-    @profile_title = 
-    if params[:continue].include?("payment")
-      "お客様情報をご入力ください"
-    else
-      "アカウント情報"
+    if params[:continue].present?
+      @profile_title = 
+        params[:continue].include?("payment") ? "お客様情報をご入力ください" : "アカウント情報"
+    else 
+      redirect_to :back
     end
   end
 
