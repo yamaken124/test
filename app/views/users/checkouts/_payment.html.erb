@@ -6,7 +6,7 @@
       <span font color="red"><%= t(params['error_message'], :default => "入力項目に不備があります") if params['error_message'] %></p>
     </h2>
     <div class="c-btn--submit u-margin__bottom_middle">
-      <%= submit_tag "購入確認画面へ", class: 'c-btn--submit' %>
+      <%= submit_tag "購入確認画面へ", class: 'c-btn--submit', :onclick=> "prevent_double_submit(this)" %>
     </div>
     <h2 class="c-links__title">お届先住所</h2>
     <ul class="c-links">
@@ -119,7 +119,7 @@
       </div>
     <% end %>
     <div class="c-btn--submit">
-      <%= submit_tag "購入確認画面へ", class: 'c-btn--submit' %>
+      <%= submit_tag "購入確認画面へ", class: 'c-btn--submit', :onclick=> "prevent_double_submit(this)" %>
     </div>
   </div>
 <%# TODO subscription %>
