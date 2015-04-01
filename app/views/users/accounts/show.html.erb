@@ -1,9 +1,16 @@
 <div class="p-point">
+  <%if current_user.try(:profile).try(:name) %>
+    <div class="c-top_notice">
+      こんにちは<%= current_user.try(:profile).try(:name) %>さん
+    </div>
+  <% end %>
+<% if false %>
   <div class="p-point__lost_notice">
     2016/12/12で<%= @wellness_mileage %>ポイント失効します。
   </div>
   <div class="p-point__lost_triangle">
   </div>
+<% end %>
   <div class="p-point__circle">
     <div class="p-point__circle_inner">
       <p>ウェルネスマイレージ</p>
