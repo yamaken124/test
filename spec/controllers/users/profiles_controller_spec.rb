@@ -10,7 +10,7 @@ RSpec.describe Users::ProfilesController, type: :controller do
   describe 'GET #edit' do
 
     it "assign user" do
-      get :edit 
+      get :edit
       expect(assigns(:user)).to eq @user
     end
     
