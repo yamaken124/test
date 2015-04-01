@@ -1,0 +1,39 @@
+@import "../../foundation/setting";
+@import "../../foundation/mixin";
+
+.p-guaidance_wrapper{
+  margin:20px 20px;
+}
+h2.p-guaidance_title{
+  font-size:145%;
+  margin-bottom:25px;
+  text-align:center;
+}
+h3.p-guaidance_index{
+  margin-bottom:10px;
+  padding:5px 0 5px 5px;
+  background-color:rgb(255,101,12);
+
+}
+.p-guaidance_contents{
+  font-size:14px;
+  margin-bottom:10px;
+  margin-left:10px;
+  line-height:1.4em;
+}
+.p-guaidance_lists{
+  margin-bottom:10px;
+  li{
+    margin:5px 0 0 20px;
+    list-style-type: disc;
+  }
+}
+.p-guaidance_lists_number{
+  @extend .p-guaidance_lists;
+  li{
+    list-style-type: decimal;
+  }
+}
+.p-guaidance_comment{
+  margin-bottom:10px;
+}
