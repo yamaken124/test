@@ -6,6 +6,8 @@
         <div class="btn btn-warning">発送済み</div>
       <% elsif @shipment.state == "canceled" %>
         <div class="btn btn-danger">キャンセルされました</div>
+      <% elsif @shipment.state == "returned" %>
+        <div class="btn btn-default">返品されました</div>
       <% else #@shipment.state != "shipped" %>
         <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left" do %>
           <%= hidden_field_tag :state, "shipped" %>
@@ -38,7 +40,7 @@
             <td><%= single_line_item.quantity %></td>
             <td><%= number_to_currency(single_line_item.quantity * single_line_item.price) %></td>
             <td>
-              <% unless single_line_item.canceled? %>
+              <% unless (single_line_item.canceled? || @shipment.state == "returned") %>
                 <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
                   <%= hidden_field_tag :state, "canceled" %>
                   <%= hidden_field_tag :single_line_item_id, single_line_item.id %>
