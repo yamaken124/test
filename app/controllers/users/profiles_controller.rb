@@ -1,6 +1,7 @@
 class Users::ProfilesController < Users::BaseController
   before_action :set_user
   before_action :set_continue, only: [:edit]
+  before_action :choose_title_by_continue_path, only: [:edit]
 
   def create
     @profile = Profile.new(profile_params)
@@ -50,6 +51,12 @@ class Users::ProfilesController < Users::BaseController
         redirect_to checkout_state_path("payment")
       else # params[:continue].include?("account") || params[:continue].blank?
         redirect_to account_path
+      end
+    end
+
+    def choose_title_by_continue_path
+      if params[:continue].present?
+        @profile_title = params[:continue].include?("payment") ? "お客様情報をご入力ください" : "アカウント情報"
       end
     end
 
