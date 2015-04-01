@@ -250,3 +250,9 @@ ja:
     credit_card_missing: "クレジットカードを登録してください"
     address_missing: "住所を登録してください"
     invalid_used_point: "ポイントが正しくありません"
+
+  user_oauth:
+    sign_in: "ログイン"
+    email: "メールアドレス"
+    password: "パスワード"
+    remember_me: "次回から省略する"

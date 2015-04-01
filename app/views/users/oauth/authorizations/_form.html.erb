@@ -1,21 +1,22 @@
 <%= form_for(resource, :as => resource_name, :url => sign_in_with_email_password_oauth_authorization_path , :html => { :id => "form" }) do |f| %>
-  <h2>Sign in</h2>
+  <h2><%=t('user_oauth.sign_in')%></h2>
   <div class="form__field">
-    <%= f.label :email %>
+    <%= f.label t('user_oauth.email') %>
     <%= f.email_field :email, :autofocus => true, class: "form__text--long" %>
   </div>
   <div class="form__field">
-    <%= f.label :password %>
+    <%= f.label t('user_oauth.password') %>
     <%= f.password_field :password, class: "form__text--long" %>
   </div>
   <% if devise_mapping.rememberable? -%>
     <div class="form__field">
-      <%= f.check_box :remember_me %> <%= f.label :remember_me %>
+      <%= f.check_box :remember_me %> <%= f.label t('user_oauth.remember_me') %>
     </div>
   <% end -%>
   <div class="form__field">
-    <%= f.submit "Sign in", class: "c-btn--submit" %>
+    <%= f.submit t('user_oauth.sign_in'), class: "c-btn--submit" %>
   </div>
 <% end %>
-
-<%= render partial: "devise/shared/links", locals: { resource_name: resource_name, devise_mapping: devise_mapping } %>
+<% if Rails.env == "development"%>
+  <%= render partial: "devise/shared/links", locals: { resource_name: resource_name, devise_mapping: devise_mapping } %>
+<% end %>
