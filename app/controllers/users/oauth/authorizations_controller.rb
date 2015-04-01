@@ -2,7 +2,7 @@ module Users
   module Oauth
     class AuthorizationsController < Users::Oauth::BaseController
       before_action :redirect_to_root_if_signed_in
-      before_action :check_valid_key_and_token!
+      before_action :check_valid_key_and_token!, only: [:create]
 
       def create
         if sign_in_with_access_token(persisted_access_token)
@@ -11,6 +11,16 @@ module Users
           # finc_app 以外の認証も対応する必要が出たら実装する
           sign_up_with_fincapp(oauth_application, params[:access_token])
           redirect_to edit_profile_path(continue: :credit_cards)
+        end
+      end
+
+      def sign_in_with_email_password
+        if resource = FincApp.sign_in(user_params[:email], user_params[:password])
+          sign_in(resource)
+          redirect_to after_sign_in_path_for(resource)
+        else
+          @user = User.new(email: user_params[:email])
+          render layout: "users/users"
         end
       end
 
@@ -50,6 +60,10 @@ module Users
             sign_in(:user, user)
             user
           end
+        end
+
+        def user_params
+          params.require(:user).permit(:email, :password, :remember_me)
         end
     end
   end
