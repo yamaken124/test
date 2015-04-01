@@ -54,9 +54,9 @@
         <% end %>
         <%= form_tag update_tracking_code_admins_shipment_path(@shipment), method: "patch" do %>
           <tr>
-            <td><%= label_tag :tracking, "Tracking" %></td>
+            <td><%= label_tag :tracking, t("shipment.tracking") %></td>
             <td colspan="3">
-              <%= text_field_tag :tracking, @shipment.tracking, class: "form-control", placeholder: "Enter tracking code" %>
+              <%= text_field_tag :tracking, @shipment.tracking, class: "form-control", placeholder: "追跡番号を入力してください" %>
             </td>
             <td>
               <%= submit_tag @button_value, class: "btn btn-primary" %>
@@ -104,14 +104,14 @@
         </tr>
         <tr>
           <th>配送状況</th>
-          <th><%= @shipment.state %></th>
+          <th><%= t("shipment.state.#{@shipment.state}") %></th>
         </tr>
         <tr>
           <th colspan="2">支払い情報</th>
         </tr>
         <tr>
           <th>支払い</th>
-          <th><%= @shipment.payment.state %></th>
+          <th><%= t("payment.state.#{@shipment.payment.state}") %></th>
         </tr>
         <tr>
           <th>配送料</th>
@@ -141,7 +141,7 @@
           <th><%= @shipment.payment.user.profile.try(:phone) %></th>
         </tr>
         <tr>
-          <th>Email</th>
+          <th>メール</th>
           <th><%= @shipment.payment.user.email %></th>
         </tr>
       </thead>

@@ -217,11 +217,37 @@ ja:
         description: 説明
         is_valid_at: 販売開始
         is_invalid_at: 販売終了
+      variant:
+        name: 名前
+        is_valid_at: 販売開始
+        is_invalid_at: 販売終了
+      price:
+        amount: 値段
 
   order_type:
     single_order: 通常購入
     subscription_order: 定期購入
     price: 商品価格 #定期購買を始めるまで
+
+  shipment:
+    state:
+      pending: 待機
+      ready: 未発送
+      shipped: 発送済み
+      canceled: キャンセル
+      returned: 返品
+    tracking: 追跡番号
+
+  payment:
+    state:
+      checkout: チェックアウト
+      processing: 決済中
+      pending: 保留
+      failed: 決済失敗
+      completed: 決済完了
+      canceled: キャンセル
+    method:
+      gmo_credit: GMOクレジットカード決済
 
   tax:
     included: (税込)
