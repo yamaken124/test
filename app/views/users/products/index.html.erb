@@ -1,8 +1,6 @@
-<a href=<%= taxons_path(id: 1) %> >
-  <div class="c-top_notice">
-    全てのカテゴリ
-  </div>
-</a>
+<div class="c-top_notice">
+  全てのカテゴリ
+</div>
 <% @products.each do |product| %>
   <%= render partial: 'users/products/product', locals: {product: product} %>
 <% end %>

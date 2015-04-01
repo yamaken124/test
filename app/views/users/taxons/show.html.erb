@@ -1,9 +1,7 @@
 <% if @taxon.child? %>
-  <a href="<%= taxons_path(id: @taxon.parent.id) %>">
-    <div class="c-category_select">
-      <%= @taxon.parent.name %>へ
-    </div>
-  </a>
+  <div class="c-top_notice">
+    <%= @taxon.name %>
+  </div>
 <% end %>
 <% if @products.blank? %>
   <div class="p-wrapper--have_padding">
