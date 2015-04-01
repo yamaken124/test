@@ -8,6 +8,7 @@ class Admins::ShipmentsController < Admins::BaseController
   end
 
   def show
+    @button_value = @shipment.tracking.present? ? "変更" : "登録"
   end
 
   def update_state
