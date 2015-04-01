@@ -140,9 +140,9 @@ ja:
     select:
       prompt: 選択してください。
     submit:
-      create: 登録する
-      submit: 保存する
-      update: 更新する
+      create: 登録
+      submit: 保存
+      update: 更新
   number:
     currency:
       format:
@@ -245,8 +245,3 @@ ja:
 
   address:
     is_main: "標準使用"
-
-  payment_attributes_error:
-    credit_card_missing: "クレジットカードを登録してください"
-    address_missing: "住所を登録してください"
-    invalid_used_point: "ポイントが正しくありません"
