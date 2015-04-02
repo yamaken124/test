@@ -13,7 +13,7 @@
       <% @addresses.each do |address| %>
         <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
-            <%= radio_button_tag "order[address_id]", address.id, check_as_default_address(@user, address) %>
+            <%= radio_button_tag "order[address_id]", address.id, check_as_default_address(address, @default_address) %>
           </div>
           <%= label_tag "order_address_id_#{address.id}",
            "#{address.name}<br>
@@ -125,3 +125,4 @@
 <%# TODO subscription %>
 
 <% end %>
+<%= current_user.addresses.active.inspect%>

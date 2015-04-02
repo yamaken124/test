@@ -24,18 +24,11 @@ class Users::CheckoutsController < Users::BaseController
   def update
     if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env)
       if @order.completed?
+        before_payment
         @current_order = nil
         flash['order_completed'] = true
         UserMailer.delay.send_order_accepted_notification(@order)
-        single_order = SingleOrder.find_by(purchase_order_id: @order.id)
-        address = SingleOrderDetail.find_by(single_order_id: single_order.id).address
-        unless address.is_main == true
-          ActiveRecord::Base.transaction do 
-            Address.where(user_id: current_user.id).update_all(is_main: false)
-            address.update(is_main: true)
-          end
-        end
-        redirect_to thanks_orders_path(number: @order.single_order_detail.payment.number)
+       redirect_to thanks_orders_path(number: @order.single_order_detail.payment.number)
       else
         redirect_to checkout_state_path(@order.state)
       end
@@ -121,6 +114,7 @@ class Users::CheckoutsController < Users::BaseController
       @gmo_cards = GmoMultiPayment::Card.new(current_user).search
       @addresses = current_user.addresses.active
       @wellness_mileage = current_user.wellness_mileage
+      @default_address = Address.default_address(current_user)
     end
 
     def before_confirm
