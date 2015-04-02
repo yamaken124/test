@@ -56,7 +56,7 @@ Rails.application.routes.draw do
     get '/checkout/:state', :to => 'checkouts#edit', :as => :checkout_state
     patch '/checkout/:state', :to => 'checkouts#update', :as => :update_checkout
     get '/t/*id', :to => 'taxons#show', :as => :taxons #nested_taxon
-    get '/guaidance/:state', :to => 'guaidances#show', :as => :guaidance_state
+    get '/guidances/:name', :to => 'guidances#show', :as => :guidance
   end
 
   namespace :admins do
