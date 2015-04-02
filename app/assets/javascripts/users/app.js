@@ -18,3 +18,4 @@
 //= require users/submit
 //= require users/payments
 //= require users/sidebar
+//= require users/zipcode

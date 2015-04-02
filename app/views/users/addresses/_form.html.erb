@@ -12,15 +12,15 @@
   <% end %>
  <div class="form__field">
     <%= f.label :zipcode, "郵便番号" %>
-    <%= f.number_field :zipcode, autofocus: false, class: "form__text--long", placeholder: "1500000" %>
+    <%= f.text_field :zipcode, autofocus: false, class: "form__text--long", id: "jquery__address-zipcode", placeholder: "1500000" %>
   </div>
   <div class="form__field">
     <%= f.label :city, "都道府県" %>
-    <%= f.text_field :city, autofocus: false, class: "form__text--long", placeholder: "東京" %>
+    <%= f.text_field :city, autofocus: false, class: "form__text--long", id: "jquery__address-pref", placeholder: "東京" %>
   </div>
   <div class="form__field">
     <%= f.label :address, "市区町村以下" %>
-    <%= f.text_field :address, autofocus: false, class: "form__text--long", placeholder: "中央区銀座3-9-6" %>
+    <%= f.text_field :address, autofocus: false, class: "form__text--long", id: "jquery__address-city", placeholder: "中央区銀座3-9-6" %>
   </div>
   <div class="form__field">
     <%= f.label :phone, "電話番号" %>

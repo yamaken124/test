@@ -29,7 +29,11 @@ Rails.application.routes.draw do
       end
     end
     resource :account, only: [:show] do
-      resources :addresses, only: [:index, :edit, :update, :new, :create, :destroy]
+      resources :addresses, only: [:index, :edit, :update, :new, :create, :destroy] do
+        collection do
+          get  'fetch_address_with_zipcode', action: :fetch_address_with_zipcode, :as => :fetch_address
+        end
+      end
     end
     resource :profile, only: [:edit, :create, :update] do
       resources :credit_cards, only: [:index, :new, :edit, :create, :destroy]
