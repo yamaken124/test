@@ -64,6 +64,7 @@
   .submit{
     width:58px;
     height:100%;
+    font-size:12px;
     float:left;
     border:1px solid $finc_color;
     border-radius:4px;
@@ -76,5 +77,6 @@
     width:75px;
     text-align:center;
     height: 22px;
+    line-height:22px;
   }
 }
