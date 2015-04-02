@@ -1,0 +1,25 @@
+<div class="sidebar">
+  <ul>
+    <li id="sidebar_title">カテゴリ</li>
+    <%= link_to products_path do %>
+      <li class="sidebar_lists">
+        <div class='sidebar_lists_left'>全てのカテゴリ</div>
+        <div class='sidebar_lists_right'></div>
+      </li>
+    <% end %>
+    <% Taxon.leaves.each do |leaf| %>
+      <%= link_to taxons_path(id: leaf.id) do %>
+        <li class="sidebar_lists">
+          <div class='sidebar_lists_left'><%= leaf.name %></div>
+          <div class='sidebar_lists_right'></div>
+        </li>
+      <% end %>
+    <% end %>
+    <li class="sidebar_rules">
+      <%= link_to guidance_path(name: 'user_guidance') do %>
+        <div class='sidebar_lists_left'>利用案内</div>
+        <div class='sidebar_lists_right'></div>
+      <% end %>
+    </li>
+  </ul>
+</div>

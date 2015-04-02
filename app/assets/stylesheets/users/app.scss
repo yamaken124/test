@@ -13,6 +13,8 @@
 @import "layout/form";
 @import "layout/error";
 @import "layout/footer";
+@import "layout/sidebar";
+@import "layout/js-fixed-contents";
 
 // ==========================================================================
 // Object
@@ -25,7 +27,7 @@
 
 @import "object/component/button";
 @import "object/component/segment";
-@import "object/component/category_select";
+@import "object/component/top_notice";
 @import "object/component/product";
 @import "object/component/product_list";
 @import "object/component/links";
@@ -43,6 +45,7 @@
 @import "object/project/product_detail";
 @import "object/project/payment_method_selection";
 @import "object/project/lists";
+@import "object/project/guidances";
 
 // -----------------------------------------------------------------
 // Utility

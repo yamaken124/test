@@ -1,17 +1,19 @@
 <div id="header">
   <div id="header__left_wrapper">
+    <%= image_tag "users/category.png", id: "header__pull_down", onclick: "show_category(this)" %>
+  </div>
+  <div id="header__center_wrapper">
     <%= link_to products_path do %>
       <%= image_tag "users/header_logo.png", id: "header__logo" %>
     <% end %>
   </div>
   <div id="header__right_wrapper">
-    <div>
-      <p><%= Profile.find_by(user_id: current_user.id).try(:name) if user_signed_in? %></p>
-      <i class="profile"></i>
-    </div>
-    <div>
-      <p>カート <%= @order.try(:single_order_detail).try(:item_count) || 0 %></p>
-      <i class="cart"></i>
-    </div>
+    <%= link_to cart_path do %>
+      <div id="header__cart">
+        <div id="header__cart_number">
+          <%= @order.try(:single_order_detail).try(:item_count) || 0 %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

@@ -22,7 +22,7 @@
         <tr>
           <td><%= payment.created_at.strftime("%Y/%m/%d %H:%M")%></td>
           <td><%= payment.number  %></td>
-          <td><%= payment.state %></td>
+          <td><%= t("payment.state.#{payment.state}") %></td>
           <td><%= payment.payment_method.name %></td>
           <td><%= payment.user.email %></td>
           <td><%= payment.amount %>円</td>

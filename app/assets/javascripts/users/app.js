@@ -17,3 +17,4 @@
 //= require library/slider/jquery.flexslider.js
 //= require users/submit
 //= require users/payments
+//= require users/sidebar
