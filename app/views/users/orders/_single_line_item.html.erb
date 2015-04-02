@@ -20,10 +20,10 @@
     </div>
   </div>
   <div class="c-product_list__detail">
-    <%= item_form.select :quantity,  (1..100).map{|i| [i,i]} %>
+    <%= item_form.select :quantity,  (1..100).map{|i| [i,i]}%>
     <%= item_form.hidden_field :variant_id %>
     <%= item_form.hidden_field :id %>
     <%= item_form.submit "数量変更", class: "submit u-margin__left_short" %>
-    <div class="u-margin__left50"><%= link_to "カートから外す", remove_item_cart_path(single_line_item.id), data: { confirm: "本当にカートから商品を削除しますか？" }, method: :patch, class: "u-finc_font_color u-font_size_small" %></div>
+    <div class="remove_from_cart u-margin__left_short"><%= link_to "カートから外す", remove_item_cart_path(single_line_item.id), data: { confirm: "本当にカートから商品を削除しますか？" }, method: :patch, class: "u-finc_font_color u-font_size_small" %></div>
   </div>
 <% end %>

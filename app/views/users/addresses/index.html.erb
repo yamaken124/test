@@ -1,15 +1,15 @@
 <div class="p-wrapper--have_padding">
-  <h2 class="title">住所管理</h2>
+  <h2 class="title">お届け先住所編集</h2>
   <% if @addresses.size < Address::UpperLimit %>
     <%= link_to new_account_address_path do %>
      <div class="c-btn--submit u-margin__bottom_middle">
-       新規住所登録
+       新しく住所を登録する
       </div>
     <% end %>
   <% else %>
     <p class="u-base_font_color"><%= t('validate_registration.address') %></p>
   <% end %>
-  <h2 class="c-links__title">登録住所</h2>
+  <h2 class="c-links__title">登録済み住所</h2>
   <ul class="c-links">
     <% @addresses.each do |address| %>
       <a href="<%= edit_account_address_path(address) %>">

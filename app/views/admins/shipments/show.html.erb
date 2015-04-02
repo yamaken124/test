@@ -1,28 +1,16 @@
 <div class="content-header">
   <h3>
     <%= link_to '発送管理', admins_shipments_path %> / <%= @shipment.payment.number %>
-      <div class="u-float_right">
-        <% if @shipment.state != "canceled" %>
-          <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left" do %>
-            <% if @shipment.state != "shipped" %>
-              <%= hidden_field_tag :state, "shipped" %>
-              <%= submit_tag "発送完了", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
-            <% else %>
-<% if false #FIXME %>
-              <%= hidden_field_tag :state, "ready" %>
-              <%= submit_tag "発送準備に戻す", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
-<% end %>
-            <% end %>
-          <% end %>
-          <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
-            <%= hidden_field_tag :state, "canceled" %>
-            <%= submit_tag "発送キャンセル", class: "btn btn-warning", data: { confirm: "本当に発送をキャンセルしますか？" } %>
-          <% end %>
-
-      <% elsif @shipment.state == "shipped" %>
+    <div class="u-float_right">
+      <% if @shipment.state == "shipped" %>
         <div class="btn btn-warning">発送済み</div>
-      <% else %><%# @shipment.state == "canceled" %>
+      <% elsif @shipment.state == "canceled" %>
         <div class="btn btn-danger">キャンセルされました</div>
+      <% else #@shipment.state != "shipped" %>
+        <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left" do %>
+          <%= hidden_field_tag :state, "shipped" %>
+          <%= submit_tag "発送完了", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
+        <% end %>
       <% end %>
     </div>
   </h3>
@@ -32,25 +20,35 @@
 
   <div class="content col-md-9">
     <h4 class="box-title">購入商品<span style="color:red"><%= flash[:alert] %></span></h4>
-    <%= form_tag update_tracking_code_admins_shipment_path(@shipment), method: "patch" do %>
-      <table class="table c-table">
-        <thead>
+    <table class="table c-table">
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>画像</th>
+          <th>値段</th>
+          <th>個数</th>
+          <th>合計</th>
+          <th></th>
+        </tr>
+        <% @shipment.payment.single_order_detail.single_line_items.each do |single_line_item| %>
           <tr>
-            <th>名前</th>
-            <th>画像</th>
-            <th>値段</th>
-            <th>個数</th>
-            <th>合計</th>
+            <td><%= single_line_item.variant.sku %></td>
+            <td><%= image_tag single_line_item.variant.images.first.try(:image).try(:url), class: "thumb" %></td>
+            <td><%= single_line_item.price %></td>
+            <td><%= single_line_item.quantity %></td>
+            <td><%= number_to_currency(single_line_item.quantity * single_line_item.price) %></td>
+            <td>
+              <% unless single_line_item.canceled? %>
+                <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
+                  <%= hidden_field_tag :state, "canceled" %>
+                  <%= hidden_field_tag :single_line_item_id, single_line_item.id %>
+                  <%= submit_tag "発送キャンセル", class: "btn btn-warning", data: { confirm: "本当に発送をキャンセルしますか？" } %>
+                <% end %>
+              <% end %>
+            </td>
           </tr>
-          <% @shipment.payment.single_order_detail.single_line_items.each do |single_line_item| %>
-            <tr>
-              <td><%= single_line_item.variant.sku %></td>
-              <td><%= image_tag single_line_item.variant.images.first.try(:image).try(:url), class: "thumb" %></td>
-              <td><%= single_line_item.price %></td>
-              <td><%= single_line_item.quantity %></td>
-              <td><%= number_to_currency(single_line_item.quantity * single_line_item.price) %></td>
-            </tr>
-          <% end %>
+        <% end %>
+        <%= form_tag update_tracking_code_admins_shipment_path(@shipment), method: "patch" do %>
           <tr>
             <td><%= label_tag :tracking, "Tracking" %></td>
             <td colspan="3">
@@ -60,9 +58,9 @@
               <%= submit_tag "登録", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
             </td>
           </tr>
-        </thead>
-      </table>
-    <% end %>
+        <% end %>
+      </thead>
+    </table>
   </div>
 
   <div class="content col-md-9">
