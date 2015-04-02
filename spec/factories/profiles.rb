@@ -19,7 +19,7 @@ FactoryGirl.define do
     first_name "MyString"
     last_name_kana "MyString"
     first_name_kana "MyString"
-    phone "xxxxx"
+    phone "09012341234"
     user nil
   end
 end
