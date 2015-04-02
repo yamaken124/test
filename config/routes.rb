@@ -52,11 +52,11 @@ Rails.application.routes.draw do
         post 'request_send_back'
       end
     end
-    # resources :taxons, only: [:index, :show]
 
     get '/checkout/:state', :to => 'checkouts#edit', :as => :checkout_state
     patch '/checkout/:state', :to => 'checkouts#update', :as => :update_checkout
     get '/t/*id', :to => 'taxons#show', :as => :taxons #nested_taxon
+    get '/guidances/:name', :to => 'guidances#show', :as => :guidance
   end
 
   namespace :admins do
