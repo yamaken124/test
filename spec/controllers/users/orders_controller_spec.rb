@@ -9,7 +9,7 @@ RSpec.describe Users::OrdersController, type: :controller do
     purchase_order = create(:purchase_order, user_id: @user.id)
     single_order = create(:single_order, purchase_order_id: purchase_order.id)
     @detail = create(:single_order_detail, single_order_id: single_order.id, address_id: address.id)
-    @payment = create(:payment, user_id: @user.id, address_id: address.id, single_order_detail_id: detail.id)
+    @payment = create(:payment, user_id: @user.id, address_id: address.id, single_order_detail_id: @detail.id)
   end
 
   describe 'GET #index' do
