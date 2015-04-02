@@ -9,10 +9,14 @@ class Users::AddressesController < Users::BaseController
 
   def new
     @address = Address.new
+    @last_name = current_user.try(:profile).try(:last_name)
+    @first_name = current_user.try(:profile).try(:first_name)
   end
 
   def edit
     @address = @user.addresses.find(params[:id])
+    @last_name = @address.last_name
+    @first_name = @address.first_name
   end
 
   def create
