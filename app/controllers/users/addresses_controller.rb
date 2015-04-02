@@ -45,6 +45,11 @@ class Users::AddressesController < Users::BaseController
     redirect_to account_addresses_path
   end
 
+  def fetch_address_with_zipcode
+    pref = Address.set_address_from_zipcode(params[:zipcode])
+    render json: pref
+  end
+
   private
 
     def set_user

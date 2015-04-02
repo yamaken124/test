@@ -47,4 +47,8 @@ class Address < ActiveRecord::Base
     "#{zipcode} #{city} #{address}"
   end
 
+  def self.set_address_from_zipcode(code)
+    address = ZipCodeJp.find(code)
+  end
+
 end

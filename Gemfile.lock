@@ -440,6 +440,9 @@ GEM
     webmock (1.20.4)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
+    zip_code_jp (0.0.3)
+      zipruby
+    zipruby (0.3.6)
 
 PLATFORMS
   ruby
@@ -501,3 +504,4 @@ DEPENDENCIES
   unicorn
   web-console (~> 2.0)
   webmock
+  zip_code_jp
