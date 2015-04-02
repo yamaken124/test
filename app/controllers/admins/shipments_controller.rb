@@ -12,27 +12,8 @@ class Admins::ShipmentsController < Admins::BaseController
   end
 
   def update_state
-    case params[:state]
-
-    when "shipped"
-      if @shipment.tracking.present?
-        UserMailer.delay.send_items_shipped_notification(@shipment)
-        @shipment.send("#{params[:state]}!")
-      else
-        flash[:alert] = "追跡番号を入力してください"
-      end
-      redirect_to admins_shipment_path(@shipment)
-
-    when "canceled"
-      item = SingleLineItem.find(params[:single_line_item_id])
-      item.cancel_item(item.single_order_detail.payment)
-      redirect_to admins_shipment_path(@shipment)
-
-    when "returned"
-      ReturnedItem.find(params[:returned_item_id]).update(returned_at: Time.now)
-      @shipment.send("#{params[:state]}!")
-      redirect_to return_requests_admins_shipments_path
-    end
+    method_name = :"update_#{params[:state]}"
+    send(method_name, @shipment) if respond_to?(method_name, true)
   end
 
   def update_tracking_code
@@ -78,6 +59,27 @@ class Admins::ShipmentsController < Admins::BaseController
 
     def unknown_state?
       Shipment.transitionable_states.include?(params[:state])
+    end
+
+    def update_shipped(shipment)
+      if shipment.tracking.present?
+        UserMailer.delay.send_items_shipped_notification(shipment)
+        shipment.send("#{params[:state]}!")
+      else
+        flash[:alert] = "追跡番号を入力してください"
+      end
+      redirect_to admins_shipment_path(shipment)
+    end
+
+    def update_canceled(shipment)
+      shipment.send("#{params[:state]}!")
+      redirect_to admins_shipment_path(shipment)
+    end
+
+    def update_returned(shipment)
+      ReturnedItem.find(params[:returned_item_id]).update(returned_at: Time.now)
+      shipment.send("#{params[:state]}!")
+      redirect_to return_requests_admins_shipments_path
     end
 
 end
