@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     namespace :oauth do
       resource :authorization, only: [:create] do
         get '/', action: :create
+        post 'sign_in_with_email_password', action: :sign_in_with_email_password
       end
     end
     resource :account, only: [:show] do
