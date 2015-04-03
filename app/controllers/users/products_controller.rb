@@ -16,7 +16,7 @@ class Users::ProductsController < Users::BaseController
   def show
     @product = Product.find(params[:id])
 
-    @available_quantity = *(1..@product.available_quantity)
+    @available_quantity = *(1..Product::AvailableQuantity)
 
     @preview_images = @product.preview_images
 
