@@ -5,6 +5,14 @@
   $('.c-btn--submit').addClass('disabled')
   return
 
+@prevent_double_submit_from_link_to = (number, event) ->
+  if $("a#"+number).hasClass('disabled')
+    event.preventDefault();
+    event.stopPropagation();
+    # return false; May need for Android?
+  $("a#"+number).addClass('disabled')
+  return
+
 $ -> #for safari
   window.onpageshow = (event) ->
     $('.c-btn--submit').removeClass('disabled')

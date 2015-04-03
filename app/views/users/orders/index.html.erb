@@ -10,7 +10,7 @@
     <p class="address">お届け先:<br><%= "#{detail.address.full_address}" %></p>
   </div>
   <% detail.single_line_items.each do |item|%>
-   
+
     <div class="c-product_list">
     	<div class="c-product_list__image">
         <%= image_tag item.variant.images.first.image.url %>
@@ -55,7 +55,7 @@
         </ul>
       <% else %>
         <ul class="c-links">
-          <%= link_to cancel_orders_path(detail.payment.number, item_id: item.id), data:{ method: "delete", confirm: "本当に商品をキャンセルしますか？" } do%>
+          <%= link_to cancel_orders_path(detail.payment.number, item_id: item.id), class: "c-btn--single_click", id: (detail.payment.number+item.variant_id.to_s), data:{ method: "delete", confirm: "本当に商品をキャンセルしますか？" }, :onclick=> "prevent_double_submit_from_link_to(id, event)" do%>
             <li class="c-link">
               商品をキャンセル
             </li>
