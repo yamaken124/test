@@ -43,6 +43,15 @@ class Address < ActiveRecord::Base
     Address.where(user_id: user.id).update_all(is_main: false)
   end
 
+  def self.default_address(user)
+    active_addresses = user.addresses.active
+    if active_addresses.pluck(:is_main).none?
+      active_addresses.first
+    else
+      active_addresses.find_by(is_main: true)
+    end
+  end
+
   def full_address
     "#{zipcode} #{city} #{address}"
   end

@@ -26,10 +26,22 @@ class PurchaseOrder < ActiveRecord::Base
             transitions from: :payment, to: :confirm
           end
 
-          event :complete do
+          event :complete, after: :update_address_is_main  do
             transitions from: :confirm, to: :complete
           end
         end
+
+        def update_address_is_main
+          return if !single_order || !single_order.single_order_detail
+          address = single_order.single_order_detail.address
+          unless address.is_main
+            ActiveRecord::Base.transaction do
+              user.addresses.update_all(is_main: false)
+              address.update(is_main: true)
+            end
+          end
+        end
+
       end
     end
   end

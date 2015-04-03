@@ -32,6 +32,24 @@ RSpec.describe PurchaseOrder::Transition, type: :model do
       it { expect(confirm.may_confirm?).to be_falsy }
       it { expect(confirm.may_complete?).to be_truthy }
 
+      context 'moved from confirmed order to completed one' do
+        it 'updates main address' do
+          user = create(:user)
+          address = create(:address, is_main: false, user_id: user.id)
+          old_main_address = create(:address, is_main: true, user_id: user.id)
+          confirmed_order = create(:purchase_order, state: 'confirm', user_id: user.id)
+          confirmed_order.build_single_order.save
+          confirmed_order.single_order.build_single_order_detail(address_id: address.id).save
+
+          expect {
+            confirmed_order.complete!
+            address.reload
+            old_main_address.reload
+          }.to change(address, :is_main).from(false).to(true)
+          expect(old_main_address.is_main).to be_falsy
+        end
+      end
+
       let(:complete) { build(:purchase_order, state: 'complete') }
       it { expect(complete.may_cart?).to be_falsy }
       it { expect(complete.may_payment?).to be_falsy }

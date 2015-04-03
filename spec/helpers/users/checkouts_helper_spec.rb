@@ -11,5 +11,15 @@ require 'rails_helper'
 #   end
 # end
 RSpec.describe Users::CheckoutsHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'check_as_default_address' do
+    let(:user) { create(:user) }
+    let(:default_address) { create(:address, user_id: user.id, is_main: true) }
+    let(:nondefault_address) { create(:address, user_id: user.id, is_main: false) }
+    it 'returns checked value if given address is the default address' do
+      expect(check_as_default_address(nil, default_address)).to be_nil
+      expect(check_as_default_address(default_address, nil)).to be_nil
+      expect(check_as_default_address(default_address, default_address)).to match 'checked: "checked"'
+      expect(check_as_default_address(nondefault_address, default_address)).to be_nil
+    end
+  end
 end
