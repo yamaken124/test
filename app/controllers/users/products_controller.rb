@@ -39,7 +39,7 @@ class Users::ProductsController < Users::BaseController
     end
 
     def set_images(variant_ids)
-      @images = Image.where(imageable_id: variant_ids, imageable_type: 'Variant').index_by(&:imageable_id) #TODO 両方写真があるとき！！
+      @images = Image.where(imageable_id: variant_ids, imageable_type: 'Variant').index_by(&:imageable_id)
     end
 
     def set_tax_rate
