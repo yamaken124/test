@@ -58,3 +58,8 @@
     color:$base_font_color;
   }
 }
+.field_with_errors {
+  .form__text--long{
+    background-color: #FFCCCC;
+  }
+}
