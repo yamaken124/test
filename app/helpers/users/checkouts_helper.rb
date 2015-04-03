@@ -4,6 +4,7 @@ module Users::CheckoutsHelper
   end
 
   def check_as_default_address(address, default_address)
+    return nil if address.nil? || default_address.nil?
     address.id == default_address.id ? 'checked: "checked"' : nil
   end
 end

@@ -46,9 +46,9 @@ class Address < ActiveRecord::Base
   def self.default_address(user)
     active_addresses = user.addresses.active
     if active_addresses.pluck(:is_main).none?
-      return active_addresses.first 
-    else 
-      return  active_addresses.find_by(is_main: true)
+      active_addresses.first
+    else
+      active_addresses.find_by(is_main: true)
     end
   end
 

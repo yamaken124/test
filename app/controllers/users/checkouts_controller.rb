@@ -25,7 +25,6 @@ class Users::CheckoutsController < Users::BaseController
   def update
     if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env)
       if @order.completed?
-        before_payment
         @current_order = nil
         flash['order_completed'] = true
         UserMailer.delay.send_order_accepted_notification(@order)
