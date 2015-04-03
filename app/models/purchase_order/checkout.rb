@@ -58,14 +58,19 @@ class PurchaseOrder < ActiveRecord::Base
               case "#{params[:state]}".to_sym
 
               when :payment
-                single_order_detail.used_point = params[:order][:used_point]
+								single_order_detail.used_point = \
+									if params[:order]['use_all_point'].to_b
+									 single_order_detail.allowed_max_use_point
+									else
+										params[:order][:used_point]
+									end
                 single_order_detail.paid_total = single_order_detail.total
                 OrderUpdater.new(single_order_detail).update_totals
                 attributes[:payment_attributes] = attributes[:payment_attributes].merge(payment_attributes_from_params(attributes))
                 raise 'payment_attributes_error.address_missing' unless has_address_attribtue?(attributes)
                 raise 'payment_attributes_error.credit_card_missing' unless has_credit_card_attribtue?(attributes)
-                raise 'payment_attributes_error.invalid_used_point' if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
-                raise 'payment_attributes_error.invalid_used_point' if attributes[:used_point] if (single_order_detail.item_total + single_order_detail.additional_tax_total) < attributes[:used_point].to_i
+                raise 'payment_attributes_error.invalid_used_point' if attributes[:used_point] && !valid_point?(single_order_detail.used_point)
+                raise 'payment_attributes_error.invalid_used_point' if attributes[:used_point] if (single_order_detail.item_total + single_order_detail.additional_tax_total) < single_order_detail.used_point
 
                 single_order_detail.update!(attributes)
 
