@@ -51,10 +51,10 @@ RSpec.describe Users::AddressesController, type: :controller do
         address: {
           last_name: "xxxx",
           first_name: "xxxx",
-          zipcode: "xxxx",
+          zipcode: "1500000",
           address: "xxxx",
           city: "xxxx",
-          phone: "xxxx"
+          phone: "09012341234"
         },
         continue: checkout_state_path(state: :payment)
       }

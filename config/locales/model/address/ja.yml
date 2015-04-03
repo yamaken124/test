@@ -1,5 +1,6 @@
 ja:
   attributes:
     city: 都道府県
-    zipcode: 郵便局
+    zipcode: 郵便番号
     phone: 電話番号
+    address: 市区町村以下

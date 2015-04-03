@@ -25,10 +25,10 @@ class Address < ActiveRecord::Base
 
   validates :last_name, presence: true
   validates :first_name, presence: true
-  validates :zipcode, presence: true
+  validates :zipcode, presence: true, format: { with: /\A\d{3}\-?\d{4}\z/ }
   validates :city, presence: true
   validates :address, presence: true
-  validates :phone, presence: true
+  validates :phone, presence: true, format: { with: /\A[0-9]{10,11}\z/ }
   validates_with AddressCountValidator, on: :create
 
   scope :active, -> { where(:deleted_at => nil) }
