@@ -9,7 +9,7 @@
     <ul class="p-payment_method_selections">
       <li class="p-payment_method_selection">
         <span>
-        商品: <%= number_to_jpy(@detail.item_total + @detail.additional_tax_total) %><br>
+        商品: <%= number_to_jpy(@detail.item_total_with_tax) %><br>
         配送料手数料: <%= number_to_jpy(@detail.shipment_total) %>
         </span>
       </li>

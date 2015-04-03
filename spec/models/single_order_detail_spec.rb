@@ -35,4 +35,12 @@ RSpec.describe SingleOrderDetail, type: :model do
     end
   end
 
+  describe 'item_total_with_tax' do
+    let(:single_order_detail) { build(:single_order_detail, item_total: 100, additional_tax_total: 8) }
+
+    it 'returns sum of item_total & additional_tax_total' do
+      expect(single_order_detail.item_total_with_tax).to eq 108
+    end
+  end
+
 end
