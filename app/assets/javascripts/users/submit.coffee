@@ -6,6 +6,8 @@
   return
 
 @prevent_double_submit_from_link_to = (number, event) ->
+  if !confirm('本当に商品をキャンセルしますか？')
+    return false
   if $("a#"+number).hasClass('disabled')
     event.preventDefault();
     event.stopPropagation();
