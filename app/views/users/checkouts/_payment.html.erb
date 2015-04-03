@@ -76,7 +76,7 @@
         </li>
       <% end %>
     </ul>
-    <h2 class="c-links__title">ポイント使用</h2>
+    <h2 class="c-links__title">マイル使用</h2>
     <ul class="p-payment_method_selections">
       <li class="p-payment_method_selection">
         <div class="p-payment_method_selection__radio">
@@ -91,7 +91,7 @@
         </div>
         <%= label_tag "order_use_all_point_false", "一部を使用", class: "p-payment_method_selection__title" %>
         <div class="p-payment_method__detail is-active">
-          <p>ポイント: </p>
+          <p>マイル: </p>
           <%= text_field_tag "order[used_point]", 0, min: 0, max: @max_use_point, class: 'p-payment_method__amount' %>
           <%#= text_field "order[used_point]", class: 'p-payment_method__amount' %>
           <p class="u-margin_short">Pt</p>
