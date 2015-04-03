@@ -65,6 +65,8 @@ class PurchaseOrder < ActiveRecord::Base
                 raise 'payment_attributes_error.address_missing' unless has_address_attribtue?(attributes)
                 raise 'payment_attributes_error.credit_card_missing' unless has_credit_card_attribtue?(attributes)
                 raise 'payment_attributes_error.invalid_used_point' if attributes[:used_point] && !valid_point?(attributes[:used_point].to_i)
+                raise 'payment_attributes_error.invalid_used_point' if attributes[:used_point] if (single_order_detail.item_total + single_order_detail.additional_tax_total) < attributes[:used_point].to_i
+
                 single_order_detail.update!(attributes)
 
               when :confirm

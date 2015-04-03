@@ -38,11 +38,6 @@ class SingleOrderDetail < ActiveRecord::Base
 
   paginates_per 5
 
-  validates :used_point,
-    numericality: {
-      less_than_or_equal_to: :total
-    }
-
   def single_payment
     payment ||= self.build_payment
   end
