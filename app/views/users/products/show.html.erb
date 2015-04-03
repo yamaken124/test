@@ -117,9 +117,11 @@
         </li>
       <% end %>
       <li class="p-list">
+<% if false %>
       <h3 class="u-margin__top10">商品詳細</h3>
-      <div class="p-list__description">
-        <%= @product.description %>
+<% end %>
+      <div class="p-list__description u-margin__top5">
+        <%= include_line_break(@product.description) %>
       </div>
       </li>
     </ul>
