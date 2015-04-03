@@ -92,7 +92,8 @@
         <%= label_tag "order_use_all_point_false", "一部を使用", class: "p-payment_method_selection__title" %>
         <div class="p-payment_method__detail is-active">
           <p>ポイント: </p>
-          <%= number_field_tag "order[used_point]", 0, min: 0, max: @wellness_mileage, class: 'p-payment_method__amount' %>
+          <%= text_field_tag "order[used_point]", 0, min: 0, max: @wellness_mileage, class: 'p-payment_method__amount' %>
+          <%#= text_field "order[used_point]", class: 'p-payment_method__amount' %>
           <p class="u-margin_short">Pt</p>
         </div>
       </li>
