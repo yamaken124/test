@@ -24,6 +24,8 @@ class Product < ActiveRecord::Base
 
   include TimeValidityChecker
 
+  AvailableQuantity = 12
+
   def available?
     (prices.present? && images.present?)
   end
@@ -36,9 +38,6 @@ class Product < ActiveRecord::Base
     end
   end
 
-  def available_quantity
-    12
-  end
 
   def single_price
     single_variants = variants.single_order

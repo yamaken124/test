@@ -1,5 +1,18 @@
 module GmoMultiPayment
   if Rails.env == "production"
+    Domain = "https://p01.mul-pay.jp"
+    SiteID = "mst2000000987"
+    SitePass = "kkrzf9mc"
+    ShopID = "9100090009978"
+    ShopPass = "6ebdh5wk"
+    Tax = 0.08
+    Check = "CHECK"
+    Auth = "AUTH"
+    Sales = "SALES"
+    Capture = "CAPTURE"
+    Void = "VOID"
+    Return = "RETURN"
+    ReturnNx = "RETURNNX"
   else
     Domain = "https://kt01.mul-pay.jp/"
     SiteID = "tsite00017219"

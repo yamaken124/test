@@ -25,10 +25,15 @@ Rails.application.routes.draw do
     namespace :oauth do
       resource :authorization, only: [:create] do
         get '/', action: :create
+        post 'sign_in_with_email_password', action: :sign_in_with_email_password
       end
     end
     resource :account, only: [:show] do
-      resources :addresses, only: [:index, :edit, :update, :new, :create, :destroy]
+      resources :addresses, only: [:index, :edit, :update, :new, :create, :destroy] do
+        collection do
+          get  'fetch_address_with_zipcode', action: :fetch_address_with_zipcode, :as => :fetch_address
+        end
+      end
     end
     resource :profile, only: [:edit, :create, :update] do
       resources :credit_cards, only: [:index, :new, :edit, :create, :destroy]
@@ -52,11 +57,11 @@ Rails.application.routes.draw do
         post 'request_send_back'
       end
     end
-    # resources :taxons, only: [:index, :show]
 
     get '/checkout/:state', :to => 'checkouts#edit', :as => :checkout_state
     patch '/checkout/:state', :to => 'checkouts#update', :as => :update_checkout
     get '/t/*id', :to => 'taxons#show', :as => :taxons #nested_taxon
+    get '/guidances/:name', :to => 'guidances#show', :as => :guidance
   end
 
   namespace :admins do

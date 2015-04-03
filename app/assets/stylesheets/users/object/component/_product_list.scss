@@ -4,7 +4,7 @@
   height:100px;
   margin-top:10px;
   .c-product_list__image{
-    width:120px;
+    width:90px;
     height:90px;
     float:left;
     img{
@@ -12,7 +12,7 @@
     }
   }
   .c-product__list_detail_wrapper{
-    height:90px;
+    height:100px;
     float:left;
     .c-product_list__title{
       margin-top:45px;
@@ -64,6 +64,7 @@
   .submit{
     width:58px;
     height:100%;
+    font-size:12px;
     float:left;
     border:1px solid $finc_color;
     border-radius:4px;
@@ -76,5 +77,6 @@
     width:75px;
     text-align:center;
     height: 22px;
+    line-height:22px;
   }
 }

@@ -38,11 +38,6 @@ class SingleOrderDetail < ActiveRecord::Base
 
   paginates_per 5
 
-  validates :used_point,
-    numericality: {
-      less_than_or_equal_to: :total
-    }
-
   def single_payment
     payment ||= self.build_payment
   end
@@ -79,6 +74,14 @@ class SingleOrderDetail < ActiveRecord::Base
 
   def can_send_back?
     Date.today - self.completed_on <= 14
+  end
+
+  def item_total_with_tax
+    item_total.to_i + additional_tax_total.to_i
+  end
+
+  def allowed_max_use_point
+    [item_total_with_tax, single_order.purchase_order.user.wellness_mileage].min
   end
 
 end

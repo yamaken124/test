@@ -4,8 +4,9 @@
   @media screen and (max-width: $max-width) {
     width: $max-width*0.8;
     height: $max-width*0.8;
-    border-radius:50%;
+    border-radius:($max-width*0.8)/2;
     margin:0 auto;
+    margin-top:20px;
     background-color:$finc_color;
   }
 }
@@ -13,7 +14,7 @@
   @media screen and (max-width: $max-width) {
     width: $max-width*0.6;
     height: $max-width*0.6;
-    border-radius:50%;
+    border-radius:($max-width*0.6)/2;
     margin:$max_width*0.1 $max_width*0.1;
     background-color:white;
     float:left;
@@ -31,7 +32,7 @@
       margin-top:20px;
       &:after{
         content: 'pt';
-        font-size:(10 * $max-width / 340);  
+        font-size:(10 * $max-width / 340);
       }
     }
   }

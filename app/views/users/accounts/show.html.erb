@@ -1,7 +1,7 @@
 <div class="p-point">
   <%if current_user.try(:profile).try(:name) %>
     <div class="c-top_notice">
-      こんにちは<%= current_user.try(:profile).try(:name) %>さん
+      こんにちは <%= current_user.try(:profile).try(:name) %>さん
     </div>
   <% end %>
 <% if false %>

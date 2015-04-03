@@ -6,14 +6,14 @@
       <span font color="red"><%= t(params['error_message'], :default => "入力項目に不備があります") if params['error_message'] %></p>
     </h2>
     <div class="c-btn--submit u-margin__bottom_middle">
-      <%= submit_tag "購入確認画面へ", class: 'c-btn--submit', :onclick=> "prevent_double_submit(this)" %>
+      <%= submit_tag "購入確認画面へ", class: 'c-btn--submit', :onclick=> "prevent_double_submit(event)" %>
     </div>
     <h2 class="c-links__title">お届先住所</h2>
     <ul class="c-links">
       <% @addresses.each do |address| %>
         <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
-            <%= radio_button_tag "order[address_id]", address.id, address.is_main ? 'checked: "checked"' : nil %>
+            <%= radio_button_tag "order[address_id]", address.id, check_as_default_address(address, @default_address) %>
           </div>
           <%= label_tag "order_address_id_#{address.id}",
            "#{address.name}<br>
@@ -83,7 +83,7 @@
           <%= radio_button_tag "order[use_all_point]", true %>
         </div>
         <%= label_tag "order_use_all_point_true", "全て使用", class: "p-payment_method_selection__title" %>
-        <p class="p-payment_method_selection__price"><%= @wellness_mileage %>Pt</p>
+        <p class="p-payment_method_selection__price"><%= @max_use_point %>Pt</p>
       </li>
       <li class="p-payment_method_selection">
         <div class="p-payment_method_selection__radio">
@@ -92,7 +92,8 @@
         <%= label_tag "order_use_all_point_false", "一部を使用", class: "p-payment_method_selection__title" %>
         <div class="p-payment_method__detail is-active">
           <p>ポイント: </p>
-          <%= number_field_tag "order[used_point]", 0, min: 0, max: @wellness_mileage, class: 'p-payment_method__amount' %>
+          <%= text_field_tag "order[used_point]", 0, min: 0, max: @max_use_point, class: 'p-payment_method__amount' %>
+          <%#= text_field "order[used_point]", class: 'p-payment_method__amount' %>
           <p class="u-margin_short">Pt</p>
         </div>
       </li>
@@ -119,7 +120,7 @@
       </div>
     <% end %>
     <div class="c-btn--submit">
-      <%= submit_tag "購入確認画面へ", class: 'c-btn--submit', :onclick=> "prevent_double_submit(this)" %>
+      <%= submit_tag "購入確認画面へ", class: 'c-btn--submit', :onclick=> "prevent_double_submit(event)" %>
     </div>
   </div>
 <%# TODO subscription %>
