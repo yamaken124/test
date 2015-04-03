@@ -23,8 +23,8 @@ FactoryGirl.define do
     first_name "MyString"
     address "MyString"
     city "MyString"
-    zipcode "MyString"
-    phone "MyString"
+    zipcode "1500000"
+    phone "09012341234"
     alternative_phone "MyString"
     is_main false
   end

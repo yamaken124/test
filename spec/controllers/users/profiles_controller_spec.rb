@@ -28,7 +28,7 @@ RSpec.describe Users::ProfilesController, type: :controller do
           first_name: "first",
           last_name_kana: "last",
           first_name_kana: "first",
-          phone: "phone" }
+          phone: "09012341234" }
       }
     }
     it "create profile" do
@@ -49,7 +49,7 @@ RSpec.describe Users::ProfilesController, type: :controller do
           first_name: "first",
           last_name_kana: "last",
           first_name_kana: "first",
-          phone: "phone" }
+          phone: "09012341234" }
       }
     }
     it "update profile" do
