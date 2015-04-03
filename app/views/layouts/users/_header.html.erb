@@ -1,6 +1,8 @@
 <div id="header">
   <div id="header__left_wrapper">
-    <%= image_tag "users/category.png", id: "header__pull_down", onclick: "show_category(this)" %>
+    <% unless request.path_info.include?("sign_in") %>
+      <%= image_tag "users/category.png", id: "header__pull_down", onclick: "show_category(this)" %>
+    <% end %>
   </div>
   <div id="header__center_wrapper">
     <%= link_to products_path do %>
