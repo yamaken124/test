@@ -81,7 +81,7 @@ class OrderUpdater
   end
 
   def update_used_point
-    order_detail.used_point = payment.used_point if payment
+    order_detail.used_point = payment.used_point if payment.try(:completed?)
   end
 
   def update_order_total

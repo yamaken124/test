@@ -20,7 +20,7 @@ class Payment < ActiveRecord::Base
             transitions from: :checkout, to: :processing
           end
 
-          event :completed, after: [:register_shipment, :set_dealed_datetime] do
+          event :completed, after: [:register_shipment, :set_dealed_datetime, :update_user_used_point] do
             transitions from: [:processing, :pending], to: :completed
           end
 
@@ -52,6 +52,11 @@ class Payment < ActiveRecord::Base
         def set_dealed_datetime
           order_detail = SingleOrderDetail.find(self.single_order_detail)
           order_detail.update(completed_at: Time.now)
+        end
+
+        def update_user_used_point
+          user.used_point_total += used_point
+          user.save
         end
 
         def cancel_order

@@ -92,6 +92,7 @@ class PurchaseOrder < ActiveRecord::Base
             payment_params["amount"] = single_order_detail.total
             payment_params["user_id"] = single_order_detail.single_order.purchase_order.user_id
             payment_params["address_id"] = attributes[:address_id]
+            payment_params["used_point"] = single_order_detail.used_point
             payment_params
           end
 
