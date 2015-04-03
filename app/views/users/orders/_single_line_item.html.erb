@@ -20,7 +20,7 @@
     </div>
   </div>
   <div class="c-product_list__detail">
-    <%= item_form.select :quantity,  (1..100).map{|i| [i,i]}%>
+    <%= item_form.select :quantity,  (1..Product::AvailableQuantity).map{|i| [i,i]}%>
     <%= item_form.hidden_field :variant_id %>
     <%= item_form.hidden_field :id %>
     <%= item_form.submit "数量変更", class: "submit u-margin__left_short" %>
