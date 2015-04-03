@@ -7,7 +7,7 @@
     <a href="<%= admins_product_path(id: @product.id) %>" class="btn btn-success btn-sm" data-method="delete">
       <i class="fa fa-trash-o"></i>削除
     </a>
- 
+
     <div class="u-float_right">
       <a href="<%= new_admins_product_path %>" class="btn btn-danger">商品追加</a>
     </div>
@@ -33,7 +33,7 @@
     <% end %>
     <tr>
       <th>説明</th>
-      <td><%= @product.description %></td>
+      <td><%= simple_format(@product.description)%></td>
     </tr>
     <tr>
       <th>販売開始</th><td><%= @product.is_valid_at.strftime("%Y/%m/%d %H:%M") %></td>
