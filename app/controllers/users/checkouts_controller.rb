@@ -25,6 +25,7 @@ class Users::CheckoutsController < Users::BaseController
   def update
     if @order.update_from_params(params, permitted_checkout_attributes, request.headers.env)
       if @order.completed?
+        before_payment
         @current_order = nil
         flash['order_completed'] = true
         UserMailer.delay.send_order_accepted_notification(@order)
@@ -120,6 +121,7 @@ class Users::CheckoutsController < Users::BaseController
       @gmo_cards = GmoMultiPayment::Card.new(current_user).search
       @addresses = current_user.addresses.active
       @wellness_mileage = current_user.wellness_mileage
+      @default_address = Address.default_address(current_user)
     end
 
     def before_confirm

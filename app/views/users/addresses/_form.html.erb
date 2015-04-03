@@ -34,9 +34,6 @@
     <%= f.label :first_name, "名" %>
     <%= f.text_field :first_name, value: @first_name, class: "form__text--long" %>
   </div>
-  <div class="form__field">
-    <%= f.check_box :is_main, {}, true, false %><%= f.label :is_main, "#{t('address.is_main')}に設定する"%>
-  </div>
   <%= hidden_field_tag "continue", @continue %>
   <div class="form__field">
     <% if @address.id.blank? %>
