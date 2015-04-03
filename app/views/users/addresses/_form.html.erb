@@ -40,7 +40,7 @@
   <%= hidden_field_tag "continue", @continue %>
   <div class="form__field">
     <% if @address.id.blank? %>
-      <%= f.submit "登録", class: "c-btn--submit", :onclick=> "prevent_double_submit(this)" %>
+      <%= f.submit "登録", class: "c-btn--submit", :onclick=> "prevent_double_submit(event)" %>
     <% else %>
       <div class="c-btn--delete--half">
         <%= link_to "削除", account_address_path(id: address.id), class: "u-white_font_color", data: {method: :delete, confirm: "本当に削除しますか？"} %>
