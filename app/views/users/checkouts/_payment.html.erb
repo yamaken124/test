@@ -4,125 +4,129 @@
       カート小計(<%=@detail.item_count%>個の商品):
       <span><%=number_to_jpy(@detail.item_total * @tax_rate)%></span><br>
       <span font color="red"><%= t(params['error_message'], :default => "入力項目に不備があります") if params['error_message'] %></p>
-    </h2>
-    <div class="c-btn--submit u-margin__bottom_middle">
-      <%= submit_tag "購入確認画面へ", class: 'c-btn--submit', :onclick=> "prevent_double_submit(event)" %>
-    </div>
-    <h2 class="c-links__title">お届先住所</h2>
-    <ul class="c-links">
-      <% @addresses.each do |address| %>
-        <li class="c-link--small_text--nolink">
+      </h2>
+      <div class="c-btn--submit u-margin__bottom_middle">
+        <%= submit_tag "購入確認画面へ", class: 'c-btn--submit', :onclick=> "prevent_double_submit(event)" %>
+      </div>
+      <h2 class="c-links__title">お届先住所</h2>
+      <ul class="c-links">
+        <% @addresses.each do |address| %>
+          <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
             <%= radio_button_tag "order[address_id]", address.id, check_as_default_address(address, @default_address) %>
           </div>
           <%= label_tag "order_address_id_#{address.id}",
-           "#{address.name}<br>
-           #{address.full_address}".html_safe %>
-        </li>
-      <% end %>
-      <% if @addresses.size < Address::UpperLimit %>
-        <%= link_to(new_account_address_path(continue: checkout_state_path(state: :payment))) do %>
-          <li class="c-link">新規住所登録</li>
-        <% end %>
-      <% else %>
-        <li class="c-link"><%= t('validate_registration.address') %></li>
-      <% end %>
-    </ul>
-    <h2 class="c-links__title">支払い方法</h2>
-    <ul class="c-links u-margin__bottom_middle">
-      <li class="c-link--nolink">
-        <div class="c-link__radio_div">
-          <%= radio_button_tag "order[payment_attributes[payment_method_id]]", 1, nil, :onclick=> "payment_method_change(this.value)", checked: "checked" %>
-        </div>
-        <p>
-        <%= label_tag "payment_method_id_1", "クレジット" %>
-      </li>
-<% if false #FIXME%>
-      <li class="c-link--nolink">
-        <div class="c-link__radio_div">
-          <%= radio_button_tag "order[payment_attributes[payment_method_id]]", 2, nil, :onclick=> "payment_method_change(this.value)" %>
-        </div>
-        <%= label_tag "payment_method_id_2", "後払い決済" %>
-      </li>
-<% end %>
-    </ul>
-    <ul class="c-links js-credit">
-      <% @gmo_cards.each_with_index do |gmo_card, i| %>
-        <li class="c-link--small_text--nolink">
+            "#{address.name}<br>
+            #{address.full_address}".html_safe %>
+            </li>
+          <% end %>
+          <% if @addresses.size < Address::UpperLimit %>
+            <div class="error_highlight">
+              <%= link_to(new_account_address_path(continue: checkout_state_path(state: :payment))) do %>
+                <li class="c-link">新規住所登録</li>
+              <% end %>
+            </div>
+          <% else %>
+            <li class="c-link"><%= t('validate_registration.address') %></li>
+          <% end %>
+        </ul>
+        <h2 class="c-links__title">支払い方法</h2>
+        <ul class="c-links u-margin__bottom_middle">
+          <li class="c-link--nolink">
           <div class="c-link__radio_div">
-            <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq], i == 0 ? 'checked: "checked"' : nil %>
+            <%= radio_button_tag "order[payment_attributes[payment_method_id]]", 1, nil, :onclick=> "payment_method_change(this.value)", checked: "checked" %>
           </div>
-          <%= label_tag "order_payment_attributes_gmo_card_seq_temporary_#{gmo_card[:CardSeq]}", "番号：#{gmo_card[:CardNo]}<br />有効期限：#{gmo_card[:Expire]}".html_safe %>
-        </li>
-      <% end %>
-      <% if @gmo_cards.size < GmoMultiPayment::Card::UpperLimit %>
-        <%= link_to(new_profile_credit_card_path(continue: checkout_state_path(state: :payment))) do %>
-          <li class="c-link">新規クレジット登録</li>
+          <p>
+          <%= label_tag "payment_method_id_1", "クレジット" %>
+          </li>
+          <% if false #FIXME%>
+            <li class="c-link--nolink">
+            <div class="c-link__radio_div">
+              <%= radio_button_tag "order[payment_attributes[payment_method_id]]", 2, nil, :onclick=> "payment_method_change(this.value)" %>
+            </div>
+            <%= label_tag "payment_method_id_2", "後払い決済" %>
+            </li>
+          <% end %>
+        </ul>
+        <ul class="c-links js-credit">
+          <% @gmo_cards.each_with_index do |gmo_card, i| %>
+            <li class="c-link--small_text--nolink">
+            <div class="c-link__radio_div">
+              <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq], i == 0 ? 'checked: "checked"' : nil %>
+            </div>
+            <%= label_tag "order_payment_attributes_gmo_card_seq_temporary_#{gmo_card[:CardSeq]}", "番号：#{gmo_card[:CardNo]}<br />有効期限：#{gmo_card[:Expire]}".html_safe %>
+            </li>
+          <% end %>
+          <% if @gmo_cards.size < GmoMultiPayment::Card::UpperLimit %>
+            <div class="error_highlight">
+              <%= link_to(new_profile_credit_card_path(continue: checkout_state_path(state: :payment))) do %>
+                <li class="c-link">新規クレジット登録</li>
+              <% end %>
+            </div>
+          <% else %>
+            <li class="c-link"><%= t('validate_registration.address') %></li>
+          <% end %>
+        </ul>
+        <ul class="c-links js-cresit">
+          <% @gmo_cards.each do |gmo_card| %>
+            <li class="c-link--small_text--nolink">
+            <div class="c-link__radio_div">
+              <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq] %>
+            </div>
+            <span>
+              番号：<%= gmo_card[:CardNo] %> <br />
+              有効期限： <%= gmo_card[:Expire] %>
+            </span>
+            </li>
+          <% end %>
+        </ul>
+        <h2 class="c-links__title">マイル使用</h2>
+        <ul class="p-payment_method_selections">
+          <li class="p-payment_method_selection">
+          <div class="p-payment_method_selection__radio">
+            <%= radio_button_tag "order[use_all_point]", true %>
+          </div>
+          <%= label_tag "order_use_all_point_true", "全て使用", class: "p-payment_method_selection__title" %>
+          <p class="p-payment_method_selection__price"><%= @max_use_point %>Pt</p>
+          </li>
+          <li class="p-payment_method_selection">
+          <div class="p-payment_method_selection__radio">
+            <%= radio_button_tag "order[use_all_point]", false, checked: true %>
+          </div>
+          <%= label_tag "order_use_all_point_false", "一部を使用", class: "p-payment_method_selection__title" %>
+          <div class="p-payment_method__detail is-active">
+            <p>マイル: </p>
+            <%= text_field_tag "order[used_point]", 0, min: 0, max: @max_use_point, class: 'p-payment_method__amount' %>
+            <%#= text_field "order[used_point]", class: 'p-payment_method__amount' %>
+            <p class="u-margin_short">Pt</p>
+          </div>
+          </li>
+        </ul>
+        <h2 class="c-links__title">購入詳細</h2>
+        <% if false #FIXME %>
+          <div class="c-payment_method_section">
+            購入形式: <%= t('order_type.single_order') %>
+          </div>
         <% end %>
-      <% else %>
-        <li class="c-link"><%= t('validate_registration.address') %></li>
-      <% end %>
-    </ul>
-    <ul class="c-links js-cresit">
-      <% @gmo_cards.each do |gmo_card| %>
-        <li class="c-link--small_text--nolink">
-          <div class="c-link__radio_div">
-            <%= radio_button_tag "order[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq] %>
+        <% @items.each do |item| %>
+          <div class="c-product_list">
+            <div class="c-product_list__image">
+              <%= image_tag item.images.first.image.url %>
+            </div>
+            <div class="c-product__list_detail_wrapper">
+              <div class="c-product_list__title">
+                <%= item.name %>
+              </div>
+              <div class="c-product_list__price">
+                <%= number_to_jpy(item.price.amount * @tax_rate) %>(<%= @single_line_items.where(variant_id: item.id).pluck(:quantity).first %>個)
+              </div>
+            </div>
           </div>
-          <span>
-            番号：<%= gmo_card[:CardNo] %> <br />
-            有効期限： <%= gmo_card[:Expire] %>
-          </span>
-        </li>
-      <% end %>
-    </ul>
-    <h2 class="c-links__title">マイル使用</h2>
-    <ul class="p-payment_method_selections">
-      <li class="p-payment_method_selection">
-        <div class="p-payment_method_selection__radio">
-          <%= radio_button_tag "order[use_all_point]", true %>
-        </div>
-        <%= label_tag "order_use_all_point_true", "全て使用", class: "p-payment_method_selection__title" %>
-        <p class="p-payment_method_selection__price"><%= @max_use_point %>Pt</p>
-      </li>
-      <li class="p-payment_method_selection">
-        <div class="p-payment_method_selection__radio">
-          <%= radio_button_tag "order[use_all_point]", false, checked: true %>
-        </div>
-        <%= label_tag "order_use_all_point_false", "一部を使用", class: "p-payment_method_selection__title" %>
-        <div class="p-payment_method__detail is-active">
-          <p>マイル: </p>
-          <%= text_field_tag "order[used_point]", 0, min: 0, max: @max_use_point, class: 'p-payment_method__amount' %>
-          <%#= text_field "order[used_point]", class: 'p-payment_method__amount' %>
-          <p class="u-margin_short">Pt</p>
-        </div>
-      </li>
-    </ul>
-    <h2 class="c-links__title">購入詳細</h2>
-<% if false #FIXME %>
-      <div class="c-payment_method_section">
-        購入形式: <%= t('order_type.single_order') %>
-      </div>
-<% end %>
-    <% @items.each do |item| %>
-      <div class="c-product_list">
-        <div class="c-product_list__image">
-          <%= image_tag item.images.first.image.url %>
-        </div>
-        <div class="c-product__list_detail_wrapper">
-          <div class="c-product_list__title">
-            <%= item.name %>
-          </div>
-          <div class="c-product_list__price">
-            <%= number_to_jpy(item.price.amount * @tax_rate) %>(<%= @single_line_items.where(variant_id: item.id).pluck(:quantity).first %>個)
-          </div>
+        <% end %>
+        <div class="c-btn--submit">
+          <%= submit_tag "購入確認画面へ", class: 'c-btn--submit', :onclick=> "prevent_double_submit(event)" %>
         </div>
       </div>
-    <% end %>
-    <div class="c-btn--submit">
-      <%= submit_tag "購入確認画面へ", class: 'c-btn--submit', :onclick=> "prevent_double_submit(event)" %>
-    </div>
-  </div>
-<%# TODO subscription %>
+      <%# TODO subscription %>
 
-<% end %>
+    <% end %>
