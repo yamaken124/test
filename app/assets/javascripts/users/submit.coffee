@@ -1,4 +1,20 @@
 @prevent_double_submit = (event) ->
+  url = location.pathname
+  if url.match(/checkout\/payment/)
+    if !$("input:radio[name='order[address_id]']:checked").val()
+      $('.address-highlighted').addClass('error_highlight')
+      $('.c-payment_jquery_notice').text('お届け先が選択されていません')
+      event.preventDefault();
+      event.stopPropagation();
+      return false
+
+    if !$("input:radio[name='order[payment_attributes[gmo_card_seq_temporary]]']:checked").val()
+      $('.credit-highlighted').addClass('error_highlight')
+      $('.c-payment_jquery_notice').text('クレジットカードが選択されていません')
+      event.preventDefault();
+      event.stopPropagation();
+      return false
+
   $('.c-btn--submit--single').val('送信中...')
   if $('.c-btn--submit--single').hasClass('disabled')
     event.preventDefault();

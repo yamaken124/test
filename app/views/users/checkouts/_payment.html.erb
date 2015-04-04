@@ -3,7 +3,7 @@
     <h2 class="title">
       カート小計(<%=@detail.item_count%>個の商品):
       <span><%=number_to_jpy(@detail.item_total * @tax_rate)%></span><br>
-      <span font color="red"><%= t(params['error_message'], :default => "入力項目に不備があります") if params['error_message'] %></p>
+      <div class="c-payment_jquery_notice"><%= t(params['error_message'], :default => "入力項目に不備があります") if params['error_message'] %></div>
     </h2>
     <div class="c-btn--submit u-margin__bottom_middle">
       <%= submit_tag "購入確認画面へ", class: 'c-btn--submit c-btn--submit--single', :onclick=> "prevent_double_submit(event)" %>
@@ -21,7 +21,7 @@
             </li>
           <% end %>
           <% if @addresses.size < Address::UpperLimit %>
-            <div class="error_highlight">
+            <div class="address-highlighted">
               <%= link_to(new_account_address_path(continue: checkout_state_path(state: :payment))) do %>
                 <li class="c-link">新規住所登録</li>
               <% end %>
@@ -58,7 +58,7 @@
             </li>
           <% end %>
           <% if @gmo_cards.size < GmoMultiPayment::Card::UpperLimit %>
-            <div class="error_highlight">
+            <div class="credit-highlighted">
               <%= link_to(new_profile_credit_card_path(continue: checkout_state_path(state: :payment))) do %>
                 <li class="c-link">新規クレジット登録</li>
               <% end %>
