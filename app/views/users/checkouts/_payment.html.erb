@@ -4,14 +4,14 @@
       カート小計(<%=@detail.item_count%>個の商品):
       <span><%=number_to_jpy(@detail.item_total * @tax_rate)%></span><br>
       <span font color="red"><%= t(params['error_message'], :default => "入力項目に不備があります") if params['error_message'] %></p>
-      </h2>
-      <div class="c-btn--submit u-margin__bottom_middle">
-        <%= submit_tag "購入確認画面へ", class: 'c-btn--submit', :onclick=> "prevent_double_submit(event)" %>
-      </div>
-      <h2 class="c-links__title">お届先住所</h2>
-      <ul class="c-links">
-        <% @addresses.each do |address| %>
-          <li class="c-link--small_text--nolink">
+    </h2>
+    <div class="c-btn--submit u-margin__bottom_middle">
+      <%= submit_tag "購入確認画面へ", class: 'c-btn--submit c-btn--submit--single', :onclick=> "prevent_double_submit(event)" %>
+    </div>
+    <h2 class="c-links__title">お届先住所</h2>
+    <ul class="c-links">
+      <% @addresses.each do |address| %>
+        <li class="c-link--small_text--nolink">
           <div class="c-link__radio_div">
             <%= radio_button_tag "order[address_id]", address.id, check_as_default_address(address, @default_address) %>
           </div>
@@ -123,10 +123,10 @@
             </div>
           </div>
         <% end %>
-        <div class="c-btn--submit">
-          <%= submit_tag "購入確認画面へ", class: 'c-btn--submit', :onclick=> "prevent_double_submit(event)" %>
-        </div>
-      </div>
-      <%# TODO subscription %>
+    <div class="c-btn--submit">
+      <%= submit_tag "購入確認画面へ", class: 'c-btn--submit c-btn--submit--single', :onclick=> "prevent_double_submit(event)" %>
+    </div>
+  </div>
+<%# TODO subscription %>
 
     <% end %>
