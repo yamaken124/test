@@ -16,5 +16,11 @@
 require 'rails_helper'
 
 RSpec.describe Profile, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'self.phone_regexp' do
+    subject { Profile.phone_regexp }
+    it { is_expected.to match '08012345678' }
+    it { is_expected.to match '0801234567' }
+    it { is_expected.not_to match '080123456' }
+    it { is_expected.not_to match '080123456789' }
+  end
 end
