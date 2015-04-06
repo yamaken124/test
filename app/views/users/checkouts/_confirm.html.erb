@@ -3,7 +3,7 @@
   <div class="p-wrapper--have_padding">
     <h2 class="title">注文確定</h2>
     <div class="u-margin__bottom_middle">
-      <%= submit_tag "注文の確定", class: 'c-btn--submit', :onclick=> "prevent_double_submit(event)" %>
+      <%= submit_tag "注文の確定", class: 'c-btn--submit c-btn--submit--single', :onclick=> "prevent_double_submit(event)" %>
     </div>
     <h2 class="c-links__title">注文内容</h2>
     <ul class="p-payment_method_selections">
@@ -62,7 +62,7 @@
       </div>
     <% end %>
     <div class="c-btn--submit">
-      <%= submit_tag "注文の確定", class: 'c-btn--submit', :onclick=> "prevent_double_submit(event)" %>
+      <%= submit_tag "注文の確定", class: 'c-btn--submit c-btn--submit--single', :onclick=> "prevent_double_submit(event)" %>
     </div>
   </div>
 

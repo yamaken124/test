@@ -1,8 +1,24 @@
 @prevent_double_submit = (event) ->
-  $('.c-btn--submit').val('送信中...')
-  if $('.c-btn--submit').hasClass('disabled')
+  url = location.pathname
+  if url.match(/checkout\/payment/)
+    if !$("input:radio[name='order[address_id]']:checked").val()
+      $('.address-highlighted').addClass('error_highlight')
+      $('.c-payment_jquery_notice').text('お届け先が選択されていません')
+      event.preventDefault();
+      event.stopPropagation();
+      return false
+
+    if !$("input:radio[name='order[payment_attributes[gmo_card_seq_temporary]]']:checked").val()
+      $('.credit-highlighted').addClass('error_highlight')
+      $('.c-payment_jquery_notice').text('クレジットカードが選択されていません')
+      event.preventDefault();
+      event.stopPropagation();
+      return false
+
+  $('.c-btn--submit--single').val('送信中...')
+  if $('.c-btn--submit--single').hasClass('disabled')
     event.preventDefault();
-  $('.c-btn--submit').addClass('disabled')
+  $('.c-btn--submit--single').addClass('disabled')
   return
 
 @prevent_double_submit_from_link_to = (number, event) ->
@@ -19,15 +35,15 @@
 
 $ -> #for safari
   window.onpageshow = (event) ->
-    $('.c-btn--submit').removeClass('disabled')
+    $('.c-btn--submit--single').removeClass('disabled')
     if event.persisted
       url = location.href
       if url.match(/cart/)
-        $('.c-btn--submit').val('レジに進む')
+        $('.c-btn--submit--single').val('レジに進む')
       else if url.match(/checkout\/payment/) || url.match(/checkout\/confirm/)
         window.location.replace(/cart/)
-      else if url.match(/addresses\/new/)
-        $('.c-btn--submit').val('登録する')
-      else if url.match(/credit_cards\/new/)
-        $('.c-btn--submit').val('登録する')
+      else if url.match(/addresses/)
+        $('.c-btn--submit--single').val('登録する')
+      else if url.match(/credit_cards/)
+        $('.c-btn--submit--single').val('登録する')
     return

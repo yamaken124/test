@@ -28,16 +28,16 @@
   </div>
   <div class="form__field">
     <%= f.label :last_name, "姓" %>
-    <%= f.text_field :last_name, value: @last_name, autofocus: true, class: "form__text--long" %>
+    <%= f.text_field :last_name, value: set_last_name(request.referer, @address), autofocus: true, class: "form__text--long" %>
   </div>
   <div class="form__field">
     <%= f.label :first_name, "名" %>
-    <%= f.text_field :first_name, value: @first_name, class: "form__text--long" %>
+    <%= f.text_field :first_name, value: set_first_name(request.referer, @address), class: "form__text--long" %>
   </div>
   <%= hidden_field_tag "continue", @continue %>
   <div class="form__field">
     <% if @address.id.blank? %>
-      <%= f.submit "登録", class: "c-btn--submit", :onclick=> "prevent_double_submit(event)" %>
+      <%= f.submit "登録", class: "c-btn--submit c-btn--submit--single", :onclick=> "prevent_double_submit(event)" %>
     <% else %>
       <div class="c-btn--delete--half">
         <%= link_to "削除", account_address_path(id: address.id), class: "u-white_font_color", data: {method: :delete, confirm: "本当に削除しますか？"} %>

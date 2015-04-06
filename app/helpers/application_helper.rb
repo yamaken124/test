@@ -4,4 +4,9 @@ module ApplicationHelper
     "￥#{number_to_currency(numeric, unit: '', precision: 0)}"
   end
 
+  def include_line_break(text)
+    return text if text.blank?
+    sanitize text.gsub(/\r\n|\r|\n/, "<br />"), :tag => %w(br)
+  end
+
 end
