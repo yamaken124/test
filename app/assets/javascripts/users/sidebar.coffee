@@ -7,11 +7,10 @@
     $(".js-fixed-contents").animate({'left' : 0 }, speed);
     $(".sidebar").toggleClass('open')
   else
+    $('body').css('position', 'fixed')
     $(".js-fixed-contents").animate({'left' : sideWidth }, speed);
     $('.sidebar').animate({'left' : 0 }, speed);
     $(".sidebar").toggleClass('open')
-    $(".js-fixed-contents").addClass('with_shadow');
-    $('body').css('position', 'fixed')
   return
 
 $ ->
