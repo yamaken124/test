@@ -2,15 +2,16 @@
   sideWidth = $('.sidebar').outerWidth()
   speed=300
   if $(".sidebar").hasClass('open')
-    $('body').css({'position', 'relative'})
+    $('body').css('position', 'relative')
     $('.sidebar').animate({'left' : (-1)*sideWidth }, speed);
     $(".js-fixed-contents").animate({'left' : 0 }, speed);
     $(".sidebar").toggleClass('open')
   else
-    $('body').css({'position', 'fixed'})
     $(".js-fixed-contents").animate({'left' : sideWidth }, speed);
     $('.sidebar').animate({'left' : 0 }, speed);
     $(".sidebar").toggleClass('open')
+    $(".js-fixed-contents").addClass('with_shadow');
+    $('body').css('position', 'fixed')
   return
 
 $ ->
