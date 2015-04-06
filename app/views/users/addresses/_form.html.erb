@@ -1,5 +1,6 @@
 <%= form_for([:account, @address], html: { id: "form" }) do |f| %>
   <h2>お届け先住所登録</h2>
+  <div id="zipcode_error_message"></div>
   <% if @address.errors.any? %>
     <div id="error_explanation">
       <h2><%= @address.errors.count %>件のエラーが発生しました。</h2>
@@ -10,17 +11,19 @@
       </ul>
     </div>
   <% end %>
- <div class="form__field">
+  <div class="form__field">
     <%= f.label :zipcode, "郵便番号" %>
-    <%= f.text_field :zipcode, autofocus: false, class: "form__text--long", id: "jquery__address-zipcode", placeholder: "1500000" %>
+    <%= text_field_tag "address[first_zipcode]", nil, autofocus: true, class: "form__text--short jquery__address-zipcode", placeholder: "150", value: (@address.zipcode[0,3] if @address.zipcode.present?) %>
+    <span class="p-address_bar">ー</span>
+    <%= text_field_tag "address[last_zipcode]", nil, :class => "form__text--short jquery__address-zipcode", placeholder: "0001", value: (@address.zipcode[3,4] if @address.zipcode.present?) %>
   </div>
   <div class="form__field">
     <%= f.label :city, "都道府県" %>
-    <%= f.text_field :city, autofocus: false, class: "form__text--long", id: "jquery__address-pref", placeholder: "東京" %>
+    <%= f.text_field :city, class: "form__text--long", id: "jquery__address-pref", placeholder: "東京" %>
   </div>
   <div class="form__field">
     <%= f.label :address, "市区町村以下" %>
-    <%= f.text_field :address, autofocus: false, class: "form__text--long", id: "jquery__address-city", placeholder: "中央区銀座3-9-6" %>
+    <%= f.text_field :address, class: "form__text--long", id: "jquery__address-city", placeholder: "中央区銀座3-9-6" %>
   </div>
   <div class="form__field">
     <%= f.label :phone, "電話番号" %>
@@ -28,11 +31,11 @@
   </div>
   <div class="form__field">
     <%= f.label :last_name, "姓" %>
-    <%= f.text_field :last_name, value: set_last_name(request.referer, @address), autofocus: true, class: "form__text--long" %>
+    <%= f.text_field :last_name, value: set_last_name, class: "form__text--long" %>
   </div>
   <div class="form__field">
     <%= f.label :first_name, "名" %>
-    <%= f.text_field :first_name, value: set_first_name(request.referer, @address), class: "form__text--long" %>
+    <%= f.text_field :first_name, value: set_first_name, class: "form__text--long" %>
   </div>
   <%= hidden_field_tag "continue", @continue %>
   <div class="form__field">

@@ -14,6 +14,15 @@
       event.preventDefault();
       event.stopPropagation();
       return false
+  if url.match(/address/)
+    firstZipcode = $('#address_first_zipcode').val()
+    lastZipcode = $('#address_last_zipcode').val()
+    if !( (firstZipcode.length==3) && (lastZipcode.length==4) )
+      $('#zipcode_error_message').text('郵便番号が不正な値です')
+      $('.jquery__address-zipcode').addClass('error_highlight')
+      event.preventDefault();
+      event.stopPropagation();
+      return false
 
   $('.c-btn--submit--single').val('送信中...')
   if $('.c-btn--submit--single').hasClass('disabled')
@@ -33,7 +42,7 @@
   $("a#"+number).addClass('disabled')
   return
 
-$ -> #for safari
+$ ->
   window.onpageshow = (event) ->
     $('.c-btn--submit--single').removeClass('disabled')
     if event.persisted
