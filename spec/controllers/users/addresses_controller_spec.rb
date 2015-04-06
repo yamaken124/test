@@ -51,7 +51,8 @@ RSpec.describe Users::AddressesController, type: :controller do
         address: {
           last_name: "xxxx",
           first_name: "xxxx",
-          zipcode: "1500000",
+          first_zipcode: "150",
+          last_zipcode: "0001",
           address: "xxxx",
           city: "xxxx",
           phone: "09012341234"
@@ -71,7 +72,7 @@ RSpec.describe Users::AddressesController, type: :controller do
     let(:params) do
       {
         id: address.id,
-        address: attributes_for(:address, address: "updated_address")
+        address: attributes_for(:address, address: "updated_address", first_zipcode: "150", last_zipcode: "0001")
       }
     end
 

@@ -1,16 +1,16 @@
 module Users::AddressesHelper
-  def set_first_name(referer, address)
-    if request.referer.include?("addresses/new") 
+  def set_first_name
+    if params["action"] == "edit"
       @address.first_name
-    else 
+    else #new
       current_user.try(:profile).try(:first_name)
     end
   end
 
- def set_last_name(referer, address)
-    if request.referer.include?("addresses/new") 
+ def set_last_name
+    if params["action"] == "edit"
       @address.last_name
-    else 
+    else #new
       current_user.try(:profile).try(:last_name)
     end
   end
