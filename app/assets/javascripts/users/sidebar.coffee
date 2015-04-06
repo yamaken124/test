@@ -3,8 +3,8 @@
   speed=300
   if $(".sidebar").hasClass('open')
     $('body').css('position', 'relative')
-    $('.sidebar').animate({'left' : (-1)*sideWidth }, speed);
     $(".js-fixed-contents").animate({'left' : 0 }, speed);
+    $('.sidebar').animate({'left' : (-1)*sideWidth }, speed);
     $(".sidebar").toggleClass('open')
   else
     $('body').css('position', 'fixed')
