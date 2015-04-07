@@ -272,7 +272,8 @@ ja:
   payment_attributes_error:
     credit_card_missing: "クレジットカードを登録してください"
     address_missing: "住所を登録してください"
-    invalid_used_point: "ポイントが正しくありません"
+    invalid_used_point: "使用するマイルが不正な値です"
+    used_point_over_limit: "注文あたり%{limit}マイル以上使うことはできません"
 
   user_oauth:
     sign_in: "ログイン"
