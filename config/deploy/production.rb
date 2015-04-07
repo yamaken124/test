@@ -7,6 +7,7 @@ set :unicorn_rack_env, 'production'
 set :bundle_without,  [:development, :test, :heroku_staging, :staging]
 
 set :application_server_addrs, [
+  '52.68.107.110',
   '52.68.54.175'
 ]
 
