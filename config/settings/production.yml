@@ -20,6 +20,7 @@ mailer:
   user_mailer:
     user_name: 'info@finc.co.jp'
     password: 20120411
+    from: FiNC Store管理者 <info@finc.co.jp>
     bcc: ['info@finc.co.jp', 'sekine@finc.co.jp', 'sato@finc.co.jp', 'engineers_finc@googlegroups.com']
   default_url_options:
     host: 'store.finc.co.jp'
