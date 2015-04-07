@@ -1,9 +1,4 @@
 deployment:
-  heroku:
-    branch: master
-    commands:
-      - .circle/heroku.sh:
-          timeout: 300
   production:
     branch: 'deploy/production'
     commands:
