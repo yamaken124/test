@@ -14,7 +14,7 @@
         <% end %>
         <% if single_price %>
           <p class="c-product__price_value">
-          <%= number_to_jpy(single_price.amount * @tax_rate) %><%=t('tax.included') %>
+          <%= number_to_jpy(single_price.amount) %><%=t('tax.included') %>
           </p>
         <% end %>
       </div>
@@ -24,7 +24,7 @@
         <% end %>
         <% if(subscription_price) %>
           <p class="c-product__price_value">
-            <%= number_to_jpy(subscription_price.amount * @tax_rate) %>
+            <%= number_to_jpy(subscription_price.amount) %>
           </p>
         <% end %>
       </div>

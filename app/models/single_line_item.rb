@@ -22,7 +22,7 @@ class SingleLineItem < ActiveRecord::Base
   has_many :returned_items
   belongs_to :variant
   belongs_to :single_order_detail
-  belongs_to :tax_rate
+  # belongs_to :tax_rate
 
   scope :except_canceled, -> { where.not(payment_state: SingleLineItem.payment_states[:canceled]) }
   scope :canceled_items, -> { where(payment_state: SingleLineItem.payment_states[:canceled]) }
@@ -30,16 +30,17 @@ class SingleLineItem < ActiveRecord::Base
   after_save :destroy_if_order_detail_is_blank, if: Proc.new { |item| item.quantity.zero? }
 
   def update_tax_adjustments
-    additional_tax_total = (price * quantity * valid_tax_rate.amount).floor
+    additional_tax_total = (price * quantity).floor
+    # additional_tax_total = (price * quantity * valid_tax_rate.amount).floor
   end
 
-  def valid_tax_rate
-    if tax_rate.nil? || tax_rate.invalid?
-      TaxRate.valid.first
-    else
-      tax_rate
-    end
-  end
+  # def valid_tax_rate
+  #   if tax_rate.nil? || tax_rate.invalid?
+  #     TaxRate.valid.first
+  #   else
+  #     tax_rate
+  #   end
+  # end
 
   def destroy_if_order_detail_is_blank
     destroy

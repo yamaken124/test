@@ -4,7 +4,6 @@ class Users::OrdersController < Users::BaseController
 
   before_action :assign_order_with_lock, only: [:edit, :update, :remove_item]
   before_action :set_variants, only: [:edit]
-  before_action :set_tax_rate
   # before_action :apply_coupon_code, only: :update
 
   def index
@@ -126,10 +125,6 @@ class Users::OrdersController < Users::BaseController
     def set_variants
       @variants = @order.variants
       .includes(:images)
-    end
-
-    def set_tax_rate
-      @tax_rate = TaxRate.rating
     end
 
 end

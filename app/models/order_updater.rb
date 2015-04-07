@@ -30,10 +30,10 @@ class OrderUpdater
   end
 
   def recalculate_adjustments
-    order_detail.single_line_items.includes(:tax_rate).each do |item|
-      item.update_tax_adjustments
-    end
-    order_detail.update_tax_adjustments
+    # order_detail.single_line_items.includes(:tax_rate).each do |item|
+    #   item.update_tax_adjustments
+    # end
+    # order_detail.update_tax_adjustments
   end
 
   # Updates the following Order total values:
