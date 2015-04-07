@@ -17,7 +17,7 @@ class UserMailer < ApplicationMailer
     @address = @detail.address
 
     @subject = '【FiNCストア】 ご購入ありがとうございます '
-    @to = order.user.id
+    @to = order.user.email
   end
 
   def send_order_canceled_notification(item)
