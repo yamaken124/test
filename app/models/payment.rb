@@ -30,6 +30,8 @@ class Payment < ActiveRecord::Base
 
   before_create :set_number
 
+  UsedPointLimit = 9999
+
   private
 
     def set_number
