@@ -8,7 +8,7 @@ set :bundle_without,  [:development, :test, :heroku_staging, :staging]
 
 set :application_server_addrs, [
   '54.199.149.61',
-  '54.178.237.8'
+  '52.68.54.175'
 ]
 
 # set :cron_server_addr, '54.64.23.242'
