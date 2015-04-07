@@ -22,3 +22,5 @@ mailer:
     password: 20120411
   test:
     to: finc_developer@googlegroups.com
+  default_url_options:
+    host: 'staging-store.finc.co.jp'
