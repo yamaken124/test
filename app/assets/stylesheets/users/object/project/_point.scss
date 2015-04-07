@@ -31,7 +31,7 @@
       font-size:(40 * $max-width / 340);
       margin-top:20px;
       &:after{
-        content: 'pt';
+        content: 'mile';
         font-size:(10 * $max-width / 340);
       }
     }
