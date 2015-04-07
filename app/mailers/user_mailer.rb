@@ -62,7 +62,7 @@ class UserMailer < ApplicationMailer
       ActionMailer::Base.smtp_settings = {
         :address => "smtp.gmail.com",
         :port => 587,
-        :domain => 'gmail.com',
+        :domain => 'finc.co.jp',
         :user_name => Settings.mailer.user_mailer.user_name,
         :password => Settings.mailer.user_mailer.password,
         :authentication => 'plain',
