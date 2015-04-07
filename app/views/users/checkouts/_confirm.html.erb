@@ -10,12 +10,12 @@
       <li class="p-payment_method_selection">
         <span>
         商品: <%= number_to_jpy(@detail.item_total_with_tax) %><br>
-        配送料手数料: <%= number_to_jpy(@detail.shipment_total) %>
+        送料: <%= number_to_jpy(@detail.shipment_total) %>
         </span>
       </li>
       <li class="p-payment_method_selection">
         <span>
-          使用マイル:<%= @payment.used_point %>pt<br>
+          使用マイル: <%= @payment.used_point %> mile<br>
           注文合計: <%= number_to_jpy(@payment.amount) %>
         </span>
       </li>
