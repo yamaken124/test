@@ -17,7 +17,7 @@ class UserMailer < ApplicationMailer
     @address = @detail.address
 
     @subject = '【FiNCストア】 ご購入ありがとうございます '
-    @to = order.user.id
+    @to = order.user.email
   end
 
   def send_order_canceled_notification(item)
@@ -29,7 +29,7 @@ class UserMailer < ApplicationMailer
     @variant = Variant.find_by(id: @item.variant_id)
 
     @subject = '【FiNCストア】注文キャンセルを承りました'
-    @to = @payment.user.email
+    @to = @payment.user.id
   end
 
   def send_return_request_accepted_notification(item)
