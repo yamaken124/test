@@ -55,13 +55,13 @@ class Payment < ActiveRecord::Base
         end
 
         def update_user_used_point
-          user.used_point_total += used_point
-          user.save
+          user.update_used_point_total(self.used_point)
         end
 
         def cancel_order
           raise unless GmoMultiPayment::Transaction.new(self).transaction_void
-          self.single_order_detail.update(paid_total: 0, shipment_total: 0)
+          user.update_used_point_total( (-1)*self.single_order_detail.used_point )
+          self.single_order_detail.update!(paid_total: 0, shipment_total: 0, used_point: 0)
         end
 
       end

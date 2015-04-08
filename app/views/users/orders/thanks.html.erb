@@ -15,7 +15,7 @@
         </div>
         <div class="c-product_list__price">
           <%= number_to_jpy(variant.price.amount) %>
-          (<%=@payment.single_order_detail.item_count%>)
+          (<%=@payment.single_order_detail.single_line_items.find_by(variant_id: variant.id).quantity%>個)
         </div>
       </div>
     </div>
