@@ -36,15 +36,13 @@ class OrderUpdater
 
   def update_used_point
     return if payment.nil? || !payment.completed?
-    if payment.try(:completed?)
-      if order_detail.item_total > payment.used_point
-        order_detail.used_point = payment.used_point
-      else #キャンセル対応
-        order_detail.used_point = order_detail.item_total
-        # point return
-        user = User.find_by(id: order_detail.payment.user_id)
-        user.update_used_point_total( order_detail.item_total - payment.used_point )
-      end
+    if order_detail.item_total > payment.used_point
+      order_detail.used_point = payment.used_point
+    else #キャンセル対応
+      order_detail.used_point = order_detail.item_total
+      # point return
+      user = User.find_by(id: order_detail.payment.user_id)
+      user.update_used_point_total( order_detail.item_total - payment.used_point )
     end
   end
 
