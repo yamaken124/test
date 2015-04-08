@@ -33,4 +33,5 @@ class TaxRate < ActiveRecord::Base
   def self.rating
     self.valid.first.amount.to_f + 1
   end
+
 end

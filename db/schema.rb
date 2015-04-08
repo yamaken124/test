@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150327132324) do
+ActiveRecord::Schema.define(version: 20150408015706) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -219,6 +219,7 @@ ActiveRecord::Schema.define(version: 20150327132324) do
     t.integer  "single_order_id",      limit: 4
     t.integer  "item_total",           limit: 4, default: 0, null: false
     t.integer  "tax_rate_id",          limit: 4
+    t.integer  "included_tax_total",   limit: 4
     t.integer  "total",                limit: 4, default: 0, null: false
     t.integer  "paid_total",           limit: 4
     t.date     "completed_on"

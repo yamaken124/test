@@ -131,7 +131,6 @@ class Users::CheckoutsController < Users::BaseController
       .where(id: @detail.single_line_items.pluck(:variant_id))
       .includes(:images, :price)
       @single_line_items = @detail.single_line_items
-      @tax_rate = TaxRate.rating
     end
 
 end

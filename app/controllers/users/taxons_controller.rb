@@ -1,7 +1,5 @@
 class Users::TaxonsController < Users::BaseController
 
-  before_action :set_tax_rate
-
   def show
     @taxon = Taxon.find(params[:id])
     if @taxon.leaf?
@@ -36,10 +34,6 @@ class Users::TaxonsController < Users::BaseController
 
     def set_images(variant_ids)
       @images = Image.where(imageable_id: variant_ids, imageable_type: 'Variant').index_by(&:imageable_id) #TODO 両方写真があるとき！！
-    end
-
-    def set_tax_rate
-      @tax_rate = TaxRate.rating
     end
 
 end
