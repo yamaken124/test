@@ -78,11 +78,12 @@ class SingleOrderDetail < ActiveRecord::Base
   end
 
   def item_total_with_tax
-    item_total.to_i + additional_tax_total.to_i
+    item_total.to_i# + additional_tax_total.to_i
   end
 
   def allowed_max_use_point
-    [item_total_with_tax, single_order.purchase_order.user.wellness_mileage].min
+    [item_total_with_tax, single_order.purchase_order.user.wellness_mileage, Payment::UsedPointLimit].min
+    # [single_order.item_total, single_order.purchase_order.user.wellness_mileage, Payment::UsedPointLimit].min
   end
 
 end
