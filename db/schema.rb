@@ -330,9 +330,9 @@ ActiveRecord::Schema.define(version: 20150408115444) do
 
   create_table "user_point_histories", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
-    t.integer  "used_point", limit: 4
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.integer  "used_point", limit: 4, default: 0
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   add_index "user_point_histories", ["user_id"], name: "index_user_point_histories_on_user_id", using: :btree

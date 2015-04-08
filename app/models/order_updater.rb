@@ -35,6 +35,7 @@ class OrderUpdater
   end
 
   def update_used_point
+    return if payment.nil? || !payment.completed?
     if payment.try(:completed?)
       if order_detail.item_total > payment.used_point
         order_detail.used_point = payment.used_point
