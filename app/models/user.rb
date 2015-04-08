@@ -89,4 +89,14 @@ class User < ActiveRecord::Base
       total_points - used_point_total
     end
   end
+
+  def update_used_point_total(changed_point)
+    self.used_point_total += changed_point.to_i
+    save!
+    UserPointHistory.create!(
+      user_id: id,
+      used_point: changed_point
+    ) #point history
+  end
+
 end
