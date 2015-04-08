@@ -56,6 +56,7 @@ class OrderUpdater
     update_item_total
     update_included_tax_total
     update_shipment_total
+    update_used_point
     update_adjustment_total
     persist_paid_totals
   end
