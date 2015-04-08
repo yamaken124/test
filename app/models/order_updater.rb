@@ -46,6 +46,7 @@ class OrderUpdater
   def update_totals
     update_payment_total
     update_item_total
+    update_included_tax_total
     update_shipment_total
     update_used_point
     update_adjustment_total
@@ -53,6 +54,7 @@ class OrderUpdater
 
   def calculate_paid_total
     update_item_total
+    update_included_tax_total
     update_shipment_total
     update_adjustment_total
     persist_paid_totals
@@ -103,7 +105,10 @@ class OrderUpdater
   def update_item_total
     order_detail.item_total = order_detail.single_line_items.except_canceled.sum('price * quantity')
     update_order_total
+  end
 
+  def update_included_tax_total
+    order_detail.included_tax_total = ( order_detail.item_total - ( order_detail.item_total / (TaxRate.rating) ) ).floor
   end
 
   def persist_totals
@@ -114,12 +119,14 @@ class OrderUpdater
         adjustment_total: order_detail.adjustment_total,
         additional_tax_total: order_detail.additional_tax_total,
         shipment_total: order_detail.shipment_total,
+        included_tax_total: order_detail.included_tax_total,
         total: order_detail.total,
         updated_at: Time.now
       )
     else
       SingleOrderDetail.find(order_detail.id).update(
         paid_total: order_detail.total,
+        included_tax_total: order_detail.included_tax_total,
         shipment_total: order_detail.shipment_total,
       )
     end
@@ -128,6 +135,7 @@ class OrderUpdater
   def persist_paid_totals
     SingleOrderDetail.find(order_detail.id).update(
       paid_total: order_detail.total,
+      included_tax_total: order_detail.included_tax_total,
       shipment_total: order_detail.shipment_total,
     )
   end
