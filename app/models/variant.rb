@@ -28,16 +28,20 @@ class Variant < ActiveRecord::Base
     }
   validates :sku, :name, :order_type, :product_id, :is_valid_at, :is_invalid_at, presence: true
 
-  def available?
+  def has_image_and_price?
     (price.present? && images.present?)
   end
 
-  def self.valid_variants
-    return @valid_variants if @valid_variants.present?
-    variant_id_having_images_and_prices = Image.where(imageable_type: 'Variant').pluck(:imageable_id) & Price.pluck(:variant_id)
-    active_variant_id = Variant.active.pluck(:id)
+  def available?
+    return true if ( has_image_and_price? && (self.stock_quantity > 0) )
+    false
+  end
 
-    @valid_variants = Variant.where(id: (variant_id_having_images_and_prices & active_variant_id))
+  def self.available_variants
+    variant_id_having_images_and_prices = Image.where(imageable_type: 'Variant').pluck(:imageable_id) & Price.pluck(:variant_id)
+    available_variant_id = Variant.where('stock_quantity > ?', 0 ).active.pluck(:id)
+
+    @available_variants = Variant.where(id: (variant_id_having_images_and_prices & available_variant_id))
   end
 
   def self.single_variant

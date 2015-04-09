@@ -22,6 +22,7 @@ FactoryGirl.define do
     is_valid_at Time.now.last_month
     is_invalid_at Time.now.next_month
     order_type "single_order"
+    stock_quantity 100
 
     factory :expired_variant do
       is_invalid_at Time.now.last_month

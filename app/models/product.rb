@@ -27,14 +27,17 @@ class Product < ActiveRecord::Base
   AvailableQuantity = 12
 
   def available?
-    (prices.present? && images.present?)
+    variants.each do |variant|
+      return true if variant.available?
+    end
+    false
   end
 
   def preview_images
     if variants.single_order.present? && variants.single_order.first.available?
-      images.where(imageable_id: variants.single_order.first.id).where(imageable_type: "Variant")
+      images.where(imageable_id: variants.single_order.first.try(:id)).where(imageable_type: "Variant")
     else
-      images.where(imageable_id: variants.subscription_order.first.id).where(imageable_type: "Variant")
+      images.where(imageable_id: variants.subscription_order.first.try(:id)).where(imageable_type: "Variant")
     end
   end
 
