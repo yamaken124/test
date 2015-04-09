@@ -3,15 +3,15 @@
     <h2 class="title">
       カート小計(<%=@detail.item_count%>個の商品):
       <span><%=number_to_jpy(@detail.item_total)%></span><br>
-      <%if params['error_message'].present? %>
-        <div class="c-payment_jquery_notice">
+      <div class="c-payment_jquery_notice">
+        <%if params['error_message'].present? %>
           <% if params['error_message'] == 'payment_attributes_error.used_point_over_limit' %>
             <%= t(params['error_message'], :limit => Payment::UsedPointLimit+1) %>
           <% else %>
             <%= t(params['error_message'], :default => "入力項目に不備があります") %>
           <% end %>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </h2>
     <div class="c-btn--submit u-margin__bottom_middle">
       <%= submit_tag "購入確認画面へ", class: 'c-btn--submit c-btn--submit--single', :onclick=> "prevent_double_submit(event)" %>
