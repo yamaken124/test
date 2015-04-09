@@ -39,9 +39,9 @@ class Variant < ActiveRecord::Base
 
   def self.available_variants
     variant_id_having_images_and_prices = Image.where(imageable_type: 'Variant').pluck(:imageable_id) & Price.pluck(:variant_id)
-    available_variant_id = Variant.where('stock_quantity > ?', 0 ).active.pluck(:id)
+    variant_id_with_stock = Variant.where('stock_quantity > ?', 0 ).active.pluck(:id)
 
-    @available_variants = Variant.where(id: (variant_id_having_images_and_prices & available_variant_id))
+    @available_variants = Variant.where(id: (variant_id_having_images_and_prices & variant_id_with_stock))
   end
 
   def self.single_variant
