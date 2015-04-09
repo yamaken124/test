@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150408115444) do
+ActiveRecord::Schema.define(version: 20150409023243) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -357,14 +357,15 @@ ActiveRecord::Schema.define(version: 20150408115444) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "variants", force: :cascade do |t|
-    t.string   "sku",           limit: 255, default: "all", null: false
-    t.integer  "product_id",    limit: 4
-    t.string   "name",          limit: 255
-    t.integer  "order_type",    limit: 1
+    t.string   "sku",            limit: 255, default: "all", null: false
+    t.integer  "product_id",     limit: 4
+    t.string   "name",           limit: 255
+    t.integer  "order_type",     limit: 1
     t.datetime "is_valid_at"
     t.datetime "is_invalid_at"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.integer  "stock_quantity", limit: 4,   default: 0
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
   end
 
   add_index "variants", ["product_id"], name: "index_variants_on_product_id", using: :btree

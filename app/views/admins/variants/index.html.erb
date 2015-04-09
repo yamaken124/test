@@ -17,6 +17,7 @@
           <th>注文タイプ</th>
           <th>値段</th>
           <th>状態</th>
+          <th>在庫数</th>
           <th></th>
           <th></th>
         </tr>
@@ -34,6 +35,7 @@
             <%= v.price.try(:amount) %>
           </td>
           <td><%= t(v.classify_validity) %></td>
+          <td><%= v.stock_quantity %></td>
           <td>
             <a href="<%= admins_variant_images_path(v.id) %>" class="btn btn-info btn-sm">
               <i class="fa fa-file-o"></i>画像
