@@ -50,7 +50,7 @@ class Admins::VariantsController < Admins::BaseController
 
   private
     def variant_params
-      params.require(:variant).permit(:is_valid_at, :is_invalid_at, :order_type, :sku, :name).merge(product_id: params[:product_id])
+      params.require(:variant).permit(:is_valid_at, :is_invalid_at, :order_type, :sku, :name, :stock_quantity).merge(product_id: params[:product_id])
     end
 
     def set_variant
@@ -68,4 +68,5 @@ class Admins::VariantsController < Admins::BaseController
     def set_product
       @product = Product.find(params[:product_id])
     end
+
 end

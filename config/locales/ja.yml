@@ -221,8 +221,9 @@ ja:
         name: 名前
         is_valid_at: 販売開始
         is_invalid_at: 販売終了
+        stock_quantity: 在庫数
       price:
-        amount: 値段
+        amount: 料金
 
   order_type:
     single_order: 通常購入
