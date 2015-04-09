@@ -30,7 +30,7 @@ class OrderUpdater
 
   def update_shipment_total
     # order_detail.shipment_total = shipments.sum(:cost)
-    order_detail.shipment_total = (item_total >= 10_000) ? 0 : 700
+    order_detail.shipment_total = (item_total >= 10_000) ? 0 : 500
     update_order_total
   end
 
