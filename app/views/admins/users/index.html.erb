@@ -1,0 +1,30 @@
+<div class="content-header">
+  <h3>
+    ユーザー管理
+  </h3>
+</div>
+<section class="content">
+  <h4 class="box-title">ユーザー一覧</h4>
+  <div class="content">
+    <% if @users.present? %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>名前</th>
+            <th>ポイント</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td><%= user.id %></td>
+              <td><%= user.profile.present? ? "#{user.profile.last_name} #{ user.profile.first_name}": "未登録" %></td>
+              <td><%= user.wellness_mileage %></td>
+            </tr>
+          <% end %>
+        </table>
+      <% end %>
+  </div>
+</section>
