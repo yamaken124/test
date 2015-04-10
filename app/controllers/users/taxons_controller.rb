@@ -3,9 +3,9 @@ class Users::TaxonsController < Users::BaseController
   def show
     @taxon = Taxon.find(params[:id])
     if @taxon.leaf?
-      set_products(Variant.available_variants)
+      set_products(Variant.available)
 
-      displayed_variant_ids = Variant.available_variants.ids & Variant.where(product_id: @products.pluck(:id)).pluck(:id)
+      displayed_variant_ids = Variant.available.ids & Variant.where(product_id: @products.pluck(:id)).pluck(:id)
       @variants_indexed_by_product_id = Variant.where(id: displayed_variant_ids).index_by(&:product_id)
 
       set_prices(displayed_variant_ids)
@@ -20,8 +20,10 @@ class Users::TaxonsController < Users::BaseController
   private
 
     def set_products(available_variants)
-      selected_product_id = ProductsTaxon.where(taxon_id: @taxon.id).pluck(:product_id) & Variant.where(id: Variant.available_variants.ids).pluck(:product_id)
-      @products = Product.active.where(id: selected_product_id).page(params[:page])
+      selected_product_id = ProductsTaxon.where(taxon_id: @taxon.id).pluck(:product_id)
+
+      displayed_product_ids = Product.available_products.ids & current_user.shown_product_ids
+      @products = Product.active.where(id: (displayed_product_ids & selected_product_id) ).page(params[:page])
     end
 
     def set_prices(variant_ids)

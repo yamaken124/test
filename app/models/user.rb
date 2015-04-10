@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
   has_one  :profile
   has_many :oauth_access_tokens
   has_many :returned_items
+  has_one :users_user_category
 
   accepts_nested_attributes_for :profile
 
@@ -97,6 +98,15 @@ class User < ActiveRecord::Base
       user_id: id,
       used_point: changed_point
     ) #point history
+  end
+
+  def shown_taxon_ids
+    belonging_user_category_id = UsersUserCategory.where(user_id: id).pluck(:user_category_id)
+    UserCategoriesTaxon.where(user_category_id: belonging_user_category_id).pluck(:taxon_id)
+  end
+
+  def shown_product_ids
+    ProductsTaxon.where(taxon_id: shown_taxon_ids).pluck(:product_id)
   end
 
 end

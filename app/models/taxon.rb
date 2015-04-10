@@ -20,5 +20,6 @@ class Taxon < ActiveRecord::Base
   acts_as_nested_set parent_column: :parent_id, left_column: :lft, right_column: :rgt
 
   belongs_to :parent, class_name: 'Taxon'
+  has_one :user_categories_taxon
 
 end

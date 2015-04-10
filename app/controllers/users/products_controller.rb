@@ -1,9 +1,9 @@
 class Users::ProductsController < Users::BaseController
 
   def index
-    set_products(Variant.available_variants)
+    set_products(Variant.available)
 
-    displayed_variant_ids = Variant.available_variants.ids & Variant.where(product_id: @products.pluck(:id)).pluck(:id)
+    displayed_variant_ids = Variant.available.ids & Variant.where(product_id: current_user.shown_product_ids).pluck(:id)
     @variants_indexed_by_product_id = Variant.where(id: displayed_variant_ids).index_by(&:product_id)
 
     set_prices(displayed_variant_ids)
@@ -13,7 +13,7 @@ class Users::ProductsController < Users::BaseController
   def show
     @product = Product.find(params[:id])
 
-    if @product.blank? || !@product.available?
+    unless @product.available? && @product.displayed?(current_user)
       redirect_to products_path
     end
 
@@ -23,7 +23,8 @@ class Users::ProductsController < Users::BaseController
 
   private
     def set_products(available_variants)
-      @products = Product.active.where(id: Variant.where(id: available_variants.ids).pluck(:product_id)).page(params[:page])
+      displayed_product_ids = Product.available_products.ids & current_user.shown_product_ids
+      @products = Product.active.where(id: displayed_product_ids).page(params[:page])
     end
 
     def set_prices(variant_ids)
