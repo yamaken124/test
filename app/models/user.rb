@@ -36,6 +36,8 @@ class User < ActiveRecord::Base
   has_many :oauth_access_tokens
   has_many :returned_items
 
+  paginates_per 20
+
   accepts_nested_attributes_for :profile
 
   def name

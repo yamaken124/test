@@ -2,7 +2,8 @@ class Admins::UsersController < Admins::BaseController
   before_action :set_user, only: [:show, :edit, :update]
 
   def index
-    @users = User.includes(:profile)
+    @users = User.includes(:profile).page(params[:page])
+
   end
 
   def edit

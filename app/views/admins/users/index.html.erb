@@ -4,30 +4,31 @@
   </h3>
 </div>
 <section class="content">
-  <h4 class="box-title">ユーザー一覧</h4>
-  <div class="content">
-    <% if @users.present? %>
-      <table class="table">
-        <thead>
+<h4 class="box-title">ユーザー一覧</h4>
+<div class="content">
+  <% if @users.present? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>名前</th>
+          <th>マイル</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
           <tr>
-            <th>ID</th>
-            <th>名前</th>
-            <th>マイル</th>
-            <th></th>
+            <td><%= user.id %></td>
+            <td><%= user.profile.present? ? "#{user.profile.last_name} #{ user.profile.first_name}": "未登録" %></td>
+            <td><%= user.wellness_mileage %></td>
+            <td>
+              <a href="<%= admins_user_path(user.id) %>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          <% @users.each do |user| %>
-            <tr>
-              <td><%= user.id %></td>
-              <td><%= user.profile.present? ? "#{user.profile.last_name} #{ user.profile.first_name}": "未登録" %></td>
-              <td><%= user.wellness_mileage %></td>
-              <td>
-                <a href="<%= admins_user_path(user.id) %>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
-              </td>
-            </tr>
-          <% end %>
-        </table>
-      <% end %>
+        <% end %>
+      </table>
+    <% end %>
+    <div class="c-pager"><%= paginate(@users) %></div>
   </div>
-</section>
+  </section>
