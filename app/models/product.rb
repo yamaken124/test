@@ -35,7 +35,7 @@ class Product < ActiveRecord::Base
   end
 
   def self.available_products
-    available_variants = Variant.available
+    available_variants = Variant.available.active
     Product.where(id: available_variants.pluck(:product_id)) if available_variants.present?
   end
 
