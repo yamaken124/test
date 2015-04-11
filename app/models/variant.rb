@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: variants
+#
+#  id            :integer          not null, primary key
+#  sku           :string(255)      default("all"), not null
+#  product_id    :integer
+#  name          :string(255)
+#  order_type    :integer
+#  is_valid_at   :datetime
+#  is_invalid_at :datetime
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
 class Variant < ActiveRecord::Base
   belongs_to :product
   has_one :price
@@ -13,18 +28,16 @@ class Variant < ActiveRecord::Base
     (price.present? && images.present?)
   end
 
-# available means variants which have images and price, and are active
   def available?
-    return true if ( has_image_and_price? && (self.stock_quantity > 0) && active? )
+    return true if ( has_image_and_price? && (self.stock_quantity > 0) )
     false
   end
 
   def self.available
     variant_id_having_images_and_prices = Image.where(imageable_type: 'Variant').pluck(:imageable_id) & Price.pluck(:variant_id)
-    variant_id_with_stock = Variant.where('stock_quantity > ?', 0 ).pluck(:id)
-    active_variant_id = Variant.active.ids
+    variant_id_with_stock = Variant.where('stock_quantity > ?', 0 ).active.pluck(:id)
 
-    Variant.where(id: (variant_id_having_images_and_prices & variant_id_with_stock & active_variant_id))
+    Variant.where(id: (variant_id_having_images_and_prices & variant_id_with_stock))
   end
 
   def self.single_variant
