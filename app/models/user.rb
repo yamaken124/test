@@ -109,7 +109,7 @@ class User < ActiveRecord::Base
   end
 
   def shown_product_ids
-    ProductsTaxon.where(taxon_id: shown_user_categories_taxon.ids).pluck(:product_id)
+    ProductsTaxon.where(taxon_id: shown_user_categories_taxon.pluck(:taxon_id)).pluck(:product_id)
   end
 
   def shown_taxon

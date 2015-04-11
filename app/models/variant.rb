@@ -22,6 +22,10 @@ class Variant < ActiveRecord::Base
   include TimeValidityChecker
 
   enum order_type: {single_order: 1, subscription_order: 2}
+  validates :product_id,
+    uniqueness: {
+      scope: [:order_type]
+    }
   validates :sku, :name, :order_type, :product_id, :is_valid_at, :is_invalid_at, presence: true
 
   def has_image_and_price?
