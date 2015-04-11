@@ -100,13 +100,20 @@ class User < ActiveRecord::Base
     ) #point history
   end
 
-  def shown_taxon_ids
-    belonging_user_category_id = UsersUserCategory.where(user_id: id).pluck(:user_category_id)
-    UserCategoriesTaxon.where(user_category_id: belonging_user_category_id).pluck(:taxon_id)
+  def belonging_user_category
+    UsersUserCategory.where(user_id: id)
+  end
+
+  def shown_user_categories_taxon
+    UserCategoriesTaxon.where(user_category_id: belonging_user_category.pluck(:user_category_id))
   end
 
   def shown_product_ids
-    ProductsTaxon.where(taxon_id: shown_taxon_ids).pluck(:product_id)
+    ProductsTaxon.where(taxon_id: shown_user_categories_taxon.ids).pluck(:product_id)
+  end
+
+  def shown_taxon
+    Taxon.where(id: shown_user_categories_taxon.pluck(:taxon_id))
   end
 
 end

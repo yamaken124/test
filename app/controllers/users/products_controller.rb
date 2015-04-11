@@ -3,7 +3,7 @@ class Users::ProductsController < Users::BaseController
   def index
     set_products(Variant.available)
 
-    displayed_variant_ids = Variant.available.ids & Variant.where(product_id: current_user.shown_product_ids).pluck(:id)
+    displayed_variant_ids = Variant.available.ids & Variant.where(product_id: @products.ids).ids
     @variants_indexed_by_product_id = Variant.where(id: displayed_variant_ids).index_by(&:product_id)
 
     set_prices(displayed_variant_ids)
