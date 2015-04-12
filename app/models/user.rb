@@ -49,6 +49,7 @@ class User < ActiveRecord::Base
   end
 
   def wellness_mileage
+
     user = me_in_finc_app
 
     return 0 if user.blank?

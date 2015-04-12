@@ -82,8 +82,11 @@ class SingleOrderDetail < ActiveRecord::Base
   end
 
   def allowed_max_use_point
-    [item_total_with_tax, single_order.purchase_order.user.wellness_mileage, Payment::UsedPointLimit].min
-    # [single_order.item_total, single_order.purchase_order.user.wellness_mileage, Payment::UsedPointLimit].min
+    if single_line_items.any? {|item| item.prohibit_using_mileage?}
+      0
+    else
+      [item_total_with_tax, single_order.purchase_order.user.wellness_mileage, Payment::UsedPointLimit].min
+    end
   end
 
 end
