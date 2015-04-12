@@ -33,7 +33,7 @@ class Variant < ActiveRecord::Base
   end
 
   def available?
-    return true if ( has_image_and_price? && (self.stock_quantity > 0) )
+    return true if ( has_image_and_price? && (self.stock_quantity > 0) && active? )
     false
   end
 

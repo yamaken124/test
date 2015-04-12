@@ -276,6 +276,9 @@ ja:
     invalid_used_point: "使用するマイルが不正な値です"
     used_point_over_limit: "注文あたり%{limit}マイル以上使うことはできません"
 
+  item:
+    invalid_item: "在庫切れ、もしくは期限切れとなりました。"
+
   user_oauth:
     sign_in: "ログイン"
     email: "メールアドレス"

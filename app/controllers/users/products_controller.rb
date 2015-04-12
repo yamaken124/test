@@ -23,8 +23,8 @@ class Users::ProductsController < Users::BaseController
 
   private
     def set_products(available_variants)
-      displayed_product_ids = Product.available_products.ids & current_user.shown_product_ids
-      @products = Product.active.where(id: displayed_product_ids).page(params[:page])
+      displayed_product_ids = Product.available.ids & current_user.shown_product_ids
+      @products = Product.where(id: displayed_product_ids).page(params[:page])
     end
 
     def set_prices(variant_ids)

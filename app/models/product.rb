@@ -27,16 +27,16 @@ class Product < ActiveRecord::Base
   AvailableQuantity = 12
 
   def available?
-    variants.any? {|v| v.available?}
+    active? && ( variants.any? {|v| v.available?} )
   end
 
   def displayed?(user)
     user.shown_product_ids.any? {|product_id| product_id == id} if user.shown_product_ids.present?
   end
 
-  def self.available_products
+  def self.available
     available_variants = Variant.available.active
-    Product.where(id: available_variants.pluck(:product_id)) if available_variants.present?
+    Product.active.where(id: available_variants.pluck(:product_id)) if available_variants.present?
   end
 
   def preview_images

@@ -36,7 +36,6 @@ module Users::OrdersHelper
     if order.nil? && try_current_user
       order = last_incomplete_order
     end
-
     order
   end
 

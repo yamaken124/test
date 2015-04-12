@@ -31,6 +31,9 @@ class Users::CheckoutsController < Users::BaseController
       else
         redirect_to checkout_state_path(@order.state)
       end
+    elsif params['error_message'] == "item.invalid_item"
+      @order.fail!
+      redirect_to cart_path
     else
       render :edit
     end
