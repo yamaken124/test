@@ -18,7 +18,7 @@ RSpec.describe Payment::Transition, type: :model do
       it { expect(checkout.may_completed?).to be_falsy}
       it { expect(checkout.may_processing?).to be_truthy }
       it { expect(checkout.may_pending?).to be_falsy }
-      it { expect(checkout.may_failed?).to be_falsy }
+      it { expect(checkout.may_failed?).to be_truthy }
       it { expect(checkout.may_canceled?).to be_falsy }
 
       let(:completed) { build(:payment, state: 'completed') }
@@ -32,7 +32,7 @@ RSpec.describe Payment::Transition, type: :model do
       it { expect(processing.may_completed?).to be_truthy }
       it { expect(processing.may_processing?).to be_falsy }
       it { expect(processing.may_pending?).to be_truthy }
-      it { expect(processing.may_failed?).to be_falsy }
+      it { expect(processing.may_failed?).to be_truthy }
       it { expect(processing.may_canceled?).to be_falsy }
 
       let(:pending) { build(:payment, state: 'pending') }

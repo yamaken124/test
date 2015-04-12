@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe PurchaseOrder::Transition, type: :model do
   describe 'states' do
     it do
-      expected_states = { "cart" => 0, "payment" => 10, "confirm" => 20, "complete" => 30 }
+      expected_states = { "cart" => 0, "payment" => 10, "confirm" => 20, "complete" => 30, "fail" => 40 }
       expect(PurchaseOrder.states).to eq expected_states
     end
 
