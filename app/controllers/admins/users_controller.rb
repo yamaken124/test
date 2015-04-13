@@ -3,7 +3,6 @@ class Admins::UsersController < Admins::BaseController
 
   def index
     @users = User.includes(:profile).page(params[:page])
-    @user = User.new
   end
 
   def edit
