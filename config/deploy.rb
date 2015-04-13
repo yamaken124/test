@@ -51,7 +51,6 @@ namespace :deploy do
 
   after :migrate, 'db:seed_fu'
   after 'db:seed_fu', 'db:seed'
-  after 'db:seed_fu', 'insert_stock_quantity:execute_insertion'
   after :publishing, 'unicorn:restart'
 
   after 'deploy:publishing', 'delayed_job:restart'
