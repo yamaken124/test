@@ -3,7 +3,7 @@ class Admins::UsersController < Admins::BaseController
 
   def index
     @users = User.includes(:profile).page(params[:page])
-
+    @user = User.new
   end
 
   def edit
@@ -17,6 +17,12 @@ class Admins::UsersController < Admins::BaseController
       flash[:notice] = "マイルの変更に失敗しました"
     end
     redirect_to :back
+  end
+
+  def search
+    @users = User.includes(:profile).where(id: Profile.where("concat(last_name, first_name) like?", "%#{params[:name]}%").pluck(:user_id)).page(params[:page])
+    flash[:notice] = '該当するユーザーはいません' if @users.empty?
+    render action: 'index'
   end
 
   private
