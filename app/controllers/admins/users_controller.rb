@@ -21,7 +21,8 @@ class Admins::UsersController < Admins::BaseController
 
   def search
     @users = User.includes(:profile).where(id: Profile.where("concat(last_name, first_name) like?", "%#{params[:name]}%").pluck(:user_id)).page(params[:page])
-    flash[:notice] = '該当するユーザーはいません' if @users.empty?
+    flash[:notice] = 
+      @users.present? ? '' : '該当するユーザーはいません'
     render action: 'index'
   end
 
