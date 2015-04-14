@@ -16,7 +16,6 @@ class Admins::ShipmentsController < Admins::BaseController
     filter_for_update(@shipments)
     method_name = :"update_#{params[:state]}"
     send(method_name, @shipments) if respond_to?(method_name, true)
-    redirect_to :back
   end
 
   def update_tracking_code
@@ -102,15 +101,18 @@ class Admins::ShipmentsController < Admins::BaseController
       return unless has_same_tracking?(shipments)
       UserMailer.delay.send_items_shipped_notification(shipments, payment_from_shipments(shipments))
       shipments_update_state(shipments)
+      redirect_to :back
     end
 
     def update_canceled(shipments)
       # 現在キャンセルは商品一つずつのみ対応s
       shipments.first.single_line_item.cancel_item(payment_from_shipments(shipments))
+      redirect_to admins_shipments_path
     end
 
     def update_returned(shipments)
       ReturnedItem.find(params[:returned_item_id]).update(returned_at: Time.now)
+      redirect_to :back
     end
 
     def shipments_update_state(shipments)
