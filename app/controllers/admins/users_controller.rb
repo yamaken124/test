@@ -5,12 +5,15 @@ class Admins::UsersController < Admins::BaseController
     @users = User.includes(:profile).page(params[:page])
   end
 
+  def show
+  end
+
   def edit
   end
 
   def update
-    num = (-1) * (params[:points]).to_i
-    if @user.update_used_point_total(num)
+    points = (-1) * (params[:points]).to_i
+    if @user.update_used_point_total(points) && points != 0
       flash[:notice] = "マイルを#{params[:points]}増加させました"
     else
       flash[:notice] = "マイルの変更に失敗しました"
