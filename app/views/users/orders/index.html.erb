@@ -32,7 +32,7 @@
             返品リクエストを受け付けました。
           </li>
         </ul>
-      <% elsif detail.payment.shipment.try(:shipped?) %>
+      <% elsif item.shipment.try(:shipped?) %>
         <ul class="c-links">
           <a href="#">
             <li class="c-link--small_text--nolink">
