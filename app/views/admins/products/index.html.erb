@@ -18,6 +18,7 @@
             <th>説明</th>
             <th>状態</th>
             <th>カテゴリ</th>
+            <th>表示</th>
             <th></th>
           </tr>
         </thead>
@@ -37,6 +38,9 @@
                     <% break %>
                   <% end %>
                 <% end %>
+              </td>
+              <td>
+                <%= judge_displayed_product(product, @displayed_products) %>
               </td>
               <td>
                 <a href="<%= admins_product_variants_path(product_id: product.id)%>"><button class="btn btn-info">SKU一覧</button></a>
