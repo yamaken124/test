@@ -1,19 +1,21 @@
+<% detail = @payment.single_order_detail %>
 <div class="content-header">
   <h3>
-    <%= link_to '発送管理', admins_shipments_path %> / <%= @shipment.payment.number %>
+    <%= link_to '発送管理', admins_shipments_path %> / <%= @payment.number %>
     <div class="u-float_right">
-      <% if @shipment.state == "shipped" %>
+      <% if @shipments.all_state?(@shipments, 'shipped') %>
         <div class="btn btn-warning">発送済み</div>
-      <% elsif @shipment.state == "canceled" %>
+      <% elsif @shipments.all_state?(@shipments, 'canceled') %>
         <div class="btn btn-danger">キャンセルされました</div>
-      <% elsif @shipment.state == "returned" %>
+      <% elsif @shipments.all_state?(@shipments, 'returned') %>
         <div class="btn btn-default">返品されました</div>
-      <% elsif @shipment.state == "failed" %>
+      <% elsif @shipments.all_state?(@shipments, 'failed') %>
         <div class="btn btn-default">取引が失敗しています</div>
-      <% else #@shipment.state != "shipped" %>
-        <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left" do %>
+      <% elsif @shipments.all_state?(@shipments, 'ready') %>
+        <%= form_tag update_state_admins_shipments_path, method: "patch", class: "u-float_left" do %>
           <%= hidden_field_tag :state, "shipped" %>
-          <%= submit_tag "発送完了", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
+          <%= hidden_field_tag :shipment_ids, @shipments.ids %>
+          <%= submit_tag "発送する", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
         <% end %>
       <% end %>
     </div>
@@ -34,29 +36,31 @@
           <th>合計</th>
           <th></th>
         </tr>
-        <% @shipment.payment.single_order_detail.single_line_items.each do |single_line_item| %>
+        <% @shipments.each do |shipment| %>
+          <% item = shipment.single_line_item %>
           <tr>
-            <td><%= single_line_item.variant.sku %></td>
-            <td><%= image_tag single_line_item.variant.images.first.try(:image).try(:url), class: "thumb" %></td>
-            <td><%= single_line_item.price %></td>
-            <td><%= single_line_item.quantity %></td>
-            <td><%= number_to_currency(single_line_item.quantity * single_line_item.price) %></td>
+            <td><%= item.variant.sku %></td>
+            <td><%= image_tag item.variant.images.first.try(:image).try(:url), class: "thumb" %></td>
+            <td><%= item.price %></td>
+            <td><%= item.quantity %></td>
+            <td><%= number_to_currency(item.quantity * item.price) %></td>
             <td>
-              <% if (single_line_item.completed? && @shipment.ready?) %>
-                <%= form_tag update_state_admins_shipment_path(@shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
+              <% if shipment.ready? %>
+                <%= form_tag update_state_admins_shipments_path(shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
                   <%= hidden_field_tag :state, "canceled" %>
-                  <%= hidden_field_tag :single_line_item_id, single_line_item.id %>
+                  <%= hidden_field_tag :shipment_ids, @shipments.ids %>
                   <%= submit_tag "発送キャンセル", class: "btn btn-warning", data: { confirm: "本当に発送をキャンセルしますか？" } %>
                 <% end %>
               <% end %>
             </td>
           </tr>
         <% end %>
-        <%= form_tag update_tracking_code_admins_shipment_path(@shipment), method: "patch" do %>
+        <%= form_tag update_tracking_code_admins_shipments_path, method: "patch" do %>
           <tr>
             <td><%= label_tag :tracking, t("shipment.tracking") %></td>
             <td colspan="3">
-              <%= text_field_tag :tracking, @shipment.tracking, class: "form-control", placeholder: "追跡番号を入力してください" %>
+              <%= text_field_tag :tracking, (@tracking), class: "form-control", placeholder: "追跡番号を入力してください" %>
+              <%= hidden_field_tag :shipment_ids, @shipments.ids %>
             </td>
             <td>
               <%= submit_tag @button_value, class: "btn btn-primary" %>
@@ -73,23 +77,23 @@
       <thead>
         <tr>
           <th>名前</th>
-          <th><%= @shipment.payment.address.name %></th>
+          <th><%= @payment.address.name %></th>
         </tr>
         <tr>
           <th>郵便番号</th>
-          <th><%= @shipment.payment.address.zipcode %></th>
+          <th><%= @payment.address.zipcode %></th>
         </tr>
         <tr>
           <th>都道府県</th>
-          <th><%= @shipment.payment.address.city %></th>
+          <th><%= @payment.address.city %></th>
         </tr>
         <tr>
           <th>住所</th>
-          <th><%= @shipment.payment.address.address %></th>
+          <th><%= @payment.address.address %></th>
         </tr>
         <tr>
           <th>電話番号</th>
-          <th><%= @shipment.payment.address.phone %></th>
+          <th><%= @payment.address.phone %></th>
         </tr>
       </thead>
     </table>
@@ -103,46 +107,39 @@
           <th colspan="2">配送情報</th>
         </tr>
         <tr>
-          <th>配送状況</th>
-          <th><%= t("shipment.state.#{@shipment.state}") %></th>
-        </tr>
-        <tr>
-          <th colspan="2">支払い情報</th>
-        </tr>
-        <tr>
           <th>支払い</th>
-          <th><%= t("payment.state.#{@shipment.payment.state}") %></th>
+          <th><%= t("payment.state.#{@payment.state}") %></th>
         </tr>
         <tr>
           <th>配送料</th>
-          <th><%= number_to_currency(@shipment.payment.single_order_detail.shipment_total) %></th>
+          <th><%= number_to_currency(detail.shipment_total) %></th>
         </tr>
         <tr>
           <th>税金</th>
-          <th><%= number_to_currency(@shipment.payment.single_order_detail.additional_tax_total) %></th>
+          <th><%= number_to_currency(@payment.single_order_detail.additional_tax_total) %></th>
         </tr>
         <tr>
           <th>使用マイル</th>
-          <th><%= @shipment.payment.single_order_detail.used_point %>mile</th>
+          <th><%= @payment.single_order_detail.used_point %>mile</th>
         </tr>
         <tr>
           <th>合計金額</th>
-          <th><%= number_to_currency(@shipment.payment.amount) %></th>
+          <th><%= number_to_currency(@payment.amount) %></th>
         </tr>
         <tr>
           <th colspan="2">購入者情報</th>
         </tr>
         <tr>
           <th>名前</th>
-          <th><%= @shipment.payment.user.name %></th>
+          <th><%= @payment.user.name %></th>
         </tr>
         <tr>
           <th>電話番号</th>
-          <th><%= @shipment.payment.user.profile.try(:phone) %></th>
+          <th><%= @payment.user.profile.try(:phone) %></th>
         </tr>
         <tr>
           <th>メール</th>
-          <th><%= @shipment.payment.user.email %></th>
+          <th><%= @payment.user.email %></th>
         </tr>
       </thead>
     </table>

@@ -20,6 +20,7 @@ class SingleLineItem < ActiveRecord::Base
 
   before_validation :invalid_quantity_check
   has_many :returned_items
+  has_one :shipment
   belongs_to :variant
   belongs_to :single_order_detail
   # belongs_to :tax_rate
@@ -59,12 +60,13 @@ class SingleLineItem < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         other_items = payment.single_order_detail.single_line_items.where.not(id: self.id)
         if other_items.blank? || other_items.except_canceled.blank? #注文自体をキャンセル
-          payment.shipment.canceled!
           payment.canceled!
+        else
+          canceled!
         end
-        canceled!
+        shipment.canceled!
       end
-      UserMailer.delay.send_order_canceled_notification(self)
+      UserMailer.delay.send_item_canceled_notification(self)
     end
   end
 

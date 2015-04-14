@@ -86,4 +86,10 @@ class SingleOrderDetail < ActiveRecord::Base
     # [single_order.item_total, single_order.purchase_order.user.wellness_mileage, Payment::UsedPointLimit].min
   end
 
+  def identical_tracking_number(items_id = single_line_items.ids)
+    items = single_line_items.where(id: items_id)
+    expecting_tracking = items.first.shipment.tracking
+    expecting_tracking if items.all? {|item| item.shipment.tracking == expecting_tracking}
+  end
+
 end

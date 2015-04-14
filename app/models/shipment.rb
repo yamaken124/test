@@ -13,7 +13,7 @@
 #
 
 class Shipment < ActiveRecord::Base
-  belongs_to :payment
+  belongs_to :single_line_item
   belongs_to :address
 
   include AASM
@@ -28,7 +28,7 @@ class Shipment < ActiveRecord::Base
     state :returned
 
     event :ready do
-      transitions from: [:pending, :shipped], to: :ready
+      transitions from: [:pending], to: :ready
     end
 
     event :shipped, after: [:register_shipped_at]  do
@@ -40,7 +40,7 @@ class Shipment < ActiveRecord::Base
     end
 
     event :canceled do
-      transitions from: [:pending, :ready, :shipped], to: :canceled
+      transitions from: [:pending, :ready], to: :canceled
     end
 
     event :returned do
@@ -55,5 +55,21 @@ class Shipment < ActiveRecord::Base
   def register_shipped_at
     self.update(shipped_at: Time.now)
   end
+
+  def self.all_state?(shipments, state) #限られたitemだけの評価をadmin/shipmentから行う
+    shipments.all? {|shipment| (shipment.state = "#{state}")}
+  end
+
+  # def self.all_shipped?(shipments) #限られたitemだけの評価をadmin/shipmentから行う
+  #   shipments.all? {|shipment| shipment.shipped?}
+  # end
+
+  # def self.all_canceled?(shipments)
+  #   shipments.all? {|shipment| shipment.canceled?}
+  # end
+
+  # def self.all_ready?(shipments)
+  #   shipments.all? {|shipment| shipment.ready?}
+  # end
 
 end
