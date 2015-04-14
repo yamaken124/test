@@ -32,16 +32,7 @@ class SingleLineItem < ActiveRecord::Base
 
   def update_tax_adjustments
     additional_tax_total = (price * quantity).floor
-    # additional_tax_total = (price * quantity * valid_tax_rate.amount).floor
   end
-
-  # def valid_tax_rate
-  #   if tax_rate.nil? || tax_rate.invalid?
-  #     TaxRate.valid.first
-  #   else
-  #     tax_rate
-  #   end
-  # end
 
   def destroy_if_order_detail_is_blank
     destroy

@@ -63,16 +63,6 @@ class SingleOrderDetail < ActiveRecord::Base
     # self.adjustment_total = additional_tax_total
   end
 
-  # def valid_tax_rate
-  #   if tax_rate.nil? || tax_rate.invalid?
-  #     valid_tax = TaxRate.valid.first
-  #     self.tax_rate_id = valid_tax.id
-  #     valid_tax
-  #   else
-  #     tax_rate
-  #   end
-  # end
-
   def can_send_back?
     Date.today - self.completed_on <= 14
   end

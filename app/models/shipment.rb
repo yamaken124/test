@@ -57,7 +57,7 @@ class Shipment < ActiveRecord::Base
   end
 
   def self.all_state?(shipments, state) #限られたitemだけの評価をadmin/shipmentから行う
-    shipments.all? {|shipment| (shipment.state = "#{state}")}
+    shipments.all? {|shipment| (shipment.state == "#{state}")}
   end
 
   # def self.all_shipped?(shipments) #限られたitemだけの評価をadmin/shipmentから行う
