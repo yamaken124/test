@@ -88,6 +88,11 @@ Rails.application.routes.draw do
       resources :post_payments
       resources :subscriptions
     end
+    resources :users, only:[:index, :show, :update] do
+      collection do
+        post 'search'
+      end
+    end
   end
 
 
