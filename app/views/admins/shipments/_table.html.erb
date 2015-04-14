@@ -7,7 +7,7 @@
         <th>発送状況</th>
         <th>商品SKU名</th>
         <th>名前</th>
-        <th>合計金額</th>
+        <th>税込単価</th>
         <th><%= submit_tag "詳細情報", class: '' %></th>
       </tr>
     </thead>
@@ -20,8 +20,10 @@
           <td><%= t("shipment.state.#{shipment.state}") %></td>
           <td><%= shipment.single_line_item.variant.name %></td>
           <td><%= payment.user.profile.try(:name) %></td>
-          <td><%= number_to_currency(payment.amount) %></td>
-          <td><%= check_box_tag 'shipment[ids][]', shipment.id, false, {:class => 'shipment_check_box', :id => "shipment_#{shipment.id}"} %></td>
+          <td><%= number_to_currency(shipment.single_line_item.price) %></td>
+          <td>
+          <%= check_box_tag 'shipment[ids][]', shipment.id, false, {:class => 'shipment_check_box', :id => "shipment_#{shipment.id}"} %>
+          </td>
         </tr>
       <% end %>
     </tbody>

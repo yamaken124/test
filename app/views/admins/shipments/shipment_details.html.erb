@@ -107,16 +107,12 @@
           <th colspan="2">配送情報</th>
         </tr>
         <tr>
-          <th>支払い</th>
+          <th>支払い状況</th>
           <th><%= t("payment.state.#{@payment.state}") %></th>
         </tr>
         <tr>
           <th>配送料</th>
           <th><%= number_to_currency(detail.shipment_total) %></th>
-        </tr>
-        <tr>
-          <th>税金</th>
-          <th><%= number_to_currency(@payment.single_order_detail.additional_tax_total) %></th>
         </tr>
         <tr>
           <th>使用マイル</th>

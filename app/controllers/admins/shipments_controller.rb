@@ -98,7 +98,7 @@ class Admins::ShipmentsController < Admins::BaseController
     end
 
     def update_shipped(shipments)
-      return unless has_same_tracking?(shipments)
+      redirect_to :back and return unless has_same_tracking?(shipments)
       UserMailer.delay.send_items_shipped_notification(shipments, payment_from_shipments(shipments))
       shipments_update_state(shipments)
       redirect_to :back
