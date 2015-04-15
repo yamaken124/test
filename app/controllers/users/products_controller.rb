@@ -21,6 +21,10 @@ class Users::ProductsController < Users::BaseController
     @preview_images = @product.preview_images
   end
 
+  def description
+    @product = Product.find(params[:id])
+  end
+
   private
     def set_products(available_variants)
       @products = Product.active.where(id: Variant.where(id: available_variants.ids).pluck(:product_id)).page(params[:page])

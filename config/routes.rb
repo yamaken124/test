@@ -38,7 +38,11 @@ Rails.application.routes.draw do
     resource :profile, only: [:edit, :create, :update] do
       resources :credit_cards, only: [:index, :new, :edit, :create, :destroy]
     end
-    resources :products, only: [:index, :show]
+    resources :products, only: [:index, :show] do
+      collection do
+        get  ':id/description', action: :description, :as => :description
+      end
+    end
     resource :cart, only: [:update], controller: :orders do
       get '/', action: :edit
       get :address, on: :member
