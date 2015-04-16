@@ -28,6 +28,10 @@
       color:$base_font_color;
       float:left;
     }
+    .p-payment_method_selection__name{
+      @extend .p-payment_method_selection__title;
+      width:100%;
+    }
     .p-payment_method_selection__price{
       color:$base_font_color;
       line-height:42px;

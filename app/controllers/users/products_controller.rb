@@ -1,5 +1,7 @@
 class Users::ProductsController < Users::BaseController
 
+  before_action :available_quantity, only: [:show, :description]
+
   def index
     set_products(Variant.available_variants)
 
@@ -12,12 +14,9 @@ class Users::ProductsController < Users::BaseController
 
   def show
     @product = Product.find(params[:id])
-
     if @product.blank? || !@product.available?
       redirect_to products_path
     end
-
-    @available_quantity = *(1..Product::AvailableQuantity)
     @preview_images = @product.preview_images
   end
 
@@ -40,6 +39,10 @@ class Users::ProductsController < Users::BaseController
 
     def set_images(variant_ids)
       @images = Image.where(imageable_id: variant_ids, imageable_type: 'Variant').index_by(&:imageable_id)
+    end
+
+    def available_quantity
+      @available_quantity = Array(1..Product::AvailableQuantity)
     end
 
 end

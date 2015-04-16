@@ -49,9 +49,30 @@
 .c-btn--submit--single{
 }
 .c-btn--product--detail{
-  @extend .c-btn;
+  font-size:18px;
+  border-radius:5px;
+  -webkit-appearance: none;
+  text-align:center;
+  padding-left:12px;
+  color:$finc-color;
+  border: 1px solid $finc-color;
+  margin: 0 auto;
+  width:120px;
   font-size:16px;
   height:30px;
   line-height:30px;
-  background-color:$finc_color;
+  background-color:#FFF;
+  &:after{
+    content: "";
+    float:right;
+    margin-top:9px;
+    margin-right:3px;
+    width:12px;
+    height:12px;
+    background-image:url(asset-path("users/finc_arrow.png"));
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+    vartical-align:middle;
+  }
 }
