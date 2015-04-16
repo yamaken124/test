@@ -14,8 +14,7 @@
 
 FactoryGirl.define do
   factory :shipment do
-    shipped_at "2015-03-11 17:08:11" 
-    payment nil
-    address nil
+    tracking "1234-5678"
+    shipped_at "2015-03-11 17:08:11"
   end
 end

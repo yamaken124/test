@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150409023243) do
+ActiveRecord::Schema.define(version: 20150413050246) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -188,17 +188,17 @@ ActiveRecord::Schema.define(version: 20150409023243) do
   add_index "returned_items", ["user_id"], name: "index_returned_items_on_user_id", using: :btree
 
   create_table "shipments", force: :cascade do |t|
-    t.integer  "payment_id", limit: 4
-    t.integer  "address_id", limit: 4
-    t.string   "tracking",   limit: 255
+    t.integer  "address_id",          limit: 4
+    t.integer  "single_line_item_id", limit: 4
+    t.string   "tracking",            limit: 255
     t.datetime "shipped_at"
-    t.integer  "state",      limit: 4,   default: 0
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.integer  "state",               limit: 4,   default: 0
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
 
   add_index "shipments", ["address_id"], name: "index_shipments_on_address_id", using: :btree
-  add_index "shipments", ["payment_id"], name: "index_shipments_on_payment_id", using: :btree
+  add_index "shipments", ["single_line_item_id"], name: "fk_rails_fd96ce0c21", using: :btree
 
   create_table "single_line_items", force: :cascade do |t|
     t.integer  "variant_id",             limit: 4
@@ -328,6 +328,22 @@ ActiveRecord::Schema.define(version: 20150409023243) do
   add_index "taxons", ["parent_id"], name: "index_taxons_on_parent_id", using: :btree
   add_index "taxons", ["rgt"], name: "index_taxons_on_rgt", using: :btree
 
+  create_table "user_categories", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "user_categories_taxons", force: :cascade do |t|
+    t.integer  "user_category_id", limit: 4
+    t.integer  "taxon_id",         limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "user_categories_taxons", ["taxon_id"], name: "index_user_categories_taxons_on_taxon_id", using: :btree
+  add_index "user_categories_taxons", ["user_category_id"], name: "index_user_categories_taxons_on_user_category_id", using: :btree
+
   create_table "user_point_histories", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
     t.integer  "used_point", limit: 4, default: 0
@@ -356,6 +372,16 @@ ActiveRecord::Schema.define(version: 20150409023243) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "users_user_categories", force: :cascade do |t|
+    t.integer  "user_id",          limit: 4
+    t.integer  "user_category_id", limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "users_user_categories", ["user_category_id"], name: "index_users_user_categories_on_user_category_id", using: :btree
+  add_index "users_user_categories", ["user_id"], name: "index_users_user_categories_on_user_id", using: :btree
+
   create_table "variants", force: :cascade do |t|
     t.string   "sku",            limit: 255, default: "all", null: false
     t.integer  "product_id",     limit: 4
@@ -382,7 +408,7 @@ ActiveRecord::Schema.define(version: 20150409023243) do
   add_foreign_key "returned_items", "single_line_items"
   add_foreign_key "returned_items", "users"
   add_foreign_key "shipments", "addresses"
-  add_foreign_key "shipments", "payments"
+  add_foreign_key "shipments", "single_line_items"
   add_foreign_key "single_line_items", "single_order_details"
   add_foreign_key "single_line_items", "variants"
   add_foreign_key "single_order_details", "addresses"

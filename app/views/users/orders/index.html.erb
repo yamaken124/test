@@ -7,7 +7,11 @@
   <div class="c-order_title">
     <p class="order_day">注文日:<br><%= detail.completed_on %></p>
     <p class="amount">合計:<br><%= number_to_jpy(detail.paid_total) %></p>
-    <p class="address">お届け先:<br><%= "#{detail.address.full_address}" %></p>
+    <% if detail.payment.shipment.try(:shipped?) %>
+      <p>注文番号:<br><%= "#{detail.payment.number}" %></p>
+    <% else %>
+      <p class="address">お届け先:<br><%= "#{detail.address.full_address}" %></p>
+    <% end %>
   </div>
   <% detail.single_line_items.each do |item|%>
 
@@ -32,7 +36,7 @@
             返品リクエストを受け付けました。
           </li>
         </ul>
-      <% elsif detail.payment.shipment.try(:shipped?) %>
+      <% elsif item.shipment.try(:shipped?) %>
         <ul class="c-links">
           <a href="#">
             <li class="c-link--small_text--nolink">

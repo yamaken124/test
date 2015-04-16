@@ -22,7 +22,7 @@
 
 class Payment < ActiveRecord::Base
   include Payment::Transition
-  has_one :shipment
+  # has_one :shipment
   belongs_to :payment_method
   belongs_to :address
   belongs_to :user
@@ -38,11 +38,11 @@ class Payment < ActiveRecord::Base
       self.number = "s" + Time.now.to_i.to_s + self.single_order_detail_id.to_s
     end
 
-    def set_shipment_params
+    def set_state_by_payment_method
       if self.payment_method_id == 1
-        {payment_id: self.id, address_id: self.address_id, state: :ready}
+        "ready"
       else
-        {payment_id: self.id, address_id: self.address_id, state: :pending}
+        "pending"
       end
     end
 

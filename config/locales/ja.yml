@@ -247,6 +247,7 @@ ja:
       failed: 決済失敗
       completed: 決済完了
       canceled: キャンセル
+      else: その他
     method:
       gmo_credit: GMOクレジットカード決済
 
