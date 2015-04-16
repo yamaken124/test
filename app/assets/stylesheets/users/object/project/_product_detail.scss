@@ -37,21 +37,21 @@
   }
 }
 .p-product_nutritionist{
-  @include calc("width", "100% - 8px");
-  border-bottom:1px solid #ccc;
+  width:100%;
+  border-bottom:1px solid $base_border_color;
 }
 .p-product_nutritionist_flame{
   position: relative;
-  @include calc("width", "100% - 8px");
+  @include calc("width", "100% - 16px");
   margin:10px 0 15px;
   margin-left:8px;
-  border: 1px solid #ccc;
+  border: 1px solid $base_border_color;
   background-color: #fff;
   border-radius:10px;
   &:after{
     z-index:10;
     position:absolute;
-    bottom:-27.5px;
+    bottom:-27.6px;
     height:30px;
     width:100%;
     content:'';
@@ -79,7 +79,7 @@
   width:100%;
   overflow:hidden;
   &:last-child{
-    border-bottom:1px solid #ccc;
+    border-bottom:1px solid $base_border_color;
   }
 }
 .p-product_description_contents_images{
