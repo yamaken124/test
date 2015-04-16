@@ -12,7 +12,7 @@
       <% end %>
     </ul>
   </div>
-  <% if false #FIXME%>
+<% if false #FIXME%>
     <div class="p-product__price_wrapper">
       <% @product.variants.single_order.each do |single| %>
         <% if single.variant_available? %>
@@ -48,7 +48,7 @@
         <% end %>
       <% end %>
     </div>
-  <% end %>
+<% end %>
   <div class="p-wrapper--have_padding">
     <ul class="p-payment_method_selections">
       <% if single.present? && single.available? %>
@@ -68,7 +68,7 @@
         </p>
         </li>
       <% end %>
-      <% if false #FIXME %>
+<% if false #FIXME %>
         <% if subscription.present? && subscription.available? %>
           <li class="p-payment_method_selection">
           <% if single.present? && single.available? %>
@@ -89,46 +89,45 @@
           </p>
           </li>
         <% end %>
-      <% end %>
+<% end %>
 
       <li class="p-payment_method_selection">
       <div class="p-payment_method__detail is-active">
         <p>数量: </p>
-        <% if false #FIXME%>
+<% if false #FIXME%>
           <%= number_field_tag :quantity, nil, min: 1, class: 'p-payment_method__amount' %>
-        <% end %>
+<% end %>
         <%= select_tag :quantity, options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
-        <p class="u-margin__left_short">個</p>
-        <%= submit_tag '追加', class: 'c-btn--submit--short u-margin__top5' %>
+        <p class="u-margin__right_short">個</p>
+        <%= submit_tag 'カートに追加', class: 'c-btn--submit--short u-margin__top5' %>
       </div>
       </li>
     </ul>
 
-    <h2 class="u-margin__top25">この商品について</h2>
+    <h2 class="u-margin__top25 u-margin__bottom5">栄養士からの一言</h2>
     <ul class="p-lists">
-      <% if false #FIXME%>
-        <li class="p-list">
-        <p>栄養士からの説明</p>
+      <li class="p-list">
         <div class="p-list__fincrew">
           <%= image_tag "users/icon_yuka.png" %>
         </div>
         <div class="p-list__fincrew_description">
+          <%= include_line_break(@product.product_description.try(:nutritionist_explanation)) %>
         </div>
-        </li>
-      <% end %>
+        <!-- <div class="p-list__fincrew_buttun"> -->
+          <a href="<%= description_products_path(@product.id) %>">
+            <div class="c-btn--product--detail">
+              詳しく見る
+            </div>
+          </a>
+        <!-- </div> -->
+      </li>
+      <h3 class="u-margin__top10 u-margin__bottom5">この商品について</h3>
       <li class="p-list">
-<% if false %>
-      <h3 class="u-margin__top10">商品詳細</h3>
-<% end %>
-      <div class="p-list__description u-margin__top5">
-        <%= include_line_break(@product.description) %>
-      </div>
+        <div class="p-list__description">
+          <%= include_line_break(@product.product_description.try(:description)) %>
+        </div>
       </li>
     </ul>
-    <a href="<%= cart_path %>">
-      <div class="c-btn--submit">
-        カートを見る
-      </div>
-    </a>
+    <%= submit_tag 'カートに追加', class: 'c-btn--submit' %>
   </div>
 <% end %>

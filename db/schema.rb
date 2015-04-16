@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150413050246) do
+ActiveRecord::Schema.define(version: 20150415171834) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -63,6 +63,16 @@ ActiveRecord::Schema.define(version: 20150413050246) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
+  create_table "how_to_use_products", force: :cascade do |t|
+    t.integer  "product_id",  limit: 4
+    t.string   "description", limit: 255
+    t.integer  "position",    limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "how_to_use_products", ["product_id"], name: "index_how_to_use_products_on_product_id", using: :btree
 
   create_table "images", force: :cascade do |t|
     t.integer  "imageable_id",   limit: 4
@@ -134,13 +144,23 @@ ActiveRecord::Schema.define(version: 20150413050246) do
 
   add_index "prices", ["variant_id"], name: "index_prices_on_variant_id", using: :btree
 
+  create_table "product_descriptions", force: :cascade do |t|
+    t.integer  "product_id",               limit: 4
+    t.string   "description",              limit: 255
+    t.string   "nutritionist_explanation", limit: 255
+    t.string   "nutritionist_word",        limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  add_index "product_descriptions", ["product_id"], name: "index_product_descriptions_on_product_id", using: :btree
+
   create_table "products", force: :cascade do |t|
     t.string   "name",          limit: 255
-    t.text     "description",   limit: 65535
     t.datetime "is_valid_at"
     t.datetime "is_invalid_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "products_taxons", force: :cascade do |t|

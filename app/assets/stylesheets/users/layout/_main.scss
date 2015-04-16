@@ -1,7 +1,7 @@
 @import "../foundation/setting";
 @import "../foundation/mixin";
 #main__have_padding_wrapper{
-  @include calc("width", "100%-10px");
+  @include calc("width", "100% - 10px");
   padding:20px 5px;
   h2{
     color:$base_font_color;
