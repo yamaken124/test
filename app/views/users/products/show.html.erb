@@ -111,7 +111,7 @@
           <%= image_tag "users/icon_yuka.png" %>
         </div>
         <div class="p-list__fincrew_description">
-          hjkl
+          <%= include_line_break(@product.product_description.try(:nutritionist_explanation)) %>
         </div>
         <div class="p-list__fincrew_buttun">
           <a href="<%= description_products_path(@product.id) %>">
@@ -124,7 +124,7 @@
       <h3 class="u-margin__top10 u-margin__bottom5">この商品について</h3>
       <li class="p-list">
         <div class="p-list__description u-margin__top5">
-          <%= include_line_break(@product.description) %>
+          <%= include_line_break(@product.product_description.try(:description)) %>
         </div>
       </li>
     </ul>

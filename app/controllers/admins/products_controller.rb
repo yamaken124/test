@@ -5,11 +5,12 @@ class Admins::ProductsController < Admins::BaseController
 
   def index
     @displayed_products = Product.active.where(id: Variant.where(id: Variant.available_variants.ids).pluck(:product_id))
-    @products = Product.includes(:taxons)
+    @products = Product.includes([:taxons, :product_description])
   end
 
   def show
     @taxons = Taxon.where(id: ProductsTaxon.where(product_id: @product.id).pluck(:taxon_id))
+
   end
 
   def new
@@ -59,9 +60,8 @@ class Admins::ProductsController < Admins::BaseController
   private
     def attribute_params
       return @attribute_params if @attribute_params.present?
-      products_taxons_attributes = ProductsTaxon.products_taxons_attributes(params)
-      attributes = params.require(:product).permit(:name, :description, :is_valid_at, :is_invalid_at)
-      @attribute_params = attributes.merge(products_taxons_attributes)
+      attributes = params.require(:product).permit(:name, :is_valid_at, :is_invalid_at)
+      @attribute_params = attributes.merge(ProductsTaxon.products_taxons_attributes(params)).merge(product_description_attributes).merge(how_to_use_products_attributes)
     end
 
     def set_product
@@ -79,10 +79,23 @@ class Admins::ProductsController < Admins::BaseController
     def set_new_product
       @product ||= Product.new
       @product.products_taxons.build
+      3.times do
+        @product.how_to_use_products.build
+      end
     end
 
     def without_products_taxon?
       params[:product][:products_taxons_attributes]["0"][:taxon_id].blank?
+    end
+
+    def product_description_attributes
+      product_description_params = {}
+      product_description_params[:product_description_attributes] = params[:product].require(:product_descriptions).permit(:description, :nutritionist_explanation, :nutritionist_word)
+      product_description_params
+    end
+
+    def how_to_use_products_attributes
+      HowToUseProduct.attributes_for_product(params)
     end
 
 end
