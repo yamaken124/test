@@ -7,7 +7,7 @@
   border-radius:5px;
   margin-left:-1px;
   .p-payment_method_selection{
-    @include calc("width", "100% - 15px");
+    @include calc("width", "100% - 30px");
     min-height:42px;
     padding-left:15px;
     padding-right:15px;

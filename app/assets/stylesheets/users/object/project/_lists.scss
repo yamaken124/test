@@ -4,23 +4,19 @@
   background-color:white;
   width:100%;
   margin-bottom:30px;
-  margin-left:-1px;
+  margin-left:0px;
   .p-list{
-    @include calc("width", "100% - 15px");
+    width:100%;
     min-height:42px;
     overflow:hidden;
-    padding-left:15px;
     border:1px solid $base_border_color;
     border-radius:5px;
     color:$base_font_color;
-    padding-bottom: 10px;
-    p{
-      font-size:18px;
-      font-weight:bold;
-      padding-top:10px;
-      padding-bottom:5px;
+    &:first-child{
+      padding-bottom:10px;
     }
     .p-list__fincrew{
+      margin-left:4px;
       width:50px;
       height:50px;
       img{
@@ -28,25 +24,19 @@
       }
     }
     .p-list__fincrew_description{
-      @include calc("width", "100% - 50px");
       font-size:13px;
-      margin-top:5px;
-      padding-bottom:5px;
-    }
-    .p-list__fincrew_submit{
-      @include calc("width", "100% - 50px");
-      margin-top:5px;
-      padding-bottom:5px;
+      padding:5px 4px 10px 4px;
     }
     .p-list__description{
       font-size:13px;
-      line-height:17px;
-      padding-right:15px;
-      padding-bottom:5px;
+      margin:10px 4px 10px 4px;
     }
     .p-list__fincrew_buttun{
-      margin-left: 10%;
+      margin-left:10px;
       margin-top:10px;
+    }
+    &:first-child{
+      margin-bottom:20px;
     }
   }
 }

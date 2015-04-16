@@ -4,7 +4,7 @@
 <div class='p-product_nutritionist'>
   <div class='p-product_nutritionist_flame'>
     <div class='p-product_nutritionist_comment'>
-  vgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhjvgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhjvgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhjvgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhjvgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhjvgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhjvgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhj
+      <%= @product.product_description.try(:nutritionist_explanation) %>
     </div>
   </div>
   <div class='p-product_nutritionist_image'>
@@ -13,10 +13,12 @@
 </div>
 <div class='p-product_description'>
   <h2 class='u-margin__top10 u-margin__bottom10'>使用方法</h2>
-  <% 3.times do %>
+  <% @product.how_to_use_products.each do |h| %>
     <div class='p-product_description_contents'>
       <div class='p-product_description_contents_images'><%= image_tag "users/water.png" %></div>
-      <div class='p-product_description_contents_details'>vgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhjvgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhjvgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhjvgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhjvgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhjvgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhjvgaasdfghjklkjhfdfghjklkhgfhjkkjhhjkhhjkjhj</div>
+      <div class='p-product_description_contents_details'>
+        <%= h.description %>
+      </div>
     </div>
     <div class='p-product_description_contents_arrow'></div>
   <% end %>

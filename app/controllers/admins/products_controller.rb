@@ -10,7 +10,6 @@ class Admins::ProductsController < Admins::BaseController
 
   def show
     @taxons = Taxon.where(id: ProductsTaxon.where(product_id: @product.id).pluck(:taxon_id))
-
   end
 
   def new
@@ -33,6 +32,7 @@ class Admins::ProductsController < Admins::BaseController
   end
 
   def edit
+    build_how_to_use_product
   end
 
   def update
@@ -79,9 +79,11 @@ class Admins::ProductsController < Admins::BaseController
     def set_new_product
       @product ||= Product.new
       @product.products_taxons.build
-      3.times do
-        @product.how_to_use_products.build
-      end
+      build_how_to_use_product
+    end
+
+    def build_how_to_use_product
+      3.times { @product.how_to_use_products.build } if @product.how_to_use_products.blank?
     end
 
     def without_products_taxon?
