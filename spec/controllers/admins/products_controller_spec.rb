@@ -18,9 +18,18 @@ RSpec.describe Admins::ProductsController, type: :controller do
   describe 'POST #create' do
     let(:product) { create(:product) }
     let(:products_taxon) { create(:products_taxon, product_id: product.id) }
+    let(:product_description) { create(:product_description, product_id: product.id) }
+    let(:how_to_use_product) { create(:how_to_use_product, product_id: product.id) }
     let(:params) do
       {
-        product: attributes_for(:product, name: "updated_name", products_taxons_attributes: { "0" => {taxon_id: products_taxon.id} })
+        id: product.id,
+        product: attributes_for(
+          :product,
+          name: "updated_name",
+          products_taxons_attributes: { "0" => {taxon_id: products_taxon.id} },
+          product_descriptions: { "0" => {id: product_description.id} },
+          how_to_use_products_attributes:{ "0" => {description: how_to_use_product.description} },
+        )
       }
     end
     before { post :create, params }
@@ -33,18 +42,21 @@ RSpec.describe Admins::ProductsController, type: :controller do
   describe 'PATCH #update' do
     let(:product) { create(:product) }
     let(:products_taxon) { create(:products_taxon, product_id: product.id) }
+    let(:product_description) { create(:product_description, product_id: product.id) }
+    let(:how_to_use_product) { create(:how_to_use_product, product_id: product.id) }
     let(:params) do
       {
         id: product.id,
-        product: attributes_for(:product, name: "updated_name", products_taxons_attributes: { "0" => {id: products_taxon.id, taxon_id: products_taxon.id} }),
-        new_taxon_id: ''
+        product: attributes_for(
+          :product,
+          name: "updated_name",
+          products_taxons_attributes: { "0" => {taxon_id: products_taxon.id} },
+          product_descriptions: { "0" => {id: product_description.id} },
+          how_to_use_products_attributes:{ "0" => {description: how_to_use_product.description} },
+        )
       }
     end
     before { patch :update, params }
-
-    it 'assigns product' do
-      expect(assigns(:product)).to eq product
-    end
 
     it 'update' do
       expect{ patch :update, params; product.reload }.to change(product, :name).to('updated_name')
@@ -77,10 +89,10 @@ RSpec.describe Admins::ProductsController, type: :controller do
 
   describe 'DELETE #destroy' do
 
-    before do 
+    before do
       @product = create(:product)
       @variant = create(:variant, product_id: @product.id)
-      delete :destroy, id: @product.id, product: attributes_for(:product) 
+      delete :destroy, id: @product.id, product: attributes_for(:product)
     end
 
       it 'update product' do
