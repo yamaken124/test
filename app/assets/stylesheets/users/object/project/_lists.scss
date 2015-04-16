@@ -17,6 +17,7 @@
     }
     .p-list__fincrew{
       margin-left:4px;
+      margin-bottom:10px;
       width:50px;
       height:50px;
       img{
@@ -25,11 +26,15 @@
     }
     .p-list__fincrew_description{
       font-size:13px;
-      padding:5px 4px 10px 4px;
+      @include calc("width", "100% - 8px");
+      margin-left:4px;
+      margin-bottom:10px;
     }
     .p-list__description{
       font-size:13px;
-      margin:10px 4px 10px 4px;
+      padding:10px 0 10px;
+      @include calc("width", "100% - 8px");
+      margin-left:4px;
     }
     .p-list__fincrew_buttun{
       margin-left:10px;

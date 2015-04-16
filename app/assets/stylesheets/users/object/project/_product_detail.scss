@@ -43,7 +43,8 @@
 .p-product_nutritionist_flame{
   position: relative;
   @include calc("width", "100% - 8px");
-  margin:10px 0 15px 8px;
+  margin:10px 0 15px;
+  margin-left:8px;
   border: 1px solid #ccc;
   background-color: #fff;
   border-radius:10px;
@@ -60,7 +61,9 @@
   }
 }
 .p-product_nutritionist_comment{
-  padding:10px 5px;
+  padding:10px 0 10px;
+  @include calc("width", "100% - 8px");
+  margin-left:8px;
   word-break:break-all;
 }
 .p-product_nutritionist_image img{
