@@ -14,13 +14,17 @@
 class Product < ActiveRecord::Base
   has_many :variants
   has_many :products_taxons
+  has_many :taxons, :through => :products_taxons
+  has_one :product_description
+  has_many :how_to_use_products
   has_many :prices, :through => :variants
   has_many :images, :through => :variants
-  has_many :taxons, :through => :products_taxons
-  has_one :products_taxon
   paginates_per 5
   validates :name, :is_valid_at, :is_invalid_at, presence: true
   accepts_nested_attributes_for :products_taxons
+  accepts_nested_attributes_for :product_description
+  accepts_nested_attributes_for :how_to_use_products
+
 
   include TimeValidityChecker
 

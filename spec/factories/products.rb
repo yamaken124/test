@@ -16,7 +16,6 @@ FactoryGirl.define do
   factory :product do
 
     name "MyString"
-    description "MyText"
     is_valid_at Time.now.last_month
     is_invalid_at Time.now.next_month
 

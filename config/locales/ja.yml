@@ -214,7 +214,6 @@ ja:
     attributes:
       product:
         name: 名前
-        description: 説明
         is_valid_at: 販売開始
         is_invalid_at: 販売終了
       variant:
@@ -224,6 +223,12 @@ ja:
         stock_quantity: 在庫数
       price:
         amount: 料金
+      product_description:
+        description: この商品について
+        nutritionist_explanation: 栄養士からの説明
+        nutritionist_word: 栄養士からの一言
+      how_to_use_product:
+        description: 使用方法
 
   order_type:
     single_order: 通常購入
@@ -247,6 +252,7 @@ ja:
       failed: 決済失敗
       completed: 決済完了
       canceled: キャンセル
+      else: その他
     method:
       gmo_credit: GMOクレジットカード決済
 

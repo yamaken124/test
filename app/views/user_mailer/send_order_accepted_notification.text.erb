@@ -22,9 +22,10 @@ FiNCストア をご利用いただき、ありがとうございます。FiNC�
 注文日：<%= @detail.completed_on %>
 
 <% @detail.single_line_items.each do |item| %>
-<% variant = Variant.find(item.variant_id) %>
-【FiNCストア限定】<%= variant.name %>
-<%= number_to_jpy(variant.price.amount) %>
+  <% variant = Variant.find(item.variant_id) %>
+  <%= variant.name %>
+  <%= number_to_jpy(variant.price.amount) %>
+
 <% end %>
 
 注文履歴：

@@ -38,7 +38,11 @@ Rails.application.routes.draw do
     resource :profile, only: [:edit, :create, :update] do
       resources :credit_cards, only: [:index, :new, :edit, :create, :destroy]
     end
-    resources :products, only: [:index, :show]
+    resources :products, only: [:index, :show] do
+      collection do
+        get  ':id/description', action: :description, :as => :description
+      end
+    end
     resource :cart, only: [:update], controller: :orders do
       get '/', action: :edit
       get :address, on: :member
@@ -75,10 +79,11 @@ Rails.application.routes.draw do
       collection do
         get 'state/:state', :to => 'shipments#index', :as => :state
         get 'return_requests'
+        get 'shipment_details'
+        patch 'update_tracking_code', :to => 'shipments#update_tracking_code', :as => :update_tracking_code
+        patch 'update_state', :to => 'shipments#update_state', :as => :update_state
       end
       member do
-        patch 'update_state'
-        patch 'update_tracking_code'
       end
     end
     #TODO routing setting

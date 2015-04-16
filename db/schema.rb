@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150410074901) do
+ActiveRecord::Schema.define(version: 20150415171834) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -63,6 +63,16 @@ ActiveRecord::Schema.define(version: 20150410074901) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
+  create_table "how_to_use_products", force: :cascade do |t|
+    t.integer  "product_id",  limit: 4
+    t.string   "description", limit: 255
+    t.integer  "position",    limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "how_to_use_products", ["product_id"], name: "index_how_to_use_products_on_product_id", using: :btree
 
   create_table "images", force: :cascade do |t|
     t.integer  "imageable_id",   limit: 4
@@ -134,13 +144,23 @@ ActiveRecord::Schema.define(version: 20150410074901) do
 
   add_index "prices", ["variant_id"], name: "index_prices_on_variant_id", using: :btree
 
+  create_table "product_descriptions", force: :cascade do |t|
+    t.integer  "product_id",               limit: 4
+    t.string   "description",              limit: 255
+    t.string   "nutritionist_explanation", limit: 255
+    t.string   "nutritionist_word",        limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  add_index "product_descriptions", ["product_id"], name: "index_product_descriptions_on_product_id", using: :btree
+
   create_table "products", force: :cascade do |t|
     t.string   "name",          limit: 255
-    t.text     "description",   limit: 65535
     t.datetime "is_valid_at"
     t.datetime "is_invalid_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "products_taxons", force: :cascade do |t|
@@ -188,17 +208,17 @@ ActiveRecord::Schema.define(version: 20150410074901) do
   add_index "returned_items", ["user_id"], name: "index_returned_items_on_user_id", using: :btree
 
   create_table "shipments", force: :cascade do |t|
-    t.integer  "payment_id", limit: 4
-    t.integer  "address_id", limit: 4
-    t.string   "tracking",   limit: 255
+    t.integer  "address_id",          limit: 4
+    t.integer  "single_line_item_id", limit: 4
+    t.string   "tracking",            limit: 255
     t.datetime "shipped_at"
-    t.integer  "state",      limit: 4,   default: 0
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.integer  "state",               limit: 4,   default: 0
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
 
   add_index "shipments", ["address_id"], name: "index_shipments_on_address_id", using: :btree
-  add_index "shipments", ["payment_id"], name: "index_shipments_on_payment_id", using: :btree
+  add_index "shipments", ["single_line_item_id"], name: "fk_rails_fd96ce0c21", using: :btree
 
   create_table "single_line_items", force: :cascade do |t|
     t.integer  "variant_id",             limit: 4
@@ -408,7 +428,7 @@ ActiveRecord::Schema.define(version: 20150410074901) do
   add_foreign_key "returned_items", "single_line_items"
   add_foreign_key "returned_items", "users"
   add_foreign_key "shipments", "addresses"
-  add_foreign_key "shipments", "payments"
+  add_foreign_key "shipments", "single_line_items"
   add_foreign_key "single_line_items", "single_order_details"
   add_foreign_key "single_line_items", "variants"
   add_foreign_key "single_order_details", "addresses"

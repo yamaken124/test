@@ -15,11 +15,13 @@
     height:100px;
     float:left;
     .c-product_list__title{
-      margin-top:45px;
+      margin-top:33px;
+      margin-left:10px;
       color:$base_font_color;
     }
     .c-product_list__price{
       margin-top:5px;
+      margin-left:10px;
       color:$base_font_color;
     }
   }
