@@ -67,14 +67,11 @@ class PurchaseOrder < ActiveRecord::Base
                 OrderUpdater.new(single_order_detail).update_totals
                 single_order_detail.paid_total = single_order_detail.total
                 attributes[:payment_attributes] = attributes[:payment_attributes].merge(payment_attributes_from_params(attributes))
-                raise 'payment_attributes_error.used_point_over_limit' if attributes[:payment_attributes][:used_point].to_i > Payment::UsedPointLimit
-                raise 'payment_attributes_error.address_missing' unless has_address_attribtue?(attributes)
-                raise 'payment_attributes_error.credit_card_missing' unless has_credit_card_attribtue?(attributes)
-                raise 'payment_attributes_error.invalid_used_point' if attributes[:payment_attributes][:used_point] && !valid_point?(single_order_detail.used_point)
-                raise 'payment_attributes_error.invalid_used_point' if attributes[:payment_attributes][:used_point] && ( (single_order_detail.item_total + single_order_detail.additional_tax_total) < single_order_detail.used_point )
+                raise_checkout_payment_error(single_order_detail, attributes)
                 single_order_detail.update!(attributes)
 
               when :confirm
+                raise_checkout_common_error(single_order_detail)
                 SingleLineItem.complete_items(single_order_detail)
                 single_order_detail.payment.processing!
                 single_order_detail.payment.completed!
@@ -109,6 +106,24 @@ class PurchaseOrder < ActiveRecord::Base
 
           def has_address_attribtue?(attributes)
             attributes[:payment_attributes][:address_id].present?
+          end
+
+          def raise_checkout_payment_error(detail, attributes)
+            raise 'payment_attributes_error.used_point_over_limit' if attributes[:payment_attributes][:used_point].to_i > Payment::UsedPointLimit
+            raise 'payment_attributes_error.address_missing' unless has_address_attribtue?(attributes)
+            raise 'payment_attributes_error.credit_card_missing' unless has_credit_card_attribtue?(attributes)
+            raise 'payment_attributes_error.invalid_used_point' if attributes[:payment_attributes][:used_point] && !valid_point?(detail.used_point)
+            raise 'payment_attributes_error.invalid_used_point' if attributes[:payment_attributes][:used_point] && ( (detail.item_total + detail.additional_tax_total) < detail.used_point )
+            raise_checkout_common_error(single_order_detail)
+          end
+
+          def raise_checkout_common_error(detail)
+            detail.single_line_items.each do |item|
+              variant = Variant.find(item.variant_id)
+              unless variant.available? && Product.find(variant.product_id).available?
+                raise 'item.invalid_item'
+              end
+            end
           end
 
       end

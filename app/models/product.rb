@@ -31,20 +31,27 @@ class Product < ActiveRecord::Base
   AvailableQuantity = 12
 
   def available?
-    variants.each do |variant|
-      return true if variant.available?
-    end
-    false
+    active? && ( variants.any? {|v| v.available?} )
+  end
+
+  def displayed?(user)
+    user.shown_product_ids.any? {|product_id| product_id == id} if user.shown_product_ids.present?
+  end
+
+  def self.available
+    available_variants = Variant.available.active
+    Product.active.where(id: available_variants.pluck(:product_id)) if available_variants.present?
   end
 
   def preview_images
-    if variants.single_order.present? && variants.single_order.first.available?
-      images.where(imageable_id: variants.single_order.first.try(:id)).where(imageable_type: "Variant")
+    single_order = variants.single_order
+    subscription_order = variants.subscription_order
+    if single_order.present? && single_order.first.available?
+      images.where(imageable_id: single_order.ids.first).where(imageable_type: "Variant")
     else
-      images.where(imageable_id: variants.subscription_order.first.try(:id)).where(imageable_type: "Variant")
+      images.where(imageable_id: subscription_order.ids.first).where(imageable_type: "Variant")
     end
   end
-
 
   def single_price
     single_variants = variants.single_order

@@ -72,14 +72,21 @@ class SingleOrderDetail < ActiveRecord::Base
   end
 
   def allowed_max_use_point
-    [item_total_with_tax, single_order.purchase_order.user.wellness_mileage, Payment::UsedPointLimit].min
-    # [single_order.item_total, single_order.purchase_order.user.wellness_mileage, Payment::UsedPointLimit].min
+    if single_line_items.any? {|item| item.prohibit_using_mileage?}
+      0
+    else
+      [item_total_with_tax, single_order.purchase_order.user.wellness_mileage, Payment::UsedPointLimit].min
+    end
   end
 
   def identical_tracking_number(items_id = single_line_items.ids)
     items = single_line_items.where(id: items_id)
     expecting_tracking = items.first.shipment.tracking
     expecting_tracking if items.all? {|item| item.shipment.tracking == expecting_tracking}
+  end
+
+  def all_shipped?
+    single_line_items.all? { |item| item.shipment.shipped? }
   end
 
 end

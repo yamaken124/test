@@ -61,4 +61,8 @@ class SingleLineItem < ActiveRecord::Base
     end
   end
 
+  def prohibit_using_mileage?
+    Taxon::FreeShippingId.include?( ProductsTaxon.find_by(product_id: Variant.find(self.variant_id).product_id).taxon_id )
+  end
+
 end

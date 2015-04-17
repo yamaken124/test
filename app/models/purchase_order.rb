@@ -25,7 +25,7 @@ class PurchaseOrder < ActiveRecord::Base
   accepts_nested_attributes_for :single_order
 
   def self.incomplete
-    PurchaseOrder.where.not(id: PurchaseOrder.complete.pluck(:id))
+    PurchaseOrder.where.not(id: (PurchaseOrder.complete.pluck(:id) + PurchaseOrder.fail.pluck(:id)) )
   end
 
   def completed?

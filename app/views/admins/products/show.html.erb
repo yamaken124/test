@@ -43,10 +43,12 @@
       <th>栄養士からの説明</th>
       <td><%= simple_format(@product.product_description.try(:nutritionist_explanation))%></td>
     </tr>
-    <tr>
-      <th>使用方法１</th>
-      <td><%= simple_format(@product.product_description.try(:nutritionist_explanation))%></td>
-    </tr>
+    <% @product.how_to_use_products.each_with_index do |h, index| %>
+      <tr>
+        <th><%="使用方法"+index.to_s%></th>
+        <td><%= simple_format(h.try(:description))%></td>
+      </tr>
+    <% end %>
     <tr>
       <th>販売開始</th><td><%= @product.is_valid_at.strftime("%Y/%m/%d %H:%M") %></td>
     </tr>

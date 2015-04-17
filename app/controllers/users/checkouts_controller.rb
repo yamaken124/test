@@ -31,6 +31,9 @@ class Users::CheckoutsController < Users::BaseController
       else
         redirect_to checkout_state_path(@order.state)
       end
+    elsif params['error_message'] == "item.invalid_item"
+      @order.fail!
+      redirect_to cart_path
     else
       render :edit
     end
@@ -112,7 +115,12 @@ class Users::CheckoutsController < Users::BaseController
     def before_payment
       @gmo_cards = GmoMultiPayment::Card.new(current_user).search
       @addresses = current_user.addresses.active
-      @wellness_mileage = current_user.wellness_mileage
+      @wellness_mileage =  \
+        if @single_line_items.any? {|item| item.prohibit_using_mileage?}
+          0
+        else
+          current_user.wellness_mileage
+        end
       # @max_use_point = [@wellness_mileage, detail.item_total_with_tax, Payment::UsedPointLimit].min
       @max_use_point = [@wellness_mileage, detail.item_total, Payment::UsedPointLimit].min
       @default_address = Address.default_address(current_user)
