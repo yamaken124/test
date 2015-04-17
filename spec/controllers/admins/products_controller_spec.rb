@@ -3,15 +3,24 @@ require 'rails_helper'
 RSpec.describe Admins::ProductsController, type: :controller do
   before do
     admin_sign_in create(:admin)
+    @user = create(:user)
+    @product = create(:product)
+    @user_category_id = 1
+    @taxon_id = 1
+    create(:users_user_category, user_id: @user.id, user_category_id: @user_category_id)
+    create(:user_categories_taxon, user_category_id: @user_category_id, taxon_id: @taxon_id)
+    create(:products_taxon, product_id: @product.id, taxon_id: @taxon_id)
+    @variant = create(:variant, product_id: @product.id)
+    @price = create(:price, variant_id: @variant.id)
+    @image = create(:image, imageable_id: @variant.id, imageable_type: 'Variant')
   end
 
   describe 'GET #index' do
-    let(:product) { create(:product) }
     before { get :index }
 
     it { expect(response).to render_template :index }
     it 'assings products' do
-      expect(assigns(:products)).to eq [product]
+      expect(assigns(:products)).to eq [@product]
     end
   end
 
