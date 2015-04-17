@@ -85,4 +85,8 @@ class SingleOrderDetail < ActiveRecord::Base
     expecting_tracking if items.all? {|item| item.shipment.tracking == expecting_tracking}
   end
 
+  def all_shipped?
+    single_line_items.all? { |item| item.shipment.shipped? }
+  end
+
 end
