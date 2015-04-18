@@ -24,4 +24,8 @@ class Taxon < ActiveRecord::Base
 
   FreeShippingId = [6] #TODO manage from admin shipping management page
 
+  def self.one_click_products
+    Taxon.where(id: 2) #FIXME supplement
+  end
+
 end

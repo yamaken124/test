@@ -18,6 +18,7 @@ class Variant < ActiveRecord::Base
   has_one :price
   has_many :images, :as => :imageable
   has_many :single_line_items
+  has_one :one_click_item
 
   include TimeValidityChecker
 

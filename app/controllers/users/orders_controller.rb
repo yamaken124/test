@@ -15,9 +15,15 @@ class Users::OrdersController < Users::BaseController
 
   def thanks
     @number = params[:number]
-    @payment = Payment.find_by(number: @number)
-    raise ActiveRecord::RecordNotFound if !@payment.completed?
-    set_variants_and_items
+    if params[:type].present? && params[:type] == "o"
+      payment = OneClickPayment.find_by(number: @number)
+      @items = payment.one_click_item
+    else
+      payment = Payment.find_by(number: @number)
+      raise ActiveRecord::RecordNotFound if !@payment.completed?
+      @items = payment.single_order_detail.single_line_items.includes(single_order_detail: [variant: :images])
+    end
+
   end
 
   def edit
@@ -94,6 +100,23 @@ class Users::OrdersController < Users::BaseController
     item = payment.single_order_detail.single_line_items.find_by(id: params[:item_id])
     item.cancel_item(payment)
     redirect_to orders_path
+  end
+
+  def one_click_item
+
+    #FIXME 会社の住所
+    begin
+      ActiveRecord::Base.transaction do
+        order = PurchaseOrder.create!(user_id: current_user.id)
+        item = OneClickItem.register_with_purchase_order(order, params)
+        @payment = OneClickPayment.register_with_one_click_item(item, params, current_user)
+        order.complete!
+      end
+    rescue => e
+      redirect_to :back
+    end
+    redirect_to thanks_orders_path(number: @payment.number, type: 'o')
+
   end
 
   private

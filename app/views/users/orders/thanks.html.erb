@@ -4,7 +4,7 @@
     <p class="number">注文番号:<br><%= @number %></p>
     <p class="amount">合計:<br><%= number_to_jpy(@payment.amount) %></p>
   </div>
-  <% @variants.each do |variant| %>
+  <% @items.each do |item| %>
     <div class="c-product_list">
       <div class="c-product_list__image">
         <%= image_tag variant.images.first.image.url %>

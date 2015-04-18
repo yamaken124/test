@@ -1,0 +1,69 @@
+<%= javascript_include_tag 'users/products/show' %>
+<%= form_tag(one_click_item_orders_path, :method => :post) do %>
+
+  <% single = @product.variants.single_variant %>
+  <% subscription = @product.variants.subscription_variant %>
+
+  <h2 class="p-product_title"><%= @product.name %></h2>
+  <div class="flexslider">
+    <ul class="slides">
+      <% @product.preview_images.each do |image| %>
+        <li><%= image_tag image.image.url %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="p-wrapper--have_padding">
+    <ul class="p-payment_method_selections">
+      <% if single.present? && single.available? %>
+        <li class="p-payment_method_selection">
+        <% if subscription.present? && subscription.available? %>
+          <div class="p-payment_method_selection__radio">
+            <%= radio_button_tag :variant_id, single.id, {:checked => true} %>
+          </div>
+        <% else %>
+          <%= hidden_field_tag :variant_id, single.id %>
+        <% end %>
+        <p class="p-payment_method_selection__title">
+        <%=t('order_type.price')%>
+        </p>
+        <p class="p-payment_method_selection__price">
+          <%= number_to_jpy(single.price.amount) %><%=t('tax.included') %>
+        </p>
+        </li>
+      <% end %>
+
+      <li class="p-payment_method_selection">
+      <div class="p-payment_method__detail is-active">
+        <p>数量: </p>
+        <%= select_tag :quantity, options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
+        <p class="u-margin__right_short">個</p>
+        <%= submit_tag 'カートに追加', class: 'c-btn--submit--short u-margin__top5' %>
+      </div>
+      </li>
+    </ul>
+
+    <h2 class="u-margin__top25 u-margin__bottom5">栄養士からの一言</h2>
+    <ul class="p-lists">
+      <li class="p-list">
+        <div class="p-list__fincrew">
+          <%= image_tag "users/icon_yuka.png" %>
+        </div>
+        <div class="p-list__fincrew_description">
+          <%= include_line_break(@product.product_description.try(:nutritionist_explanation)) %>
+        </div>
+        <a href="<%= description_products_path(@product.id) %>">
+          <div class="c-btn--product--detail">
+            詳しく見る
+          </div>
+        </a>
+      </li>
+      <h3 class="u-margin__top10 u-margin__bottom5">この商品について</h3>
+      <li class="p-list">
+        <div class="p-list__description">
+          <%= include_line_break(@product.product_description.try(:description)) %>
+        </div>
+      </li>
+    </ul>
+    <%= submit_tag 'カートに追加', class: 'c-btn--submit' %>
+  </div>
+<% end %>

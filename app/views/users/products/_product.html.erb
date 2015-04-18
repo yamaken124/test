@@ -1,7 +1,11 @@
 <% single_price = @single_prices_indexed_by_variant_id[@variants_indexed_by_product_id[product.id].id] %>
 <% subscription_price = @subscription_prices_indexed_by_variant_id[@variants_indexed_by_product_id[product.id].id] %>
 
-<a href="<%= product_path(id: product.id) %>">
+<% if Taxon.one_click_products.ids.include?(product.products_taxons.first.try(:taxon_id)) %>
+  <a href="<%= show_one_click_products_path(id: product.id) %>">
+<% else %>
+  <a href="<%= product_path(id: product.id) %>">
+<% end %>
   <div class="c-product">
     <%= image_tag @images[@variants_indexed_by_product_id[product.id].id].image.url, class: "c-product__image" %>
     <div class="c-product__left_wrapper">
