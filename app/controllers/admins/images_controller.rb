@@ -3,7 +3,7 @@ class Admins::ImagesController < Admins::BaseController
   before_action :set_imageable, only: [:show, :edit, :new, :index]
 
   def index
-    @images = Image.includes(imageable_model).where(images: {imageable_id: params[imageable_key]})
+    @images = Image.includes(imageable_model).where(images: {imageable_id: params[imageable_key]}).rank(:row_order)
   end
 
   def new
@@ -40,6 +40,12 @@ class Admins::ImagesController < Admins::BaseController
     end
   end
 
+  def sort
+    image = Image.find(params[:image_id])
+    image.update(image_params)
+    render nothing: true
+  end
+
   private
 
     def imageable_model
@@ -47,7 +53,7 @@ class Admins::ImagesController < Admins::BaseController
     end
 
     def image_params
-      params.require(:image).permit(:image) \
+      params.require(:image).permit(:image, :row_order_position) \
         .merge(imageable_id: params[imageable_key], imageable_type: imageable_type)
     end
 

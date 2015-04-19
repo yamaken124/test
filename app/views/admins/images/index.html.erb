@@ -10,7 +10,7 @@
 <h4 class="box-title">画像一覧</h4>
   <span><%= flash[:notice] %></span>
 <% if @images.present? %>
-  <table class="table c-table">
+  <table class="table c-table table-sortable">
     <thead>
       <tr>
         <th>画像</th>
@@ -19,7 +19,7 @@
     </thead>
     <tbody>
     <% @images.each do |i| %>
-      <tr>
+      <tr class="item(data = { model_name: image.class.name.underscore, update_url: admins_variant_image_sort(variant_id:params[:variant_id], image_id: image.id)})">
         <td>
           <% if !i.image.nil? %>
             <%= image_tag i.image.url,:size => "60x60" %>
