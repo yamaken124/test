@@ -4,7 +4,6 @@
     <p class="number">注文番号:<br><%= @number %></p>
     <p class="amount">合計:<br><%= number_to_jpy(@payment.amount) %></p>
   </div>
-  <% @items.each do |item| %>
-    <%= render partial: 'users/orders/thanks', locals: {item: item} %>
-  <% end %>
+  <% item = @items %>
+  <%= render partial: 'users/orders/thanks', locals: {item: item} %>
 </div>

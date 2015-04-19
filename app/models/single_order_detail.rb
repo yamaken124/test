@@ -25,7 +25,6 @@ class SingleOrderDetail < ActiveRecord::Base
   belongs_to :single_order
   belongs_to :address
   # belongs_to :tax_rate
-  has_one    :bill
   has_many   :single_line_items
   has_one    :payment
 

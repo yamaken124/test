@@ -11,7 +11,7 @@ class CreateOneClickPayments < ActiveRecord::Migration
       t.integer :used_point, null: false, default: 0
       t.integer :payment_method_id
       t.references :address, index: true
-      t.references :one_click_item, index: true
+      t.references :one_click_detail, index: true
       t.string :number
       t.integer :user_id
 

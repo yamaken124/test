@@ -1,9 +1,11 @@
 class Users::OrdersController < Users::BaseController
   respond_to :html
   include Users::OrdersHelper
+  include Users::OneClickOrdersHelper
 
   before_action :assign_order_with_lock, only: [:edit, :update, :remove_item]
   before_action :set_variants, only: [:edit]
+  before_action :set_number, only: [:thanks, :one_click_thanks]
   # before_action :apply_coupon_code, only: :update
 
   def index
@@ -14,16 +16,9 @@ class Users::OrdersController < Users::BaseController
   end
 
   def thanks
-    @number = params[:number]
-    if params[:type].present? && params[:type] == "o"
-      payment = OneClickPayment.find_by(number: @number)
-      @items = payment.one_click_item
-    else
-      payment = Payment.find_by(number: @number)
-      raise ActiveRecord::RecordNotFound if !@payment.completed?
-      @items = payment.single_order_detail.single_line_items.includes(single_order_detail: [variant: :images])
-    end
-
+    @payment = Payment.find_by(number: @number)
+    raise ActiveRecord::RecordNotFound if !@payment.completed?
+    @items = @payment.single_order_detail.single_line_items.includes(variant: [:images, :price])
   end
 
   def edit
@@ -103,20 +98,23 @@ class Users::OrdersController < Users::BaseController
   end
 
   def one_click_item
+    # FIXME 会社の住所ghjk
+    # begin
+    #   ActiveRecord::Base.transaction do
+        # validation
 
-    #FIXME 会社の住所
-    begin
-      ActiveRecord::Base.transaction do
-        order = PurchaseOrder.create!(user_id: current_user.id)
-        item = OneClickItem.register_with_purchase_order(order, params)
-        @payment = OneClickPayment.register_with_one_click_item(item, params, current_user)
-        order.complete!
-      end
-    rescue => e
-      redirect_to :back
-    end
-    redirect_to thanks_orders_path(number: @payment.number, type: 'o')
+        one_click_order_creater
 
+    #   end
+    # rescue => e
+    #   redirect_to :back
+    # end
+    redirect_to one_click_thanks_orders_path(number: @payment.number)
+  end
+
+  def one_click_thanks
+    @payment = OneClickPayment.find_by(number: @number)
+    @items = @payment.one_click_detail.one_click_item
   end
 
   private
@@ -148,6 +146,10 @@ class Users::OrdersController < Users::BaseController
     def set_variants
       @variants = @order.variants
       .includes(:images)
+    end
+
+    def set_number
+      @number = params[:number]
     end
 
 end

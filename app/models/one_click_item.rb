@@ -1,8 +1,7 @@
 class OneClickItem < ActiveRecord::Base
 
-  belongs_to :purchase_order
   belongs_to :variant
-  has_one :one_click_payment
+  belongs_to :one_click_detail
 
   def self.register_with_purchase_order(order,params)
     item = OneClickItem.new(

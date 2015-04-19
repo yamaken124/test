@@ -18,10 +18,10 @@
         <li class="p-payment_method_selection">
         <% if subscription.present? && subscription.available? %>
           <div class="p-payment_method_selection__radio">
-            <%= radio_button_tag :variant_id, single.id, {:checked => true} %>
+            <%= radio_button_tag 'order[item_attributes[variant_id]]', single.id, {:checked => true} %>
           </div>
         <% else %>
-          <%= hidden_field_tag :variant_id, single.id %>
+          <%= hidden_field_tag 'order[item_attributes[variant_id]]', single.id %>
         <% end %>
         <p class="p-payment_method_selection__title">
         <%=t('order_type.price')%>
@@ -35,16 +35,16 @@
       <li class="p-payment_method_selection">
       <div class="p-payment_method__detail is-active">
         <p>数量: </p>
-        <%= select_tag :quantity, options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
+        <%= select_tag "order[item_count]", options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
         <p class="u-margin__right_short">個</p>
-        <%= submit_tag 'カートに追加', class: 'c-btn--submit--short u-margin__top5' %>
+        <%= submit_tag '1-click購入', class: 'c-btn--submit--short u-margin__top5' %>
       </div>
       </li>
     </ul>
 
-    <h2 class="u-margin__top25 u-margin__bottom5">栄養士からの一言</h2>
+    <h2 class="p-lists__title">栄養士からの一言</h2>
     <ul class="p-lists">
-      <li class="p-list">
+      <li class="p-list__image">
         <div class="p-list__fincrew">
           <%= image_tag "users/icon_yuka.png" %>
         </div>
@@ -57,13 +57,70 @@
           </div>
         </a>
       </li>
-      <h3 class="u-margin__top10 u-margin__bottom5">この商品について</h3>
+      <h2 class="p-lists__title">この商品について</h3>
       <li class="p-list">
         <div class="p-list__description">
           <%= include_line_break(@product.product_description.try(:description)) %>
         </div>
       </li>
+      <h2 class="p-lists__title">お届け先住所（オフィスお届け）</h3>
+      <li class="p-list">
+        <div class="p-list__description">
+          <%= "#{current_user.addresses.last.try(:name)}<br>
+            #{current_user.addresses.last.try(:full_address)}".html_safe %>
+        </div>
+      </li>
     </ul>
-    <%= submit_tag 'カートに追加', class: 'c-btn--submit' %>
+
+    <h2 class="p-lists__title">お支払い方法（クレジットカード）</h2>
+    <ul class="c-links js-credit">
+      <%= hidden_field_tag "order[payment_attributes[payment_method_id]]", 1 %>
+      <%= hidden_field_tag "order[address_id]", 1 %>
+      <% @gmo_cards.each_with_index do |gmo_card, i| %>
+        <li class="c-link--small_text--nolink">
+        <div class="c-link__radio_div">
+          <%= radio_button_tag "order[[payment_attributes[gmo_card_seq_temporary]]", gmo_card[:CardSeq], i == 0 ? 'checked: "checked"' : nil %>
+        </div>
+          <%= label_tag "order__payment_attributes_gmo_card_seq_temporary_#{gmo_card[:CardSeq]}", "番号：#{gmo_card[:CardNo]}<br />有効期限：#{gmo_card[:Expire]}".html_safe %>
+        </li>
+      <% end %>
+      <% if @gmo_cards.size < GmoMultiPayment::Card::UpperLimit %>
+        <div class="credit-highlighted">
+          <%= link_to(new_profile_credit_card_path(continue: show_one_click_products_path(id: @product.id))) do %>
+            <li class="c-link">新規クレジット登録</li>
+          <% end %>
+        </div>
+      <% else %>
+        <li class="c-link"><%= t('validate_registration.address') %></li>
+      <% end %>
+    </ul>
+    <h2 class="p-lists__title">使用するマイル</h2>
+    <ul class="p-payment_method_selections u-margin__bottom25">
+      <li class="p-payment_method_selection">
+      <div class="p-payment_method_selection__radio">
+        <%= radio_button_tag "order[use_all_point]", true %>
+      </div>
+      <%= label_tag "order_use_all_point_true", "全て使用", class: "p-payment_method_selection__title" %>
+      <p class="p-payment_method_selection__mile"><%= @max_used_point %> マイル</p>
+      </li>
+      <li class="p-payment_method_selection">
+      <div class="p-payment_method_selection__radio">
+        <%= radio_button_tag "order[use_all_point]", false, checked: true %>
+      </div>
+      <%= label_tag "order_use_all_point_false", "一部を使用", class: "p-payment_method_selection__title" %>
+      <div class="p-payment_method__detail_in_a_line is-active">
+        <div class="p-payment_method_selection__mile">
+          <%= text_field_tag "order[used_point]", 0, min: 0, max: @max_use_point, class: 'p-payment_method__amount' %><p class='u-margin__left_short'>マイル</p>
+        </div>
+      </div>
+      </li>
+    </ul>
+    <%= submit_tag '1-clickで購入する', class: 'c-btn--submit' %>
+    <a href="<%= %>">
+      <div class='p-product_text_link u-margin__top10'>
+        1-click購入とは？
+      </div>
+    </a>
   </div>
 <% end %>
+

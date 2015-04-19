@@ -54,6 +54,7 @@ Rails.application.routes.draw do
         post :populate
         post :one_click_item
         get  ':number/thanks', action: :thanks, :as => :thanks
+        get  ':number/one_click_thanks', action: :one_click_thanks, :as => :one_click_thanks
         delete '/cancel/:number' => 'orders#cancel', :as => :cancel
       end
     end
