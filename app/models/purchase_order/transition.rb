@@ -28,7 +28,7 @@ class PurchaseOrder < ActiveRecord::Base
           end
 
           event :complete, after: :update_address_is_main  do
-            transitions from: [:cart, :confirm], to: :complete
+            transitions from: :confirm, to: :complete
           end
 
           event :fail, after: :fail_payment do
