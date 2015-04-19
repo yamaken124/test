@@ -3,7 +3,7 @@ class Admins::ImagesController < Admins::BaseController
   before_action :set_imageable, only: [:show, :edit, :new, :index]
 
   def index
-    @images = Image.includes(imageable_model).where(images: {imageable_id: params[imageable_key]}).rank(:row_order)
+    @images = Image.includes(imageable_model).where(images: {imageable_id: params[imageable_key]})
   end
 
   def new
