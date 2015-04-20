@@ -121,4 +121,12 @@ class User < ActiveRecord::Base
     [wellness_mileage, amount, Payment::UsedPointLimit].min
   end
 
+  def create_user_category
+    # if id.in?(lmi_user_ids)
+    #   UsersUserCategory.where(user_id: user.id).first_or_create(user_category_id: 2)
+    # else
+    UsersUserCategory.where(user_id: user.id).first_or_create(user_category_id: 1)
+    # end
+  end
+
 end
