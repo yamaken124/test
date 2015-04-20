@@ -98,7 +98,6 @@ class Users::OrdersController < Users::BaseController
   end
 
   def one_click_item
-    # FIXME 会社の住所ghjk
     if one_click_order_creater
       redirect_to one_click_thanks_orders_path(number: @payment.number)
     else
