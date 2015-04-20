@@ -12,7 +12,7 @@ module Users::OneClickOrdersHelper
         CheckoutValidityChecker.new.common_validity_checker(payment_attributes(detail), detail, current_user)
         @payment = OneClickPayment.new(payment_attributes(detail))
 
-        raise 'gmo_transaction_failed' unless false#@payment.pay_with_gmo_payment
+        raise 'gmo_transaction_failed' unless @payment.pay_with_gmo_payment
         @payment.save!
       end
       true
