@@ -22,10 +22,6 @@ class Taxon < ActiveRecord::Base
   belongs_to :parent, class_name: 'Taxon'
   has_one :user_categories_taxon
 
-  FreeShippingId = [6] #TODO manage from admin shipping management page
-
-  def self.one_click_products
-    Taxon.where(id: 2) #FIXME supplement
-  end
+  OneClickTaxonIds = [6] #FIXME
 
 end

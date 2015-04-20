@@ -115,12 +115,7 @@ class Users::CheckoutsController < Users::BaseController
     def before_payment
       @gmo_cards = GmoMultiPayment::Card.new(current_user).search
       @addresses = current_user.addresses.active
-      @wellness_mileage =  \
-        if @single_line_items.any? {|item| item.prohibit_using_mileage?}
-          0
-        else
-          current_user.wellness_mileage
-        end
+      @wellness_mileage = current_user.wellness_mileage
       @max_use_point = [@wellness_mileage, detail.item_total, Payment::UsedPointLimit].min
       @default_address = Address.default_address(current_user)
     end
