@@ -12,7 +12,7 @@
 <%= submit_tag "この順に変更", {class:"btn btn-warning", method: "patch" } %>
 <span><%= flash[:notice] %></span>
 <% if @images.present? %>
-  <table class="table c-table table-sortable">
+  <table class="table c-table">
     <thead>
       <tr>
         <th>画像</th>
@@ -21,7 +21,7 @@
       </tr>
     </thead>
     <tbody>
-     <% @images.each do |i| %>
+      <% @images.each do |i| %>
         <tr>
           <td>
             <% if !i.image.nil? %>
@@ -29,7 +29,7 @@
             <% end %>
           </td>
           <td>
-    <%= select_tag(:"#{i.id}", options_for_select( Array.new((1..@images.count).map{ |image| [image] }), selected: i.position)) %>
+            <%= select_tag(:"#{i.id}", options_for_select( Array.new((1..@images.count).map{ |image| [image] }), selected: i.position)) %>
           </td>
           <td>
             <a href="<%= edit_admins_variant_image_path(id: i.id ,imageable_id: params[:imageable_id]) %>" class="btn btn-warning btn-sm">
