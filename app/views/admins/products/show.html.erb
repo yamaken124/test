@@ -43,7 +43,7 @@
       <th>栄養士からの説明</th>
       <td><%= simple_format(@product.product_description.try(:nutritionist_explanation))%></td>
     </tr>
-    <% @product.how_to_use_products.each_with_index do |h, index| %>
+    <% @product.how_to_use_products.each.with_index(1) do |h, index| %>
       <tr>
         <th><%="使用方法"+index.to_s%></th>
         <td><%= simple_format(h.try(:description))%></td>
