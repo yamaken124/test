@@ -11,7 +11,6 @@ module FincApp
     user = User.where(email: finc_app_user['email']).first_or_initialize(password_params)
     finc_app_user[:profile_id] = user.profile.try(:id)
     user.update(FincApp.filter_user_params(finc_app_user))
-    user.create_user_category
     user
   end
 

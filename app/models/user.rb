@@ -37,6 +37,8 @@ class User < ActiveRecord::Base
   has_many :returned_items
   has_one :users_user_category
 
+  after_create :create_user_category
+
   accepts_nested_attributes_for :profile
 
   def name
