@@ -87,7 +87,6 @@ class PurchaseOrder < ActiveRecord::Base
           end
         end
 
-
         private
 
           def payment_attributes_from_params(attributes)

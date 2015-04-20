@@ -65,4 +65,8 @@ class Product < ActiveRecord::Base
     Product.where(id: available_product_id)
   end
 
+  def one_click_product?
+    ProductsTaxon.where(product_id: id).all? {|products_taxon| Taxon::OneClickTaxonIds.include?(products_taxon.taxon_id)}
+  end
+
 end

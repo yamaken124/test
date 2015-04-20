@@ -52,9 +52,8 @@ class SingleLineItem < ActiveRecord::Base
         other_items = payment.single_order_detail.single_line_items.where.not(id: self.id)
         if other_items.blank? || other_items.except_canceled.blank? #注文自体をキャンセル
           payment.canceled!
-        else
-          canceled!
         end
+        canceled!
         shipment.canceled!
       end
       UserMailer.delay.send_item_canceled_notification(self)

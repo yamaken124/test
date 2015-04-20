@@ -117,4 +117,8 @@ class User < ActiveRecord::Base
     Taxon.where(id: shown_user_categories_taxon.pluck(:taxon_id))
   end
 
+  def max_used_point(amount)
+    [wellness_mileage, amount, Payment::UsedPointLimit].min
+  end
+
 end

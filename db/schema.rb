@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150415171834) do
+ActiveRecord::Schema.define(version: 20150418085418) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -103,6 +103,59 @@ ActiveRecord::Schema.define(version: 20150415171834) do
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
   end
+
+  create_table "one_click_details", force: :cascade do |t|
+    t.integer  "item_total",           limit: 4, default: 0, null: false
+    t.integer  "tax_rate_id",          limit: 4
+    t.integer  "included_tax_total",   limit: 4
+    t.integer  "total",                limit: 4, default: 0, null: false
+    t.integer  "paid_total",           limit: 4
+    t.date     "completed_on"
+    t.datetime "completed_at"
+    t.integer  "address_id",           limit: 4
+    t.integer  "additional_tax_total", limit: 4, default: 0, null: false
+    t.integer  "used_point",           limit: 4, default: 0
+    t.integer  "adjustment_total",     limit: 4, default: 0, null: false
+    t.integer  "item_count",           limit: 4, default: 0, null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+  end
+
+  add_index "one_click_details", ["tax_rate_id"], name: "index_one_click_details_on_tax_rate_id", using: :btree
+
+  create_table "one_click_items", force: :cascade do |t|
+    t.integer  "variant_id",           limit: 4
+    t.integer  "one_click_detail_id",  limit: 4
+    t.integer  "quantity",             limit: 4
+    t.integer  "price",                limit: 4
+    t.integer  "tax_rate_id",          limit: 4
+    t.integer  "additional_tax_total", limit: 4
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "one_click_items", ["one_click_detail_id"], name: "index_one_click_items_on_one_click_detail_id", using: :btree
+  add_index "one_click_items", ["variant_id"], name: "index_one_click_items_on_variant_id", using: :btree
+
+  create_table "one_click_payments", force: :cascade do |t|
+    t.integer  "amount",                 limit: 4
+    t.integer  "source_id",              limit: 4
+    t.string   "source_type",            limit: 255
+    t.string   "gmo_access_id",          limit: 255
+    t.string   "gmo_access_pass",        limit: 255
+    t.integer  "gmo_card_seq_temporary", limit: 4
+    t.integer  "used_point",             limit: 4,   default: 0, null: false
+    t.integer  "payment_method_id",      limit: 4
+    t.integer  "address_id",             limit: 4
+    t.integer  "one_click_detail_id",    limit: 4
+    t.string   "number",                 limit: 255
+    t.integer  "user_id",                limit: 4
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+  end
+
+  add_index "one_click_payments", ["address_id"], name: "index_one_click_payments_on_address_id", using: :btree
+  add_index "one_click_payments", ["one_click_detail_id"], name: "index_one_click_payments_on_one_click_detail_id", using: :btree
 
   create_table "payment_methods", force: :cascade do |t|
     t.string   "name",          limit: 255
