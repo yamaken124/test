@@ -1,6 +1,7 @@
 class HowToUseProduct < ActiveRecord::Base
 
   belongs_to :product
+  validates :description, presence: true
 
   extend PrivateClassMethod
 
