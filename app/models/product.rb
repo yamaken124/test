@@ -47,9 +47,9 @@ class Product < ActiveRecord::Base
     single_order = variants.single_order
     subscription_order = variants.subscription_order
     if single_order.present? && single_order.first.available?
-      images.where(imageable_id: single_order.ids.first).where(imageable_type: "Variant")
+      images.where(imageable_id: single_order.ids.first).where(imageable_type: "Variant").order('position ASC')
     else
-      images.where(imageable_id: subscription_order.ids.first).where(imageable_type: "Variant")
+      images.where(imageable_id: subscription_order.ids.first).where(imageable_type: "Variant").order('position ASC')
     end
   end
 
