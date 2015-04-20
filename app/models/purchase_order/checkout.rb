@@ -111,8 +111,7 @@ class PurchaseOrder < ActiveRecord::Base
             raise 'payment_attributes_error.used_point_over_limit' if attributes[:payment_attributes][:used_point].to_i > Payment::UsedPointLimit
             raise 'payment_attributes_error.address_missing' unless has_address_attribtue?(attributes)
             raise 'payment_attributes_error.credit_card_missing' unless has_credit_card_attribtue?(attributes)
-            raise 'payment_attributes_error.invalid_used_point' if attributes[:payment_attributes][:used_point] && !valid_point?(detail.used_point)
-            raise 'payment_attributes_error.invalid_used_point' if attributes[:payment_attributes][:used_point] && ( (detail.item_total + detail.additional_tax_total) < detail.used_point )
+            raise 'payment_attributes_error.invalid_used_point' unless CheckoutValidityChecker.new.valid_point?(detail, user)
             raise_checkout_common_error(single_order_detail)
           end
 

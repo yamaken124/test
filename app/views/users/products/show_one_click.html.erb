@@ -12,6 +12,16 @@
       <% end %>
     </ul>
   </div>
+  <div class="c-payment_checkout_notice">
+    <%if flash['error_message'].present? %>
+      <% if params['error_message'] == 'payment_attributes_error.used_point_over_limit' %>
+        <%= t(params['error_message'], :limit => Payment::UsedPointLimit+1) %>
+      <% else %>
+        <%= t(params['error_message'], :default => "入力項目に不備があります") %>
+      <% end %>
+    <% end %>
+  </div>
+
   <div class="p-wrapper--have_padding">
     <ul class="p-payment_method_selections">
       <% if single.present? && single.available? %>
@@ -115,7 +125,8 @@
       </div>
       </li>
     </ul>
-    <%= submit_tag '1-clickで購入する', class: 'c-btn--submit' %>
+    <div class="c-payment_jquery_notice u-margin__bottom10"></div>
+    <%= submit_tag '1-clickで購入する', class: 'c-btn--submit c-btn--submit--single', :onclick=> "prevent_double_submit(event)" %>
     <a href="<%= guidance_path(name: 'one_click') %>">
       <div class='p-product_text_link u-margin__top10'>
         1-click購入とは？

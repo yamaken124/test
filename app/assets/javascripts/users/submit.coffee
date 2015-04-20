@@ -24,6 +24,14 @@
       event.stopPropagation();
       return false
 
+  if url.match(/show_one_click/)
+    if !$("input:radio[name='order[[payment_attributes[gmo_card_seq_temporary]]']:checked").val()
+      $('.credit-highlighted').addClass('error_highlight')
+      $('.c-payment_jquery_notice').text('クレジットカードが選択されていません')
+      event.preventDefault();
+      event.stopPropagation();
+      return false
+
   $('.c-btn--submit--single').val('送信中...')
   if $('.c-btn--submit--single').hasClass('disabled')
     event.preventDefault();

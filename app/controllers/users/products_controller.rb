@@ -29,6 +29,7 @@ class Users::ProductsController < Users::BaseController
 
     @max_used_point = current_user.max_used_point(@product.variants.single_order.first.price.amount)
     @gmo_cards = GmoMultiPayment::Card.new(current_user).search
+
   end
 
   def description

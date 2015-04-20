@@ -2,8 +2,7 @@ class CheckoutValidityChecker
 
   def common_validity_checker(payment_attributes, detail, current_user)
     raise 'payment_attributes_error.used_point_over_limit' if payment_attributes[:used_point].to_i > Payment::UsedPointLimit
-    raise 'payment_attributes_error.invalid_used_point' if payment_attributes[:used_point] && ( (detail.item_total + detail.additional_tax_total) < detail.used_point )
-    raise 'payment_attributes_error.invalid_used_point' if payment_attributes[:used_point] && !valid_point?(detail.used_point, current_user)
+    raise 'payment_attributes_error.invalid_used_point' if payment_attributes[:used_point] && !valid_point?(detail, current_user)
     raise 'payment_attributes_error.address_missing' unless has_address_attribute?(payment_attributes)
     raise 'payment_attributes_error.credit_card_missing' unless has_credit_card_attribute?(payment_attributes)
   end
@@ -28,8 +27,9 @@ class CheckoutValidityChecker
     payment_attributes[:address_id].present?
   end
 
-  def valid_point?(point, user)
-    (point <= user.wellness_mileage) && point >= 0
+  def valid_point?(detail, user)
+    amount = detail.item_total + detail.additional_tax_total
+    (detail.used_point <= user.max_used_point(amount)) && (detail.used_point >= 0)
   end
 
 end
