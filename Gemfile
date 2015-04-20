@@ -85,6 +85,8 @@ group :development, :staging, :test do
   gem 'quiet_assets'
 end
 
+gem 'airbrake'
+
 group :development, :staging, :heroku_staging do
   gem 'rack-dev-mark'
 end
