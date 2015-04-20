@@ -49,11 +49,10 @@ namespace :deploy do
     end
   end
 
-  # after :migrate, 'db:seed_fu'
-  after :migrate, 'insert_users_user_category:execute_insertion'
-  after 'insert_users_user_category:execute_insertion', 'db:seed_fu'
+  after :migrate, 'db:seed_fu'
   after 'db:seed_fu', 'db:seed'
   after 'db:seed_fu', 'insert_stock_quantity:execute_insertion'
+  after 'db:seed_fu', 'insert_users_user_category:execute_insertion'
   after :publishing, 'unicorn:restart'
 
   after 'deploy:publishing', 'delayed_job:restart'
