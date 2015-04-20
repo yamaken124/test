@@ -44,6 +44,7 @@ class Admins::ProductsController < Admins::BaseController
       end
       redirect_to admins_product_path(params[:id])
     rescue
+      set_new_product
       set_leaf_taxons
       render :edit
     end
