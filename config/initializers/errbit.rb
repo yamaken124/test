@@ -4,5 +4,4 @@ Airbrake.configure do |config|
   config.port    = 80
   config.secure  = config.port == 443
   config.environment_name = Rails.env.production? ? "#{Rails.env}:#{`hostname`}" : Rails.env
-  config.development_environments = []
 end
