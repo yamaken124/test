@@ -7,7 +7,7 @@
   border-radius:5px;
   margin-left:-1px;
   .p-payment_method_selection{
-    @include calc("width", "100%-15px");
+    @include calc("width", "100% - 30px");
     min-height:42px;
     padding-left:15px;
     padding-right:15px;
@@ -21,18 +21,26 @@
       padding-top:11px;
     }
     .p-payment_method_selection__title{
-      width:85px;
       line-height:42px;
       height:42px;
       font-weight:bold;
       color:$base_font_color;
       float:left;
+      padding-right:10px;
+    }
+    .p-payment_method_selection__name{
+      @extend .p-payment_method_selection__title;
+      width:100%;
     }
     .p-payment_method_selection__price{
       color:$base_font_color;
       line-height:42px;
       height:42px;
       float:left;
+    }
+    .p-payment_method_selection__mile{
+      @extend .p-payment_method_selection__price;
+      float:right;
     }
     .p-payment_method_selection__attention{
       width:100%;
@@ -72,6 +80,11 @@
       &.is-active{
         display:block;
       }
+    }
+    .p-payment_method__detail_in_a_line{
+      @extend .p-payment_method__detail;
+      float:right;
+      width:50%;
     }
     span{
       line-height:15px;

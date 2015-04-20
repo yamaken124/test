@@ -31,14 +31,19 @@ Rails.application.routes.draw do
     resource :account, only: [:show] do
       resources :addresses, only: [:index, :edit, :update, :new, :create, :destroy] do
         collection do
-          get  'fetch_address_with_zipcode', action: :fetch_address_with_zipcode, :as => :fetch_address
+          get 'fetch_address_with_zipcode', action: :fetch_address_with_zipcode, :as => :fetch_address
         end
       end
     end
     resource :profile, only: [:edit, :create, :update] do
       resources :credit_cards, only: [:index, :new, :edit, :create, :destroy]
     end
-    resources :products, only: [:index, :show]
+    resources :products, only: [:index, :show] do
+      collection do
+        get ':id/show_one_click/', action: :show_one_click, :as => :show_one_click
+        get ':id/description', action: :description, :as => :description
+      end
+    end
     resource :cart, only: [:update], controller: :orders do
       get '/', action: :edit
       get :address, on: :member
@@ -47,7 +52,9 @@ Rails.application.routes.draw do
     resources :orders, only: [:index, :show] do
       collection do
         post :populate
+        post :one_click_item
         get  ':number/thanks', action: :thanks, :as => :thanks
+        get  ':number/one_click_thanks', action: :one_click_thanks, :as => :one_click_thanks
         delete '/cancel/:number' => 'orders#cancel', :as => :cancel
       end
     end

@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
   has_one  :profile
   has_many :oauth_access_tokens
   has_many :returned_items
+  has_one :users_user_category
 
   accepts_nested_attributes_for :profile
 
@@ -48,6 +49,7 @@ class User < ActiveRecord::Base
   end
 
   def wellness_mileage
+
     user = me_in_finc_app
 
     return 0 if user.blank?
@@ -97,6 +99,26 @@ class User < ActiveRecord::Base
       user_id: id,
       used_point: changed_point
     ) #point history
+  end
+
+  def belonging_user_category
+    UsersUserCategory.where(user_id: id)
+  end
+
+  def shown_user_categories_taxon
+    UserCategoriesTaxon.where(user_category_id: belonging_user_category.pluck(:user_category_id))
+  end
+
+  def shown_product_ids
+    ProductsTaxon.where(taxon_id: shown_user_categories_taxon.pluck(:taxon_id)).pluck(:product_id)
+  end
+
+  def shown_taxon
+    Taxon.where(id: shown_user_categories_taxon.pluck(:taxon_id))
+  end
+
+  def max_used_point(amount)
+    [wellness_mileage, amount, Payment::UsedPointLimit].min
   end
 
 end

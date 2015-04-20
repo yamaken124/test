@@ -1,7 +1,7 @@
 @import "../../foundation/setting";
 @import "../../foundation/mixin";
 .p-product_title{
-  @include calc(width, "100%-8px");
+  @include calc("width", "100% - 8px");
   color:$finc_color;
   padding-left:8px;
   padding-top:15px;
@@ -35,4 +35,79 @@
       }
     }
   }
+}
+.p-product_nutritionist{
+  width:100%;
+  border-bottom:1px solid $base_border_color;
+}
+.p-product_nutritionist_flame{
+  position: relative;
+  @include calc("width", "100% - 16px");
+  margin:10px 0 15px;
+  margin-left:8px;
+  border: 1px solid $base_border_color;
+  background-color: #fff;
+  border-radius:10px;
+  &:after{
+    z-index:10;
+    position:absolute;
+    bottom:-27.6px;
+    height:30px;
+    width:100%;
+    content:'';
+    background-image:url(asset-path("users/comment_flame.png"));
+    background-position:center;
+    background-repeat:no-repeat;
+  }
+}
+.p-product_nutritionist_comment{
+  padding:10px 0 10px;
+  @include calc("width", "100% - 8px");
+  margin-left:8px;
+  word-break:break-all;
+}
+.p-product_nutritionist_image img{
+  width:100%;
+  z-index:20;
+}
+.p-product_description{
+  @include calc("width", "100% - 8px");
+  margin-left:4px;
+  margin-bottom:25px;
+}
+.p-product_description_contents{
+  width:100%;
+  overflow:hidden;
+  &:last-child{
+    border-bottom:1px solid $base_border_color;
+  }
+}
+.p-product_description_contents_images{
+  float:left;
+  margin-right:10px;
+}
+.p-product_description_contents_details{
+  @include calc("width", "100% - 108px");
+  float:right;
+  margin-right:4px;
+  word-break:break-all;
+}
+.p-product_description_contents_arrow{
+  width:100%;
+  height:50px;
+  background-position:center;
+  background-image:url(asset-path("users/down_arrow.png"));
+  background-repeat:no-repeat;
+  &:last-child{
+    display:none;
+  }
+}
+.p-product_description_price{
+  color:$finc_color;
+  margin-top:5px;
+  margin-bottom:10px;
+}
+.p-product_text_link{
+  font-size:14px;
+  text-align:center;
 }

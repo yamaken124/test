@@ -62,6 +62,8 @@ class Users::CreditCardsController < Users::BaseController
     def continue_path
       if params[:continue] && params[:continue].to_s.include?("checkout/payment")
         checkout_state_path("payment")
+      elsif params[:continue] && params[:continue].to_s.include?("show_one_click")
+        show_one_click_products_path(id: params[:continue].gsub(/[^0-9]/,""))
       else
         profile_credit_cards_path
       end

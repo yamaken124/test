@@ -1,9 +1,11 @@
 class Users::ProductsController < Users::BaseController
 
-  def index
-    set_products(Variant.available_variants)
+  before_action :available_quantity, only: [:show, :description, :show_one_click]
 
-    displayed_variant_ids = Variant.available_variants.ids & Variant.where(product_id: @products.pluck(:id)).pluck(:id)
+  def index
+    set_products(Variant.available)
+
+    displayed_variant_ids = Variant.available.ids & Variant.where(product_id: @products.ids).ids
     @variants_indexed_by_product_id = Variant.where(id: displayed_variant_ids).index_by(&:product_id)
 
     set_prices(displayed_variant_ids)
@@ -12,18 +14,32 @@ class Users::ProductsController < Users::BaseController
 
   def show
     @product = Product.find(params[:id])
-
-    if @product.blank? || !@product.available?
+    unless @product.available? && @product.displayed?(current_user)
       redirect_to products_path
     end
-
-    @available_quantity = *(1..Product::AvailableQuantity)
     @preview_images = @product.preview_images
   end
 
+  def show_one_click
+    @product = Product.find(params[:id])
+    unless @product.available? && @product.displayed?(current_user)
+      redirect_to products_path
+    end
+    @preview_images = @product.preview_images
+
+    @max_used_point = current_user.max_used_point(@product.variants.single_order.first.price.amount)
+    @gmo_cards = GmoMultiPayment::Card.new(current_user).search
+  end
+
+  def description
+    @product = Product.find(params[:id])
+  end
+
   private
+
     def set_products(available_variants)
-      @products = Product.active.where(id: Variant.where(id: available_variants.ids).pluck(:product_id)).page(params[:page])
+      displayed_product_ids = Product.available.ids & current_user.shown_product_ids
+      @products = Product.where(id: displayed_product_ids).page(params[:page])
     end
 
     def set_prices(variant_ids)
@@ -36,6 +52,10 @@ class Users::ProductsController < Users::BaseController
 
     def set_images(variant_ids)
       @images = Image.where(imageable_id: variant_ids, imageable_type: 'Variant').index_by(&:imageable_id)
+    end
+
+    def available_quantity
+      @available_quantity = Array(1..Product::AvailableQuantity)
     end
 
 end

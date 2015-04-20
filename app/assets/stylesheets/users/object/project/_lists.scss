@@ -1,51 +1,47 @@
 @import "../../foundation/setting";
 @import "../../foundation/mixin";
+.p-lists__title{
+  padding-top:25px;
+  padding-bottom:5px;
+}
 .p-lists{
   background-color:white;
   width:100%;
-  border:1px solid $base_border_color;
-  margin-bottom:50px;
-  border-radius:5px;
-  margin-top:5px;
-  margin-left:-1px;
+  margin-left:0px;
   .p-list{
-    @include calc("width", "100%-15px");
+    width:100%;
     min-height:42px;
     overflow:hidden;
-    padding-left:15px;
-    border-bottom:1px solid $base_border_color;
+    border:1px solid $base_border_color;
+    border-radius:5px;
     color:$base_font_color;
-    p{
-      font-size:18px;
-      font-weight:bold;
-      padding-top:10px;
-      padding-bottom:5px;
-    }
     .p-list__fincrew{
+      margin-left:4px;
+      margin-bottom:10px;
       width:50px;
       height:50px;
-      float:left;
       img{
         width:100%;
       }
     }
-    &:last-child{
-      border-bottom:none;
-    }
     .p-list__fincrew_description{
-      @include calc("width", "100%-50px");
       font-size:13px;
-      line-height:17px;
-      margin-top:-50px;
-      padding-left:55px;
-      padding-bottom:5px;
-      float:left;
+      @include calc("width", "100% - 8px");
+      margin-left:4px;
+      margin-bottom:10px;
     }
     .p-list__description{
       font-size:13px;
-      line-height:17px;
-      padding-right:15px;
-      padding-bottom:5px;
+      padding:10px 0 10px;
+      @include calc("width", "100% - 8px");
+      margin-left:4px;
     }
+    .p-list__fincrew_buttun{
+      margin-left:10px;
+    }
+  }
+  .p-list__image{
+    @extend .p-list;
+    padding-bottom:10px;
   }
 }
