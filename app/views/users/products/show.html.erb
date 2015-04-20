@@ -111,7 +111,7 @@
           <%= image_tag "users/icon_yuka.png" %>
         </div>
         <div class="p-list__fincrew_description">
-          <%= include_line_break(@product.product_description.try(:nutritionist_explanation)) %>
+          <%= include_line_break(@product.product_description.try(:nutritionist_word)) %>
         </div>
         <a href="<%= description_products_path(@product.id) %>">
           <div class="c-btn--product--detail">
