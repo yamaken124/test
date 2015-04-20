@@ -14,13 +14,13 @@ class Users::ProductsController < Users::BaseController
 
   def show
     @product = Product.find(params[:id])
-    redirect_to :back unless ( @product.available? && @product.displayed?(current_user) )
+    redirect_to products_path unless ( @product.available? && @product.displayed?(current_user) )
     @preview_images = @product.preview_images
   end
 
   def show_one_click
     @product = Product.find(params[:id])
-    redirect_to :back unless ( @product.available? && @product.displayed?(current_user) )
+    redirect_to products_path unless ( @product.available? && @product.displayed?(current_user) )
     @preview_images = @product.preview_images
 
     @max_used_point = current_user.max_used_point(@product.variants.single_order.first.price.amount)
