@@ -1,6 +1,6 @@
 class Users::ProductsController < Users::BaseController
 
-  before_action :available_quantity, only: [:show, :description]
+  before_action :available_quantity, only: [:show, :description, :show_one_click]
 
   def index
     set_products(Variant.available)
@@ -20,11 +20,23 @@ class Users::ProductsController < Users::BaseController
     @preview_images = @product.preview_images
   end
 
+  def show_one_click
+    @product = Product.find(params[:id])
+    unless @product.available? && @product.displayed?(current_user)
+      redirect_to products_path
+    end
+    @preview_images = @product.preview_images
+
+    @max_used_point = current_user.max_used_point(@product.variants.single_order.first.price.amount)
+    @gmo_cards = GmoMultiPayment::Card.new(current_user).search
+  end
+
   def description
     @product = Product.find(params[:id])
   end
 
   private
+
     def set_products(available_variants)
       displayed_product_ids = Product.available.ids & current_user.shown_product_ids
       @products = Product.where(id: displayed_product_ids).page(params[:page])

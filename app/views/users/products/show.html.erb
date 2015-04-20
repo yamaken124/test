@@ -104,24 +104,22 @@
       </li>
     </ul>
 
-    <h2 class="u-margin__top25 u-margin__bottom5">栄養士からの一言</h2>
-    <ul class="p-lists">
-      <li class="p-list">
+    <h2 class="p-lists__title">栄養士からの一言</h2>
+    <ul class="p-lists u-margin__bottom25">
+      <li class="p-list__image">
         <div class="p-list__fincrew">
           <%= image_tag "users/icon_yuka.png" %>
         </div>
         <div class="p-list__fincrew_description">
           <%= include_line_break(@product.product_description.try(:nutritionist_explanation)) %>
         </div>
-        <!-- <div class="p-list__fincrew_buttun"> -->
-          <a href="<%= description_products_path(@product.id) %>">
-            <div class="c-btn--product--detail">
-              詳しく見る
-            </div>
-          </a>
-        <!-- </div> -->
+        <a href="<%= description_products_path(@product.id) %>">
+          <div class="c-btn--product--detail">
+            詳しく見る
+          </div>
+        </a>
       </li>
-      <h3 class="u-margin__top10 u-margin__bottom5">この商品について</h3>
+      <h2 class="p-lists__title">この商品について</h3>
       <li class="p-list">
         <div class="p-list__description">
           <%= include_line_break(@product.product_description.try(:description)) %>

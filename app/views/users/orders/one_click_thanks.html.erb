@@ -5,7 +5,6 @@
     <p class="c-order-amount">合計:<br><%= number_to_jpy(@payment.amount) %></p>
     <p class="c-order-amount">使用マイル:<br><%= @payment.used_point %>mile</p>
   </div>
-  <% @items.each do |item| %>
-    <%= render partial: 'users/orders/thanks', locals: {item: item} %>
-  <% end %>
+  <% item = @items %>
+  <%= render partial: 'users/orders/thanks', locals: {item: item} %>
 </div>
