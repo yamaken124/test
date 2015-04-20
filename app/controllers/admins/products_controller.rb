@@ -4,7 +4,7 @@ class Admins::ProductsController < Admins::BaseController
   before_action :set_new_product, only: [:new]
 
   def index
-    @displayed_products = Product.where(id: Product.available.ids ).page(params[:page])
+    @displayed_products = Product.where(id: Product.available.try(:ids) ).page(params[:page])
     @products = Product.includes([:taxons, :product_description])
   end
 
