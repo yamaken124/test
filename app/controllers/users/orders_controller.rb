@@ -99,17 +99,11 @@ class Users::OrdersController < Users::BaseController
 
   def one_click_item
     # FIXME 会社の住所ghjk
-    # begin
-    #   ActiveRecord::Base.transaction do
-        # validation
-
-        one_click_order_creater
-
-    #   end
-    # rescue => e
-    #   redirect_to :back
-    # end
-    redirect_to one_click_thanks_orders_path(number: @payment.number)
+    if one_click_order_creater
+      redirect_to one_click_thanks_orders_path(number: @payment.number)
+    else
+      redirect_to :back
+    end
   end
 
   def one_click_thanks

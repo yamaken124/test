@@ -4,14 +4,22 @@ module Users::OneClickOrdersHelper
 
   def one_click_order_creater
 
-    detail = OneClickDetail.create!(detail_attributes)
-    # todo nested attributes
-    item = OneClickItem.create!(item_attributes(detail))
-    CheckoutValidityChecker.new.common_validity_checker(payment_attributes(detail), detail, current_user)
-    @payment = OneClickPayment.new(payment_attributes(detail))
+    begin
+      ActiveRecord::Base.transaction do
+        detail = OneClickDetail.create!(detail_attributes)
+        # todo nested attributes
+        item = OneClickItem.create!(item_attributes(detail))
+        CheckoutValidityChecker.new.common_validity_checker(payment_attributes(detail), detail, current_user)
+        @payment = OneClickPayment.new(payment_attributes(detail))
 
-    raise 'gmo_transaction_failed' unless @payment.pay_with_gmo_payment
-    @payment.save!
+        raise 'gmo_transaction_failed' unless false#@payment.pay_with_gmo_payment
+        @payment.save!
+      end
+      true
+    rescue => e
+      flash['error_message'] = e.message
+      false
+    end
 
   end
 
@@ -20,7 +28,7 @@ module Users::OneClickOrdersHelper
       tax_rate_id: 1,
       completed_on: Date.today,
       completed_at: Time.now,
-      address_id: current_user.addresses.last.id, #TODO company_address or null
+      address_id: Address.last.id, #TODO company_address or null
       used_point: used_point,
       item_count: order_attributes_from_params[:item_count],
       )
@@ -32,7 +40,7 @@ module Users::OneClickOrdersHelper
       amount: detail.paid_total,
       used_point: used_point,
       payment_method_id: 1,
-      address_id: current_user.addresses.last.id,
+      address_id: Address.last.id,
       number: one_click_number(detail),
       user_id: current_user.id,
       gmo_card_seq_temporary: payment_attributes_from_params[:gmo_card_seq_temporary],#FIXME
