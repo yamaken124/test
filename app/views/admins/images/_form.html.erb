@@ -8,6 +8,7 @@
         <%= i.label :image %><br>
         <%= i.file_field :image %>
         <%= i.hidden_field :image_cache %>
+        <%= i.hidden_field :position, value: "#{@images.count + 1}" %>
       </div>
       <div class="actions">
         <%= i.submit "登録", class: "submit" %>

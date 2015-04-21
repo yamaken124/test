@@ -8,6 +8,7 @@ class Admins::ImagesController < Admins::BaseController
 
   def new
     @image = Image.new(imageable_id: params[imageable_key])
+    @images = @imageable.images
   end
 
   def create
@@ -40,6 +41,15 @@ class Admins::ImagesController < Admins::BaseController
     end
   end
 
+  def sort
+    if Variant.find(params[:variant_id]).images.map{ |image| image.update!(position: params[:"#{image.id}"]) }   
+      flash[:notice] = "画像順を変更しました"
+    else
+      flash[:notice] = "画像順の変更に失敗しました。"
+    end
+    redirect_to :back
+  end
+
   private
 
     def imageable_model
@@ -47,7 +57,7 @@ class Admins::ImagesController < Admins::BaseController
     end
 
     def image_params
-      params.require(:image).permit(:image) \
+      params.require(:image).permit(:image, :position) \
         .merge(imageable_id: params[imageable_key], imageable_type: imageable_type)
     end
 

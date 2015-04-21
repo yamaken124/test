@@ -7,7 +7,6 @@ class Users::ProductsController < Users::BaseController
 
     displayed_variant_ids = Variant.available.ids & Variant.where(product_id: @products.ids).ids
     @variants_indexed_by_product_id = Variant.where(id: displayed_variant_ids).index_by(&:product_id)
-
     set_prices(displayed_variant_ids)
     set_images(displayed_variant_ids)
   end
@@ -47,7 +46,7 @@ class Users::ProductsController < Users::BaseController
     end
 
     def set_images(variant_ids)
-      @images = Image.where(imageable_id: variant_ids, imageable_type: 'Variant').index_by(&:imageable_id)
+      @images = Image.where(imageable_id: variant_ids, imageable_type: 'Variant', position: 1).index_by(&:imageable_id)
     end
 
     def available_quantity
