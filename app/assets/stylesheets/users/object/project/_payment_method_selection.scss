@@ -41,6 +41,10 @@
     .p-payment_method_selection__mile{
       @extend .p-payment_method_selection__price;
       float:right;
+      &:after{
+        content:'マイル';
+        margin-left:5px;
+      }
     }
     .p-payment_method_selection__attention{
       width:100%;

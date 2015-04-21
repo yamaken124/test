@@ -9,10 +9,13 @@ module Users::OneClickOrdersHelper
         detail = OneClickDetail.create!(detail_attributes)
         # todo nested attributes
         item = OneClickItem.create!(item_attributes(detail))
-        CheckoutValidityChecker.new.common_validity_checker(payment_attributes(detail), detail, current_user)
+
+        CheckoutValidityChecker.new.common_validity_checker(payment_attributes(detail), detail, current_user, item)
+        raise 'invalid_point_fixme' unless Variant.find(item_attributes_from_params[:variant_id]).valid_point?(used_point.to_i, current_user, order_attributes_from_params[:item_count])
         @payment = OneClickPayment.new(payment_attributes(detail))
 
-        raise 'gmo_transaction_failed' unless @payment.pay_with_gmo_payment
+        # 0円決済はone_click_orderにて許容するとの認識
+        (raise 'gmo_transaction_failed' unless @payment.pay_with_gmo_payment) if detail.paid_total > 0
         @payment.save!
       end
       true
@@ -32,7 +35,6 @@ module Users::OneClickOrdersHelper
       used_point: used_point,
       item_count: order_attributes_from_params[:item_count],
       )
-
   end
 
   def payment_attributes(detail)
@@ -89,7 +91,7 @@ module Users::OneClickOrdersHelper
 
   def used_point
     if order_attributes_from_params[:use_all_point] == "true"
-      current_user.max_used_point(item_total)
+      Variant.find(item_attributes_from_params[:variant_id]).max_used_point(current_user, order_attributes_from_params[:item_count])
     else
       order_attributes_from_params[:used_point]
     end

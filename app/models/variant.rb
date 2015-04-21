@@ -19,6 +19,7 @@ class Variant < ActiveRecord::Base
   has_many :images, :as => :imageable
   has_many :single_line_items
   has_one :one_click_item
+  has_one :upper_used_point_limit
 
   include TimeValidityChecker
 
@@ -51,6 +52,18 @@ class Variant < ActiveRecord::Base
 
   def self.subscription_variant
     find_by(order_type: Variant.order_types['subscription_order'])
+  end
+
+  def valid_point?(point, user, quantity)
+    (point >= 0) && (point <= max_used_point(user, quantity))
+  end
+
+  def max_used_point(user, quantity)
+    [user.max_used_point, (upper_used_point * quantity.to_i)].min
+  end
+
+  def upper_used_point
+    UpperUsedPointLimit.find_by(variant_id: id).limit.to_i
   end
 
 end

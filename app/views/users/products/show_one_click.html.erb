@@ -45,7 +45,7 @@
       <li class="p-payment_method_selection">
       <div class="p-payment_method__detail is-active">
         <p>数量: </p>
-        <%= select_tag "order[item_count]", options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
+        <%= select_tag "order[item_count]", options_for_select(@available_quantity), class: 'p-payment_method__amount jquery-change_used_point', :onchange => "update_max_used_point(event)" %>
         <p class="u-margin__right_short">個</p>
         <%= submit_tag '1-click購入', class: 'c-btn--submit--short u-margin__top5' %>
       </div>
@@ -107,22 +107,24 @@
     <h2 class="p-lists__title">使用するマイル</h2>
     <ul class="p-payment_method_selections u-margin__bottom25">
       <li class="p-payment_method_selection">
-      <div class="p-payment_method_selection__radio">
-        <%= radio_button_tag "order[use_all_point]", true %>
-      </div>
-      <%= label_tag "order_use_all_point_true", "全て使用", class: "p-payment_method_selection__title" %>
-      <p class="p-payment_method_selection__mile"><%= @max_used_point %> マイル</p>
+        <div class="p-payment_method_selection__radio">
+          <%= radio_button_tag "order[use_all_point]", true %>
+        </div>
+        <%= label_tag "order_use_all_point_true", "全て使用", class: "p-payment_method_selection__title" %>
+        <div class="p-payment_method_selection__mile update_max_used_point">
+          <%= @max_used_point %>
+        </div>
       </li>
       <li class="p-payment_method_selection">
-      <div class="p-payment_method_selection__radio">
-        <%= radio_button_tag "order[use_all_point]", false, checked: true %>
-      </div>
-      <%= label_tag "order_use_all_point_false", "一部を使用", class: "p-payment_method_selection__title" %>
-      <div class="p-payment_method__detail_in_a_line is-active">
-        <div class="p-payment_method_selection__mile">
-          <%= text_field_tag "order[used_point]", 0, min: 0, max: @max_use_point, class: 'p-payment_method__amount' %><p class='u-margin__left_short'>マイル</p>
+        <div class="p-payment_method_selection__radio">
+          <%= radio_button_tag "order[use_all_point]", false, checked: true %>
         </div>
-      </div>
+        <%= label_tag "order_use_all_point_false", "一部を使用", class: "p-payment_method_selection__title" %>
+        <div class="p-payment_method__detail_in_a_line is-active">
+          <div class="p-payment_method_selection__mile">
+            <%= text_field_tag "order[used_point]", 0, min: 0, max: @max_use_point, class: 'p-payment_method__amount' %>
+          </div>
+        </div>
       </li>
     </ul>
     <div class="c-payment_jquery_notice u-margin__bottom10"></div>
@@ -134,4 +136,3 @@
     </a>
   </div>
 <% end %>
-

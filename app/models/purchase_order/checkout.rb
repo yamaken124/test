@@ -67,11 +67,10 @@ class PurchaseOrder < ActiveRecord::Base
                 OrderUpdater.new(single_order_detail).update_totals
                 single_order_detail.paid_total = single_order_detail.total
                 attributes[:payment_attributes] = attributes[:payment_attributes].merge(payment_attributes_from_params(attributes))
-                raise_checkout_payment_error(single_order_detail, attributes)
+                raise_checkout_payment_error(attributes)
                 single_order_detail.update!(attributes)
 
               when :confirm
-                raise_checkout_common_error(single_order_detail)
                 SingleLineItem.complete_items(single_order_detail)
                 single_order_detail.payment.processing!
                 single_order_detail.payment.completed!
@@ -107,21 +106,12 @@ class PurchaseOrder < ActiveRecord::Base
             attributes[:payment_attributes][:address_id].present?
           end
 
-          def raise_checkout_payment_error(detail, attributes)
+          def raise_checkout_payment_error(attributes)
             raise 'payment_attributes_error.used_point_over_limit' if attributes[:payment_attributes][:used_point].to_i > Payment::UsedPointLimit
             raise 'payment_attributes_error.address_missing' unless has_address_attribtue?(attributes)
             raise 'payment_attributes_error.credit_card_missing' unless has_credit_card_attribtue?(attributes)
-            raise 'payment_attributes_error.invalid_used_point' unless CheckoutValidityChecker.new.valid_point?(detail, user)
-            raise_checkout_common_error(single_order_detail)
-          end
-
-          def raise_checkout_common_error(detail)
-            detail.single_line_items.each do |item|
-              variant = Variant.find(item.variant_id)
-              unless variant.available? && Product.find(variant.product_id).available?
-                raise 'item.invalid_item'
-              end
-            end
+            raise 'payment_attributes_error.invalid_used_point' unless CheckoutValidityChecker.new.items_valid_point?(user, single_order_detail, single_order_detail.single_line_items)
+            CheckoutValidityChecker.new.items_invalid_checker(single_order_detail.single_line_items)
           end
 
       end

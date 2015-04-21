@@ -14,6 +14,7 @@
       event.preventDefault();
       event.stopPropagation();
       return false
+
   if url.match(/address/)
     firstZipcode = $('#address_first_zipcode').val()
     lastZipcode = $('#address_last_zipcode').val()
