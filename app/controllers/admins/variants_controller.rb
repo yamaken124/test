@@ -51,10 +51,6 @@ class Admins::VariantsController < Admins::BaseController
       params.require(:variant).permit(:is_valid_at, :is_invalid_at, :order_type, :sku, :name, :stock_quantity, upper_used_point_limit_attributes: :limit, price_attributes: :amount).merge(product_id: params[:product_id])
     end
 
-    def upper_used_point_limit_attributes
-      params[:variant].require(:upper_used_point_limit_attributes).permit(:limit)
-    end
-
     def set_variant
       @variant = Variant.find(params[:id])
     end
