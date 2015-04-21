@@ -16,6 +16,7 @@
           <th>画像</th>
           <th>注文タイプ</th>
           <th>値段</th>
+          <th>使用可能マイル上限</th>
           <th>状態</th>
           <th>在庫数</th>
           <th></th>
@@ -33,6 +34,9 @@
             <% end %></td>
           <td>
             <%= v.price.try(:amount) %>
+          </td>
+          <td>
+            <%= v.upper_used_point_limit.try(:limit) %>
           </td>
           <td><%= t(v.classify_validity) %></td>
           <td><%= v.stock_quantity %></td>

@@ -21,6 +21,9 @@ class Variant < ActiveRecord::Base
   has_one :one_click_item
   has_one :upper_used_point_limit
 
+  accepts_nested_attributes_for :upper_used_point_limit
+  accepts_nested_attributes_for :price
+
   include TimeValidityChecker
 
   enum order_type: {single_order: 1, subscription_order: 2}

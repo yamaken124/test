@@ -28,6 +28,12 @@
           <p><%= p.text_field :amount, class: "form-control", value: variant.price.try(:amount) %></p>
         </div>
       <% end %>
+      <%= v.fields_for :upper_used_point_limit, @variant.upper_used_point_limit || UpperUsedPointLimit.new do |u| %>
+        <div class="form-group">
+          <p><%= u.label :limit %></p>
+          <p><%= u.text_field :limit, class: "form-control", value: variant.upper_used_point_limit.try(:limit) %></p>
+        </div>
+      <% end %>
       <div class="form-group">
         <p><%= v.label :stock_quantity %></p>
         <%= v.text_field :stock_quantity, class: "form-control" %>
