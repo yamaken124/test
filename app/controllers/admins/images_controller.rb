@@ -3,16 +3,17 @@ class Admins::ImagesController < Admins::BaseController
   before_action :set_imageable, only: [:show, :edit, :new, :index]
 
   def index
-    @images = Image.includes(imageable_model).where(images: {imageable_id: params[imageable_key]})
+    @images = Image.includes(imageable_model).where(images: {imageable_id: params[imageable_key]}).order("position ASC")
   end
 
   def new
     @image = Image.new(imageable_id: params[imageable_key])
     @images = @imageable.images
+    VariantImageWhereabout.whereabouts.size.times { @image.variant_image_whereabouts.build }
   end
 
   def create
-    @image = Image.new(image_params)
+    @image = Image.new(image_attributes)
     if @image.save
       redirect_to admins_variant_images_path
     else
@@ -21,6 +22,7 @@ class Admins::ImagesController < Admins::BaseController
   end
 
   def edit
+    @images = @imageable.images
   end
 
   def update
@@ -37,12 +39,13 @@ class Admins::ImagesController < Admins::BaseController
       redirect_to :back
     else
       @image.destroy
+      @image.variant_image_whereabouts.each {|w| w.destroy}
       redirect_to admins_variant_images_path
     end
   end
 
   def sort
-    if Variant.find(params[:variant_id]).images.map{ |image| image.update!(position: params[:"#{image.id}"]) }   
+    if Variant.find(params[:variant_id]).images.map{ |image| image.update!(position: params[:"#{image.id}"]) }
       flash[:notice] = "画像順を変更しました"
     else
       flash[:notice] = "画像順の変更に失敗しました。"
@@ -56,9 +59,26 @@ class Admins::ImagesController < Admins::BaseController
       imageable_type.underscore.to_sym
     end
 
+    def check_variant_image_whereabouts_attribute
+    end
+
+    def image_attributes
+      attributes = { variant_image_whereabouts_attributes: {} }
+      attributes = image_params
+      attributes[:variant_image_whereabouts_attributes] = valid_whereabout_from_params
+      attributes
+    end
+
     def image_params
-      params.require(:image).permit(:image, :position) \
-        .merge(imageable_id: params[imageable_key], imageable_type: imageable_type)
+      params.require(:image).permit(:image, :position).merge(imageable_id: params[imageable_key], imageable_type: imageable_type)
+    end
+
+    def valid_whereabout_from_params
+      variant_image_whereabouts_attributes[:variant_image_whereabouts_attributes].select { |k,v| (v.values & VariantImageWhereabout.whereabouts.keys).present? }
+    end
+
+    def variant_image_whereabouts_attributes
+      params.require(:image).permit(variant_image_whereabouts_attributes: [:whereabout, :variant_id])
     end
 
     def imageable_type
@@ -80,4 +100,5 @@ class Admins::ImagesController < Admins::BaseController
     def set_imageable
       @imageable = imageable_class.find(params[imageable_key])
     end
+
 end

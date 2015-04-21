@@ -16,6 +16,7 @@
     <thead>
       <tr>
         <th>画像</th>
+        <th>表示場所</th>
         <th>表示順</th>
         <th></th>
       </tr>
@@ -26,6 +27,11 @@
           <td>
             <% if !i.image.nil? %>
               <%= image_tag i.image.url,:size => "60x60" %>
+            <% end %>
+          </td>
+          <td>
+            <% i.variant_image_whereabouts.each do |w| %>
+              <%= w.whereabout %>/
             <% end %>
           </td>
           <td>

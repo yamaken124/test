@@ -467,12 +467,14 @@ ActiveRecord::Schema.define(version: 20150421064651) do
 
   create_table "variant_image_whereabouts", force: :cascade do |t|
     t.integer  "image_id",   limit: 4
+    t.integer  "variant_id", limit: 4
     t.integer  "whereabout", limit: 4
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
   end
 
   add_index "variant_image_whereabouts", ["image_id"], name: "index_variant_image_whereabouts_on_image_id", using: :btree
+  add_index "variant_image_whereabouts", ["variant_id"], name: "index_variant_image_whereabouts_on_variant_id", using: :btree
 
   create_table "variants", force: :cascade do |t|
     t.string   "sku",            limit: 255, default: "all", null: false
