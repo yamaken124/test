@@ -42,10 +42,14 @@ class Variant < ActiveRecord::Base
   def self.available
     variant_id_having_images_and_prices = Image.where(imageable_type: 'Variant').pluck(:imageable_id) & Price.pluck(:variant_id)
     variant_id_with_stock = Variant.where('stock_quantity > ?', 0 ).active.pluck(:id)
+
     available_variant_ids = variant_id_having_images_and_prices & variant_id_with_stock
 
+    available_variant_id_with_all_variant_images = \
+      available_variant_ids.select { |id| ( VariantImageWhereabout.where(variant_id: id).top.present? && VariantImageWhereabout.where(variant_id: id).description.present? ) }
+
     return Variant.none if VariantImageWhereabout.where(variant_id: available_variant_ids).blank?
-    Variant.where(id: available_variant_ids)
+    Variant.where(id: available_variant_id_with_all_variant_images)
   end
 
   def self.single_variant
@@ -54,6 +58,10 @@ class Variant < ActiveRecord::Base
 
   def self.subscription_variant
     find_by(order_type: Variant.order_types['subscription_order'])
+  end
+
+  def top_image
+    images.where(id: VariantImageWhereabout.where(variant_id: id).pluck(:image_id)).order("position ASC").first.image.url
   end
 
 end

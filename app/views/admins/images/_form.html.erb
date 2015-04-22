@@ -13,7 +13,7 @@
         <%= i.label :position %><br>
         <%= i.text_field :position %>
       </div>
-      <%= i.fields_for :variant_image_whereabouts, @image.variant_image_whereabouts || VariantImageWhereabout.new do |w| %>
+      <%= i.fields_for :variant_image_whereabouts, image.variant_image_whereabouts || VariantImageWhereabout.new do |w| %>
         <div class="form-group">
           <p><%= w.label "whereabout" + (w.options[:child_index]+1).to_s %></p>
           <p><%= w.select :whereabout, options_for_select( VariantImageWhereabout.whereabouts.map {|k,v| [k.humanize.capitalize, k] } ), :include_blank => true %></p>

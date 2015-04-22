@@ -85,6 +85,11 @@
 .p-product_description_contents_images{
   float:left;
   margin-right:10px;
+  width:90px;
+  height:90px;
+  img{
+    width:100%;
+  }
 }
 .p-product_description_contents_details{
   @include calc("width", "100% - 108px");

@@ -14,13 +14,13 @@ class Users::ProductsController < Users::BaseController
   def show
     @product = Product.find(params[:id])
     redirect_to products_path unless ( @product.available? && @product.displayed?(current_user) )
-    @preview_images = @product.preview_images
+    @preview_images = @product.preview_images('top')
   end
 
   def show_one_click
     @product = Product.find(params[:id])
     redirect_to products_path unless ( @product.available? && @product.displayed?(current_user) )
-    @preview_images = @product.preview_images
+    @preview_images = @product.preview_images('top')
 
     @max_used_point = current_user.max_used_point(@product.variants.single_order.first.price.amount)
     @gmo_cards = GmoMultiPayment::Card.new(current_user).search
@@ -28,6 +28,7 @@ class Users::ProductsController < Users::BaseController
 
   def description
     @product = Product.find(params[:id])
+    @description_images = @product.preview_images('description')
   end
 
   private

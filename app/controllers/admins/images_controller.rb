@@ -3,12 +3,11 @@ class Admins::ImagesController < Admins::BaseController
   before_action :set_imageable, only: [:show, :edit, :new, :index]
 
   def index
-    @images = Image.includes(imageable_model).where(images: {imageable_id: params[imageable_key]}).order("position ASC")
+    @images = Image.includes(:variant_image_whereabouts).where(images: {imageable_id: params[imageable_key]}).order("position ASC")
   end
 
   def new
     @image = Image.new(imageable_id: params[imageable_key])
-    @images = @imageable.images
     VariantImageWhereabout.whereabouts.size.times { @image.variant_image_whereabouts.build }
   end
 
@@ -22,13 +21,16 @@ class Admins::ImagesController < Admins::BaseController
   end
 
   def edit
-    @images = @imageable.images
   end
 
   def update
-    if @image.update(image_params)
+    begin
+      ActiveRecord::Base.transaction do
+        destroy_all_whereabouts
+        @image.update(image_attributes)
+      end
       redirect_to admins_variant_images_path
-    else
+    rescue
       render :edit
     end
   end
@@ -39,7 +41,7 @@ class Admins::ImagesController < Admins::BaseController
       redirect_to :back
     else
       @image.destroy
-      @image.variant_image_whereabouts.each {|w| w.destroy}
+      destroy_all_whereabouts
       redirect_to admins_variant_images_path
     end
   end
@@ -54,6 +56,10 @@ class Admins::ImagesController < Admins::BaseController
   end
 
   private
+
+    def destroy_all_whereabouts
+      @image.variant_image_whereabouts.each {|w| w.destroy}
+    end
 
     def imageable_model
       imageable_type.underscore.to_sym

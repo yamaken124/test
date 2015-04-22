@@ -26,7 +26,7 @@
       <% @variants.each do |v| %>
         <tr>
           <td><%= v.name %></td>
-          <td><%= image_tag v.images.first.try(:image).try(:url), class: "thumb" %>(<%= v.images.count %>)</td>
+          <td><%= image_tag v.top_image, class: "thumb" %>(<%= v.images.count %>)</td>
           <td>
             <% if !v.order_type.nil? %>
               <%= t('order_type.'+v.order_type) %>
