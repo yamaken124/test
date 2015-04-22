@@ -32,7 +32,7 @@ class Product < ActiveRecord::Base
   def preview_images(whereabout) #single only
     imageable_ids = variants.single_order.ids
     images.where(imageable_id: imageable_ids)
-      .where( id: VariantImageWhereabout.where(VariantImageWhereabout.whereabouts[whereabout.to_sym])
+      .where( id: VariantImageWhereabout.where(whereabout: VariantImageWhereabout.whereabouts[whereabout.to_sym])
       .where(variant_id: imageable_ids).pluck(:image_id) ).order('position ASC')
   end
 

@@ -61,7 +61,7 @@ class Variant < ActiveRecord::Base
   end
 
   def top_image
-    images.where(id: VariantImageWhereabout.where(variant_id: id).pluck(:image_id)).order("position ASC").first.image.url
+    images.where(id: VariantImageWhereabout.where(variant_id: id).pluck(:image_id)).order("position ASC").first.try(:image).try(:url)
   end
 
 end
