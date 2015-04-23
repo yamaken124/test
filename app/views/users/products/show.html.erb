@@ -113,11 +113,13 @@
         <div class="p-list__fincrew_description">
           <%= include_line_break(@product.product_description.try(:nutritionist_word)) %>
         </div>
-        <a href="<%= description_products_path(@product.id) %>">
-          <div class="c-btn--product--detail">
-            詳しく見る
-          </div>
-        </a>
+        <div class = "c-btn--product--detail_wrapper">
+          <a href="<%= description_products_path(@product.id) %>">
+            <div class="c-btn--product--detail">
+              詳しく見る
+            </div>
+          </a>
+        </div>
       </li>
       <h2 class="p-lists__title">この商品について</h3>
       <li class="p-list">
