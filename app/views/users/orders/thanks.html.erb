@@ -1,23 +1,11 @@
 <div class="p-wrapper--have_padding">
   <h2 class="c-links__title">ご注文ありがとうございました</h2>
   <div class="c-order_title">
-    <p class="number">注文番号:<br><%= @number %></p>
-    <p class="amount">合計:<br><%= number_to_jpy(@payment.amount) %></p>
+    <p class="c-order-number">注文番号:<br><%= @number %></p>
+    <p class="c-order-amount">合計:<br><%= number_to_jpy(@payment.amount) %></p>
+    <p class="c-order-amount">使用マイル:<br><%= @payment.used_point %>mile</p>
   </div>
-  <% @variants.each do |variant| %>
-    <div class="c-product_list">
-      <div class="c-product_list__image">
-        <%= image_tag variant.images.first.image.url %>
-      </div>
-      <div class="c-product__list_detail_wrapper">
-        <div class="c-product_list__title">
-          <%= variant.name %>
-        </div>
-        <div class="c-product_list__price">
-          <%= number_to_jpy(variant.price.amount) %>
-          (<%=@payment.single_order_detail.single_line_items.find_by(variant_id: variant.id).quantity%>個)
-        </div>
-      </div>
-    </div>
+  <% @items.each do |item| %>
+    <%= render partial: 'users/orders/thanks', locals: {item: item} %>
   <% end %>
 </div>

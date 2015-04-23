@@ -1,11 +1,9 @@
 @import "../../foundation/setting";
 @import "../../foundation/mixin";
 .p-product_title{
-  @include calc(width, "100%-8px");
   color:$finc_color;
-  padding-left:8px;
-  padding-top:15px;
-  padding-bottom:15px;
+  padding: 15px 8px 15px 8px;
+  width:100%;
   border-bottom:1px solid $finc_color;
 }
 .p-product__price_wrapper{
@@ -35,4 +33,88 @@
       }
     }
   }
+}
+.p-product_nutritionist{
+  margin-top:10px;
+  padding:0 4px;
+  border-bottom:1px solid $base_border_color;
+  .p-product_nutritionist_flame{
+    position: relative;
+    border: 1px solid $base_border_color;
+    background-color: #fff;
+    border-radius:10px;
+    &:after{
+      z-index:10;
+      position:absolute;
+      bottom:-27.6px;
+      height:30px;
+      width:100%;
+      content:'';
+      background-image:url(asset-path("users/comment_flame.png"));
+      background-position:center;
+      background-repeat:no-repeat;
+    }
+    .p-product_nutritionist_comment{
+      word-break:break-all;
+      color:$base_font_color;
+      line-height:1.3em;
+      padding: 4px 4px;
+    }
+  }
+  .p-product_nutritionist_image img{
+    width:100%;
+    z-index:20;
+  }
+}
+.p-product_description{
+  padding: 0 8px 0 8px;
+  margin-bottom:25px;
+  width:100%;
+  .p-product_description_title{
+    margin:10px 4px 15px;
+  }
+  .p-product_description_contents{
+    width:100%;
+    display:table;
+    padding-bottom:15px;
+    border-spacing: 8px;
+    &:last-child{
+      border-bottom:1px solid $base_border_color;
+    }
+    .p-product_description_contents_images{
+      width:90px;
+      height:90px;
+      display:table-cell;
+      vertical-align:middle;
+      img{
+        width:100%;
+      }
+    }
+    .p-product_description_contents_details{
+      word-break:break-all;
+      color:$base_font_color;
+      line-height:1.3em;
+      display:table-cell;
+      vertical-align:middle;
+    }
+/*    .p-product_description_contents_arrow{
+      width:100%;
+      height:50px;
+      background-position:center;
+      background-image:url(asset-path("users/down_arrow.png"));
+      background-repeat:no-repeat;
+      &:last-child{
+        display:none;
+      }
+    }*/
+  }
+}
+.p-product_description_price{
+  color:$finc_color;
+  margin-top:5px;
+  margin-bottom:10px;
+}
+.p-product_text_link{
+  font-size:14px;
+  text-align:center;
 }

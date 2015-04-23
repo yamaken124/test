@@ -15,10 +15,30 @@
         <%= p.label :name %><br>
         <%= p.text_field :name, class: "form-control", placeholder: "Enter name" %>
       </div>
-      <div class="form-group">
-        <%= p.label :description %><br>
-        <%= p.text_area :description, class: "form-control" %>
-      </div>
+
+      <%= p.fields_for :product_descriptions, @product.product_description || ProductDescription.new do |d| %>
+        <div class="form-group">
+          <%= d.label :description %><br>
+          <%= d.text_area :description, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= d.label :nutritionist_explanation %><br>
+          <%= d.text_area :nutritionist_explanation, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= d.label :nutritionist_word %><br>
+          <%= d.text_area :nutritionist_word, class: "form-control" %>
+        </div>
+      <% end %>
+
+      <%= p.fields_for :how_to_use_products, @product.how_to_use_products || HowToUseProduct.new do |h| %>
+        <div class="form-group">
+          <%= h.label :description %><%= (h.options[:child_index]+1).to_s %><br>
+          <%= h.text_area :description, class: "form-control" %>
+          <%= h.hidden_field :id  %>
+        </div>
+      <% end %>
+
       <div class="form-group">
         <%= p.label :is_valid_at %><br>
         <%= p.date_select :is_valid_at, {}, { class: "form-control" } %>
@@ -27,7 +47,8 @@
         <%= p.label :is_invalid_at %><br>
         <p><%= p.date_select :is_invalid_at, { default: 5.years.from_now }, { class: "form-control" } %></p>
       </div>
-      <%= p.fields_for :products_taxons do |t| %>
+
+      <%= p.fields_for :products_taxons, @product.products_taxons || ProductTaxon.new do |t| %>
         <div class="form-group">
           <p><%= t.label "category" + (t.options[:child_index]+1).to_s %></p>
           <p><%= t.collection_select :taxon_id, @leaf_taxons, :id, :name, :include_blank => true %></p>
@@ -41,6 +62,7 @@
           <% end %>
         <% end %>
       <% end %>
+
       <div class="actions">
         <%= p.submit "登録", class: "btn" %>
       </div>

@@ -4,7 +4,8 @@ class Admins::ProductsController < Admins::BaseController
   before_action :set_new_product, only: [:new]
 
   def index
-    @products = Product.includes(:taxons)
+    @displayed_products = Product.where(id: Product.available.try(:ids) ).page(params[:page])
+    @products = Product.includes([:taxons, :product_description])
   end
 
   def show
@@ -31,6 +32,7 @@ class Admins::ProductsController < Admins::BaseController
   end
 
   def edit
+    build_how_to_use_product
   end
 
   def update
@@ -42,6 +44,7 @@ class Admins::ProductsController < Admins::BaseController
       end
       redirect_to admins_product_path(params[:id])
     rescue
+      set_new_product
       set_leaf_taxons
       render :edit
     end
@@ -58,9 +61,8 @@ class Admins::ProductsController < Admins::BaseController
   private
     def attribute_params
       return @attribute_params if @attribute_params.present?
-      products_taxons_attributes = ProductsTaxon.products_taxons_attributes(params)
-      attributes = params.require(:product).permit(:name, :description, :is_valid_at, :is_invalid_at)
-      @attribute_params = attributes.merge(products_taxons_attributes)
+      attributes = params.require(:product).permit(:name, :is_valid_at, :is_invalid_at)
+      @attribute_params = attributes.merge(ProductsTaxon.products_taxons_attributes(params)).merge(product_description_attributes).merge(how_to_use_products_attributes)
     end
 
     def set_product
@@ -78,10 +80,25 @@ class Admins::ProductsController < Admins::BaseController
     def set_new_product
       @product ||= Product.new
       @product.products_taxons.build
+      build_how_to_use_product
+    end
+
+    def build_how_to_use_product
+      3.times { @product.how_to_use_products.build } if @product.how_to_use_products.blank?
     end
 
     def without_products_taxon?
       params[:product][:products_taxons_attributes]["0"][:taxon_id].blank?
+    end
+
+    def product_description_attributes
+      product_description_params = {}
+      product_description_params[:product_description_attributes] = params[:product].require(:product_descriptions).permit(:description, :nutritionist_explanation, :nutritionist_word)
+      product_description_params
+    end
+
+    def how_to_use_products_attributes
+      HowToUseProduct.attributes_for_product(params)
     end
 
 end

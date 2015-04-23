@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150409023243) do
+ActiveRecord::Schema.define(version: 20150422052605) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -64,12 +64,23 @@ ActiveRecord::Schema.define(version: 20150409023243) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
+  create_table "how_to_use_products", force: :cascade do |t|
+    t.integer  "product_id",  limit: 4
+    t.string   "description", limit: 255
+    t.integer  "position",    limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "how_to_use_products", ["product_id"], name: "index_how_to_use_products_on_product_id", using: :btree
+
   create_table "images", force: :cascade do |t|
     t.integer  "imageable_id",   limit: 4
     t.string   "imageable_type", limit: 255
     t.string   "image",          limit: 255
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.integer  "position",       limit: 4
   end
 
   create_table "oauth_access_tokens", force: :cascade do |t|
@@ -82,7 +93,7 @@ ActiveRecord::Schema.define(version: 20150409023243) do
     t.datetime "updated_at",                                     null: false
   end
 
-  add_index "oauth_access_tokens", ["oauth_application_id"], name: "fk_rails_9ebbc58e9e", using: :btree
+  add_index "oauth_access_tokens", ["oauth_application_id"], name: "fk_rails_cbb1c17693", using: :btree
   add_index "oauth_access_tokens", ["user_id"], name: "index_oauth_access_tokens_on_user_id", using: :btree
 
   create_table "oauth_applications", force: :cascade do |t|
@@ -93,6 +104,59 @@ ActiveRecord::Schema.define(version: 20150409023243) do
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
   end
+
+  create_table "one_click_details", force: :cascade do |t|
+    t.integer  "item_total",           limit: 4, default: 0, null: false
+    t.integer  "tax_rate_id",          limit: 4
+    t.integer  "included_tax_total",   limit: 4
+    t.integer  "total",                limit: 4, default: 0, null: false
+    t.integer  "paid_total",           limit: 4
+    t.date     "completed_on"
+    t.datetime "completed_at"
+    t.integer  "address_id",           limit: 4
+    t.integer  "additional_tax_total", limit: 4, default: 0, null: false
+    t.integer  "used_point",           limit: 4, default: 0
+    t.integer  "adjustment_total",     limit: 4, default: 0, null: false
+    t.integer  "item_count",           limit: 4, default: 0, null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+  end
+
+  add_index "one_click_details", ["tax_rate_id"], name: "index_one_click_details_on_tax_rate_id", using: :btree
+
+  create_table "one_click_items", force: :cascade do |t|
+    t.integer  "variant_id",           limit: 4
+    t.integer  "one_click_detail_id",  limit: 4
+    t.integer  "quantity",             limit: 4
+    t.integer  "price",                limit: 4
+    t.integer  "tax_rate_id",          limit: 4
+    t.integer  "additional_tax_total", limit: 4
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "one_click_items", ["one_click_detail_id"], name: "index_one_click_items_on_one_click_detail_id", using: :btree
+  add_index "one_click_items", ["variant_id"], name: "index_one_click_items_on_variant_id", using: :btree
+
+  create_table "one_click_payments", force: :cascade do |t|
+    t.integer  "amount",                 limit: 4
+    t.integer  "source_id",              limit: 4
+    t.string   "source_type",            limit: 255
+    t.string   "gmo_access_id",          limit: 255
+    t.string   "gmo_access_pass",        limit: 255
+    t.integer  "gmo_card_seq_temporary", limit: 4
+    t.integer  "used_point",             limit: 4,   default: 0, null: false
+    t.integer  "payment_method_id",      limit: 4
+    t.integer  "address_id",             limit: 4
+    t.integer  "one_click_detail_id",    limit: 4
+    t.string   "number",                 limit: 255
+    t.integer  "user_id",                limit: 4
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+  end
+
+  add_index "one_click_payments", ["address_id"], name: "index_one_click_payments_on_address_id", using: :btree
+  add_index "one_click_payments", ["one_click_detail_id"], name: "index_one_click_payments_on_one_click_detail_id", using: :btree
 
   create_table "payment_methods", force: :cascade do |t|
     t.string   "name",          limit: 255
@@ -122,8 +186,8 @@ ActiveRecord::Schema.define(version: 20150409023243) do
     t.datetime "updated_at",                                     null: false
   end
 
-  add_index "payments", ["address_id"], name: "fk_rails_cdc6260bb1", using: :btree
-  add_index "payments", ["single_order_detail_id"], name: "fk_rails_b4646ad0f2", using: :btree
+  add_index "payments", ["address_id"], name: "fk_rails_e488695957", using: :btree
+  add_index "payments", ["single_order_detail_id"], name: "fk_rails_e2b9115812", using: :btree
 
   create_table "prices", force: :cascade do |t|
     t.integer  "variant_id", limit: 4
@@ -134,13 +198,23 @@ ActiveRecord::Schema.define(version: 20150409023243) do
 
   add_index "prices", ["variant_id"], name: "index_prices_on_variant_id", using: :btree
 
+  create_table "product_descriptions", force: :cascade do |t|
+    t.integer  "product_id",               limit: 4
+    t.text     "description",              limit: 65535
+    t.string   "nutritionist_explanation", limit: 255
+    t.string   "nutritionist_word",        limit: 255
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  add_index "product_descriptions", ["product_id"], name: "index_product_descriptions_on_product_id", using: :btree
+
   create_table "products", force: :cascade do |t|
     t.string   "name",          limit: 255
-    t.text     "description",   limit: 65535
     t.datetime "is_valid_at"
     t.datetime "is_invalid_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "products_taxons", force: :cascade do |t|
@@ -188,17 +262,17 @@ ActiveRecord::Schema.define(version: 20150409023243) do
   add_index "returned_items", ["user_id"], name: "index_returned_items_on_user_id", using: :btree
 
   create_table "shipments", force: :cascade do |t|
-    t.integer  "payment_id", limit: 4
-    t.integer  "address_id", limit: 4
-    t.string   "tracking",   limit: 255
+    t.integer  "address_id",          limit: 4
+    t.integer  "single_line_item_id", limit: 4
+    t.string   "tracking",            limit: 255
     t.datetime "shipped_at"
-    t.integer  "state",      limit: 4,   default: 0
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.integer  "state",               limit: 4,   default: 0
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
 
   add_index "shipments", ["address_id"], name: "index_shipments_on_address_id", using: :btree
-  add_index "shipments", ["payment_id"], name: "index_shipments_on_payment_id", using: :btree
+  add_index "shipments", ["single_line_item_id"], name: "fk_rails_15430f5dae", using: :btree
 
   create_table "single_line_items", force: :cascade do |t|
     t.integer  "variant_id",             limit: 4
@@ -237,7 +311,7 @@ ActiveRecord::Schema.define(version: 20150409023243) do
 
   add_index "single_order_details", ["address_id"], name: "index_single_order_details_on_address_id", using: :btree
   add_index "single_order_details", ["single_order_id"], name: "index_single_order_details_on_single_order_id", using: :btree
-  add_index "single_order_details", ["tax_rate_id"], name: "fk_rails_dc685bcaa3", using: :btree
+  add_index "single_order_details", ["tax_rate_id"], name: "fk_rails_86d62fed6e", using: :btree
 
   create_table "single_orders", force: :cascade do |t|
     t.integer  "purchase_order_id", limit: 4
@@ -328,6 +402,31 @@ ActiveRecord::Schema.define(version: 20150409023243) do
   add_index "taxons", ["parent_id"], name: "index_taxons_on_parent_id", using: :btree
   add_index "taxons", ["rgt"], name: "index_taxons_on_rgt", using: :btree
 
+  create_table "upper_used_point_limits", force: :cascade do |t|
+    t.integer  "variant_id", limit: 4
+    t.integer  "limit",      limit: 4, null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "upper_used_point_limits", ["variant_id"], name: "index_upper_used_point_limits_on_variant_id", using: :btree
+
+  create_table "user_categories", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "user_categories_taxons", force: :cascade do |t|
+    t.integer  "user_category_id", limit: 4
+    t.integer  "taxon_id",         limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "user_categories_taxons", ["taxon_id"], name: "index_user_categories_taxons_on_taxon_id", using: :btree
+  add_index "user_categories_taxons", ["user_category_id"], name: "index_user_categories_taxons_on_user_category_id", using: :btree
+
   create_table "user_point_histories", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
     t.integer  "used_point", limit: 4, default: 0
@@ -356,6 +455,27 @@ ActiveRecord::Schema.define(version: 20150409023243) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "users_user_categories", force: :cascade do |t|
+    t.integer  "user_id",          limit: 4
+    t.integer  "user_category_id", limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "users_user_categories", ["user_category_id"], name: "index_users_user_categories_on_user_category_id", using: :btree
+  add_index "users_user_categories", ["user_id"], name: "index_users_user_categories_on_user_id", using: :btree
+
+  create_table "variant_image_whereabouts", force: :cascade do |t|
+    t.integer  "image_id",   limit: 4
+    t.integer  "variant_id", limit: 4
+    t.integer  "whereabout", limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "variant_image_whereabouts", ["image_id"], name: "index_variant_image_whereabouts_on_image_id", using: :btree
+  add_index "variant_image_whereabouts", ["variant_id"], name: "index_variant_image_whereabouts_on_variant_id", using: :btree
+
   create_table "variants", force: :cascade do |t|
     t.string   "sku",            limit: 255, default: "all", null: false
     t.integer  "product_id",     limit: 4
@@ -382,7 +502,7 @@ ActiveRecord::Schema.define(version: 20150409023243) do
   add_foreign_key "returned_items", "single_line_items"
   add_foreign_key "returned_items", "users"
   add_foreign_key "shipments", "addresses"
-  add_foreign_key "shipments", "payments"
+  add_foreign_key "shipments", "single_line_items"
   add_foreign_key "single_line_items", "single_order_details"
   add_foreign_key "single_line_items", "variants"
   add_foreign_key "single_order_details", "addresses"

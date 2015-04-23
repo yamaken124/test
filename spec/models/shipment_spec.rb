@@ -40,28 +40,28 @@ RSpec.describe Shipment, type: :model do
       it { expect(ready.may_ready?).to be_falsy }
       it { expect(ready.may_shipped?).to be_truthy }
       it { expect(ready.may_canceled?).to be_truthy }
-      it { expect(pending.may_returned?).to be_falsy }
+      it { expect(ready.may_returned?).to be_falsy }
 
       let(:shipped) { build(:shipment, state: 'shipped') }
       it { expect(shipped.may_pending?).to be_falsy }
-      it { expect(shipped.may_ready?).to be_truthy }
+      it { expect(shipped.may_ready?).to be_falsy }
       it { expect(shipped.may_shipped?).to be_falsy }
-      it { expect(shipped.may_canceled?).to be_truthy }
-      it { expect(pending.may_returned?).to be_falsy }
+      it { expect(shipped.may_canceled?).to be_falsy }
+      it { expect(shipped.may_returned?).to be_truthy }
 
       let(:canceled) { build(:shipment, state: 'canceled') }
       it { expect(canceled.may_pending?).to be_falsy }
       it { expect(canceled.may_ready?).to be_falsy }
       it { expect(canceled.may_shipped?).to be_falsy }
       it { expect(canceled.may_canceled?).to be_falsy }
-      it { expect(pending.may_returned?).to be_falsy }
+      it { expect(canceled.may_returned?).to be_falsy }
 
       let(:returned) { build(:shipment, state: 'returned') }
-      it { expect(canceled.may_pending?).to be_falsy }
-      it { expect(canceled.may_ready?).to be_falsy }
-      it { expect(canceled.may_shipped?).to be_falsy }
-      it { expect(canceled.may_canceled?).to be_falsy }
-      it { expect(pending.may_returned?).to be_falsy }
+      it { expect(returned.may_pending?).to be_falsy }
+      it { expect(returned.may_ready?).to be_falsy }
+      it { expect(returned.may_shipped?).to be_falsy }
+      it { expect(returned.may_canceled?).to be_falsy }
+      it { expect(returned.may_returned?).to be_falsy }
     end
   end
 end
