@@ -1,6 +1,6 @@
 <div class="content-header">
   <h3>
-     <%= link_to "SKU一覧", admins_product_variants_path(product_id: @imageable.product_id) %> / 画像一覧
+    <%= link_to "SKU一覧", admins_product_variants_path(product_id: @imageable.product_id) %> / 画像一覧
     <div class="u-float_right">
       <a href="<%= new_admins_variant_image_path(variant_id: params[:variant_id]) %>" class="btn btn-primary">画像追加</a>
     </div>
@@ -8,33 +8,45 @@
 </div>
 <section class="content col-md-10">
 <h4 class="box-title">画像一覧</h4>
-  <span><%= flash[:notice] %></span>
+<%= form_tag(admins_variant_images_sort_path(variant_id: params[:variant_id]))%>
+<%= submit_tag "この順に変更", {class:"btn btn-warning", method: "patch" } %>
+<span><%= flash[:notice] %></span>
 <% if @images.present? %>
   <table class="table c-table">
     <thead>
       <tr>
         <th>画像</th>
+        <th>表示場所</th>
+        <th>表示順</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
-    <% @images.each do |i| %>
-      <tr>
-        <td>
-          <% if !i.image.nil? %>
-            <%= image_tag i.image.url,:size => "60x60" %>
-          <% end %>
-        </td>
-        <td>
-          <a href="<%= edit_admins_variant_image_path(id: i.id ,imageable_id: params[:imageable_id]) %>" class="btn btn-warning btn-sm">
-            <i class="fa fa-edit"></i>変更
-          </a>
-          <a href="<%= admins_variant_image_path(id: i.id ,imageable_id: params[:imageable_id]) %>" class="btn btn-success btn-sm" data-method="delete" data-confirm="本当に削除しますか？">
-            <i class="fa fa-trash-o"></i>削除
-          </a>
-        </td>
-      </tr>
-    <% end %>
+      <% @images.each do |i| %>
+        <tr>
+          <td>
+            <% if !i.image.nil? %>
+              <%= image_tag i.image.url,:size => "60x60" %>
+            <% end %>
+          </td>
+          <td>
+            <% i.variant_image_whereabouts.each do |w| %>
+              <%= w.whereabout %>/
+            <% end %>
+          </td>
+          <td>
+            <%= select_tag(:"#{i.id}", options_for_select( Array.new((1..@images.count).map{ |image| [image] }), selected: i.position)) %>
+          </td>
+          <td>
+            <a href="<%= edit_admins_variant_image_path(id: i.id ,imageable_id: params[:imageable_id]) %>" class="btn btn-warning btn-sm">
+              <i class="fa fa-edit"></i>変更
+            </a>
+            <a href="<%= admins_variant_image_path(id: i.id ,imageable_id: params[:imageable_id]) %>" class="btn btn-success btn-sm" data-method="delete" data-confirm="本当に削除しますか？">
+              <i class="fa fa-trash-o"></i>削除
+            </a>
+          </td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 <% else %>

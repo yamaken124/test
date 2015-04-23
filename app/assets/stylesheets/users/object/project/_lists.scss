@@ -29,12 +29,14 @@
       @include calc("width", "100% - 8px");
       margin-left:4px;
       margin-bottom:10px;
+      line-height:1.3em;
     }
     .p-list__description{
       font-size:13px;
       padding:10px 0 10px;
       @include calc("width", "100% - 8px");
       margin-left:4px;
+      line-height:1.3em;
     }
     .p-list__fincrew_buttun{
       margin-left:10px;

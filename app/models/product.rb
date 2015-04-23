@@ -1,16 +1,3 @@
-# == Schema Information
-#
-# Table name: products
-#
-#  id            :integer          not null, primary key
-#  name          :string(255)
-#  description   :text(65535)
-#  is_valid_at   :datetime
-#  is_invalid_at :datetime
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#
-
 class Product < ActiveRecord::Base
   has_many :variants
   has_many :products_taxons
@@ -24,7 +11,6 @@ class Product < ActiveRecord::Base
   accepts_nested_attributes_for :products_taxons
   accepts_nested_attributes_for :product_description
   accepts_nested_attributes_for :how_to_use_products
-
 
   include TimeValidityChecker
 
@@ -43,14 +29,11 @@ class Product < ActiveRecord::Base
     Product.active.where(id: available_variants.pluck(:product_id)) if available_variants.present?
   end
 
-  def preview_images
-    single_order = variants.single_order
-    subscription_order = variants.subscription_order
-    if single_order.present? && single_order.first.available?
-      images.where(imageable_id: single_order.ids.first).where(imageable_type: "Variant")
-    else
-      images.where(imageable_id: subscription_order.ids.first).where(imageable_type: "Variant")
-    end
+  def preview_images(whereabout) #single only
+    imageable_ids = variants.single_order.ids
+    images.where(imageable_id: imageable_ids)
+      .where( id: VariantImageWhereabout.where(whereabout: VariantImageWhereabout.whereabouts[whereabout.to_sym])
+      .where(variant_id: imageable_ids).pluck(:image_id) ).order('position ASC')
   end
 
   def single_price

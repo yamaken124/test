@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150418085418) do
+ActiveRecord::Schema.define(version: 20150422052605) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 20150418085418) do
     t.string   "image",          limit: 255
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.integer  "position",       limit: 4
   end
 
   create_table "oauth_access_tokens", force: :cascade do |t|
@@ -92,7 +93,7 @@ ActiveRecord::Schema.define(version: 20150418085418) do
     t.datetime "updated_at",                                     null: false
   end
 
-  add_index "oauth_access_tokens", ["oauth_application_id"], name: "fk_rails_9ebbc58e9e", using: :btree
+  add_index "oauth_access_tokens", ["oauth_application_id"], name: "fk_rails_cbb1c17693", using: :btree
   add_index "oauth_access_tokens", ["user_id"], name: "index_oauth_access_tokens_on_user_id", using: :btree
 
   create_table "oauth_applications", force: :cascade do |t|
@@ -185,8 +186,8 @@ ActiveRecord::Schema.define(version: 20150418085418) do
     t.datetime "updated_at",                                     null: false
   end
 
-  add_index "payments", ["address_id"], name: "fk_rails_cdc6260bb1", using: :btree
-  add_index "payments", ["single_order_detail_id"], name: "fk_rails_b4646ad0f2", using: :btree
+  add_index "payments", ["address_id"], name: "fk_rails_e488695957", using: :btree
+  add_index "payments", ["single_order_detail_id"], name: "fk_rails_e2b9115812", using: :btree
 
   create_table "prices", force: :cascade do |t|
     t.integer  "variant_id", limit: 4
@@ -199,11 +200,11 @@ ActiveRecord::Schema.define(version: 20150418085418) do
 
   create_table "product_descriptions", force: :cascade do |t|
     t.integer  "product_id",               limit: 4
-    t.string   "description",              limit: 255
+    t.text     "description",              limit: 65535
     t.string   "nutritionist_explanation", limit: 255
     t.string   "nutritionist_word",        limit: 255
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
   end
 
   add_index "product_descriptions", ["product_id"], name: "index_product_descriptions_on_product_id", using: :btree
@@ -271,7 +272,7 @@ ActiveRecord::Schema.define(version: 20150418085418) do
   end
 
   add_index "shipments", ["address_id"], name: "index_shipments_on_address_id", using: :btree
-  add_index "shipments", ["single_line_item_id"], name: "fk_rails_fd96ce0c21", using: :btree
+  add_index "shipments", ["single_line_item_id"], name: "fk_rails_15430f5dae", using: :btree
 
   create_table "single_line_items", force: :cascade do |t|
     t.integer  "variant_id",             limit: 4
@@ -310,7 +311,7 @@ ActiveRecord::Schema.define(version: 20150418085418) do
 
   add_index "single_order_details", ["address_id"], name: "index_single_order_details_on_address_id", using: :btree
   add_index "single_order_details", ["single_order_id"], name: "index_single_order_details_on_single_order_id", using: :btree
-  add_index "single_order_details", ["tax_rate_id"], name: "fk_rails_dc685bcaa3", using: :btree
+  add_index "single_order_details", ["tax_rate_id"], name: "fk_rails_86d62fed6e", using: :btree
 
   create_table "single_orders", force: :cascade do |t|
     t.integer  "purchase_order_id", limit: 4
@@ -401,6 +402,15 @@ ActiveRecord::Schema.define(version: 20150418085418) do
   add_index "taxons", ["parent_id"], name: "index_taxons_on_parent_id", using: :btree
   add_index "taxons", ["rgt"], name: "index_taxons_on_rgt", using: :btree
 
+  create_table "upper_used_point_limits", force: :cascade do |t|
+    t.integer  "variant_id", limit: 4
+    t.integer  "limit",      limit: 4, null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "upper_used_point_limits", ["variant_id"], name: "index_upper_used_point_limits_on_variant_id", using: :btree
+
   create_table "user_categories", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.datetime "created_at",             null: false
@@ -454,6 +464,17 @@ ActiveRecord::Schema.define(version: 20150418085418) do
 
   add_index "users_user_categories", ["user_category_id"], name: "index_users_user_categories_on_user_category_id", using: :btree
   add_index "users_user_categories", ["user_id"], name: "index_users_user_categories_on_user_id", using: :btree
+
+  create_table "variant_image_whereabouts", force: :cascade do |t|
+    t.integer  "image_id",   limit: 4
+    t.integer  "variant_id", limit: 4
+    t.integer  "whereabout", limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "variant_image_whereabouts", ["image_id"], name: "index_variant_image_whereabouts_on_image_id", using: :btree
+  add_index "variant_image_whereabouts", ["variant_id"], name: "index_variant_image_whereabouts_on_variant_id", using: :btree
 
   create_table "variants", force: :cascade do |t|
     t.string   "sku",            limit: 255, default: "all", null: false
