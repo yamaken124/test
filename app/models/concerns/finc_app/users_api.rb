@@ -29,6 +29,16 @@ module FincApp
           end
         end
 
+        def self.wellness_mileage(access_token, version: 'v2')
+          url = "#{finc_app_api_host}/#{version}/wellness_mileage"
+          response = JSON.parse(HTTParty.get(url, { body: { access_token: access_token } }).body)
+          if response.has_key?('wellness_mileage')
+            response['wellness_mileage'].to_i
+          else
+            0
+          end
+        end
+
       end
     end
   end
