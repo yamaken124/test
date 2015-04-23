@@ -12,6 +12,7 @@
     <%= submit_tag '検索', class: 'btn btn-primary' %>
   <% end %>
   <% if @users.present? %>
+    今日の訪問者は <%= @visitor %> 人です
     <table class="table">
       <thead>
         <tr>
