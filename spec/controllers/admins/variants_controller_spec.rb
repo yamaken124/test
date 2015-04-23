@@ -63,23 +63,32 @@ RSpec.describe Admins::VariantsController, type: :controller do
     it { expect(response).to render_template :edit }
   end
 
-  # describe 'PATCH #update' do
-  #   let(:params) { { product_id: @variant.product_id, id: @variant.id, variant: attributes_for(:variant, order_type: "subscription_order", prices: attributes_for(:price), sku: "all") } }
-  #   before { patch :update, params }
+  describe 'PATCH #update' do
+    let(:params) {
+      { product_id: @variant.product_id, id: @variant.id,
+        variant: attributes_for(:variant, order_type: "subscription_order",
+        price: attributes_for(:price), sku: "all")
+      }
+    }
+    before { patch :update, params }
 
-  #   it 'assigns fincrew' do
-  #     expect(assigns(:variant)).to eq @variant
-  #   end
-  #   it 'update' do
-  #     expect{ patch :update, params; @variant.reload }.to change(@variant, :order_type).to('subscription_order')
-  #   end
-  #   it 'redirects to edit_path' do
-  #     expect(response).to redirect_to admins_product_variants_path(product_id: @variant.product_id)
-  #   end
-  # end
+    it 'assigns fincrew' do
+      expect(assigns(:variant)).to eq @variant
+    end
+    it 'update' do
+      expect{ patch :update, params; @variant.reload }.to change(@variant, :order_type).to('subscription_order')
+    end
+    it 'redirects to edit_path' do
+      expect(response).to redirect_to admins_product_variants_path(product_id: @variant.product_id)
+    end
+  end
 
   describe 'DELETE #destroy' do
-    let(:params) { { product_id: @variant.product_id, id: @variant.id, variant: attributes_for(:variant, sku: "updated_sku") } }
+    let(:params) {
+      { product_id: @variant.product_id, id: @variant.id,
+        variant: attributes_for(:variant, sku: "updated_sku")
+      }
+    }
     before { patch :destroy, params }
 
     it 'update' do
