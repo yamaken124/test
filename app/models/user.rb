@@ -57,6 +57,7 @@ class User < ActiveRecord::Base
       user_id: id,
       used_point: changed_point
     ) #point history
+    WellnessMileage.add(changed_point, self)
   end
 
   def belonging_user_category
