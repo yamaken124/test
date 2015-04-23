@@ -39,6 +39,10 @@ module FincApp
           end
         end
 
+        def self.add_wellness_mileage(access_token, point, version: 'v2')
+          url = "#{finc_app_api_host}/#{version}/wellness_mileage/add"
+          response = JSON.parse(HTTParty.post(url, { body: { access_token: access_token, point: point } }).body)
+        end
       end
     end
   end
