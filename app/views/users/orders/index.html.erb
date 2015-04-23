@@ -10,11 +10,7 @@
   <div class="c-order_title">
     <p class="order_day">注文日:<br><%= detail.completed_on %></p>
     <p class="amount">合計:<br><%= number_to_jpy(detail.paid_total) %></p>
-    <% if detail.all_shipped? %>
-      <p>注文番号:<br><%= "#{detail.payment.number}" %></p>
-    <% else %>
-      <p class="address">お届け先:<br><%= "#{detail.address.full_address}" %></p>
-    <% end %>
+    <p>注文番号:<br><%= "#{detail.payment.number}" %></p>
   </div>
   <% detail.single_line_items.each do |item|%>
     <div class="c-product_list">

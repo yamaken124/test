@@ -138,7 +138,6 @@ class Users::OrdersController < Users::BaseController
 
     def set_variants
       @variants = @order.variants
-      .includes(:images)
     end
 
     def set_number
