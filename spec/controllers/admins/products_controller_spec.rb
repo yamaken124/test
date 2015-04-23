@@ -12,7 +12,7 @@ RSpec.describe Admins::ProductsController, type: :controller do
     create(:products_taxon, product_id: @product.id, taxon_id: @taxon_id)
     @variant = create(:variant, product_id: @product.id)
     @price = create(:price, variant_id: @variant.id)
-    @image = create(:image, imageable_id: @variant.id, imageable_type: 'Variant')
+    @image = Image.create(:image=> File.open(File.join(Rails.root, '/spec/fixtures/sample.png')), imageable_id: @variant.id, imageable_type: "Variant" )
   end
 
   describe 'GET #index' do
