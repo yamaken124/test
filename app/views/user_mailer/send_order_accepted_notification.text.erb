@@ -33,13 +33,14 @@ FiNCストア をご利用いただき、ありがとうございます。FiNC�
 
 =================================================================================
 
-商品の小計：<%= number_to_jpy(@detail.item_total-@detail.shipment_total) %>
+商品の小計：<%= number_to_jpy(@detail.item_total) %>
 配送料および取引手数料：<%= number_to_jpy(@detail.shipment_total) %>
-
 注文合計：<%= number_to_jpy(@detail.total) %>
 
-支払い方法
-クレジットカード：<%= number_to_jpy(@detail.total) %>
+使用ポイント：<%= number_to_jpy(@detail.used_point) %>
+ご請求合計：<%= number_to_jpy(@detail.total) %>
+
+支払い方法：クレジットカード
 
 _________________________________________________________________________________
 
