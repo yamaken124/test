@@ -1,9 +1,11 @@
 @import "../../foundation/setting";
 @import "../../foundation/mixin";
+.p-product_title_wrapper{
+  width:100%;
+}
 .p-product_title{
   color:$finc_color;
   padding: 15px 8px 15px 8px;
-  width:100%;
   border-bottom:1px solid $finc_color;
 }
 .p-product__price_wrapper{

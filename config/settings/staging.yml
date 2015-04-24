@@ -20,6 +20,7 @@ mailer:
   user_mailer:
     user_name: 'info@finc.co.jp'
     password: 20120411
+    bcc: 'otani@finc.co.jp'
   test:
     to: finc_developer@googlegroups.com
   default_url_options:

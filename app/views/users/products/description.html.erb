@@ -5,7 +5,7 @@
   <div class='p-product_nutritionist'>
     <div class='p-product_nutritionist_flame'>
       <div class='p-product_nutritionist_comment'>
-        <%= @product.product_description.try(:nutritionist_explanation) %>
+        <%= include_line_break(@product.product_description.try(:nutritionist_explanation)) %>
       </div>
     </div>
     <div class='p-product_nutritionist_image'>
@@ -18,7 +18,7 @@
       <div class='p-product_description_contents'>
         <div class='p-product_description_contents_images'><%= image_tag @description_images.find_by(position: index).image.url if @description_images.find_by(position: index).present? %></div>
         <div class='p-product_description_contents_details'>
-          <%= h.description %>
+          <%= include_line_break(h.description) %>
         </div>
       </div>
       <!-- <div class='p-product_description_contents_arrow'></div> -->

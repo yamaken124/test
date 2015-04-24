@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150422052605) do
+ActiveRecord::Schema.define(version: 20150424032002) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -66,10 +66,10 @@ ActiveRecord::Schema.define(version: 20150422052605) do
 
   create_table "how_to_use_products", force: :cascade do |t|
     t.integer  "product_id",  limit: 4
-    t.string   "description", limit: 255
+    t.text     "description", limit: 65535
     t.integer  "position",    limit: 4
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   add_index "how_to_use_products", ["product_id"], name: "index_how_to_use_products_on_product_id", using: :btree
@@ -201,8 +201,8 @@ ActiveRecord::Schema.define(version: 20150422052605) do
   create_table "product_descriptions", force: :cascade do |t|
     t.integer  "product_id",               limit: 4
     t.text     "description",              limit: 65535
-    t.string   "nutritionist_explanation", limit: 255
-    t.string   "nutritionist_word",        limit: 255
+    t.text     "nutritionist_explanation", limit: 65535
+    t.text     "nutritionist_word",        limit: 65535
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
   end
@@ -231,11 +231,11 @@ ActiveRecord::Schema.define(version: 20150422052605) do
     t.integer  "user_id",         limit: 4
     t.string   "last_name",       limit: 255, default: "", null: false
     t.string   "first_name",      limit: 255, default: "", null: false
-    t.string   "last_name_kana",  limit: 255, default: "", null: false
-    t.string   "first_name_kana", limit: 255, default: "", null: false
-    t.string   "phone",           limit: 255, default: "", null: false
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
+    t.string   "phone",           limit: 255
+    t.string   "last_name_kana",  limit: 255
+    t.string   "first_name_kana", limit: 255
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
