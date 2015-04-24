@@ -17,7 +17,6 @@
             <th>名前</th>
             <th>この商品について</th>
             <th>カテゴリ</th>
-            <th>状態</th>
             <th>順序変更</th>
             <th>表示順</th>
             <th></th>
@@ -40,14 +39,11 @@
                 <% end %>
               </td>
               <td>
-                <%= judge_displayed_product(product, @displayed_products) %>
-              </td>
-              <td>
               <% unless Product.first.id == product.position %>
-                <%= link_to( "上へ", admins_product_move_position_path(product_id: product.id, position: "up")) %>
+                <%= link_to( "上へ", admins_product_move_position_path(product_id: product.id, position: "up"), method: :post) %>
               <% end %>
               <% unless Product.last.id == product.position %>
-                <%= link_to( "下へ", admins_product_move_position_path(product_id: product.id, position: "down")) %>
+                <%= link_to( "下へ", admins_product_move_position_path(product_id: product.id, position: "down"), method: :post) %>
               <% end %>
             </td>
             <td>

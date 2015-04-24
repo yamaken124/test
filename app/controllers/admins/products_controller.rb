@@ -65,7 +65,7 @@ class Admins::ProductsController < Admins::BaseController
   def move_position
     @product = Product.find(params[:product_id])
 
-    if params[:position] = "up"
+    if params[:position] == "up"
       @product_before = Product.find_by(position: @product.position - 1)
 
       ActiveRecord::Base.transaction do
