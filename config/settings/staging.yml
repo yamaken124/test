@@ -22,6 +22,6 @@ mailer:
     password: 20120411
     bcc: 'otani@finc.co.jp'
   test:
-    to: finc_developer@googlegroups.com
+    to: engineers_finc@googlegroups.com
   default_url_options:
     host: 'staging-store.finc.co.jp'
