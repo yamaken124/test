@@ -9,7 +9,7 @@ class Admins::ProductsController < Admins::BaseController
 
   def index
     @displayed_products = Product.where(id: Product.available.try(:ids) ).page(params[:page])
-    @products = Product.includes([:taxons, :product_description])
+    @products = Product.includes([:taxons, :product_description]).order('position ASC')
   end
 
   def show
@@ -24,6 +24,7 @@ class Admins::ProductsController < Admins::BaseController
       ActiveRecord::Base.transaction do
         raise if without_products_taxon?
         @product = Product.new(attribute_params)
+        @product.position = Product.count + 1
         @product.save!
       end
       redirect_to admins_product_variants_path(product_id: @product.id)
@@ -61,10 +62,31 @@ class Admins::ProductsController < Admins::BaseController
     redirect_to admins_products_path
   end
 
+  def move_position
+    @product = Product.find(params[:product_id])
+
+    if params[:position] = "up"
+      @product_before = Product.find_by(position: @product.position - 1)
+
+      ActiveRecord::Base.transaction do
+        @product.update!(position: @product.position - 1)
+        @product_before.update!(position: @product.position + 1)
+      end
+    elsif params[:position] == "down"
+      @next_product = Product.find_by(position: @product.position + 1)
+
+      ActiveRecord::Base.transaction do
+        @product.update!(position: @product.position + 1)
+        @next_product.update!(position: @product.position - 1)
+      end
+    end
+    redirect_to admins_products_path
+  end
+
   private
     def attribute_params
       return @attribute_params if @attribute_params.present?
-      attributes = params.require(:product).permit(:name)
+      attributes = params.require(:product).permit(:name, :is_valid_at, :is_invalid_at, :position)
       @attribute_params = attributes.merge(ProductsTaxon.products_taxons_attributes(params)).merge(product_description_attributes).merge(how_to_use_products_attributes)
     end
 

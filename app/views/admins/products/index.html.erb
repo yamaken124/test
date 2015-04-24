@@ -18,6 +18,8 @@
             <th>この商品について</th>
             <th>カテゴリ</th>
             <th>状態</th>
+            <th>順序変更</th>
+            <th>表示順</th>
             <th></th>
           </tr>
         </thead>
@@ -40,6 +42,18 @@
               <td>
                 <%= judge_displayed_product(product, @displayed_products) %>
               </td>
+              <td>
+              <% unless Product.first.id == product.position %>
+                <%= link_to( "上へ", admins_product_move_position_path(product_id: product.id, position: "up")) %>
+              <% end %>
+              <% unless Product.last.id == product.position %>
+                <%= link_to( "下へ", admins_product_move_position_path(product_id: product.id, position: "down")) %>
+              <% end %>
+            </td>
+            <td>
+              <%= product.position %>
+            </td>
+            <td>
               <td>
                 <a href="<%= admins_product_variants_path(product_id: product.id)%>"><button class="btn btn-info">SKU一覧</button></a>
               </td>

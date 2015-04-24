@@ -79,6 +79,7 @@ Rails.application.routes.draw do
   namespace :admins do
     resources :products do
       resources :variants, only: [:index, :new, :create, :edit, :update, :destroy]
+      get '/move_position', :to => 'products#move_position', :as => :move_position
     end
     resources :variants, only: [] do
       resources :images,only: [:index, :new, :create, :edit, :update, :destroy], controller: :images, imageable_type: 'Variant'
