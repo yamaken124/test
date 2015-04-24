@@ -20,16 +20,27 @@ class UserMailer < ApplicationMailer
     @to = order.user.email
   end
 
-  def send_order_canceled_notification(item)
+  def send_item_canceled_notification(item)
     sleep 1
 
     @item = item
-    @payment = @item.single_order_detail.payment
-    @profile = Profile.find_by(user_id: @payment.user_id)
-    @variant = Variant.find_by(id: @item.variant_id)
+    @payment = item.single_order_detail.payment
 
     @subject = '【FiNCストア】注文キャンセルを承りました'
-    @to = @payment.user.id
+    @to = @payment.user.email
+  end
+
+  def send_items_shipped_notification(shipments, payment)
+    sleep 1
+
+    @payment = payment
+    @detail = @payment.single_order_detail
+    @address = @payment.address
+    @carrier = '日本郵便株式会社' #TODO will change
+    @shipments = shipments
+
+    @subject = '【FiNCストア】発送が完了しました'
+    @to = @payment.user.email
   end
 
   def send_return_request_accepted_notification(item)
@@ -45,16 +56,6 @@ class UserMailer < ApplicationMailer
     @to = @payment.user.email
   end
 
-  def send_items_shipped_notification(shipment)
-    sleep 1
-
-    @address = Address.find(shipment.address_id)
-    @payment = Payment.find(shipment.payment_id)
-    @carrier = '日本郵便株式会社' #TODO will change
-
-    @subject = '【FiNCストア】発送が完了しました'
-    @to = @payment.email
-  end
 
   private
 

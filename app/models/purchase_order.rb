@@ -21,11 +21,12 @@ class PurchaseOrder < ActiveRecord::Base
   has_many   :subscription_orders
   has_many   :subscription_order_details, through: :subscription_orders
   has_many   :variants, through: :single_line_items
+  has_one :one_click_item
 
   accepts_nested_attributes_for :single_order
 
   def self.incomplete
-    PurchaseOrder.where.not(id: PurchaseOrder.complete.pluck(:id))
+    PurchaseOrder.where.not(id: (PurchaseOrder.complete.pluck(:id) + PurchaseOrder.fail.pluck(:id)) )
   end
 
   def completed?

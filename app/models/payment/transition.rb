@@ -29,7 +29,7 @@ class Payment < ActiveRecord::Base
           end
 
           event :failed do
-            transitions from: :pending, to: :failed
+            transitions from: [:pending, :processing, :checkout], to: :failed
           end
 
           event :canceled, after: :cancel_order do
@@ -46,7 +46,13 @@ class Payment < ActiveRecord::Base
         end
 
         def register_shipment
-          Shipment.new(set_shipment_params).save!
+          single_order_detail.single_line_items.each do |item|
+            Shipment.new(
+              state: set_state_by_payment_method,
+              address_id: address.id,
+              single_line_item_id: item.id
+              ).save!
+          end
         end
 
         def set_dealed_datetime

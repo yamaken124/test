@@ -1,6 +1,6 @@
 namespace :deploy do
   namespace :db do
-   desc "run rake db:seed_fu"
+    desc "run rake db:seed_fu"
     task :seed_fu => [:set_rails_env] do
       on primary fetch(:migration_role) do
         within release_path do

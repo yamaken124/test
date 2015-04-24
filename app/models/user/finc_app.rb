@@ -10,6 +10,16 @@ class User < ActiveRecord::Base
             {}
           end
         end
+
+        def wellness_mileage
+          return 0 if Rails.env.development?
+
+          if access_token = oauth_access_tokens.first
+            ::FincApp.wellness_mileage(access_token.token)
+          else
+            0
+          end
+        end
       end
     end
   end

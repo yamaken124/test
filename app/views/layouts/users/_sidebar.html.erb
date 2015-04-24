@@ -7,7 +7,7 @@
         <div class='sidebar_lists_right'></div>
       </li>
     <% end %>
-    <% Taxon.leaves.each do |leaf| %>
+    <% current_user.shown_taxon.leaves.each do |leaf| %>
       <%= link_to taxons_path(id: leaf.id) do %>
         <li class="sidebar_lists">
           <div class='sidebar_lists_left'><%= leaf.name %></div>

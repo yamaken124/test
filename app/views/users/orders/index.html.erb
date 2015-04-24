@@ -1,19 +1,21 @@
 <div class="c-segments">
+<% if false %>
   <p class="is--active">通常購入</p>
   <div class="border"></div>
   <p>定期購入</p>
+<% end %>
+  <p class = "is-active">購入履歴</p>
 </div>
 <% @details.each do |detail| %>
   <div class="c-order_title">
     <p class="order_day">注文日:<br><%= detail.completed_on %></p>
     <p class="amount">合計:<br><%= number_to_jpy(detail.paid_total) %></p>
-    <p class="address">お届け先:<br><%= "#{detail.address.full_address}" %></p>
+    <p>注文番号:<br><%= "#{detail.payment.number}" %></p>
   </div>
   <% detail.single_line_items.each do |item|%>
-
     <div class="c-product_list">
     	<div class="c-product_list__image">
-        <%= image_tag item.variant.images.first.image.url %>
+        <%= image_tag item.variant.top_image %>
       </div>
       <div class="c-product__list_detail_wrapper">
     	  <div class="c-product_list__title">
@@ -32,11 +34,11 @@
             返品リクエストを受け付けました。
           </li>
         </ul>
-      <% elsif detail.payment.shipment.try(:shipped?) %>
+      <% elsif item.shipment.try(:shipped?) %>
         <ul class="c-links">
           <a href="#">
             <li class="c-link--small_text--nolink">
-              <span>発送を完了しました<br>発送日:2014/12/25</span>
+              <span>発送を完了しました<br>発送日:<%=item.shipment.shipped_at.to_date%></span>
             </li>
           </a>
           <% if detail.can_send_back? %>

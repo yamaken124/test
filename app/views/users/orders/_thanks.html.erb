@@ -1,0 +1,14 @@
+<div class="c-product_list">
+  <div class="c-product_list__image">
+    <%= image_tag item.variant.top_image %>
+  </div>
+  <div class="c-product__list_detail_wrapper">
+    <div class="c-product_list__title">
+      <%= item.variant.name %>
+    </div>
+    <div class="c-product_list__price">
+      <%= number_to_jpy(item.variant.price.amount) %>
+      (<%=item.quantity%>個)
+    </div>
+  </div>
+</div>

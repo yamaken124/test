@@ -1,23 +1,24 @@
 class Users::OrdersController < Users::BaseController
   respond_to :html
   include Users::OrdersHelper
+  include Users::OneClickOrdersHelper
 
   before_action :assign_order_with_lock, only: [:edit, :update, :remove_item]
   before_action :set_variants, only: [:edit]
+  before_action :set_number, only: [:thanks, :one_click_thanks]
   # before_action :apply_coupon_code, only: :update
 
   def index
     single_order_detail_id = Payment.where(user_id: current_user.id).pluck(:single_order_detail_id)
-    @details = SingleOrderDetail.where(id: single_order_detail_id).includes(:address, payment: :shipment).includes(single_line_items:[variant: [:price]]).order(completed_at: :desc).page(params[:page])
+    @details = SingleOrderDetail.where(id: single_order_detail_id).includes(:address, :payment, single_line_items: :shipment).includes(single_line_items:[variant: [:price]]).order(completed_at: :desc).page(params[:page])
     variant_ids = SingleLineItem.where(single_order_detail_id: @details.pluck(:id)).pluck(:variant_id)
     @returned_item_indexed_by_item_id = ReturnedItem.where(user_id: current_user.id).index_by(&:single_line_item_id)
   end
 
   def thanks
-    @number = params[:number]
     @payment = Payment.find_by(number: @number)
     raise ActiveRecord::RecordNotFound if !@payment.completed?
-    set_variants_and_items
+    @items = @payment.single_order_detail.single_line_items.includes(variant: [:images, :price])
   end
 
   def edit
@@ -96,6 +97,19 @@ class Users::OrdersController < Users::BaseController
     redirect_to orders_path
   end
 
+  def one_click_item
+    if one_click_order_creater
+      redirect_to one_click_thanks_orders_path(number: @payment.number)
+    else
+      redirect_to :back
+    end
+  end
+
+  def one_click_thanks
+    @payment = OneClickPayment.find_by(number: @number)
+    @items = @payment.one_click_detail.one_click_item
+  end
+
   private
 
     def order_params
@@ -124,7 +138,10 @@ class Users::OrdersController < Users::BaseController
 
     def set_variants
       @variants = @order.variants
-      .includes(:images)
+    end
+
+    def set_number
+      @number = params[:number]
     end
 
 end
