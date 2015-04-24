@@ -52,4 +52,8 @@ class Product < ActiveRecord::Base
     ProductsTaxon.where(product_id: id).all? {|products_taxon| Taxon::OneClickTaxonIds.include?(products_taxon.taxon_id)}
   end
 
+  def send_to_office?
+    Taxon::SendToOfficeTaxonIds.include?(ProductsTaxon.find_by(product_id: id).taxon_id)
+  end
+
 end
