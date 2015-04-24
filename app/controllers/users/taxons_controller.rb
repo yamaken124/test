@@ -6,10 +6,12 @@ class Users::TaxonsController < Users::BaseController
       set_products(Variant.available)
 
       displayed_variant_ids = Variant.available.ids & Variant.where( product_id: (current_user.shown_product_ids & @products.ids) ).ids
-      @variants_indexed_by_product_id = Variant.where(id: displayed_variant_ids).index_by(&:product_id)
+      @single_variants = Variant.where(id: displayed_variant_ids).single_order.includes(:price)
+      @subscription_variants = Variant.where(id: displayed_variant_ids).subscription_order.includes(:price)
 
-      set_prices(displayed_variant_ids)
-      set_images(displayed_variant_ids)
+      # set_prices(displayed_variant_ids)
+      top_image(@single_variants)
+
     else
       @products = Product.none
     end
@@ -35,6 +37,10 @@ class Users::TaxonsController < Users::BaseController
 
     def set_images(variant_ids)
       @images = Image.where(imageable_id: variant_ids, imageable_type: 'Variant').index_by(&:imageable_id) #TODO 両方写真があるとき！！
+    end
+
+    def top_image(variants)
+      @images = Image.where(id: VariantImageWhereabout.top.where(variant_id: variants.ids).pluck(:image_id)).order('position ASC')
     end
 
 end
