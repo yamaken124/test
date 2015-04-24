@@ -21,7 +21,7 @@ class Users::TaxonsController < Users::BaseController
     def set_products(available_variants)
       selected_product_id = ProductsTaxon.where(taxon_id: @taxon.id).pluck(:product_id)
 
-      displayed_product_ids = Product.available.ids & current_user.shown_product_ids
+      displayed_product_ids = Product.available.try(:ids) & current_user.shown_product_ids
       @products = Product.active.where(id: (displayed_product_ids & selected_product_id) ).page(params[:page])
     end
 
