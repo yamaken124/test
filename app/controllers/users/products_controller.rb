@@ -6,9 +6,10 @@ class Users::ProductsController < Users::BaseController
     set_products(Variant.available)
 
     displayed_variant_ids = Variant.available.ids & Variant.where(product_id: @products.ids).ids
-    @variants_indexed_by_product_id = Variant.where(id: displayed_variant_ids).index_by(&:product_id)
-    set_prices(displayed_variant_ids)
-    top_image(displayed_variant_ids)
+    @single_variants = Variant.where(id: displayed_variant_ids).single_order.includes(:price)
+    @subscription_variants = Variant.where(id: displayed_variant_ids).subscription_order.includes(:price)
+    # set_prices(displayed_variant_ids)
+    top_image(@single_variants)
   end
 
   def show
@@ -46,8 +47,8 @@ class Users::ProductsController < Users::BaseController
       @subscription_prices_indexed_by_variant_id = Price.where(variant_id: subscription_variants.ids).index_by(&:variant_id)
     end
 
-    def top_image(variant_ids)
-      @images = Image.where(id: VariantImageWhereabout.top.where(variant_id: variant_ids).pluck(:image_id)).index_by(&:imageable_id)
+    def top_image(variants)
+      @images = Image.where(id: VariantImageWhereabout.top.where(variant_id: variants.ids).pluck(:image_id)).order('position ASC')
     end
 
     def available_quantity

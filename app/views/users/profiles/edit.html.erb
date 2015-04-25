@@ -20,15 +20,15 @@
     <%= f.text_field :first_name, class: "form__text--long", placeholder: "名" %>
   </div>
   <div class="form__field">
-    <%= f.label :last_name_kana, "せい(必須)" %>
+    <%= f.label :last_name_kana, "せい(任意)" %>
     <%= f.text_field :last_name_kana, autofocus: true, class: "form__text--long", placeholder: "せい" %>
   </div>
   <div class="form__field">
-    <%= f.label :first_name_kana, "めい(必須)" %>
+    <%= f.label :first_name_kana, "めい(任意)" %>
     <%= f.text_field :first_name_kana, class: "form__text--long", placeholder: "めい" %>
   </div>
   <div class="form__field">
-    <%= f.label :phone, "電話番号(必須)" %>
+    <%= f.label :phone, "電話番号(任意)" %>
     <%= f.telephone_field :phone, class: "form__text--long", placeholder: "08012341234" %>
   </div>
   <%= hidden_field_tag "continue", @continue %>

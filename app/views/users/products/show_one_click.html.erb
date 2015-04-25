@@ -4,7 +4,9 @@
   <% single = @product.variants.single_variant %>
   <% subscription = @product.variants.subscription_variant %>
 
-  <h2 class="p-product_title"><%= @product.name %></h2>
+  <div class="p-product_title_wrapper">
+    <h2 class="p-product_title"><%= @product.name %></h2>
+  </div>
   <div class="flexslider">
     <ul class="slides">
       <% @product.preview_images('top').each do |image| %>

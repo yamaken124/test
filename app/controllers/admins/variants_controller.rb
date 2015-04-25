@@ -36,7 +36,7 @@ class Admins::VariantsController < Admins::BaseController
         @variant.update!(variant_params)
         @price.update!(price_params)
       end
-      redirect_to admins_product_variants_path
+      redirect_to admins_product_variants_path(product_id: params[:product_id])
     rescue
       @product = Product.find(@variant.product_id)
       render :edit
