@@ -33,7 +33,7 @@ class Admins::VariantsController < Admins::BaseController
       ActiveRecord::Base.transaction do
         @variant.update!(variant_attributes)
       end
-      redirect_to admins_product_variants_path
+      redirect_to admins_product_variants_path(product_id: params[:product_id])
     rescue
       @product = Product.find(@variant.product_id)
       render :edit

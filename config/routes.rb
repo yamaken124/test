@@ -78,6 +78,7 @@ Rails.application.routes.draw do
     end
     resources :variants, only: [] do
       resources :images,only: [:index, :new, :create, :edit, :update, :destroy], controller: :images, imageable_type: 'Variant'
+      post '/images/sort', :to => 'images#sort'
     end
     resources :shipments, only:[:index, :show, :update] do
       collection do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150420134352) do
+ActiveRecord::Schema.define(version: 20150424131423) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -66,10 +66,10 @@ ActiveRecord::Schema.define(version: 20150420134352) do
 
   create_table "how_to_use_products", force: :cascade do |t|
     t.integer  "product_id",  limit: 4
-    t.string   "description", limit: 255
+    t.text     "description", limit: 65535
     t.integer  "position",    limit: 4
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   add_index "how_to_use_products", ["product_id"], name: "index_how_to_use_products_on_product_id", using: :btree
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 20150420134352) do
     t.string   "image",          limit: 255
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.integer  "position",       limit: 4
   end
 
   create_table "oauth_access_tokens", force: :cascade do |t|
@@ -103,6 +104,17 @@ ActiveRecord::Schema.define(version: 20150420134352) do
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
   end
+
+  create_table "once_purchase_product_histories", force: :cascade do |t|
+    t.integer  "product_id",   limit: 4
+    t.integer  "user_id",      limit: 4
+    t.datetime "purhcased_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "once_purchase_product_histories", ["product_id"], name: "index_once_purchase_product_histories_on_product_id", using: :btree
+  add_index "once_purchase_product_histories", ["user_id"], name: "index_once_purchase_product_histories_on_user_id", using: :btree
 
   create_table "one_click_details", force: :cascade do |t|
     t.integer  "item_total",           limit: 4, default: 0, null: false
@@ -199,11 +211,11 @@ ActiveRecord::Schema.define(version: 20150420134352) do
 
   create_table "product_descriptions", force: :cascade do |t|
     t.integer  "product_id",               limit: 4
-    t.string   "description",              limit: 255
-    t.string   "nutritionist_explanation", limit: 255
-    t.string   "nutritionist_word",        limit: 255
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.text     "description",              limit: 65535
+    t.text     "nutritionist_explanation", limit: 65535
+    t.text     "nutritionist_word",        limit: 65535
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
   end
 
   add_index "product_descriptions", ["product_id"], name: "index_product_descriptions_on_product_id", using: :btree
@@ -230,11 +242,11 @@ ActiveRecord::Schema.define(version: 20150420134352) do
     t.integer  "user_id",         limit: 4
     t.string   "last_name",       limit: 255, default: "", null: false
     t.string   "first_name",      limit: 255, default: "", null: false
-    t.string   "last_name_kana",  limit: 255, default: "", null: false
-    t.string   "first_name_kana", limit: 255, default: "", null: false
-    t.string   "phone",           limit: 255, default: "", null: false
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
+    t.string   "phone",           limit: 255
+    t.string   "last_name_kana",  limit: 255
+    t.string   "first_name_kana", limit: 255
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
@@ -463,6 +475,17 @@ ActiveRecord::Schema.define(version: 20150420134352) do
 
   add_index "users_user_categories", ["user_category_id"], name: "index_users_user_categories_on_user_category_id", using: :btree
   add_index "users_user_categories", ["user_id"], name: "index_users_user_categories_on_user_id", using: :btree
+
+  create_table "variant_image_whereabouts", force: :cascade do |t|
+    t.integer  "image_id",   limit: 4
+    t.integer  "variant_id", limit: 4
+    t.integer  "whereabout", limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "variant_image_whereabouts", ["image_id"], name: "index_variant_image_whereabouts_on_image_id", using: :btree
+  add_index "variant_image_whereabouts", ["variant_id"], name: "index_variant_image_whereabouts_on_variant_id", using: :btree
 
   create_table "variants", force: :cascade do |t|
     t.string   "sku",            limit: 255, default: "all", null: false

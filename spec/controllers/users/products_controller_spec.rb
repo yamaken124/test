@@ -13,7 +13,10 @@ RSpec.describe Users::ProductsController, type: :controller do
     user_sign_in @user
     @variant = create(:variant, product_id: @product.id)
     @price = create(:price, variant_id: @variant.id)
-    @image = create(:image, imageable_id: @variant.id, imageable_type: 'Variant')
+    # let!(:image) { Image.create(:image=> File.open(File.join(Rails.root, '/spec/fixtures/sample.png')), imageable_id: variant.id, imageable_type: "Variant" ) }
+    @image = Image.create(:image=> File.open(File.join(Rails.root, '/spec/fixtures/sample.png')), imageable_id: @variant.id, imageable_type: "Variant" )
+    create(:variant_image_whereabout, image_id: @image.id, variant_id: @variant.id)
+    create(:variant_image_whereabout, image_id: @image.id, variant_id: @variant.id, whereabout: 2)
   end
 
   describe 'GET #index' do

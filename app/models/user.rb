@@ -50,50 +50,6 @@ class User < ActiveRecord::Base
     purchase_orders.incomplete.order('created_at DESC').first
   end
 
-  def wellness_mileage
-
-    user = me_in_finc_app
-
-    return 0 if user.blank?
-
-    user_id     = user['id'].to_i
-    start_date  = Date.parse(user['start_date'])
-    total_points = user['total_points'].to_i
-
-    # 2015-08-01以降はtotal_points - used_point_totalのみ
-    return total_points - used_point_total if Date.today >= Date.new(2015, 8, 1)
-
-    # LMとABCは先駆けてFiNC Storeをオープン
-    if user_id.in?(User.lmi_user_ids)
-      total_points - used_point_total
-    elsif user_id.in?(User.abc_user_ids)
-      total_points - used_point_total
-
-      # 4/13にFiNC Store 全体公開
-      # 公開前にプログラムをスタートしたユーザは
-      # 卒業していれば
-      # 総獲得ポイント - 換金したポイント(used_point)
-      # ポイント換金をしていなければ卒業後に獲得したポイントを表示
-      # 卒業していなければ0マイル
-    elsif Date.new(2015, 2, 11) <= start_date && start_date < Date.new(2015, 4, 13)
-      # 卒業しているユーザは卒業日からのポイントを起算
-      if user['graduates_on'].presence
-        # タスクポイントを他のポイントへ変換済のユーザはその分のポイントを失効しているので、残りポイント = total_points
-        if user_id.in?(User.convert_task_points_into_other_points_user_ids)
-          total_points - used_point_total
-
-          # タスクポイントを他のポイントに変換していないユーザは卒業後のポイントを計算
-        else
-          user['after_graduate_points'].to_i - used_point_total
-        end
-      else
-        0
-      end
-    else
-      total_points - used_point_total
-    end
-  end
-
   def update_used_point_total(changed_point)
     self.used_point_total += changed_point.to_i
     save!
@@ -101,6 +57,7 @@ class User < ActiveRecord::Base
       user_id: id,
       used_point: changed_point
     ) #point history
+    WellnessMileage.add((-1)*changed_point, self) #ポイントを使うとmasterのポイントも減らす
   end
 
   def belonging_user_category

@@ -22,6 +22,8 @@ class Taxon < ActiveRecord::Base
   belongs_to :parent, class_name: 'Taxon'
   has_one :user_categories_taxon
 
-  OneClickTaxonIds = [6] #FIXME
+  OneClickTaxonIds = [6, 8] #FIXME
+  OncePurchaseTaxonIds = [8]
+  SendToOfficeTaxonIds = [6]
 
 end

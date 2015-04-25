@@ -12,7 +12,7 @@ RSpec.describe Admins::ProductsController, type: :controller do
     create(:products_taxon, product_id: @product.id, taxon_id: @taxon_id)
     @variant = create(:variant, product_id: @product.id)
     @price = create(:price, variant_id: @variant.id)
-    @image = create(:image, imageable_id: @variant.id, imageable_type: 'Variant')
+    @image = Image.create(:image=> File.open(File.join(Rails.root, '/spec/fixtures/sample.png')), imageable_id: @variant.id, imageable_type: "Variant" )
   end
 
   describe 'GET #index' do
@@ -46,6 +46,11 @@ RSpec.describe Admins::ProductsController, type: :controller do
     it 'redirect to varinants#index' do
       expect(response).to redirect_to admins_product_variants_path(product_id: assigns(:product).id)
     end
+
+    it { expect { post :create, params }.to change(Product, :count).by(1) }
+    it { expect { post :create, params }.to change(ProductDescription, :count).by(1) }
+    it { expect { post :create, params }.to change(HowToUseProduct, :count).by(1) }
+
   end
 
   describe 'PATCH #update' do
@@ -55,24 +60,25 @@ RSpec.describe Admins::ProductsController, type: :controller do
     let(:how_to_use_product) { create(:how_to_use_product, product_id: product.id) }
     let(:params) do
       {
-        id: product.id,
-        name: 'updated_name',
-        product: attributes_for(
-          :product,
-          products_taxons_attributes: { "0" => {id: products_taxon.id} },
+        product: {
+          name: 'updated_name',
+          is_valid_at: '2015-01-01',
+          is_invalid_at: '2020-01-01',
+          products_taxons_attributes: { "0" => {id: products_taxon.id, taxon_id: 1} },
           product_descriptions: {description: product_description.description, nutritionist_explanation: product_description.nutritionist_explanation, nutritionist_word: product_description.nutritionist_word },
           how_to_use_products_attributes:{ "0" => {description: how_to_use_product.description} },
-        )
+        },
+        id: product.id,
       }
     end
     before { patch :update, params }
 
     it 'update' do
-      # expect{ patch :update, params; product.reload }.to change(product, :name).to('updated_name')
+      expect{ patch :update, params; product.reload }.to change(product, :name).to('updated_name')
     end
 
-    it 'redirects to edit_path' do
-      # expect(response).to redirect_to admins_product_path(id: assigns(:product).id)
+    it 'redirects to admins_product_path' do
+      expect(response).to redirect_to admins_product_path(id: assigns(:product))
     end
   end
 
@@ -95,28 +101,26 @@ RSpec.describe Admins::ProductsController, type: :controller do
     it { expect(response).to render_template :edit }
   end
 
-
   describe 'DELETE #destroy' do
-
     before do
       @product = create(:product)
       @variant = create(:variant, product_id: @product.id)
       delete :destroy, id: @product.id, product: attributes_for(:product)
     end
 
-      it 'update product' do
-        @product.reload
-        expect(@product.is_invalid_at).to be < Time.now
-      end
+    it 'update product' do
+      @product.reload
+      expect(@product.is_invalid_at).to be < Time.now
+    end
 
-      it 'respond to product-update and update variant' do
-        @variant.reload
-        expect(@variant.is_invalid_at).to be < Time.now
-      end
+    it 'respond to product-update and update variant' do
+      @variant.reload
+      expect(@variant.is_invalid_at).to be < Time.now
+    end
 
-      it 'redirects to edit_path' do
-        expect(response).to redirect_to admins_products_path
-      end
+    it 'redirects to edit_path' do
+      expect(response).to redirect_to admins_products_path
+    end
   end
 
 end

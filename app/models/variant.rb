@@ -18,6 +18,7 @@ class Variant < ActiveRecord::Base
   has_one :price
   has_many :images, :as => :imageable
   has_many :single_line_items
+  has_many :variant_image_whereabouts
   has_one :one_click_item
   has_one :upper_used_point_limit
 
@@ -34,7 +35,7 @@ class Variant < ActiveRecord::Base
   validates :sku, :name, :order_type, :product_id, :is_valid_at, :is_invalid_at, presence: true
 
   def has_image_and_price?
-    (price.present? && images.present?)
+    ( price.present? && images.present? && variant_image_whereabouts.top.present? && variant_image_whereabouts.description.present? )
   end
 
   def available?
@@ -46,7 +47,13 @@ class Variant < ActiveRecord::Base
     variant_id_having_images_and_prices = Image.where(imageable_type: 'Variant').pluck(:imageable_id) & Price.pluck(:variant_id)
     variant_id_with_stock = Variant.where('stock_quantity > ?', 0 ).active.pluck(:id)
 
-    Variant.where(id: (variant_id_having_images_and_prices & variant_id_with_stock))
+    available_variant_ids = variant_id_having_images_and_prices & variant_id_with_stock
+
+    available_variant_id_with_all_variant_images = \
+      available_variant_ids.select { |id| ( VariantImageWhereabout.where(variant_id: id).top.present? && VariantImageWhereabout.where(variant_id: id).description.present? ) }
+
+    return Variant.none if VariantImageWhereabout.where(variant_id: available_variant_ids).blank?
+    Variant.where(id: available_variant_id_with_all_variant_images)
   end
 
   def self.single_variant
@@ -67,6 +74,10 @@ class Variant < ActiveRecord::Base
 
   def upper_used_point
     UpperUsedPointLimit.find_by(variant_id: id).limit.to_i
+  end
+
+  def top_image
+    images.where(id: VariantImageWhereabout.top.where(variant_id: id).pluck(:image_id)).order("position ASC").first.try(:image).try(:url)
   end
 
 end

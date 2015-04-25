@@ -84,6 +84,9 @@
       &.is-active{
         display:block;
       }
+      .p-payment_method__detail_notice{
+        font-size: 13px;
+      }
     }
     .p-payment_method__detail_in_a_line{
       @extend .p-payment_method__detail;
