@@ -25,36 +25,7 @@
   </div>
 
   <div class="p-wrapper--have_padding">
-    <ul class="p-payment_method_selections">
-      <% if single.present? && single.available? %>
-        <li class="p-payment_method_selection">
-        <% if subscription.present? && subscription.available? %>
-          <div class="p-payment_method_selection__radio">
-            <%= radio_button_tag 'order[item_attributes[variant_id]]', single.id, {:checked => true} %>
-          </div>
-        <% else %>
-          <%= hidden_field_tag 'order[item_attributes[variant_id]]', single.id %>
-        <% end %>
-        <p class="p-payment_method_selection__title">
-        <%=t('order_type.price')%>
-        </p>
-        <p class="p-payment_method_selection__price">
-          <%= number_to_jpy(single.price.amount) %><%=t('tax.included') %>
-        </p>
-        </li>
-      <% end %>
-
-      <li class="p-payment_method_selection">
-      <div class="p-payment_method__detail is-active">
-        <p>数量: </p>
-        <%= select_tag "order[item_count]", options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
-        <p class="u-margin__right_short">個</p>
-        <%= submit_tag '1-click購入', class: 'c-btn--submit--short u-margin__top5' %>
-      </div>
-      </li>
-    </ul>
-
-    <h2 class="p-lists__title">栄養士からの一言</h2>
+    <h2 class="p-lists__title_without_padding">栄養士からの一言</h2>
     <ul class="p-lists">
       <li class="p-list__image">
         <div class="p-list__fincrew">
@@ -86,6 +57,40 @@
           </div>
         </li>
       <% end %>
+    </ul>
+
+    <h2 class="p-lists__title">購入情報</h2>
+    <ul class="p-payment_method_selections">
+      <% if single.present? && single.available? %>
+        <li class="p-payment_method_selection">
+        <% if subscription.present? && subscription.available? %>
+          <div class="p-payment_method_selection__radio">
+            <%= radio_button_tag 'order[item_attributes[variant_id]]', single.id, {:checked => true} %>
+          </div>
+        <% else %>
+          <%= hidden_field_tag 'order[item_attributes[variant_id]]', single.id %>
+        <% end %>
+        <p class="p-payment_method_selection__title">
+        <%=t('order_type.price')%>
+        </p>
+        <p class="p-payment_method_selection__price">
+          <%= number_to_jpy(single.price.amount) %><%=t('tax.included') %>
+        </p>
+        </li>
+      <% end %>
+
+      <li class="p-payment_method_selection">
+      <div class="p-payment_method__detail is-active">
+        <% if !@product.only_once_purhcase? %>
+          <p>数量: </p>
+          <%= select_tag "order[item_count]", options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
+          <p class="u-margin__right_short">個</p>
+        <% else %>
+          <%= hidden_field_tag 'order[item_count]', 1 %>
+          <p class="p-payment_method__detail_notice">※お一人様一つ限りのご購入となります</p>
+        <% end %>
+      </div>
+      </li>
     </ul>
 
     <h2 class="p-lists__title">お支払い方法（クレジットカード）</h2>
@@ -131,6 +136,7 @@
       </div>
       </li>
     </ul>
+
     <div class="c-payment_jquery_notice u-margin__bottom10"></div>
     <%= submit_tag '1-clickで購入する', class: 'c-btn--submit c-btn--submit--single', :onclick=> "prevent_double_submit(event)" %>
     <a href="<%= guidance_path(name: 'one_click') %>">

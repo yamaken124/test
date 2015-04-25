@@ -56,4 +56,8 @@ class Product < ActiveRecord::Base
     Taxon::SendToOfficeTaxonIds.include?(ProductsTaxon.find_by(product_id: id).taxon_id)
   end
 
+  def only_once_purhcase?
+    Taxon::OncePurchaseTaxonIds.include?(ProductsTaxon.find_by(product_id: id).taxon_id)
+  end
+
 end

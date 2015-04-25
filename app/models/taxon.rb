@@ -23,7 +23,7 @@ class Taxon < ActiveRecord::Base
   has_one :user_categories_taxon
 
   OneClickTaxonIds = [6, 8] #FIXME
-  OnePurchaseTaxonIds = [8]
+  OncePurchaseTaxonIds = [8]
   SendToOfficeTaxonIds = [6]
 
 end
