@@ -29,7 +29,7 @@ class Admins::ImagesController < Admins::BaseController
         destroy_all_whereabouts
         @image.update(image_attributes)
       end
-      redirect_to admins_variant_images_path
+      redirect_to admins_variant_images_path(variant_id: @image.imageable_id)
     rescue
       render :edit
     end
