@@ -4,6 +4,7 @@ class Product < ActiveRecord::Base
   has_many :taxons, :through => :products_taxons
   has_one :product_description
   has_many :how_to_use_products
+  has_many :once_purchase_product_histories
   has_many :prices, :through => :variants
   has_many :images, :through => :variants
   paginates_per 5
