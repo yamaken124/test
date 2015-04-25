@@ -60,7 +60,8 @@ class PurchaseOrder < ActiveRecord::Base
               when :payment
 								single_order_detail.used_point = \
 									if params[:order]['use_all_point'].to_b
-									 single_order_detail.allowed_max_use_point
+									 # single_order_detail.allowed_max_use_point
+                   CheckoutValidityChecker.new.items_max_used_point(user, single_line_items)
 									else
 										params[:order][:used_point]
 									end
