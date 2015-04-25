@@ -31,9 +31,10 @@
         <tr>
           <th>名前</th>
           <th>画像</th>
-          <th>値段</th>
+          <th>単価</th>
           <th>個数</th>
-          <th>合計</th>
+          <th>注文使用ポイント</th>
+          <th>注文支払い合計</th>
           <th></th>
         </tr>
         <% @shipments.each do |shipment| %>
@@ -41,9 +42,10 @@
           <tr>
             <td><%= item.variant.sku %></td>
             <td><%= image_tag item.variant.images.first.try(:image).try(:url), class: "thumb" %></td>
-            <td><%= item.price %></td>
+            <td><%= number_to_currency(item.price) %></td>
             <td><%= item.quantity %></td>
-            <td><%= number_to_currency(item.quantity * item.price) %></td>
+            <td><%= item.single_order_detail.used_point %></td>
+            <td><%= number_to_currency(item.single_order_detail.paid_total) %></td>
             <td>
               <% if shipment.ready? %>
                 <%= form_tag update_state_admins_shipments_path(shipment), method: "patch", class: "u-float_left u-margin__left20" do %>

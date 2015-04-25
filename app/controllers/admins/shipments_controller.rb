@@ -51,8 +51,8 @@ class Admins::ShipmentsController < Admins::BaseController
     def set_tracking(shipments)
       if has_same_tracking?(shipments)
         @tracking = shipments.first.tracking
-        @button_value = @tracking.present? ? "変更" : "登録"
       end
+      @button_value = @tracking.present? ? "変更" : "登録"
     end
 
     def setup_for_current_state

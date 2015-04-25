@@ -4,7 +4,6 @@ FiNCストア ご注文の確認
 注文番号：<%= @payment.number %>
 <%= orders_url %>
 
-_________________________________________________________________________________
 
 FiNCストアをご利用いただき、ありがとうございます。FiNCストアがお客様のご注文を承ったことをお知らせいたします。
 商品が発送されましたら、Eメールにてお知らせいたします。注文内容の変更は、注文履歴から行うことができます。
@@ -21,12 +20,16 @@ FiNCストアをご利用いただき、ありがとうございます。FiNCス
 注文番号：<%= @payment.number %>
 注文日：<%= @detail.completed_on %>
 
+_________________________________________________________________________________
 <% @detail.single_line_items.each do |item| %>
   <% variant = Variant.find(item.variant_id) %>
-  <%= variant.name %>
-  <%= number_to_jpy(variant.price.amount) %>
 
+  商品名：<%= variant.name %>
+  商品単価：<%= number_to_jpy(variant.price.amount) %>
+  個数：<%= item.quantity %>
+_________________________________________________________________________________
 <% end %>
+
 
 注文履歴：
 <%= orders_path(:only_path => false) %>
@@ -34,7 +37,7 @@ FiNCストアをご利用いただき、ありがとうございます。FiNCス
 =================================================================================
 
 商品の小計：<%= number_to_jpy(@detail.item_total) %>
-配送料および取引手数料：<%= number_to_jpy(@detail.shipment_total) %>
+配送料：<%= number_to_jpy(@detail.shipment_total) %>
 注文合計：<%= number_to_jpy(@detail.total) %>
 
 使用ポイント：<%= number_to_jpy(@detail.used_point) %>
@@ -42,7 +45,6 @@ FiNCストアをご利用いただき、ありがとうございます。FiNCス
 
 支払い方法：クレジットカード
 
-_________________________________________________________________________________
 
 またのご利用をお待ちしております。
 FiNCストア
