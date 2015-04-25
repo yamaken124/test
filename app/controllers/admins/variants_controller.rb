@@ -15,10 +15,8 @@ class Admins::VariantsController < Admins::BaseController
   def create
     begin
       ActiveRecord::Base.transaction do
-        @variant = Variant.new(variant_params)
+        @variant = Variant.new(variant_attributes)
         @variant.save!
-        price = Price.new(price_params)
-        price.save!
       end
       redirect_to admins_product_variants_path(product_id: params[:product_id])
     rescue
@@ -33,8 +31,7 @@ class Admins::VariantsController < Admins::BaseController
   def update
     begin
       ActiveRecord::Base.transaction do
-        @variant.update!(variant_params)
-        @price.update!(price_params)
+        @variant.update!(variant_attributes)
       end
       redirect_to admins_product_variants_path(product_id: params[:product_id])
     rescue
@@ -49,8 +46,9 @@ class Admins::VariantsController < Admins::BaseController
   end
 
   private
-    def variant_params
-      params.require(:variant).permit(:is_valid_at, :is_invalid_at, :order_type, :sku, :name, :stock_quantity).merge(product_id: params[:product_id])
+
+    def variant_attributes
+      params.require(:variant).permit(:is_valid_at, :is_invalid_at, :order_type, :sku, :name, :stock_quantity, upper_used_point_limit_attributes: :limit, price_attributes: :amount).merge(product_id: params[:product_id])
     end
 
     def set_variant

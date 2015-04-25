@@ -42,6 +42,7 @@ Rails.application.routes.draw do
       collection do
         get ':id/show_one_click/', action: :show_one_click, :as => :show_one_click
         get ':id/description', action: :description, :as => :description
+        get 'update_max_used_point', action: :update_max_used_point, :as => :update_max_used_point
       end
     end
     resource :cart, only: [:update], controller: :orders do
