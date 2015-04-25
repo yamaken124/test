@@ -2,6 +2,7 @@ class CheckoutValidityChecker
 
   def common_validity_checker(payment_attributes, detail, current_user, items)
     raise 'payment_attributes_error.used_point_over_limit' if payment_attributes[:used_point].to_i > Payment::UsedPointLimit
+    raise 'payment_attributes_error.invalid_used_point' unless items_valid_point?(current_user, detail, items)
     raise 'payment_attributes_error.address_missing' unless has_address_attribute?(payment_attributes)
     raise 'payment_attributes_error.credit_card_missing' unless has_credit_card_attribute?(payment_attributes)
   end
@@ -37,7 +38,11 @@ class CheckoutValidityChecker
   end
 
   def items_upper_used_point(items)
-    items.inject(0) { |sum, item| sum + (Variant.find(item.variant_id).upper_used_point * item.quantity.to_i) }
+    if items.instance_of?(OneClickItem)
+      Variant.find(items.variant_id).upper_used_point * items.quantity.to_i
+    else
+      items.inject(0) { |sum, item| sum + (Variant.find(item.variant_id).upper_used_point * item.quantity.to_i) }
+    end
   end
 
 end

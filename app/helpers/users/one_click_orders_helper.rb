@@ -9,7 +9,7 @@ module Users::OneClickOrdersHelper
         detail = OneClickDetail.create!(detail_attributes)
 
         @item = OneClickItem.create!(item_attributes(detail))
-        CheckoutValidityChecker.new.common_validity_checker(payment_attributes(detail), detail, current_user)
+        CheckoutValidityChecker.new.common_validity_checker(payment_attributes(detail), detail, current_user, @item)
         @payment = OneClickPayment.new(payment_attributes(detail))
 
         # 0円決済はone_click_orderにて許容するとの認識
