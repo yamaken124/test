@@ -85,6 +85,7 @@ Rails.application.routes.draw do
         get 'state/:state', :to => 'shipments#index', :as => :state
         get 'return_requests'
         get 'shipment_details'
+        get 'csv_export'
         patch 'update_tracking_code', :to => 'shipments#update_tracking_code', :as => :update_tracking_code
         patch 'update_state', :to => 'shipments#update_state', :as => :update_state
       end

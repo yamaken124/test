@@ -30,6 +30,19 @@ class Admins::ShipmentsController < Admins::BaseController
     @title = "返品要望リスト"
   end
 
+  def csv_export
+    @shipments = Shipment.all
+
+    respond_to do |format|
+      format.html do
+        @shipments = Shipment.all
+      end
+      format.csv do
+        send_data render_to_string, filename: "users.csv", type: :csv
+      end
+    end
+  end
+
   private
     def set_shipments
       @shipments = Shipment.where(id: shipment_ids).includes(single_line_item: [:variant], )
@@ -41,7 +54,7 @@ class Admins::ShipmentsController < Admins::BaseController
     end
 
     def filter_for_update(shipments)
-      redirect_to :back and return unless (belongs_to_same_order_detail?(shipments) && has_same_state?(shipments) && shipments.present?)
+      redirect_to :back and return unless (has_same_state?(shipments) && shipments.present?)# && belongs_to_same_order_detail?(shipments))
     end
 
     def shipment_ids_from_params
