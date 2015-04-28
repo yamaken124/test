@@ -1,5 +1,6 @@
 class Users::ProductsController < Users::BaseController
 
+  before_action :set_product, only: [:show, :description, :show_one_click]
   before_action :available_quantity, only: [:show, :description, :show_one_click]
 
   def index
@@ -13,14 +14,10 @@ class Users::ProductsController < Users::BaseController
   end
 
   def show
-    @product = Product.find(params[:id])
-    redirect_to products_path unless ( @product.available? && @product.displayed?(current_user) )
-    @preview_images = @product.preview_images('top')
+    @preview_images = @product.preview_images('top') #to do 共通化
   end
 
   def show_one_click
-    @product = Product.find(params[:id])
-    redirect_to products_path unless ( @product.available? && @product.displayed?(current_user) )
     @preview_images = @product.preview_images('top')
 
     quantity = 1 #default value, would be updated on #update_max_used_point
@@ -30,7 +27,6 @@ class Users::ProductsController < Users::BaseController
   end
 
   def description
-    @product = Product.find(params[:id])
     @description_images = @product.preview_images('description')
   end
 
@@ -40,6 +36,11 @@ class Users::ProductsController < Users::BaseController
   end
 
   private
+
+    def set_product
+      @product = Product.find(params[:id])
+      reject_invalid_product
+    end
 
     def set_products(available_variants)
       displayed_product_ids = Product.available.try(:ids) & current_user.shown_product_ids
@@ -60,6 +61,10 @@ class Users::ProductsController < Users::BaseController
 
     def available_quantity
       @available_quantity = Array(1..Product::AvailableQuantity)
+    end
+
+    def reject_invalid_product
+      redirect_to products_path unless ( @product.available? && @product.displayed?(current_user) )
     end
 
 end
