@@ -15,7 +15,7 @@
       <a href="<%= edit_profile_credit_card_path(gmo_card[:CardSeq], card_no: gmo_card[:CardNo], default_flag: gmo_card[:DefaultFlag]) %>">
         <li class="c-link--small_text">
         <span>
-          カード番号<%= "(標準使用)" if gmo_card[:DefaultFlag].to_i == 1 %><br>
+          カード番号<%#= "(標準使用)" if gmo_card[:DefaultFlag].to_i == 1 %><br>
           <%= gmo_card[:CardNo] %>
         </span>
         </li>

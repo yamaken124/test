@@ -2,6 +2,7 @@ class Admins::UsersController < Admins::BaseController
   before_action :set_user, only: [:show, :edit, :update]
 
   def index
+    @visitor = User.where("current_sign_in_at > ?", Date.yesterday).count
     @users = User.includes(:profile).page(params[:page])
   end
 

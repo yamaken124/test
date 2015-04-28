@@ -29,7 +29,7 @@ class Payment < ActiveRecord::Base
           end
 
           event :failed do
-            transitions from: :pending, to: :failed
+            transitions from: [:pending, :processing, :checkout], to: :failed
           end
 
           event :canceled, after: :cancel_order do

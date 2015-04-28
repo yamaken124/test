@@ -12,12 +12,14 @@
     <%= submit_tag '検索', class: 'btn btn-primary' %>
   <% end %>
   <% if @users.present? %>
+    今日の訪問者は <%= @visitor %> 人です
     <table class="table">
       <thead>
         <tr>
           <th>ID</th>
           <th>名前</th>
           <th>保有マイル</th>
+          <th>最終ログイン</th>
           <th></th>
         </tr>
       </thead>
@@ -27,6 +29,12 @@
             <td><%= user.id %></td>
             <td><%= user.profile.present? ? "#{user.profile.last_name} #{ user.profile.first_name}": "未登録" %></td>
             <td><%= user.wellness_mileage %></td>
+            <td>
+              <% if user.last_sign_in_at.present? %>
+                <%= user.last_sign_in_at.strftime("%Y/ %m/ %d")%>
+              <% end %>
+            </td>
+
             <td>
               <a href="<%= admins_user_path(user.id) %>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
             </td>

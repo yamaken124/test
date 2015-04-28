@@ -25,7 +25,6 @@ class SingleOrderDetail < ActiveRecord::Base
   belongs_to :single_order
   belongs_to :address
   # belongs_to :tax_rate
-  has_one    :bill
   has_many   :single_line_items
   has_one    :payment
 
@@ -73,13 +72,16 @@ class SingleOrderDetail < ActiveRecord::Base
 
   def allowed_max_use_point
     [item_total_with_tax, single_order.purchase_order.user.wellness_mileage, Payment::UsedPointLimit].min
-    # [single_order.item_total, single_order.purchase_order.user.wellness_mileage, Payment::UsedPointLimit].min
   end
 
   def identical_tracking_number(items_id = single_line_items.ids)
     items = single_line_items.where(id: items_id)
     expecting_tracking = items.first.shipment.tracking
     expecting_tracking if items.all? {|item| item.shipment.tracking == expecting_tracking}
+  end
+
+  def all_shipped?
+    single_line_items.all? { |item| item.shipment.shipped? }
   end
 
 end

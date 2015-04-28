@@ -1,7 +1,7 @@
 @import "../foundation/setting";
 @import "../foundation/mixin";
 #footer{
-  @include calc("width", "100%-10px");
+  @include calc("width", "100% - 10px");
   min-height:30px;
   padding:20px 5px;
   background-color:$footer_background_color;

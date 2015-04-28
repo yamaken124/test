@@ -22,44 +22,25 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'wellness_mileage' do
-
-    context 'lmi user or abc user' do
+    context 'user has access_token' do
+      before do
+        stub_request(:get, "#{Settings.internal_api.finc_app.host}/v2/wellness_mileage").to_return(status: 200, body: { wellness_mileage: 3 }.to_json)
+        @user = create(:user)
+        @oauth_access_token = create(:oauth_access_token, user_id: @user.id)
+      end
       it 'returns diff in total_points at finc_app_me and used_point_total' do
-        user = create(:user, used_point_total: 5)
-        allow_any_instance_of(User).to receive(:me_in_finc_app).and_return({ 'id' => User.lmi_user_ids.first, 'total_points' => 10, 'start_date' => '2015-02-23' })
-        expect(user.wellness_mileage).to eq 5
+        expect(@user.wellness_mileage).to eq 3
       end
     end
 
-    context 'Not a lmi user' do
-      let(:user) { create(:user, used_point_total: 5) }
-      context 'start before 2015-02-10' do
-        it 'returns diff in total_points at finc_app_me and used_point_total' do
-          allow_any_instance_of(User).to receive(:me_in_finc_app).and_return({ 'id' => 1, 'total_points' => 10, 'start_date' => '2015-01-11' })
-          expect(user.wellness_mileage).to eq 5
-        end
+    context 'user has no access_token' do
+      before do
+        stub_request(:get, "#{Settings.internal_api.finc_app.host}/v2/wellness_mileage").to_return(status: 200, body: { wellness_mileage: 3 }.to_json)
+        @user = create(:user)
       end
-
-      context 'start between 2015-02-11 and 2015-04-12' do
-        context 'and not graduate' do
-          it do
-            allow_any_instance_of(User).to receive(:me_in_finc_app).and_return({ 'id' => 1, 'total_points' => 10, 'start_date' => '2015-03-11', 'graduates_on' => nil })
-            expect(user.wellness_mileage).to eq 0
-          end
-        end
-
-        context 'and graduated' do
-          it 'returns diff in after_graduate_points and used_point_total' do
-            allow_any_instance_of(User).to receive(:me_in_finc_app).and_return({ 'id' => 1, 'total_points' => 10, 'start_date' => '2015-03-11', 'graduates_on' => '2015-05-10', 'after_graduate_points' => 10 })
-            expect(user.wellness_mileage).to eq 5
-          end
-        end
+      it 'returns diff in total_points at finc_app_me and used_point_total' do
+        expect(@user.wellness_mileage).to eq 0
       end
-    end
-
-    it 'returns 0 if me_at_finc_app is not found' do
-      user = create(:user, used_point_total: 5)
-      expect(user.wellness_mileage).to eq 0
     end
   end
 end

@@ -1,4 +1,5 @@
 @import "../../foundation/setting";
+@import "../../foundation/mixin";
 .c-payment_method_section{
   width:100%;
   height:40px;
@@ -10,4 +11,8 @@
 }
 .c-payment_jquery_notice{
   color:red;
+  text-align:center;
+}
+.c-payment_checkout_notice{
+  @extend .c-payment_jquery_notice;
 }
