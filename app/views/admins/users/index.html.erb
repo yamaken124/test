@@ -1,0 +1,47 @@
+<div class="content-header">
+  <h3>
+    ユーザー管理
+  </h3>
+</div>
+<section class="content">
+<h4 class="box-title">ユーザー一覧</h4>
+<div class="content">
+  <%= flash[:notice] %>
+  <%= form_tag(controller: 'users', action: 'search') do %>
+    <%= text_field_tag :name,'', placeholder: '名前', class: 'form__text--short' %>
+    <%= submit_tag '検索', class: 'btn btn-primary' %>
+  <% end %>
+  <% if @users.present? %>
+    今日の訪問者は <%= @visitor %> 人です
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>名前</th>
+          <th>保有マイル</th>
+          <th>最終ログイン</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= user.profile.present? ? "#{user.profile.last_name} #{ user.profile.first_name}": "未登録" %></td>
+            <td><%= user.wellness_mileage %></td>
+            <td>
+              <% if user.last_sign_in_at.present? %>
+                <%= user.last_sign_in_at.strftime("%Y/ %m/ %d")%>
+              <% end %>
+            </td>
+
+            <td>
+              <a href="<%= admins_user_path(user.id) %>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+    <div class="c-pager"><%= paginate(@users) %></div>
+  </div>
+  </section>

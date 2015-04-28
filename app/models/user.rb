@@ -39,6 +39,10 @@ class User < ActiveRecord::Base
 
   after_create :create_user_category
 
+  validates :used_point_total, numericality: true
+
+  paginates_per 20
+
   accepts_nested_attributes_for :profile
 
   def name

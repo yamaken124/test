@@ -1,0 +1,58 @@
+<div class="content-header">
+  <h3>
+    <%= link_to 'ユーザー管理', admins_users_path %> / <%= @user.id %>
+  </h3>
+  <%= flash[:notice] %>
+</div>
+
+  <section class="content">
+
+  <div class="content col-md-9">
+    <table class="table c-table">
+      <thead>
+        <% if @user.profile.present? %>
+          <tr>
+            <th>名前</th>
+            <th><%= @user.profile.last_name %> <%= @user.profile.first_name %></th>
+          </tr>
+          <tr>
+            <th>電話番号</th>
+            <th><%= @user.profile.try(:phone) %></th>
+          </tr>
+        <% end %>
+        <tr>
+          <th>メールアドレス</th>
+          <th><%= @user.email %></th>
+        </tr>
+        <% @user.addresses.each do |address| %>
+          <tr>
+            <th>都道府県</th>
+            <th><%= address.try(:city) %></th>
+          </tr>
+          <tr>
+            <th>住所</th>
+            <th><%= address.try(:address) %></th>
+          </tr>
+        <% end %>
+        <tr>
+          <th>保有マイル</th>
+          <th>
+            <%= @user.wellness_mileage %>
+          </th>
+        </tr>
+        <tr>
+          <th>マイル付与</th>
+          <th>
+            <%= form_tag(admins_user_path(@user.id), action: "update", method: "patch") do %>
+
+              このユーザーのマイルを<%= number_field_tag :points, 0 %>マイル増やす
+
+              <%= submit_tag "変更", data: {confirm: "本当に変更しますか?"}, class:"btn btn-primary" %>
+            <% end %>
+          </th>
+        </tr>
+
+      </thead>
+    </table>
+  </div>
+  </section>
