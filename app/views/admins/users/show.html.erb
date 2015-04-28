@@ -21,9 +21,19 @@
           </tr>
         <% end %>
         <tr>
-          <th>メール</th>
+          <th>メールアドレス</th>
           <th><%= @user.email %></th>
         </tr>
+        <% @user.addresses.each do |address| %>
+          <tr>
+            <th>都道府県</th>
+            <th><%= address.try(:city) %></th>
+          </tr>
+          <tr>
+            <th>住所</th>
+            <th><%= address.try(:address) %></th>
+          </tr>
+        <% end %>
         <tr>
           <th>保有マイル</th>
           <th>

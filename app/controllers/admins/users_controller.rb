@@ -1,8 +1,8 @@
 class Admins::UsersController < Admins::BaseController
   before_action :set_user, only: [:show, :edit, :update]
+  before_action :set_visitor, only: [:index]
 
   def index
-    @visitor = User.where("current_sign_in_at > ?", Date.yesterday).count
     @users = User.includes(:profile).page(params[:page])
   end
 
@@ -24,14 +24,17 @@ class Admins::UsersController < Admins::BaseController
 
   def search
     @users = User.includes(:profile).where(id: Profile.where("concat(last_name, first_name) like?", "%#{params[:name]}%").pluck(:user_id)).page(params[:page])
-    flash[:notice] = 
-      @users.present? ? '' : '該当するユーザーはいません'
+    flash[:notice] = @users.present? ? '' : '該当するユーザーはいません'
     render action: 'index'
   end
 
   private
     def set_user
       @user = User.find(params[:id])
+    end
+
+    def set_visitor
+      @visitor = User.where("current_sign_in_at > ?", Date.yesterday).count
     end
 
 end
