@@ -55,13 +55,22 @@ class User < ActiveRecord::Base
   end
 
   def update_used_point_total(changed_point)
-    self.used_point_total += changed_point.to_i
-    save!
-    UserPointHistory.create!(
-      user_id: id,
-      used_point: changed_point
-    ) #point history
-    WellnessMileage.add((-1)*changed_point, self) #ポイントを使うとmasterのポイントも減らす
+
+    begin
+      ActiveRecord::Base.transaction do
+        raise 'minus_point' if (wellness_mileage - changed_point < 0)
+        self.used_point_total += changed_point.to_i
+        save!
+        UserPointHistory.create!(
+          user_id: id,
+          used_point: changed_point
+        ) #point history
+        WellnessMileage.add((-1)*changed_point, self) #ポイントを使うとmasterのポイントも減らす
+      end
+      true
+    rescue => e
+      false
+    end
   end
 
   def belonging_user_category
