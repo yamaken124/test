@@ -19,7 +19,7 @@ class Profile < ActiveRecord::Base
 
   belongs_to :user
 
-  validates :last_name, :first_name, :last_name_kana, :first_name_kana, :phone, presence: true, on: [:update, :preceed_to_payment]
+  validates :last_name, :first_name, presence: true, on: [:update, :preceed_to_payment]
   # validates :phone, presence: true, format: { with: proc { Profile.phone_regexp } }
 
   def self.phone_regexp

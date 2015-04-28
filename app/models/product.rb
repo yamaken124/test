@@ -4,6 +4,7 @@ class Product < ActiveRecord::Base
   has_many :taxons, :through => :products_taxons
   has_one :product_description
   has_many :how_to_use_products
+  has_many :once_purchase_product_histories
   has_many :prices, :through => :variants
   has_many :images, :through => :variants
   paginates_per 5
@@ -50,6 +51,14 @@ class Product < ActiveRecord::Base
 
   def one_click_product?
     ProductsTaxon.where(product_id: id).all? {|products_taxon| Taxon::OneClickTaxonIds.include?(products_taxon.taxon_id)}
+  end
+
+  def send_to_office?
+    Taxon::SendToOfficeTaxonIds.include?(ProductsTaxon.find_by(product_id: id).taxon_id)
+  end
+
+  def only_once_purhcase?
+    Taxon::OncePurchaseTaxonIds.include?(ProductsTaxon.find_by(product_id: id).taxon_id)
   end
 
 end

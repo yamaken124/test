@@ -23,13 +23,20 @@ class Users::ProductsController < Users::BaseController
     redirect_to products_path unless ( @product.available? && @product.displayed?(current_user) )
     @preview_images = @product.preview_images('top')
 
-    @max_used_point = current_user.max_used_point(@product.variants.single_order.first.price.amount)
+    quantity = 1 #default value, would be updated on #update_max_used_point
+    @max_used_point = @product.variants.single_order.first.max_used_point(current_user, quantity)
+
     @gmo_cards = GmoMultiPayment::Card.new(current_user).search
   end
 
   def description
     @product = Product.find(params[:id])
     @description_images = @product.preview_images('description')
+  end
+
+  def update_max_used_point
+    updated_max_used_point = Variant.find(params[:variant_id]).max_used_point(current_user, params[:quantity])
+    render json: updated_max_used_point
   end
 
   private

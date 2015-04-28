@@ -229,6 +229,8 @@ ja:
         nutritionist_word: 栄養士からの一言
       how_to_use_product:
         description: 使用方法
+      upper_used_point_limit:
+        limit: 使用可能マイル上限
 
   order_type:
     single_order: 通常購入
