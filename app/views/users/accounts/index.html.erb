@@ -1,0 +1,67 @@
+<%= javascript_include_tag 'users/products/show' %>
+
+<script type="text/javascript">
+$(window).load(function() {
+  $('.flexslider').flexslider({
+    animation: "slide",
+    animationLoop: false,
+    itemWidth: 10,
+    itemMargin: 5
+  });
+});
+</script>
+
+<div class="p-point">
+  <%if current_user.try(:profile).try(:name) %>
+    <div class="p-home_top_notice">
+      こんにちは <%= current_user.try(:profile).try(:name) %>さん
+    </div>
+    <div class="c-second_top_notice">
+      Wellnessマイレージ：
+      <span class="c-second_top_notice_mile"><%= @wellness_mileage %></span>
+      <span class="c-second_top_notice_unit">マイル</span>
+    </div>
+  <% end %>
+</div>
+
+<div class='p-home_list'>
+  <div class='p-home_top'>
+    <%= image_tag 'users/home_top.png', class: 'p-home_top_image' %>
+  </div>
+</div>
+<div class='p-home_list'>
+  <div class='p-home_list_title'>カテゴリから選ぶ</div>
+  <div class='p-home_category_lists'>
+    <% @taxons.each.with_index(2) do |taxon, index| %>
+      <div class='p-home_category_list_wrapper'>
+        <%= link_to taxons_path(id: taxon.id) do %>
+          <div class='p-home_category_list_before'>
+            <%= image_tag "users/category_#{index}.png", class: 'p-home_category_image' %>
+          </div>
+          <div class='p-home_category_list'><%= taxon.name %></div>
+        <% end %>
+      </div>
+    <% end %>
+    <div class='p-home_category_list_wrapper'>
+      <%= link_to taxons_path(id: 1) do %>
+        <div class='p-home_category_list_before'>
+          <%= image_tag 'users/category_1.png', class: 'p-home_category_image' %>
+        </div>
+        <div class='p-home_category_list'>すべて</div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class='p-home_flexslider_wrapper'>
+  <div class='p-home_list_title'>人気商品ランキング</div>
+  <div class="flexslider">
+    <ul class="slides">
+      <% @product.preview_images('top').each.with_index(1) do |image, index| %>
+        <li>
+          <span class='p-home_slides_ranking'><%= index.to_s+'位' %></span>
+          <%= image_tag image.image.url %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

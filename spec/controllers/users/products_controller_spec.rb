@@ -11,26 +11,57 @@ RSpec.describe Users::ProductsController, type: :controller do
     create(:user_categories_taxon, user_category_id: @user_category_id, taxon_id: @taxon_id)
     create(:products_taxon, product_id: @product.id, taxon_id: @taxon_id)
     user_sign_in @user
-    @variant = create(:variant, product_id: @product.id)
-    @price = create(:price, variant_id: @variant.id)
-    # let!(:image) { Image.create(:image=> File.open(File.join(Rails.root, '/spec/fixtures/sample.png')), imageable_id: variant.id, imageable_type: "Variant" ) }
-    @image = Image.create(:image=> File.open(File.join(Rails.root, '/spec/fixtures/sample.png')), imageable_id: @variant.id, imageable_type: "Variant" )
-    create(:variant_image_whereabout, image_id: @image.id, variant_id: @variant.id)
-    create(:variant_image_whereabout, image_id: @image.id, variant_id: @variant.id, whereabout: 2)
-  end
-
-  describe 'GET #index' do
-    before { get :index }
-
-    it { expect(response).to render_template :index }
-    it { expect(assigns(:products)).to eq [@product] }
 
   end
 
-  describe 'GET #show' do
-    before { get :show, id: @product.id }
+  describe 'product' do
 
-    it { expect(assigns(:product)).to eq @product }
-    it { expect(response).to render_template :show }
+    context 'with valid' do
+
+      describe 'GET #index' do
+
+        let!(:variant) { create(:variant, product_id: @product.id) }
+        let!(:price) { create(:price, variant_id: variant.id) }
+        let!(:image) { create(:image=> File.open(File.join(Rails.root, '/spec/fixtures/sample.png')), imageable_id: variant.id, imageable_type: "Variant" ) }
+        create(:variant_image_whereabout, image_id: image.id, variant_id: variant.id)
+        # create(:variant_image_whereabout, image_id: image.id, variant_id: variant.id, whereabout: 2)
+
+        before { get :index }
+
+        # p image
+        # it { expect(response).to render_template :index }
+        # it { expect(assigns(:products)).to eq [@product] }
+
+      end
+
+      # describe 'GET #show' do
+        # before { get :show, id: @product.id }
+
+        # it { expect(assigns(:product)).to eq @product }
+        # it { expect(response).to render_template :show }
+      # end
+
+    end
+
+    # context 'invalid' do
+
+    #   describe 'GET #index' do
+    #     before { get :index }
+
+    #     it { expect(response).to render_template :index }
+    #     it { expect(assigns(:products)).to eq [@product] }
+
+    #   end
+
+    #   describe 'GET #show' do
+    #     before { get :show, id: @product.id }
+
+    #     it { expect(assigns(:product)).to eq @product }
+    #     it { expect(response).to render_template :show }
+    #   end
+
+    # end
+
   end
+
 end
