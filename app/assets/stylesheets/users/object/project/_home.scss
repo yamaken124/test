@@ -10,18 +10,37 @@
   @extend .c-top_notice;
   font-size: 13px;
 }
-.p-home_lists{
-}
 .p-home_list_title{
   color:$base_font_color;
-  font-size:16px;
+  font-size:18px;
   margin:5px 0 15px;
+  &:before{
+    content: "";
+    float:left;
+    width:18px;
+    height:18px;
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+  }
+}
+.p-home_list_title_category{
+  @extend .p-home_list_title;
+  &:before{
+    background-image:url(asset-path("users/category_icon.png"));
+  }
+}
+.p-home_list_title_ranking{
+  @extend .p-home_list_title;
+  &:before{
+    background-image:url(asset-path("users/ranking_icon.png"));
+  }
 }
 .p-home_list{
   border-bottom:1px solid $base_border_color;
   padding:10px 4px 10px 4px;
-  width:100%;
   .p-home_top{
+    width:100%;
     .p-home_top_image{
       width:100%;
     }

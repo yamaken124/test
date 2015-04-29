@@ -1,16 +1,5 @@
 <%= javascript_include_tag 'users/products/show' %>
 
-<script type="text/javascript">
-$(window).load(function() {
-  $('.flexslider').flexslider({
-    animation: "slide",
-    animationLoop: false,
-    itemWidth: 10,
-    itemMargin: 5
-  });
-});
-</script>
-
 <div class="p-point">
   <%if current_user.try(:profile).try(:name) %>
     <div class="p-home_top_notice">
@@ -30,7 +19,7 @@ $(window).load(function() {
   </div>
 </div>
 <div class='p-home_list'>
-  <div class='p-home_list_title'>カテゴリから選ぶ</div>
+  <div class='p-home_list_title_category'>カテゴリから選ぶ</div>
   <div class='p-home_category_lists'>
     <% @taxons.each.with_index(2) do |taxon, index| %>
       <div class='p-home_category_list_wrapper'>
@@ -53,7 +42,7 @@ $(window).load(function() {
   </div>
 </div>
 <div class='p-home_flexslider_wrapper'>
-  <div class='p-home_list_title'>人気商品ランキング</div>
+  <div class='p-home_list_title_ranking'>人気商品ランキング</div>
   <div class="flexslider">
     <ul class="slides">
       <% @product.preview_images('top').each.with_index(1) do |image, index| %>
