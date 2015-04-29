@@ -64,21 +64,24 @@ class Admins::ProductsController < Admins::BaseController
 
   def move_position
     @product = Product.find(params[:product_id])
+    method_name = :"move_#{params[:position]}"
+    send(method_name, @product) if respond_to?(method_name, true)
+  end
 
-    if params[:position] = "up"
-      @product_before = Product.find_by(position: @product.position - 1)
+  def move_up(product)
+    product_before = Product.find_by(position: product.position - 1)
+    ActiveRecord::Base.transaction do
+      product.update!(position: product.position - 1)
+      product_before.update!(position: product.position + 1)
+    end
+    redirect_to admins_products_path
+  end
 
-      ActiveRecord::Base.transaction do
-        @product.update!(position: @product.position - 1)
-        @product_before.update!(position: @product.position + 1)
-      end
-    elsif params[:position] == "down"
-      @next_product = Product.find_by(position: @product.position + 1)
-
-      ActiveRecord::Base.transaction do
-        @product.update!(position: @product.position + 1)
-        @next_product.update!(position: @product.position - 1)
-      end
+  def move_down(product)
+    @next_product = Product.find_by(position: @product.position + 1)
+    ActiveRecord::Base.transaction do
+      @product.update!(position: @product.position + 1)
+      @next_product.update!(position: @product.position - 1)
     end
     redirect_to admins_products_path
   end
