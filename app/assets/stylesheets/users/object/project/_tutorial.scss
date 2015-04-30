@@ -1,0 +1,69 @@
+@import "../../foundation/setting";
+@import "../../foundation/mixin";
+
+.p-tutorial_wrapper{
+  text-align:center;
+  font-size:18px;
+  line-height:1.5em;
+  .p-tutorial_title{
+    padding:10px 2% 10px 2%;
+    .p-tutorial_title_image{
+      width:100px;
+    }
+    .p-tutorial_title_top{
+      padding:20px 0 10px;
+      font-size:22px;
+    }
+    .p-tutorial_title_detail{
+      padding:10px 0 30px;
+    }
+  }
+  .p-tutorial_point_wrapper{
+    padding:0 2% 25px 2%;
+    border-top: 1px solid $base_border_color;
+    .p-tutorial_point_title{
+      font-size:18px;
+      margin-top:25px;
+    }
+    .p-tutorial_point_lists{
+      width:100%;
+      .p-tutorial_point_list{
+        width:80%;
+        padding:25px 0 0;
+      }
+      .p-tutorial_point_list_detail{
+      }
+    }
+  }
+  .p-tutorial_mile_wrapper{
+    margin-top:20px;
+    padding:0 2% 0 2%;
+    border-top: 1px solid $base_border_color;
+    .p-tutorial_mile_title{
+      padding:20px 0 25px;
+      font-size:22px;
+    }
+    .p-tutorial_mile_lists{
+      img.p-tutorial_mile_top{
+        width:80%;
+        padding: 10px 8% 10px 8%;
+        border: 1px solid $base_border_color;
+      }
+      .p-tutorial_mile_list_detail{
+        padding:8px 0 30px;
+        text-align:left;
+      }
+    }
+  }
+  .p-tutorial_go_to_store{
+    margin:0 10% 20px 10%;
+    width:80%;
+    padding:10px 5px;
+    font-size:22px;
+    border-radius:5px;
+    -webkit-appearance: none;
+    text-align:center;
+    color:white;
+    background-color:$finc_color;
+  }
+}
