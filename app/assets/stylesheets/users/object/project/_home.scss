@@ -28,12 +28,14 @@
   @extend .p-home_list_title;
   &:before{
     background-image:url(asset-path("users/category_icon.png"));
+    margin-left:5px;
   }
 }
 .p-home_list_title_ranking{
   @extend .p-home_list_title;
   &:before{
     background-image:url(asset-path("users/ranking_icon.png"));
+    margin-left:5px;
   }
 }
 .p-home_list{
@@ -43,6 +45,7 @@
     width:100%;
     .p-home_top_image{
       width:100%;
+      padding:5px 0 5px;
     }
   }
   .p-home_category_lists{
@@ -61,7 +64,7 @@
       border: 1px solid #DDD;
       color:#111;
       .p-home_category_list_before{
-        width:20%;
+        width:18%;
         height:100%;
         float:left;
         color: $finc_color;
@@ -74,10 +77,10 @@
       .p-home_category_list{
         @extend .p-home_category_list_before;
         margin-left:0px;
-        margin-right:5px;
+        margin-right:0px;
         line-height:30px;
         width:68%;
-        font-size:15px;
+        font-size:14px;
         text-align:center;
       }
     }
@@ -95,5 +98,4 @@ span.p-home_slides_ranking{
   margin-left:4px;
 }
 .p-home_flexslider_wrapper{
-  padding:10px 6px 10px 6px;
 }
