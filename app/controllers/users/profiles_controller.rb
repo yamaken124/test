@@ -50,7 +50,7 @@ class Users::ProfilesController < Users::BaseController
       elsif params[:continue].present? && params[:continue].include?("checkout/payment")
         redirect_to checkout_state_path("payment")
       else # params[:continue].include?("account") || params[:continue].blank?
-        redirect_to accounts_path
+        redirect_to account_path
       end
     end
 

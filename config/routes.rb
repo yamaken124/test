@@ -28,8 +28,7 @@ Rails.application.routes.draw do
         post 'sign_in_with_email_password', action: :sign_in_with_email_password
       end
     end
-    resources :accounts, only: [:index, :show]
-    namespace :account, only: [] do
+    resource :account, only: [:show] do
       resources :addresses, only: [:index, :edit, :update, :new, :create, :destroy] do
         collection do
           get 'fetch_address_with_zipcode', action: :fetch_address_with_zipcode, :as => :fetch_address
