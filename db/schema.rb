@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150424131423) do
+ActiveRecord::Schema.define(version: 20150429100548) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -162,12 +162,26 @@ ActiveRecord::Schema.define(version: 20150424131423) do
     t.integer  "one_click_detail_id",    limit: 4
     t.string   "number",                 limit: 255
     t.integer  "user_id",                limit: 4
+    t.integer  "state",                  limit: 4
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
   end
 
   add_index "one_click_payments", ["address_id"], name: "index_one_click_payments_on_address_id", using: :btree
   add_index "one_click_payments", ["one_click_detail_id"], name: "index_one_click_payments_on_one_click_detail_id", using: :btree
+
+  create_table "one_click_shipments", force: :cascade do |t|
+    t.integer  "address_id",        limit: 4
+    t.integer  "one_click_item_id", limit: 4
+    t.string   "tracking",          limit: 255
+    t.datetime "shipped_at"
+    t.integer  "state",             limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "one_click_shipments", ["address_id"], name: "index_one_click_shipments_on_address_id", using: :btree
+  add_index "one_click_shipments", ["one_click_item_id"], name: "index_one_click_shipments_on_one_click_item_id", using: :btree
 
   create_table "payment_methods", force: :cascade do |t|
     t.string   "name",          limit: 255

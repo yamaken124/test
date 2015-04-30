@@ -80,15 +80,28 @@ Rails.application.routes.draw do
       resources :images,only: [:index, :new, :create, :edit, :update, :destroy], controller: :images, imageable_type: 'Variant'
       post '/images/sort', :to => 'images#sort'
     end
-    resources :shipments, only:[:index, :show, :update] do
-      collection do
-        get 'state/:state', :to => 'shipments#index', :as => :state
-        get 'return_requests'
-        get 'shipment_details'
-        patch 'update_tracking_code', :to => 'shipments#update_tracking_code', :as => :update_tracking_code
-        patch 'update_state', :to => 'shipments#update_state', :as => :update_state
+    namespace :shipments do
+      resources :singles, only:[:index, :show, :update] do
+        collection do
+          get 'state/:state', :to => 'singles#index', :as => :state
+          get 'return_requests'
+          get 'shipment_details'
+          get 'csv_export'
+          patch 'update_tracking_code', :to => 'singles#update_tracking_code', :as => :update_tracking_code
+          patch 'update_state', :to => 'singles#update_state', :as => :update_state
+        end
+        member do
+        end
       end
-      member do
+      resources :one_clicks, only:[:index, :show, :update] do
+        collection do
+          get 'state/:state', :to => 'one_clicks#index', :as => :state
+          get 'return_requests'
+          get 'shipment_details'
+          get 'csv_export'
+          patch 'update_tracking_code', :to => 'one_clicks#update_tracking_code', :as => :update_tracking_code
+          patch 'update_state', :to => 'one_clicks#update_state', :as => :update_state
+        end
       end
     end
     #TODO routing setting
@@ -104,59 +117,4 @@ Rails.application.routes.draw do
     end
   end
 
-
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
 end

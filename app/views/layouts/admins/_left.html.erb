@@ -1,5 +1,5 @@
 <!-- Left side column. contains the logo and sidebar -->
-<aside class="left-side sidebar-offcanvas">               
+<aside class="left-side sidebar-offcanvas">
 <section class="sidebar">
 <ul class="sidebar-menu">
   <li>
@@ -8,12 +8,19 @@
     <span>商品管理</span>
   </a>
   </li>
-  <li>
-  <a href="<%= admins_shipments_path %>">
-    <i class="fa fa-inbox"></i>
-    <span>発送管理</span>
-  </a>
-  </li>
+
+    <li class="treeview">
+    <a href="<%= %>">
+      <i class="fa fa-th"></i>
+      <span>発送管理</span>
+      <i class="fa fa-angle-left pull-right"></i>
+    </a>
+    <ul class="treeview-menu">
+      <li><a href="<%= admins_shipments_singles_path %>"><i class="fa fa-angle-double-right"></i>単品購入</a></li>
+      <li><a href="<%= admins_shipments_one_clicks_path %>"><i class="fa fa-angle-double-right"></i>弁当購入</a></li>
+    </ul>
+    </li>
+
   <% if @is_bills.nil? %>
     <li class="treeview">
     <a href="<%= %>">

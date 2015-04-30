@@ -25,5 +25,6 @@ class Taxon < ActiveRecord::Base
   OneClickTaxonIds = [6, 8] #FIXME
   OncePurchaseTaxonIds = [8]
   SendToOfficeTaxonIds = [6]
+  OneClickShippmentIds = [6]
 
 end

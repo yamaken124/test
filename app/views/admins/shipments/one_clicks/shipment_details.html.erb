@@ -1,0 +1,70 @@
+<% detail = @payment.one_click_detail %>
+<div class="content-header">
+  <h3>
+    <%= link_to '弁当発送管理', admins_shipments_one_clicks_path %> / <%= @payment.number %>
+    <div class="u-float_right">
+      <% if @shipments.all_state?(@shipments, 'shipped') %>
+        <div class="btn btn-warning">発送済み</div>
+      <% elsif @shipments.all_state?(@shipments, 'canceled') %>
+        <div class="btn btn-danger">キャンセルされました</div>
+      <% elsif @shipments.all_state?(@shipments, 'returned') %>
+        <div class="btn btn-default">返品されました</div>
+      <% elsif @shipments.all_state?(@shipments, 'failed') %>
+        <div class="btn btn-default">取引が失敗しています</div>
+      <% elsif @shipments.all_state?(@shipments, 'ready') %>
+        <%= form_tag csv_export_admins_shipments_one_clicks_path(format: :csv), method: "get", class: "u-float_left" do %>
+          <%= hidden_field_tag :state, "exported" %>
+          <%= hidden_field_tag :shipment_ids, @shipments.ids %>
+          <%= submit_tag "CSV出力", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
+        <% end %>
+      <% elsif @shipments.all_state?(@shipments, 'exported') %>
+        <%= form_tag update_state_admins_shipments_one_clicks_path, method: "patch", class: "u-float_left" do %>
+          <%= hidden_field_tag :state, "shipped" %>
+          <%= hidden_field_tag :shipment_ids, @shipments.ids %>
+          <%= submit_tag "発送する", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
+        <% end %>
+      <% end %>
+    </div>
+  </h3>
+</div>
+
+<section class="content">
+
+  <div class="content col-md-9">
+    <h4 class="box-title">購入商品<span style="color:red"><%= flash[:alert] %></span></h4>
+    <table class="table c-table">
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th>画像</th>
+          <th>単価</th>
+          <th>個数</th>
+          <th>注文支払い合計</th>
+          <th>購入者</th>
+          <th></th>
+        </tr>
+        <% @shipments.each do |shipment| %>
+          <% item = shipment.one_click_item %>
+          <tr>
+            <td><%= item.variant.sku %></td>
+            <td><%= image_tag item.variant.images.first.try(:image).try(:url), class: "thumb" %></td>
+            <td><%= number_to_currency(item.price) %></td>
+            <td><%= item.quantity %></td>
+            <td><%= number_to_currency(item.one_click_detail.paid_total) %></td>
+            <td><%= shipment.address.user.name %></td>
+            <td>
+              <% if shipment.ready? %>
+                <%= form_tag update_state_admins_shipments_one_clicks_path(shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
+                  <%= hidden_field_tag :state, "canceled" %>
+                  <%= hidden_field_tag :shipment_ids, @shipments.ids %>
+                  <%= submit_tag "発送キャンセル", class: "btn btn-warning", data: { confirm: "本当に発送をキャンセルしますか？" } %>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </thead>
+    </table>
+  </div>
+
+</section>

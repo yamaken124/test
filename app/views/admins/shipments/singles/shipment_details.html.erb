@@ -1,7 +1,7 @@
 <% detail = @payment.single_order_detail %>
 <div class="content-header">
   <h3>
-    <%= link_to '発送管理', admins_shipments_path %> / <%= @payment.number %>
+    <%= link_to '発送管理', admins_shipments_singles_path %> / <%= @payment.number %>
     <div class="u-float_right">
       <% if @shipments.all_state?(@shipments, 'shipped') %>
         <div class="btn btn-warning">発送済み</div>
@@ -12,7 +12,7 @@
       <% elsif @shipments.all_state?(@shipments, 'failed') %>
         <div class="btn btn-default">取引が失敗しています</div>
       <% elsif @shipments.all_state?(@shipments, 'ready') %>
-        <%= form_tag update_state_admins_shipments_path, method: "patch", class: "u-float_left" do %>
+        <%= form_tag update_state_admins_shipments_singles_path, method: "patch", class: "u-float_left" do %>
           <%= hidden_field_tag :state, "shipped" %>
           <%= hidden_field_tag :shipment_ids, @shipments.ids %>
           <%= submit_tag "発送する", class: "btn btn-primary", data: { confirm: "本当に実行しますか？" } %>
@@ -48,7 +48,7 @@
             <td><%= number_to_currency(item.single_order_detail.paid_total) %></td>
             <td>
               <% if shipment.ready? %>
-                <%= form_tag update_state_admins_shipments_path(shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
+                <%= form_tag update_state_admins_shipments_singles_path(shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
                   <%= hidden_field_tag :state, "canceled" %>
                   <%= hidden_field_tag :shipment_ids, @shipments.ids %>
                   <%= submit_tag "発送キャンセル", class: "btn btn-warning", data: { confirm: "本当に発送をキャンセルしますか？" } %>
@@ -57,7 +57,7 @@
             </td>
           </tr>
         <% end %>
-        <%= form_tag update_tracking_code_admins_shipments_path, method: "patch" do %>
+        <%= form_tag update_tracking_code_admins_shipments_singles_path, method: "patch" do %>
           <tr>
             <td><%= label_tag :tracking, t("shipment.tracking") %></td>
             <td colspan="3">

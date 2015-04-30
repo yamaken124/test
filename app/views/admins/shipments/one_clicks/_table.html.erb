@@ -1,4 +1,4 @@
-<%= form_tag shipment_details_admins_shipments_path, method: "get" do %>
+<%= form_tag shipment_details_admins_shipments_one_clicks_path, method: "get" do %>
   <table class="table c-table">
     <thead>
       <tr>
@@ -13,14 +13,14 @@
     </thead>
     <tbody>
       <% shipments and shipments.each do |shipment| %>
-        <% payment = shipment.single_line_item.single_order_detail.payment %>
+        <% payment = shipment.one_click_item.one_click_detail.one_click_payment %>
         <tr>
           <td><%= payment.created_at.strftime("%Y/%m/%d %H:%M") %></td>
           <td><%= payment.number %></td>
           <td><%= t("shipment.state.#{shipment.state}") %></td>
-          <td><%= shipment.single_line_item.variant.name %></td>
+          <td><%= shipment.one_click_item.variant.name %></td>
           <td><%= payment.user.profile.try(:name) %></td>
-          <td><%= number_to_currency(shipment.single_line_item.price.to_i * shipment.single_line_item.quantity.to_i) %></td>
+          <td><%= number_to_currency(shipment.one_click_item.price.to_i * shipment.one_click_item.quantity.to_i) %></td>
           <td>
           <%= check_box_tag 'shipment[ids][]', shipment.id, false, {:class => 'shipment_check_box', :id => "shipment_#{shipment.id}"} %>
           </td>
