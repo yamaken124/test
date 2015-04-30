@@ -18,15 +18,17 @@
   </script>
 </head>
 <body>
-<% unless current_user.blank? %>
+<% unless current_user.blank? && show_only_main? %>
   <%= render :partial => "layouts/users/sidebar" %>
 <% end %>
 <div class="js-fixed-contents">
-  <%= render :partial => "layouts/users/header" %>
+  <% unless show_only_main? %>
+    <%= render :partial => "layouts/users/header" %>
+  <% end %>
   <div id="main">
     <%= yield %>
   </div>
-  <% unless current_user.blank? %>
+  <% unless current_user.blank? && show_only_main? %>
     <%= render :partial => "layouts/users/footer" %>
   <% end %>
 </div>

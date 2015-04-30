@@ -2,9 +2,11 @@
 @import "../../foundation/mixin";
 
 .p-tutorial_wrapper{
+  width:100%;
   text-align:center;
   font-size:18px;
   line-height:1.5em;
+  padding-top:20px;
   .p-tutorial_title{
     padding:10px 2% 10px 2%;
     .p-tutorial_title_image{
@@ -22,8 +24,36 @@
     padding:0 2% 25px 2%;
     border-top: 1px solid $base_border_color;
     .p-tutorial_point_title{
+      margin:0 auto;
       font-size:18px;
       margin-top:25px;
+      width:25%;
+      &:after{
+        content: "";
+        float:right;
+        margin-top:9px;
+        margin-right:3px;
+        width:12px;
+        height:12px;
+        background-image:url(asset-path("users/tutorial_point_icon.png"));
+        background-size:contain;
+        background-repeat:no-repeat;
+        background-position:center;
+        vartical-align:middle;
+      }
+      &:before{
+        content: "";
+        float:left;
+        margin-top:9px;
+        margin-right:3px;
+        width:12px;
+        height:12px;
+        background-image:url(asset-path("users/tutorial_point_icon.png"));
+        background-size:contain;
+        background-repeat:no-repeat;
+        background-position:center;
+        vartical-align:middle;
+      }
     }
     .p-tutorial_point_lists{
       width:100%;
@@ -55,15 +85,7 @@
       }
     }
   }
-  .p-tutorial_go_to_store{
-    margin:0 10% 20px 10%;
-    width:80%;
-    padding:10px 5px;
-    font-size:22px;
-    border-radius:5px;
-    -webkit-appearance: none;
-    text-align:center;
-    color:white;
-    background-color:$finc_color;
+  .p-tutorial_btn_wrapper{
+    margin:0px 2% 20px 2%;
   }
 }
