@@ -37,6 +37,10 @@ class CheckoutValidityChecker
     [user.max_used_point, items_upper_used_point(items)].min
   end
 
+  def unique_variant_max_used_point(user, variant, quantity)
+    [user.max_used_point, (variant.upper_used_point * quantity.to_i)].min
+  end
+
   def items_upper_used_point(items)
     if items.instance_of?(OneClickItem)
       Variant.find(items.variant_id).upper_used_point * items.quantity.to_i
