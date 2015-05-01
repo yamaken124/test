@@ -1,4 +1,5 @@
-class Admins::ShipmentsController < Admins::BaseController
+class Admins::Shipments::SinglesController < Admins::BaseController
+
   before_filter :set_shipments, only: [:shipment_details]
   before_filter :setup_for_current_state, only: [:index]
 
@@ -32,7 +33,7 @@ class Admins::ShipmentsController < Admins::BaseController
 
   private
     def set_shipments
-      @shipments = Shipment.where(id: shipment_ids).includes(single_line_item: [:variant], )
+      @shipments = Shipment.where(id: shipment_ids).includes(single_line_item: [:variant] )
       filter_for_update(@shipments)
     end
 
@@ -105,9 +106,9 @@ class Admins::ShipmentsController < Admins::BaseController
     end
 
     def update_canceled(shipments)
-      # 現在キャンセルは商品一つずつのみ対応s
+      # 現在キャンセルは商品一つずつのみ対応
       shipments.first.single_line_item.cancel_item(payment_from_shipments(shipments))
-      redirect_to admins_shipments_path
+      redirect_to admins_shipments_singles_path
     end
 
     def update_returned(shipments)

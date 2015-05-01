@@ -27,6 +27,8 @@ class Users::ProductsController < Users::BaseController
   end
 
   def description
+    @product = Product.find(params[:id])
+    redirect_to products_path unless ( @product.available? && @product.displayed?(current_user) && !Taxon::OneClickTaxonIds.include?(@product.taxons.ids.first) )
     @description_images = @product.preview_images('description')
   end
 

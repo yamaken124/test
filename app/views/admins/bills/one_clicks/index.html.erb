@@ -1,6 +1,6 @@
 <div class="content-header">
   <h3>
-    クレジット支払い管理
+    1-click支払い管理
   </h3>
 </div>
 <section class="content">
@@ -11,7 +11,7 @@
         <th>支払い日</th>
         <th>注文番号</th>
         <th>ステイタス</th>
-        <th>支払い方法</th>
+        <th>商品SKU</th>
         <th>購入者</th>
         <th>合計金額</th>
         <th></th>
@@ -23,8 +23,8 @@
           <td><%= payment.created_at.strftime("%Y/%m/%d %H:%M")%></td>
           <td><%= payment.number  %></td>
           <td><%= t("payment.state.#{payment.state}") %></td>
-          <td><%= payment.payment_method.name %></td>
-          <td><%= payment.user.profile.name %></td>
+          <td><%= payment.one_click_detail.one_click_item.variant.name %></td>
+          <td><%= payment.user.profile.try(:name) %></td>
           <td><%= payment.amount %>円</td>
           <td>
             <a href="<%= %>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
