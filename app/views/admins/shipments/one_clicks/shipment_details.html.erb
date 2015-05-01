@@ -41,6 +41,7 @@
           <th>個数</th>
           <th>注文支払い合計</th>
           <th>購入者</th>
+          <th>購入者メールアドレス</th>
           <th></th>
         </tr>
         <% @shipments.each do |shipment| %>
@@ -52,6 +53,7 @@
             <td><%= item.quantity %></td>
             <td><%= number_to_currency(item.one_click_detail.paid_total) %></td>
             <td><%= shipment.address.user.name %></td>
+            <td><%= shipment.address.user.email %></td>
             <td>
               <% if shipment.ready? %>
                 <%= form_tag update_state_admins_shipments_one_clicks_path(shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
