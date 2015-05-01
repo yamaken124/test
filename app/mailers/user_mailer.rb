@@ -20,6 +20,22 @@ class UserMailer < ApplicationMailer
     @to = order.user.email
   end
 
+  def send_one_click_order_accepted_notification(detail)
+    sleep 1
+
+    @payment = detail.one_click_payment
+    user = @payment.user
+    @profile = Profile.find_by(user_id: user.id)
+    @detail = detail
+    @address = @detail.address
+    @variant = @detail.one_click_item.variant
+    @product = @variant.product
+
+
+    @subject = '【FiNCストア】 ご購入ありがとうございます '
+    @to = user.email
+  end
+
   def send_item_canceled_notification(item)
     sleep 1
 

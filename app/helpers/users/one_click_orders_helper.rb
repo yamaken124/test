@@ -6,14 +6,14 @@ module Users::OneClickOrdersHelper
 
     begin
       ActiveRecord::Base.transaction do
-        detail = OneClickDetail.create!(detail_attributes)
+        @detail = OneClickDetail.create!(detail_attributes)
 
-        @item = OneClickItem.create!(item_attributes(detail))
-        CheckoutValidityChecker.new.common_validity_checker(payment_attributes(detail), detail, current_user, @item)
-        @payment = OneClickPayment.new(payment_attributes(detail))
+        @item = OneClickItem.create!(item_attributes(@detail))
+        CheckoutValidityChecker.new.common_validity_checker(payment_attributes(@detail), @detail, current_user, @item)
+        @payment = OneClickPayment.new(payment_attributes(@detail))
 
         # 0円決済はone_click_orderにて許容するとの認識
-        (raise 'gmo_transaction_failed' unless @payment.pay_with_gmo_payment) if detail.paid_total > 0
+        (raise 'gmo_transaction_failed' unless @payment.pay_with_gmo_payment) if @detail.paid_total > 0
         @payment.save!
 
         create_once_purchase_product_history if @item.variant.product.one_click_product?
