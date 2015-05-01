@@ -83,7 +83,7 @@
       <div class="p-payment_method__detail is-active">
         <% if !@product.only_once_purhcase? %>
           <p>数量: </p>
-          <%= select_tag "order[item_count]", options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
+          <%= select_tag "order[item_count]", options_for_select(@available_quantity), class: 'p-payment_method__amount', :onchange => "update_max_used_point(event)" %>
           <p class="u-margin__right_short">個</p>
         <% else %>
           <%= hidden_field_tag 'order[item_count]', 1 %>

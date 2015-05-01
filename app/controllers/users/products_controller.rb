@@ -31,7 +31,7 @@ class Users::ProductsController < Users::BaseController
   end
 
   def update_max_used_point
-    updated_max_used_point = Variant.find(params[:variant_id]).max_used_point(current_user, params[:quantity])
+    updated_max_used_point = CheckoutValidityChecker.new.unique_variant_max_used_point(current_user, Variant.find(params[:variant_id]), params[:quantity])
     render json: updated_max_used_point
   end
 
