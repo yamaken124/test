@@ -21,7 +21,7 @@ class Users::ProductsController < Users::BaseController
     @preview_images = @product.preview_images('top')
 
     quantity = 1 #default value, would be updated on #update_max_used_point
-    @max_used_point = @product.variants.single_order.first.max_used_point(current_user, quantity)
+    @max_used_point = CheckoutValidityChecker.new.unique_variant_max_used_point(current_user, Variant.find(@product.variants.single_order.first), quantity)
 
     @gmo_cards = GmoMultiPayment::Card.new(current_user).search
   end
