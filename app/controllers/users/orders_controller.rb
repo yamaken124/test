@@ -99,6 +99,7 @@ class Users::OrdersController < Users::BaseController
 
   def one_click_item
     if one_click_order_creater
+      UserMailer.delay.send_one_click_order_accepted_notification(@detail)
       redirect_to one_click_thanks_orders_path(number: @payment.number)
     else
       redirect_to :back
