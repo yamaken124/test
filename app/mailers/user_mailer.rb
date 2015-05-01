@@ -16,7 +16,7 @@ class UserMailer < ApplicationMailer
     @detail = order.single_order_detail
     @address = @detail.address
 
-    @subject = '【FiNCストア】ご購入ありがとうございます '
+    @subject = '【FiNCストア】ご購入ありがとうございます'
     @to = order.user.email
   end
 

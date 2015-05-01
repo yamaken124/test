@@ -4,11 +4,10 @@
   height:50px;
   border-bottom:1px solid $base_border_color;
   p{
-/*    color:$base_font_color;*/
-    color:$finc-color;
-/*    opacity:0.5;
-    width:50%;*/
-    width:100%;
+    float:left;
+    color:$base_font_color;
+    opacity:0.5;
+    width:50%;
     text-align:center;
     height:40px;
     line-height:40px;

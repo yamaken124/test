@@ -101,4 +101,8 @@ class User < ActiveRecord::Base
     # end
   end
 
+  def can_see_one_click_products?
+    Taxon::OneClickTaxonIds.all? {|taxon_id| shown_taxon.ids.include?(taxon_id) }
+  end
+
 end
