@@ -90,7 +90,7 @@ class User < ActiveRecord::Base
   end
 
   def max_used_point
-    wellness_mileage
+    [wellness_mileage, Payment::UsedPointLimit].min
   end
 
   def create_user_category
