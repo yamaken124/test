@@ -22,7 +22,7 @@
           <td><%= payment.user.profile.try(:name) %></td>
           <td><%= number_to_currency(shipment.one_click_item.price.to_i * shipment.one_click_item.quantity.to_i) %></td>
           <td>
-          <%= check_box_tag 'shipment[ids][]', shipment.id, false, {:class => 'shipment_check_box', :id => "shipment_#{shipment.id}"} %>
+            <%= check_box_tag 'shipment[ids][]', shipment.id, false, {:class => 'shipment_check_box', :id => "shipment_#{shipment.id}"} %>
           </td>
         </tr>
       <% end %>

@@ -109,6 +109,7 @@ Rails.application.routes.draw do
       resources :credits
       resources :post_payments
       resources :subscriptions
+      resources :one_clicks
     end
     resources :users, only:[:index, :show, :update] do
       collection do
