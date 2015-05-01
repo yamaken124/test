@@ -1,10 +1,11 @@
 <div class="c-segments">
-<% if false %>
-  <p class="is--active">通常購入</p>
+<% if current_user.can_see_one_click_products? %>
+  <p class="is--active">通常商品</p>
   <div class="border"></div>
-  <p>定期購入</p>
-<% end %>
+  <p>限定公開商品</p>
+<% else %>
   <p class = "is-active">注文履歴</p>
+<% end %>
 </div>
 <% @details.each do |detail| %>
   <div class="c-order_title">
