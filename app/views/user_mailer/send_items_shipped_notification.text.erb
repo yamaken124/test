@@ -29,30 +29,22 @@ https://trackings.post.japanpost.jp/services/srv/search/
 注文番号：<%= @payment.number %>
 注文日：<%= @detail.completed_on %>
 
+商品名：
 <% @shipments.each do |shipment| %>
   <% variant = shipment.single_line_item.variant %>
-  商品名：<%= variant.name %>
-
+  <%= variant.name %>
 <% end %>
 
-注文履歴：
+ご請求合計：<%= number_to_jpy(@detail.paid_total) %>
+
+注文履歴ページ：
 <%= orders_path(:only_path => false) %>
 
 =================================================================================
 
-商品の小計：<%= number_to_jpy(@detail.item_total) %>
-配送料：<%= number_to_jpy(@detail.shipment_total) %>
-注文合計：<%= number_to_jpy(@detail.total) %>
-
-使用ポイント：<%= number_to_jpy(@detail.used_point) %>
-ご請求合計：<%= number_to_jpy(@detail.total) %>
-
-_________________________________________________________________________________
-
 またのご利用をお待ちしております。
 FiNCストア
 <% root_path(:only_path => false) %>
-
 _________________________________________________________________________________
 
 このEメールアドレスは配信専用です。このメッセージに返信しないようお願いいたします。
