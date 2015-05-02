@@ -14,6 +14,10 @@
     border-bottom:2px solid rgb(230,230,230);
     background-color:white;
   }
+  li.sidebar_lists_min{
+    @extend .sidebar_lists;
+    font-size:14px;
+  }
   li#sidebar_title{
     @extend .sidebar_lists;
     background-color:rgb(230,230,230);
