@@ -9,4 +9,8 @@ module ApplicationHelper
     sanitize text.gsub(/\r\n|\r|\n/, "<br />"), :tag => %w(br)
   end
 
+  def show_only_main?
+    params[:name] == 'tutorial'
+  end
+
 end
