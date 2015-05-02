@@ -90,13 +90,25 @@
     }
   }
 }
-.p-home_slides_ranking{
-  width:100%;
+.p-home_slides_ranking_wrapper{
   height:180px;
-  overflow-x:scroll;
-  -webkit-overflow-scrolling: touch;
+  width:100%;
+  overflow-x:auto;
   overflow-y:hidden;
-  img{
-    height:180px;
+  -webkit-overflow-scrolling: touch;
+  .p-home_slides_ranking{
+    width:900px;
+    .p-home_slides_ranking_unit{
+      float:left;
+      width:180px;
+      height:180px;
+      img{
+        height:100%;
+        border-left:1px solid $base_border_color;
+        &:last-child{
+          border-right:1px solid $base_border_color;
+        }
+      }
+    }
   }
 }
