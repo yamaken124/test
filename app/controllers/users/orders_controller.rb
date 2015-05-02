@@ -1,18 +1,22 @@
 class Users::OrdersController < Users::BaseController
   respond_to :html
   include Users::OrdersHelper
-  include Users::OneClickOrdersHelper
 
   before_action :assign_order_with_lock, only: [:edit, :update, :remove_item]
   before_action :set_variants, only: [:edit]
   before_action :set_number, only: [:thanks, :one_click_thanks]
   # before_action :apply_coupon_code, only: :update
 
-  def index
+  def single_history
     single_order_detail_id = Payment.where(user_id: current_user.id).pluck(:single_order_detail_id)
     @details = SingleOrderDetail.where(id: single_order_detail_id).includes(:address, :payment, single_line_items: :shipment).includes(single_line_items:[variant: [:price]]).order(completed_at: :desc).page(params[:page])
     variant_ids = SingleLineItem.where(single_order_detail_id: @details.pluck(:id)).pluck(:variant_id)
     @returned_item_indexed_by_item_id = ReturnedItem.where(user_id: current_user.id).index_by(&:single_line_item_id)
+  end
+
+  def one_click_history
+    one_click_detail_id = OneClickPayment.where(user_id: current_user.id).pluck(:one_click_detail_id)
+    @details = OneClickDetail.where(id: one_click_detail_id).includes(:one_click_payment, one_click_item: [:one_click_shipment, variant: [:price]]).order(completed_at: :desc).page(params[:page])
   end
 
   def thanks
@@ -94,16 +98,14 @@ class Users::OrdersController < Users::BaseController
     payment = Payment.find_by(user_id: current_user.id, number: params[:number])
     item = payment.single_order_detail.single_line_items.find_by(id: params[:item_id])
     item.cancel_item(payment)
-    redirect_to orders_path
+    redirect_to single_history_orders_path
   end
 
-  def one_click_item
-    if one_click_order_creater
-      UserMailer.delay.send_one_click_order_accepted_notification(@detail)
-      redirect_to one_click_thanks_orders_path(number: @payment.number)
-    else
-      redirect_to :back
-    end
+  def one_click_cancel
+    payment = OneClickPayment.find_by(user_id: current_user.id, number: params[:number])
+    item = payment.one_click_detail.one_click_item
+    item.cancel_item
+    redirect_to one_click_history_orders_path
   end
 
   def one_click_thanks

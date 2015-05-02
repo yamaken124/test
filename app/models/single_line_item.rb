@@ -64,4 +64,13 @@ class SingleLineItem < ActiveRecord::Base
     Taxon::FreeShippingId.include?( ProductsTaxon.find_by(product_id: Variant.find(self.variant_id).product_id).taxon_id )
   end
 
+  def can_canceled?
+    completed? && variant.product.available?
+  end
+
+  def can_send_back?
+    (Date.today - single_order_detail.completed_on <= 14) && shipment.shipped?
+  end
+
+
 end

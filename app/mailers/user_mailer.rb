@@ -31,7 +31,6 @@ class UserMailer < ApplicationMailer
     @variant = @detail.one_click_item.variant
     @product = @variant.product
 
-
     @subject = '【FiNCストア】 ご購入ありがとうございます '
     @to = user.email
   end
@@ -45,6 +44,17 @@ class UserMailer < ApplicationMailer
     @subject = '【FiNCストア】注文キャンセルを承りました'
     @to = @payment.user.email
   end
+
+  def send_one_click_item_canceled_notification(item)
+    sleep 1
+
+    @item = item
+    @payment = item.one_click_detail.one_clck_payment
+
+    @subject = '【FiNCストア】注文キャンセルを承りました'
+    @to = @payment.user.email
+  end
+
 
   def send_one_click_item_canceled_notification(item)
     sleep 1

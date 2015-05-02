@@ -4,20 +4,6 @@ class OneClickItem < ActiveRecord::Base
   belongs_to :one_click_detail
   has_one :one_click_shipment
 
-  def cancel_item
-    # begin
-    #   ActiveRecord::Base.transaction do
-        # order has_one item
-        one_click_detail.one_click_payment.canceled!
-        one_click_shipment.canceled!
-      # end
-      # UserMailer.delay.send_item_canceled_notification(self)
-    #   true
-    # rescue
-    #   false
-    # end
-  end
-
   def self.register_with_purchase_order(order,params)
     item = OneClickItem.new(
       variant_id: params[:variant_id],
@@ -28,4 +14,20 @@ class OneClickItem < ActiveRecord::Base
     item.save!
     item
   end
+
+  def can_canceled?
+    one_click_detail.one_click_payment.completed? && variant.product.available?
+  end
+
+  def cancel_item
+    begin
+      ActiveRecord::Base.transaction do
+        one_click_detail.one_click_payment.canceled!
+        one_click_shipment.canceled! if one_click_shipment.present?
+      end
+      UserMailer.delay.send_one_click_item_canceled_notification(self)
+    end
+  end
+
+
 end

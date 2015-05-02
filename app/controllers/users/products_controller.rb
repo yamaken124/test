@@ -1,7 +1,10 @@
 class Users::ProductsController < Users::BaseController
 
+  include Users::OneClickOrdersHelper
+
   before_action :set_product, only: [:show, :description, :show_one_click]
   before_action :available_quantity, only: [:show, :description, :show_one_click]
+  before_action :redirect_to_profile_if_without_any, only: [:post_one_click_order]
 
   def index
     set_products(Variant.available)
@@ -24,6 +27,15 @@ class Users::ProductsController < Users::BaseController
     @max_used_point = CheckoutValidityChecker.new.unique_variant_max_used_point(current_user, Variant.find(@product.variants.single_order.first), quantity)
 
     @gmo_cards = GmoMultiPayment::Card.new(current_user).search
+  end
+
+  def post_one_click_order
+    if one_click_order_creater
+      UserMailer.delay.send_one_click_order_accepted_notification(@detail)
+      redirect_to one_click_thanks_orders_path(number: @payment.number)
+    else
+      redirect_to :back
+    end
   end
 
   def description
@@ -67,6 +79,12 @@ class Users::ProductsController < Users::BaseController
 
     def reject_invalid_product
       redirect_to products_path unless ( @product.available? && @product.displayed?(current_user) )
+    end
+
+    def redirect_to_profile_if_without_any
+      if current_user.profile.blank? || current_user.profile.invalid?(:preceed_to_payment)
+        redirect_to edit_profile_path(continue: 'show_one_click_products', product_id: params[:product_id])
+      end
     end
 
 end

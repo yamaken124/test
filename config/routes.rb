@@ -43,6 +43,7 @@ Rails.application.routes.draw do
         get ':id/show_one_click/', action: :show_one_click, :as => :show_one_click
         get ':id/description', action: :description, :as => :description
         get 'update_max_used_point', action: :update_max_used_point, :as => :update_max_used_point
+        post :post_one_click_order
       end
     end
     resource :cart, only: [:update], controller: :orders do
@@ -50,13 +51,15 @@ Rails.application.routes.draw do
       get :address, on: :member
       patch '/remove_item/:id' => 'orders#remove_item', on: :collection, :as => :remove_item
     end
-    resources :orders, only: [:index, :show] do
+    resources :orders, only: [:show] do
       collection do
+        get 'single_history'
+        get 'one_click_history'
         post :populate
-        post :one_click_item
         get  ':number/thanks', action: :thanks, :as => :thanks
         get  ':number/one_click_thanks', action: :one_click_thanks, :as => :one_click_thanks
-        delete '/cancel/:number' => 'orders#cancel', :as => :cancel
+        patch '/cancel/:number' => 'orders#cancel', :as => :cancel
+        patch '/one_click_cancel/:number' => 'orders#one_click_cancel', :as => :one_click_cancel
       end
     end
     namespace :orders do
