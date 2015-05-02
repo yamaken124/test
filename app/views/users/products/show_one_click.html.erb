@@ -1,5 +1,5 @@
 <%= javascript_include_tag 'users/products/show' %>
-<%= form_tag(one_click_item_orders_path, :method => :post) do %>
+<%= form_tag(post_one_click_order_products_path, :method => :post) do %>
 
   <% single = @product.variants.single_variant %>
   <% subscription = @product.variants.subscription_variant %>
@@ -34,6 +34,7 @@
         <div class="p-list__fincrew_description">
           <%= include_line_break(@product.product_description.try(:nutritionist_word)) %>
         </div>
+<% if false %>
         <div class = "c-btn--product--detail_wrapper">
           <a href="<%= description_products_path(@product.id) %>">
             <div class="c-btn--product--detail">
@@ -41,6 +42,7 @@
             </div>
           </a>
         </div>
+<% end %>
       </li>
       <h2 class="p-lists__title">この商品について</h3>
       <li class="p-list">
@@ -140,6 +142,7 @@
     </ul>
 
     <div class="c-payment_jquery_notice u-margin__bottom10"></div>
+    <%= hidden_field_tag 'product_id', params[:id] %>
     <%= submit_tag '1-clickで購入する', class: 'c-btn--submit c-btn--submit--single', :onclick=> "prevent_double_submit(event)" %>
     <a href="<%= guidance_path(name: 'one_click') %>">
       <div class='p-product_text_link u-margin__top10'>

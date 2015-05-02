@@ -16,8 +16,23 @@ class UserMailer < ApplicationMailer
     @detail = order.single_order_detail
     @address = @detail.address
 
-    @subject = '【FiNCストア】 ご購入ありがとうございます '
+    @subject = '【FiNCストア】ご購入ありがとうございます'
     @to = order.user.email
+  end
+
+  def send_one_click_order_accepted_notification(detail)
+    sleep 1
+
+    @payment = detail.one_click_payment
+    user = @payment.user
+    @profile = Profile.find_by(user_id: user.id)
+    @detail = detail
+    @address = @detail.address
+    @variant = @detail.one_click_item.variant
+    @product = @variant.product
+
+    @subject = '【FiNCストア】 ご購入ありがとうございます '
+    @to = user.email
   end
 
   def send_item_canceled_notification(item)
@@ -25,6 +40,27 @@ class UserMailer < ApplicationMailer
 
     @item = item
     @payment = item.single_order_detail.payment
+
+    @subject = '【FiNCストア】注文キャンセルを承りました'
+    @to = @payment.user.email
+  end
+
+  def send_one_click_item_canceled_notification(item)
+    sleep 1
+
+    @item = item
+    @payment = item.one_click_detail.one_clck_payment
+
+    @subject = '【FiNCストア】注文キャンセルを承りました'
+    @to = @payment.user.email
+  end
+
+
+  def send_one_click_item_canceled_notification(item)
+    sleep 1
+
+    @item = item
+    @payment = item.one_click_detail.one_click_payment
 
     @subject = '【FiNCストア】注文キャンセルを承りました'
     @to = @payment.user.email

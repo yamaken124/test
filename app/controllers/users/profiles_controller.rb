@@ -39,6 +39,7 @@ class Users::ProfilesController < Users::BaseController
     def set_continue
       if params[:continue].present?
         @continue = params[:continue]
+        @continue_product_id = params[:product_id] if params[:product_id].present?
       else
         @continue = edit_profile_path
       end
@@ -49,6 +50,8 @@ class Users::ProfilesController < Users::BaseController
         redirect_to new_profile_credit_card_path
       elsif params[:continue].present? && params[:continue].include?("checkout/payment")
         redirect_to checkout_state_path("payment")
+      elsif params[:continue].present? && params[:continue].include?("show_one_click")
+        redirect_to show_one_click_products_path(params[:continue_product_id])
       else # params[:continue].include?("account") || params[:continue].blank?
         redirect_to account_path
       end

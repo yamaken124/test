@@ -32,6 +32,9 @@
     <%= f.telephone_field :phone, class: "form__text--long", placeholder: "08012341234" %>
   </div>
   <%= hidden_field_tag "continue", @continue %>
+  <% if params[:product_id].present? %>
+    <%= hidden_field_tag 'continue_product_id', @continue_product_id %>
+  <% end %>
   <div class="form__field">
     <%= f.submit class: "c-btn--submit" %>
   </div>

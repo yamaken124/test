@@ -6,14 +6,15 @@ module Users::OneClickOrdersHelper
 
     begin
       ActiveRecord::Base.transaction do
-        detail = OneClickDetail.create!(detail_attributes)
+        @detail = OneClickDetail.create!(detail_attributes)
 
-        @item = OneClickItem.create!(item_attributes(detail))
-        CheckoutValidityChecker.new.common_validity_checker(payment_attributes(detail), detail, current_user, @item)
-        @payment = OneClickPayment.new(payment_attributes(detail))
+        @item = OneClickItem.create!(item_attributes(@detail))
+        CheckoutValidityChecker.new.common_validity_checker(payment_attributes(@detail), @detail, current_user, @item)
+        OneClickShipment.new(shipment_attributes).save! if Taxon::OneClickShippmentIds.include?(@item.variant.product.taxons.ids.first) #弁当ならshipment登録
+        @payment = OneClickPayment.new(payment_attributes(@detail))
 
         # 0円決済はone_click_orderにて許容するとの認識
-        (raise 'gmo_transaction_failed' unless @payment.pay_with_gmo_payment) if detail.paid_total > 0
+        (raise 'gmo_transaction_failed' unless @payment.pay_with_gmo_payment) if @detail.paid_total > 0
         @payment.save!
 
         create_once_purchase_product_history if @item.variant.product.one_click_product?
@@ -47,6 +48,7 @@ module Users::OneClickOrdersHelper
       user_id: current_user.id,
       gmo_card_seq_temporary: payment_attributes_from_params[:gmo_card_seq_temporary],#FIXME
       one_click_detail_id: detail.id,
+      state: OneClickPayment.states[:completed],
       )
   end
 
@@ -58,6 +60,14 @@ module Users::OneClickOrdersHelper
       )
   end
 
+  def shipment_attributes
+    {
+      address_id: Address.last.id, #TODO company_address or null
+      one_click_item_id: @item.id,
+      state: OneClickShipment.states[:ready],
+    }
+  end
+
   def one_click_order_updater
     # FIXME order_updaterと統合
     order = {}
@@ -66,7 +76,6 @@ module Users::OneClickOrdersHelper
     order[:paid_total] = order[:total] - used_point.to_i
     order[:included_tax_total] = order[:paid_total] - ( order[:paid_total] / (TaxRate.rating) ).floor
     order
-
   end
 
   def item_total

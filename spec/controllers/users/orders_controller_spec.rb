@@ -13,18 +13,18 @@ RSpec.describe Users::OrdersController, type: :controller do
   end
 
   describe 'GET #index' do
-    let(:product) {create(:product)}
-    let(:variant) {create(:variant, product_id: product.id)}
-    let(:single_line_item) {create(:single_line_item, single_order_detail_id: @detail.id, variant_id: variant.id)}
+    # let(:product) {create(:product)}
+    # let(:variant) {create(:variant, product_id: product.id)}
+    # let(:single_line_item) {create(:single_line_item, single_order_detail_id: @detail.id, variant_id: variant.id)}
 
-    it 'render :index' do
-      get :index, id: @payment.single_order_detail_id
-      expect(response).to render_template :index
-    end
-    it 'assings details' do
-      get :index, id: @payment.single_order_detail_id
-      expect(assigns(:details)).to eq [@detail]
-    end
+    # it 'render :index' do
+    #   get :index, id: @payment.single_order_detail_id
+    #   expect(response).to render_template :index
+    # end
+    # it 'assings details' do
+    #   get :index, id: @payment.single_order_detail_id
+    #   expect(assigns(:details)).to eq [@detail]
+    # end
   end
 
   describe 'GET #thanks' do

@@ -1,10 +1,15 @@
 <div class="c-segments">
-<% if false %>
-  <p class="is--active">通常購入</p>
+<% if current_user.can_see_one_click_products? %>
+  <a href="">
+    <p class="is--active">通常商品</p>
+  </a>
   <div class="border"></div>
-  <p>定期購入</p>
-<% end %>
+  <a href="<%= one_click_history_orders_path %>">
+    <p>限定公開商品</p>
+  </a>
+<% else %>
   <p class = "is-active">注文履歴</p>
+<% end %>
 </div>
 <% @details.each do |detail| %>
   <div class="c-order_title">
@@ -14,14 +19,14 @@
   </div>
   <% detail.single_line_items.each do |item|%>
     <div class="c-product_list">
-    	<div class="c-product_list__image">
+      <div class="c-product_list__image">
         <%= image_tag item.variant.top_image %>
       </div>
       <div class="c-product__list_detail_wrapper">
-    	  <div class="c-product_list__title">
+        <div class="c-product_list__title">
           <%= item.variant.name %>
-    	  </div>
-    	  <div class="c-product_list__price">
+        </div>
+        <div class="c-product_list__price">
           <%= number_to_jpy(item.variant.price.amount) %>
           (<%=item.quantity%>)
         </div>
@@ -41,7 +46,7 @@
               <span>発送を完了しました<br>発送日:<%=item.shipment.shipped_at.to_date%></span>
             </li>
           </a>
-          <% if detail.can_send_back? %>
+          <% if item.can_send_back? %>
             <a href="<%= orders_item_send_back_confirmation_path(item.id) %>">
               <li class="c-link">
                 商品を返品
@@ -55,13 +60,19 @@
             この注文はキャンセルされました。
           </li>
         </ul>
-      <% else %>
+      <% elsif item.can_canceled? %>
         <ul class="c-links">
-          <%= link_to cancel_orders_path(detail.payment.number, item_id: item.id), class: "c-btn--single_click", id: (detail.payment.number+item.variant_id.to_s), data:{ method: "delete" }, :onclick=> "prevent_double_submit_from_link_to(id, event)" do%>
+          <%= link_to cancel_orders_path(detail.payment.number, item_id: item.id), class: "c-btn--single_click", id: (detail.payment.number+item.variant_id.to_s), data:{ method: "patch" }, :onclick=> "prevent_double_submit_from_link_to(id, event)" do%>
             <li class="c-link">
               商品をキャンセル
             </li>
           <% end %>
+        </ul>
+      <% else %>
+        <ul class="c-links">
+          <li class="c-link--nolink">
+            ご注文を承りました。配送をお待ち下さい
+          </li>
         </ul>
       <% end %>
     </div>
