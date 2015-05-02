@@ -41,7 +41,7 @@
       住所編集
       </li>
     </a>
-    <a href="<%= edit_profile_path(continue: account_path) %>">
+    <a href="<%= edit_profile_path(continue: account_path(id: current_user.id)) %>">
       <li class="c-link">
       アカウント情報編集
       </li>

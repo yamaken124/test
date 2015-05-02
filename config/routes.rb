@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       :only => [ :session ]
   end
 
-  root 'users/accounts#show'
+  root 'users/accounts#top'
 
   resource :health_check, only: [:show]
 
@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       end
     end
     resource :account, only: [:show] do
+      get '/top' => 'accounts#top', on: :collection, :as => :top
       resources :addresses, only: [:index, :edit, :update, :new, :create, :destroy] do
         collection do
           get 'fetch_address_with_zipcode', action: :fetch_address_with_zipcode, :as => :fetch_address
