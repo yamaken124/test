@@ -64,18 +64,5 @@
     height:30px;
     line-height:30px;
     background-color:#FFF;
-    &:after{
-      content: "";
-      float:right;
-      margin-top:9px;
-      margin-right:3px;
-      width:12px;
-      height:12px;
-      background-image:url(asset-path("users/finc_arrow.png"));
-      background-size:contain;
-      background-repeat:no-repeat;
-      background-position:center;
-      vartical-align:middle;
-    }
   }
 }
