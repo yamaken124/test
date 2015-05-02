@@ -1,53 +1,50 @@
-<%= javascript_include_tag 'users/products/show' %>
-
 <div class="p-point">
   <%if current_user.try(:profile).try(:name) %>
-    <div class="p-home_top_notice">
+    <div class="c-top_notice">
       こんにちは <%= current_user.try(:profile).try(:name) %>さん
     </div>
-    <div class="c-second_top_notice">
-      Wellnessマイレージ：
-      <span class="c-second_top_notice_mile"><%= @wellness_mileage %></span>
-      <span class="c-second_top_notice_unit">マイル</span>
-    </div>
   <% end %>
-</div>
-
-<div class='p-home_list'>
-  <div class='p-home_top'>
-    <%= image_tag 'users/home_top.png', class: 'p-home_top_image' %>
+<% if false %>
+  <div class="p-point__lost_notice">
+    2016/12/12で<%= @wellness_mileage %>マイル失効します。
   </div>
-</div>
-<div class='p-home_list'>
-  <div class='p-home_list_title_category'>カテゴリから選ぶ</div>
-  <div class='p-home_category_lists'>
-    <% @taxons.each.with_index(2) do |taxon, index| %>
-      <div class='p-home_category_list_wrapper'>
-        <%= link_to taxons_path(id: taxon.id) do %>
-          <div class='p-home_category_list_before'>
-            <%= image_tag "users/category_#{index}.png", class: 'p-home_category_image' %>
-          </div>
-          <div class='p-home_category_list'><%= taxon.name %></div>
-        <% end %>
-      </div>
-    <% end %>
-    <div class='p-home_category_list_wrapper'>
-      <%= link_to products_path do %>
-        <div class='p-home_category_list_before'>
-          <%= image_tag 'users/category_1.png', class: 'p-home_category_image' %>
-        </div>
-        <div class='p-home_category_list'>すべて</div>
-      <% end %>
+  <div class="p-point__lost_triangle">
+  </div>
+<% end %>
+  <div class="p-point__circle">
+    <div class="p-point__circle_inner">
+      <p>ウェルネスマイレージ</p>
+      <h1><%= @wellness_mileage %></h1>
     </div>
   </div>
 </div>
-<div class='p-home_list_title_ranking'>人気商品ランキング</div>
-<div class='p-home_slides_ranking_wrapper'>
-  <div class='p-home_slides_ranking'>
-    <div class='p-home_slides_ranking_unit'><%= image_tag 'users/home_ranking_01.png' %></div>
-    <div class='p-home_slides_ranking_unit'><%= image_tag 'users/home_ranking_02.png' %></div>
-    <div class='p-home_slides_ranking_unit'><%= image_tag 'users/home_ranking_03.png' %></div>
-    <div class='p-home_slides_ranking_unit'><%= image_tag 'users/home_ranking_04.png' %></div>
-    <div class='p-home_slides_ranking_unit'><%= image_tag 'users/home_ranking_05.png' %></div>
-  </div>
+<div class="p-wrapper--have_padding">
+  <a href="<%= products_path %>">
+    <div class="c-btn--submit">
+      商品選択へ進む
+    </div>
+  </a>
+  <h2 class="c-links__title">プロフィール</h2>
+  <ul class="c-links">
+    <a href="<%= orders_path %>">
+      <li class="c-link">
+        注文履歴
+      </li>
+    </a>
+    <a href="<%= profile_credit_cards_path %>">
+      <li class="c-link">
+      カード情報編集
+      </li>
+    </a>
+    <a href="<%= account_addresses_path %>">
+      <li class="c-link">
+      住所編集
+      </li>
+    </a>
+    <a href="<%= edit_profile_path(continue: account_path(id: current_user.id)) %>">
+      <li class="c-link">
+      アカウント情報編集
+      </li>
+    </a>
+  </ul>
 </div>
