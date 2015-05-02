@@ -1,0 +1,53 @@
+<%= javascript_include_tag 'users/products/show' %>
+
+<div class="p-point">
+  <%if current_user.try(:profile).try(:name) %>
+    <div class="p-home_top_notice">
+      こんにちは <%= current_user.try(:profile).try(:name) %>さん
+    </div>
+    <div class="c-second_top_notice">
+      Wellnessマイレージ：
+      <span class="c-second_top_notice_mile"><%= @wellness_mileage %></span>
+      <span class="c-second_top_notice_unit">マイル</span>
+    </div>
+  <% end %>
+</div>
+
+<div class='p-home_list'>
+  <div class='p-home_top'>
+    <%= image_tag 'users/home_top.png', class: 'p-home_top_image' %>
+  </div>
+</div>
+<div class='p-home_list'>
+  <div class='p-home_list_title_category'>カテゴリから選ぶ</div>
+  <div class='p-home_category_lists'>
+    <% @taxons.each.with_index(2) do |taxon, index| %>
+      <div class='p-home_category_list_wrapper'>
+        <%= link_to taxons_path(id: taxon.id) do %>
+          <div class='p-home_category_list_before'>
+            <%= image_tag "users/category_#{index}.png", class: 'p-home_category_image' %>
+          </div>
+          <div class='p-home_category_list'><%= taxon.name %></div>
+        <% end %>
+      </div>
+    <% end %>
+    <div class='p-home_category_list_wrapper'>
+      <%= link_to products_path do %>
+        <div class='p-home_category_list_before'>
+          <%= image_tag 'users/category_1.png', class: 'p-home_category_image' %>
+        </div>
+        <div class='p-home_category_list'>すべて</div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class='p-home_list_title_ranking'>人気商品ランキング</div>
+<div class='p-home_slides_ranking_wrapper'>
+  <div class='p-home_slides_ranking'>
+    <div class='p-home_slides_ranking_unit'><%= image_tag 'users/home_ranking_01.png' %></div>
+    <div class='p-home_slides_ranking_unit'><%= image_tag 'users/home_ranking_02.png' %></div>
+    <div class='p-home_slides_ranking_unit'><%= image_tag 'users/home_ranking_03.png' %></div>
+    <div class='p-home_slides_ranking_unit'><%= image_tag 'users/home_ranking_04.png' %></div>
+    <div class='p-home_slides_ranking_unit'><%= image_tag 'users/home_ranking_05.png' %></div>
+  </div>
+</div>
