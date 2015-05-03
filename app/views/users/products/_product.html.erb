@@ -21,6 +21,9 @@
           <%= number_to_jpy(single_variant.price.amount) %><%=t('tax.included') %>
           </p>
         <% end %>
+        <div class='c-product__stock_quantity'>
+          <%= (single_variant.stock_quantity > 0) ? "在庫残り#{single_variant.stock_quantity}個" : "売り切れ" %>
+        </div>
       </div>
       <div class="c-product__price">
         <%if( subscription_variant.try(:price) && single_variant.price ) %>

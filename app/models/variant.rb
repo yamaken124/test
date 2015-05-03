@@ -80,4 +80,13 @@ class Variant < ActiveRecord::Base
     images.where(id: VariantImageWhereabout.top.where(variant_id: id).pluck(:image_id)).order("position ASC").first.try(:image).try(:url)
   end
 
+  def update_stock_quantity(changed_quantity)
+    self.stock_quantity += changed_quantity
+    save!
+  end
+
+  def belongs_to_one_click_shippment_taxons?
+    Taxon::OneClickShippmentIds.include?(product.taxons.ids.first)
+  end
+
 end
