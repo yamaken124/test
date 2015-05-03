@@ -78,7 +78,7 @@ class Users::ProductsController < Users::BaseController
     end
 
     def reject_invalid_product
-      redirect_to products_path unless ( @product.available? && @product.displayed?(current_user) )
+      redirect_to :back unless ( @product.available? && @product.displayed?(current_user) )
     end
 
     def redirect_to_profile_if_without_any
