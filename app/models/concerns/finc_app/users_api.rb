@@ -43,6 +43,11 @@ module FincApp
           url = "#{finc_app_api_host}/#{version}/wellness_mileage/add"
           response = JSON.parse(HTTParty.post(url, { body: { access_token: access_token, point: point } }).body)
         end
+
+        def self.get_finc_user_id(access_token, version: 'v1')
+          url = "#{finc_app_api_host}/internal/#{version}/users/finc_user_id"
+          JSON.parse(HTTParty.get(url, { body: { access_token: access_token } }).body)
+        end
       end
     end
   end
