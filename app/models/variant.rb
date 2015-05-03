@@ -44,16 +44,19 @@ class Variant < ActiveRecord::Base
   end
 
   def self.available
-    variant_id_having_images_and_prices = Image.where(imageable_type: 'Variant').pluck(:imageable_id) & Price.pluck(:variant_id)
-    variant_id_with_stock = Variant.where('stock_quantity > ?', 0 ).active.pluck(:id)
-
-    available_variant_ids = variant_id_having_images_and_prices & variant_id_with_stock
+    return Variant.none if VariantImageWhereabout.where(variant_id: Variant.available_ids).blank?
 
     available_variant_id_with_all_variant_images = \
-      available_variant_ids.select { |id| ( VariantImageWhereabout.where(variant_id: id).top.present? && VariantImageWhereabout.where(variant_id: id).description.present? ) }
-
-    return Variant.none if VariantImageWhereabout.where(variant_id: available_variant_ids).blank?
+      Variant.available_ids.select { |id| ( VariantImageWhereabout.where(variant_id: id).top.present? && VariantImageWhereabout.where(variant_id: id).description.present? ) }
     Variant.where(id: available_variant_id_with_all_variant_images)
+  end
+
+  def self.available_ids
+    variant_id_having_images_and_prices = Image.where(imageable_type: 'Variant').pluck(:imageable_id) & Price.pluck(:variant_id)
+    # 現時点では在庫がなくても”売り切れ”として一覧には表示する
+    # variant_id_with_stock = Variant.where('stock_quantity > ?', 0 ).active.pluck(:id)
+
+    variant_id_having_images_and_prices# & variant_id_with_stock
   end
 
   def self.single_variant
