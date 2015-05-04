@@ -1,12 +1,12 @@
 <% single_variant = @single_variants.find_by(product_id: product.id) %>
 <% subscription_variant = @subscription_variants.find_by(product_id: product.id) %>
 
+<div class="c-product" style="<%= 'height:400px' if single_variant.belongs_to_one_click_shippment_taxons? %>">
 <% if product.one_click_product? %>
   <a href="<%= show_one_click_products_path(id: product.id) %>">
 <% else %>
   <a href="<%= product_path(id: product.id) %>">
 <% end %>
-  <div class="c-product">
     <%= image_tag @images.find_by(imageable_id: single_variant.id).image.url, class: "c-product__image" %>
     <div class="c-product__bottom_wrapper" style="<%= 'height:72px' if single_variant.belongs_to_one_click_shippment_taxons? %>" >
       <div class="c-product__left_wrapper">
@@ -42,5 +42,5 @@
       <div class="c-product__right_wrapper">
       </div>
     </div>
-  </div>
-</a>
+  </a>
+</div>
