@@ -23,7 +23,10 @@ class OneClickItem < ActiveRecord::Base
     begin
       ActiveRecord::Base.transaction do
         one_click_detail.one_click_payment.canceled!
-        one_click_shipment.canceled! if one_click_shipment.present?
+        if variant.belongs_to_one_click_shippment_taxons?
+          one_click_shipment.canceled!
+          variant.update_stock_quantity(quantity)
+        end
       end
       UserMailer.delay.send_one_click_item_canceled_notification(self)
     end

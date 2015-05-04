@@ -34,7 +34,11 @@ class Users::ProductsController < Users::BaseController
       UserMailer.delay.send_one_click_order_accepted_notification(@detail)
       redirect_to one_click_thanks_orders_path(number: @payment.number)
     else
-      redirect_to :back
+      if request.referer.present?
+        redirect_to :back
+      else
+        redirect_to products_path
+      end
     end
   end
 
@@ -78,7 +82,13 @@ class Users::ProductsController < Users::BaseController
     end
 
     def reject_invalid_product
-      redirect_to products_path unless ( @product.available? && @product.displayed?(current_user) )
+      unless ( @product.available? && @product.displayed?(current_user) )
+        if request.referer.present?
+          redirect_to :back
+        else
+          redirect_to products_path
+        end
+      end
     end
 
     def redirect_to_profile_if_without_any

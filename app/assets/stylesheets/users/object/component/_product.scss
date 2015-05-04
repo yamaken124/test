@@ -9,10 +9,13 @@
   }
   border-bottom:1px solid $base_border_color;
 }
+.c-product__bottom_wrapper{
+  height:58px;
+}
 .c-product__left_wrapper{
   width:80%;
   padding-left:5px;
-  height:58px;
+  height:100%;
   float:left;
   .c-product__title{
     width:100%;
@@ -34,10 +37,14 @@
       float:left;
     }
   }
+  .c-product__stock_quantity{
+    float:left;
+    color:$finc-color;
+  }
 }
 .c-product__right_wrapper{
   width:25px;
-  height:58px;
+  height:100%;
   margin-right:8px;
   float:right;
   background-size:contain;
