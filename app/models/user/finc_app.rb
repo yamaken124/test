@@ -20,6 +20,16 @@ class User < ActiveRecord::Base
             0
           end
         end
+
+        def get_finc_user_id_from_finc_app
+          return { finc_user_id: nil } if Rails.env.development?
+
+          if access_token = oauth_access_tokens.first
+            ::FincApp.get_finc_user_id(access_token.token)
+          else
+            { finc_user_id: nil }
+          end
+        end
       end
     end
   end
