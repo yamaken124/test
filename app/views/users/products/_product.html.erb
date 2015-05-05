@@ -3,9 +3,9 @@
 
 <div class="c-product" style="<%= 'height:400px' if single_variant.belongs_to_one_click_shippment_taxons? %>">
 <% if product.one_click_product? %>
-  <a href="<%= show_one_click_products_path(id: product.id) %>">
+  <a href="<%= show_one_click_products_path(id: product.id) %>" class='u-block_link'>
 <% else %>
-  <a href="<%= product_path(id: product.id) %>">
+  <a href="<%= product_path(id: product.id) %>" class='u-block_link'>
 <% end %>
     <%= image_tag @images.find_by(imageable_id: single_variant.id).image.url, class: "c-product__image" %>
     <div class="c-product__bottom_wrapper" style="<%= 'height:72px' if single_variant.belongs_to_one_click_shippment_taxons? %>" >
