@@ -1,5 +1,7 @@
+<%= javascript_include_tag 'users/products/index' %>
+
 <% if @taxon.child? %>
-  <div class="c-top_notice">
+  <div class="c-top_notice" id='item_with_max_width'>
     <%= @taxon.name %>
   </div>
 <% end %>
