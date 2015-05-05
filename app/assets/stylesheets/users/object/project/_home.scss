@@ -6,13 +6,10 @@
   color:$finc_color;
   margin:10px 0 6px;
 }
-.p-home_top_notice{
-  font-size: 13px;
-}
 .p-home_list_title{
   color:$base_font_color;
   font-size:18px;
-  margin:5px 0 15px;
+  margin:5px 0 10px;
   &:before{
     content: "";
     float:left;
@@ -87,10 +84,10 @@
   }
 }
 .p-home_ranking_wrapper{
-  height:230px;
+  height:228px;
   width:100%;
   .p-home_slides_ranking_wrapper{
-    height:218px;
+    height:185px;
     width:100%;
     overflow-x:auto;
     overflow-y:hidden;
@@ -98,6 +95,7 @@
     padding-top:10px;
     .p-home_slides_ranking_images{
       width:900px;
+      height:100%;
       .p-home_slides_ranking_unit{
         position:relative;
         float:left;
