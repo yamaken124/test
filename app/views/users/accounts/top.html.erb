@@ -2,7 +2,7 @@
 
 <div class="p-point">
   <%if current_user.try(:profile).try(:name) %>
-    <div class="p-home_top_notice">
+    <div class="c-top_notice" style='font-size:13px'>
       こんにちは <%= current_user.try(:profile).try(:name) %>さん
     </div>
     <div class="c-second_top_notice">
