@@ -27,4 +27,10 @@
     opacity:1;
     color:$finc_color;
   }
+  .is--active_center{
+    @extend .is--active;
+    width:100%;
+    text-align:center;
+    margin-left:2px;
+  }
 }
