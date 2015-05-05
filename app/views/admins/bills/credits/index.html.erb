@@ -24,10 +24,10 @@
           <td><%= payment.number  %></td>
           <td><%= t("payment.state.#{payment.state}") %></td>
           <td><%= payment.payment_method.name %></td>
-          <td><%= payment.user.profile.name %></td>
+          <td><%= payment.user.profile.try(:name) %></td>
           <td><%= payment.amount %>円</td>
           <td>
-            <a href="<%= %>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
+            <a href="<%= admins_bills_credit_path(id: payment.id) %>" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
           </td>
         </tr>
       <% end %>

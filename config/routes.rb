@@ -110,8 +110,8 @@ Rails.application.routes.draw do
     end
     #TODO routing setting
     namespace :bills do
-      resources :credits
-      resources :post_payments
+      resources :credits, only: [:index, :show]
+      resources :post_payments, only: [:index, :show]
       resources :subscriptions
       resources :one_clicks
     end
