@@ -23,7 +23,7 @@
   <div class='p-home_category_lists'>
     <% @taxons.each.with_index(2) do |taxon, index| %>
       <div class='p-home_category_list_wrapper'>
-        <a href="<%=taxons_path(id: taxon.id)%>">
+        <a href="<%=taxons_path(id: taxon.id)%>" class='u-block_link'>
           <div class='p-home_category_list_before'>
             <%= image_tag "users/category_#{index}.png", class: 'p-home_category_image' %>
           </div>
@@ -32,12 +32,12 @@
       </div>
     <% end %>
     <div class='p-home_category_list_wrapper'>
-      <%= link_to products_path do %>
+      <a href="<%=products_path%>" class='u-block_link'>
         <div class='p-home_category_list_before'>
           <%= image_tag 'users/category_1.png', class: 'p-home_category_image' %>
         </div>
         <div class='p-home_category_list'>すべて</div>
-      <% end %>
+      </a>
     </div>
   </div>
 </div>
@@ -45,27 +45,27 @@
   <div class='p-home_slides_ranking_title'>人気商品ランキング</div>
     <div class='p-home_slides_ranking_images'>
       <div class='p-home_slides_ranking_unit'>
-        <a href="<%=product_path(id: 3)%>">
+        <a href="<%=product_path(id: 3)%>" class='u-block_link'>
           <%= image_tag 'users/home_ranking_01.png' %>
         </a>
       </div>
       <div class='p-home_slides_ranking_unit'>
-        <a href="<%=product_path(id: 8)%>">
+        <a href="<%=product_path(id: 8)%>" class='u-block_link'>
           <%= image_tag 'users/home_ranking_02.png' %>
         </a>
       </div>
       <div class='p-home_slides_ranking_unit'>
-        <a href="<%=product_path(id: 7)%>">
+        <a href="<%=product_path(id: 7)%>" class='u-block_link'>
           <%= image_tag 'users/home_ranking_03.png' %>
         </a>
       </div>
       <div class='p-home_slides_ranking_unit'>
-        <a href="<%=product_path(id: 9)%>">
+        <a href="<%=product_path(id: 9)%>" class='u-block_link'>
           <%= image_tag 'users/home_ranking_04.png' %>
         </a>
       </div>
       <div class='p-home_slides_ranking_unit'>
-        <a href="<%=product_path(id: 10)%>">
+        <a href="<%=product_path(id: 10)%>" class='u-block_link'>
           <%= image_tag 'users/home_ranking_05.png' %>
         </a>
       </div>

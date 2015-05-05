@@ -9,9 +9,6 @@
   .c-product__image{
     width:100%;
   }
-  a{
-    @extend .block_link;
-  }
   border-bottom:1px solid $base_border_color;
 }
 .c-product__bottom_wrapper{
