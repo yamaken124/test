@@ -1,14 +1,14 @@
 <% single_variant = @single_variants.find_by(product_id: product.id) %>
 <% subscription_variant = @subscription_variants.find_by(product_id: product.id) %>
 
-<div class="c-product" style="<%= 'height:400px' if single_variant.belongs_to_one_click_shippment_taxons? %>">
-<% if product.one_click_product? %>
-  <a href="<%= show_one_click_products_path(id: product.id) %>" class='u-block_link'>
-<% else %>
-  <a href="<%= product_path(id: product.id) %>" class='u-block_link'>
-<% end %>
+<div class="<%= single_variant.belongs_to_one_click_shippment_taxons? ? 'c-product_long' : 'c-product' %>">
+  <a href="<%= product.one_click_product? ? show_one_click_products_path(id: product.id) : product_path(id: product.id) %>" class='u-block_link'>
     <%= image_tag @images.find_by(imageable_id: single_variant.id).image.url, class: "c-product__image" %>
-    <div class="c-product__bottom_wrapper" style="<%= 'height:72px' if single_variant.belongs_to_one_click_shippment_taxons? %>" >
+    <% if single_variant.belongs_to_one_click_shippment_taxons? %>
+      <div class="c-product__bottom_wrapper_long">
+    <% else %>
+      <div class="c-product__bottom_wrapper">
+    <% end %>
       <div class="c-product__left_wrapper">
         <div class="c-product__title">
           <%= product.name %>
