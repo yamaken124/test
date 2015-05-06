@@ -1,7 +1,7 @@
 class Users::AccountsController < Users::BaseController
 
   def top
-    @taxons = Taxon.leaves.where.not(id: 8) #todo 見せれるやつ
+    @taxons = current_user.shown_taxon
     @me = current_user
     @wellness_mileage = @me.wellness_mileage
   end
