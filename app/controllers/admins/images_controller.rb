@@ -16,7 +16,7 @@ class Admins::ImagesController < Admins::BaseController
     if @image.save
       redirect_to admins_variant_images_path
     else
-      render :new
+      redirect_to new_admins_variant_image_path(variant_id: params[:variant_id])
     end
   end
 
@@ -27,7 +27,7 @@ class Admins::ImagesController < Admins::BaseController
     begin
       ActiveRecord::Base.transaction do
         destroy_all_whereabouts
-        @image.update(image_attributes)
+        @image.update!(image_attributes)
       end
       redirect_to admins_variant_images_path(variant_id: @image.imageable_id)
     rescue
@@ -58,7 +58,7 @@ class Admins::ImagesController < Admins::BaseController
   private
 
     def destroy_all_whereabouts
-      @image.variant_image_whereabouts.each {|w| w.destroy}
+      @image.variant_image_whereabouts.each {|w| w.destroy!}
     end
 
     def imageable_model

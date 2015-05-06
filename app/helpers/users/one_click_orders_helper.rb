@@ -26,7 +26,7 @@ module Users::OneClickOrdersHelper
       end
       true
     rescue => e
-      flash['error_message'] = e.message
+      params['error_message'] = e.message
       false
     end
 

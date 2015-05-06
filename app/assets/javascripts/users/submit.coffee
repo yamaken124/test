@@ -64,4 +64,6 @@ $ ->
         $('.c-btn--submit--single').val('登録する')
       else if url.match(/credit_cards/)
         $('.c-btn--submit--single').val('登録する')
+      else if url.match(/show_one_click/)
+        $('.c-btn--submit--single').val('この商品を購入する')
     return

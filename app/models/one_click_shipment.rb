@@ -5,7 +5,7 @@ class OneClickShipment < ActiveRecord::Base
 
   include AASM
 
-  enum state: { pending: 0, ready: 10, shipped: 20, exported: 30, canceled: 40, exported: 50 }
+  enum state: { pending: 0, ready: 10, shipped: 20, exported: 30, canceled: 40}
 
   aasm column: :state do
     state :pending, initial: true

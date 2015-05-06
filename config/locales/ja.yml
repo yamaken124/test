@@ -286,6 +286,7 @@ ja:
 
   item:
     invalid_item: "在庫切れ、もしくは期限切れとなりました。"
+    quantity_over_stock_quantity: "在庫（%{stock_quantity}個）以上の注文はできません"
 
   user_oauth:
     sign_in: "ログイン"

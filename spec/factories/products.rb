@@ -16,16 +16,6 @@ FactoryGirl.define do
   factory :product do
 
     name "MyString"
-    is_valid_at Time.now.last_month
-    is_invalid_at Time.now.next_month
-
-    factory :expired_product do
-      is_invalid_at Date.yesterday
-    end
-
-    factory :preparing_product do
-      is_valid_at Date.tomorrow
-    end
 
   end
 
