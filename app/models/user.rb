@@ -105,4 +105,14 @@ class User < ActiveRecord::Base
     Taxon::OneClickTaxonIds.any? {|taxon_id| shown_taxon.ids.include?(taxon_id) }
   end
 
+  def first_or_initialize_users_user_category
+    user_company = self.get_business_account
+    if user_company['company'].present? && user_company['company']['id'] == 5
+      UsersUserCategory.where(user_id: self.id).first_or_initialize.update(user_category_id: 2)
+    else
+      UsersUserCategory.where(user_id: self.id).first_or_initialize.update(user_category_id: 1)
+    end
+
+  end
+
 end
