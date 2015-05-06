@@ -5,6 +5,7 @@ class Admins::Bills::OneClicksController < Admins::BaseController
 
   def show
     @detail = OneClickDetail.find(OneClickPayment.find_by(id: params[:id]).one_click_detail_id)
-    @user = @detail.address.user
+    @user = @detail.one_click_payment.user
+    @office_address = current_user.get_business_account['company']
   end
 end

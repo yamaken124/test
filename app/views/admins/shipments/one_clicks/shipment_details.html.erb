@@ -46,14 +46,15 @@
         </tr>
         <% @shipments.each do |shipment| %>
           <% item = shipment.one_click_item %>
+          <% user = item.one_click_detail.one_click_payment.user %>
           <tr>
             <td><%= item.variant.sku %></td>
             <td><%= image_tag item.variant.images.first.try(:image).try(:url), class: "thumb" %></td>
             <td><%= number_to_currency(item.price) %></td>
             <td><%= item.quantity %></td>
             <td><%= number_to_currency(item.one_click_detail.paid_total) %></td>
-            <td><%= shipment.address.user.name %></td>
-            <td><%= shipment.address.user.email %></td>
+            <td><%= user.profile.name %></td>
+            <td><%= user.email %></td>
             <td>
               <% if shipment.ready? %>
                 <%= form_tag update_state_admins_shipments_one_clicks_path(shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
