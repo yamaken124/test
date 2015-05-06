@@ -52,7 +52,6 @@ class Admins::ProductsController < Admins::BaseController
 
   def destroy
     ActiveRecord::Base.transaction do
-      @product.update(is_invalid_at: Time.now-1)
       @product.variants.update_all(is_invalid_at: Time.now-1)
     end
     redirect_to admins_products_path
@@ -61,7 +60,7 @@ class Admins::ProductsController < Admins::BaseController
   private
     def attribute_params
       return @attribute_params if @attribute_params.present?
-      attributes = params.require(:product).permit(:name, :is_valid_at, :is_invalid_at)
+      attributes = params.require(:product).permit(:name)
       @attribute_params = attributes.merge(ProductsTaxon.products_taxons_attributes(params)).merge(product_description_attributes).merge(how_to_use_products_attributes)
     end
 

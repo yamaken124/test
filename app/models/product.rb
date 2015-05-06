@@ -8,7 +8,7 @@ class Product < ActiveRecord::Base
   has_many :prices, :through => :variants
   has_many :images, :through => :variants
   paginates_per 5
-  validates :name, :is_valid_at, :is_invalid_at, presence: true
+  validates :name, presence: true
   accepts_nested_attributes_for :products_taxons
   accepts_nested_attributes_for :product_description
   accepts_nested_attributes_for :how_to_use_products
@@ -18,7 +18,7 @@ class Product < ActiveRecord::Base
   AvailableQuantity = 12
 
   def available?
-    active? && ( variants.any? {|v| v.available?} )
+    variants.any? {|v| v.available?}
   end
 
   def displayed?(user)
@@ -27,7 +27,7 @@ class Product < ActiveRecord::Base
 
   def self.available
     available_variants = Variant.available.active
-    Product.active.where(id: available_variants.pluck(:product_id)) if available_variants.present?
+    Product.where(id: available_variants.pluck(:product_id)) if available_variants.present?
   end
 
   def preview_images(whereabout) #single only
