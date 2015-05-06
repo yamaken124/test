@@ -18,7 +18,7 @@ class Product < ActiveRecord::Base
   AvailableQuantity = 12
 
   def available?
-    active? && ( variants.any? {|v| v.available?} )
+    variants.any? {|v| v.available?}
   end
 
   def displayed?(user)
@@ -27,7 +27,7 @@ class Product < ActiveRecord::Base
 
   def self.available
     available_variants = Variant.available.active
-    Product.active.where(id: available_variants.pluck(:product_id)) if available_variants.present?
+    Product.where(id: available_variants.pluck(:product_id)) if available_variants.present?
   end
 
   def preview_images(whereabout) #single only

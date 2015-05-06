@@ -9,7 +9,7 @@ module TimeValidityChecker
   end
 
   def active?(now = Time.now)
-    is_valid_at <= now && is_invalid_at >= now
+    is_valid_at < now && is_invalid_at > now
   end
 
   def expired?(now = Time.now)
