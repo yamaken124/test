@@ -30,6 +30,16 @@ class User < ActiveRecord::Base
             { finc_user_id: nil }
           end
         end
+
+        def get_business_account
+          return { company: {} } if Rails.env.development?
+
+          if access_token = oauth_access_tokens.first
+            ::FincApp.business_account(access_token.token)
+          else
+            {}
+          end
+        end
       end
     end
   end
