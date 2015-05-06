@@ -17,33 +17,35 @@
       </thead>
     </table>
   </div>
+<% if @office_address.present? %>
   <div class="content col-md-9">
     <h4 class="box-title">お届け先情報</h4>
     <table class="table c-table">
       <thead>
         <tr>
-          <th>名前</th>
-          <th><%= payment.address.try(:name) %></th>
+          <th>会社名</th>
+          <th><%= @office_address['name'] %></th>
         </tr>
         <tr>
           <th>郵便番号</th>
-          <th><%= payment.address.zipcode %></th>
+          <th><%= @office_address['zipcode'] %></th>
         </tr>
         <tr>
           <th>都道府県</th>
-          <th><%= payment.address.city %></th>
+          <th><%= @office_address['prefecture'] %></th>
         </tr>
         <tr>
           <th>住所</th>
-          <th><%= payment.address.address %></th>
+          <th><%= @office_address['address'] %></th>
         </tr>
         <tr>
           <th>電話番号</th>
-          <th><%= payment.address.phone %></th>
+          <th><%#= payment.address.phone %></th>
         </tr>
       </thead>
     </table>
   </div>
+<% end %>
   <div class="content col-md-9">
     <h4 class="box-title">お支払い情報</h4>
     <table class="table c-table">
