@@ -21,7 +21,7 @@ class Admins::Shipments::OneClicksController < Admins::BaseController
   def csv_export
     begin
       ActiveRecord::Base.transaction do
-        @shipments = OneClickShipment.where(id: params[:shipment_ids])
+        @shipments = OneClickShipment.where(id: params[:shipment_ids].split(' '))
         shipments_update_state(@shipments)
         respond_to do |format|
           format.html do

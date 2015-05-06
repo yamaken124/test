@@ -16,7 +16,11 @@ class OneClickItem < ActiveRecord::Base
   end
 
   def can_canceled?
-    one_click_detail.one_click_payment.completed? && (one_click_shipment.ready? if one_click_shipment.present?)
+    one_click_detail.one_click_payment.completed? && (one_click_shipment.ready? if one_click_shipment.present?) && is_valid?
+  end
+
+  def is_valid?
+    variant.active? && variant.product.active?
   end
 
   def cancel_item
