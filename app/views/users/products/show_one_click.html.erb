@@ -51,12 +51,12 @@
           <%= include_line_break(@product.product_description.try(:description)) %>
         </div>
       </li>
-      <%if @product.send_to_office?%>
+      <%if @product.send_to_office? && @office_address.present? %>
         <h2 class="p-lists__title">お届け先住所（オフィスお届け）</h3>
         <li class="p-list">
           <div class="p-list__description">
-            <%= "#{current_user.addresses.last.try(:name)}<br>
-              #{current_user.addresses.last.try(:full_address)}".html_safe %>
+            <%= @office_address['zipcode'] %><br>
+            <%= @office_address['prefecture']+@office_address['address'] %>
           </div>
         </li>
       <% end %>

@@ -37,7 +37,7 @@ module Users::OneClickOrdersHelper
       tax_rate_id: 1,
       completed_on: Date.today,
       completed_at: Time.now,
-      address_id: Address.last.id, #TODO company_address or null
+      address_id: nil, #TODO company_address or null
       used_point: used_point,
       item_count: order_attributes_from_params[:item_count],
       )
@@ -48,7 +48,7 @@ module Users::OneClickOrdersHelper
       amount: detail.paid_total,
       used_point: used_point,
       payment_method_id: 1,
-      address_id: Address.last.id,
+      address_id: nil,
       number: one_click_number(detail),
       user_id: current_user.id,
       gmo_card_seq_temporary: payment_attributes_from_params[:gmo_card_seq_temporary],#FIXME
@@ -67,7 +67,7 @@ module Users::OneClickOrdersHelper
 
   def shipment_attributes
     {
-      address_id: Address.last.id, #TODO company_address or null
+      address_id: nil, #TODO company_address or null
       one_click_item_id: @item.id,
       state: OneClickShipment.states[:ready],
     }

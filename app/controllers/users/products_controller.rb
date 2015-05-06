@@ -27,6 +27,7 @@ class Users::ProductsController < Users::BaseController
     @max_used_point = CheckoutValidityChecker.new.unique_variant_max_used_point(current_user, Variant.find(@product.variants.single_order.first), quantity)
 
     @gmo_cards = GmoMultiPayment::Card.new(current_user).search
+    @office_address = current_user.get_business_account['company']
   end
 
   def post_one_click_order
