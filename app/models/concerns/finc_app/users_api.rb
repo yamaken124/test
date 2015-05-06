@@ -48,6 +48,11 @@ module FincApp
           url = "#{finc_app_api_host}/internal/#{version}/users/finc_user_id"
           JSON.parse(HTTParty.get(url, { body: { access_token: access_token } }).body)
         end
+
+        def self.business_account(access_token, version: 'v3')
+          url = "#{finc_app_api_host}/#{version}/business_account"
+          JSON.parse(HTTParty.get(url, { body: { access_token: access_token } }).body)
+        end
       end
     end
   end
