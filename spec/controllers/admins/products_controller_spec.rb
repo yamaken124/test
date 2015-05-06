@@ -62,8 +62,6 @@ RSpec.describe Admins::ProductsController, type: :controller do
       {
         product: {
           name: 'updated_name',
-          is_valid_at: '2015-01-01',
-          is_invalid_at: '2020-01-01',
           products_taxons_attributes: { "0" => {id: products_taxon.id, taxon_id: 1} },
           product_descriptions: {description: product_description.description, nutritionist_explanation: product_description.nutritionist_explanation, nutritionist_word: product_description.nutritionist_word },
           how_to_use_products_attributes:{ "0" => {description: how_to_use_product.description} },
@@ -106,16 +104,6 @@ RSpec.describe Admins::ProductsController, type: :controller do
       @product = create(:product)
       @variant = create(:variant, product_id: @product.id)
       delete :destroy, id: @product.id, product: attributes_for(:product)
-    end
-
-    it 'update product' do
-      @product.reload
-      expect(@product.is_invalid_at).to be < Time.now
-    end
-
-    it 'respond to product-update and update variant' do
-      @variant.reload
-      expect(@variant.is_invalid_at).to be < Time.now
     end
 
     it 'redirects to edit_path' do

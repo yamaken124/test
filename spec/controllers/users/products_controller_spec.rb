@@ -110,38 +110,7 @@ RSpec.describe Users::ProductsController, type: :controller do
         end
       end
 
-      context 'invalid product' do
-        describe 'expired product' do
-          before do
-            @product = create(:expired_product)
-            @variant = create(:variant, product_id: @product.id)
-          end
-          it_behaves_like 'cannot find products/product even with images and price'
-        end
-        describe 'preparing product' do
-          before do
-            @product = create(:preparing_product)
-            @variant = create(:variant, product_id: @product.id)
-          end
-          it_behaves_like 'cannot find products/product even with images and price'
-        end
-      end
-
       context 'invalid variant' do
-        describe 'expired variant' do
-          before do
-            @product = create(:product)
-            @variant = create(:expired_variant, product_id: @product.id)
-          end
-          it_behaves_like 'cannot find products/product even with images and price'
-        end
-        describe 'preparing variant' do
-          before do
-            @product = create(:product)
-            @variant = create(:preparing_variant, product_id: @product.id)
-          end
-          it_behaves_like 'cannot find products/product even with images and price'
-        end
         describe 'variant without stock' do
           before do
             @product = create(:product)

@@ -8,7 +8,7 @@ class Product < ActiveRecord::Base
   has_many :prices, :through => :variants
   has_many :images, :through => :variants
   paginates_per 5
-  validates :name, :is_valid_at, :is_invalid_at, presence: true
+  validates :name, presence: true
   accepts_nested_attributes_for :products_taxons
   accepts_nested_attributes_for :product_description
   accepts_nested_attributes_for :how_to_use_products
