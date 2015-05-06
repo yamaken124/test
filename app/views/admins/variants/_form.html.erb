@@ -9,17 +9,17 @@
       <div class="form-group">
         <p><%= v.label :is_valid_at %></p>
         <%if params[:action]=="new" %>
-          <%= v.date_field :is_valid_at, value: Date.today%><br/>
+          <%= v.datetime_local_field :is_valid_at, value: Date.today%><br/>
         <% else %>
-          <%= v.date_field :is_valid_at %><br/>
+          <%= v.datetime_local_field :is_valid_at %><br/>
         <% end %>
       </div>
       <div class="form-group">
         <p><%= v.label :is_invalid_at %></p>
         <%if params[:action]=="new" %>
-          <p><%= v.date_field :is_invalid_at, value: Date.today+6*30 %></p>
+          <p><%= v.datetime_local_field :is_invalid_at, value: Date.today+6*30 %></p>
         <% else %>
-          <p><%= v.date_field :is_invalid_at %></p>
+          <p><%= v.datetime_local_field :is_invalid_at %></p>
         <% end %>
       </div>
       <%= v.fields_for :price, @variant.price || Price.new do |p| %>
