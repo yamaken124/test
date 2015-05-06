@@ -15,15 +15,16 @@
     </ul>
   </div>
   <div class="c-payment_checkout_notice">
-    <%if flash['error_message'].present? %>
+    <%if flash['error_message'].present? || params['error_message'].present?%>
       <% if params['error_message'] == 'payment_attributes_error.used_point_over_limit' %>
         <%= t(params['error_message'], :limit => Payment::UsedPointLimit+1) %>
+      <% elsif params['error_message'] == 'item.quantity_over_stock_quantity' %>
+        <%= t(params['error_message'], :stock_quantity => single.stock_quantity) %>
       <% else %>
         <%= t(params['error_message'], :default => "入力項目に不備があります") %>
       <% end %>
     <% end %>
   </div>
-
   <div class="p-wrapper--have_padding">
     <h2 class="p-lists__title_without_padding">栄養士からの一言</h2>
     <ul class="p-lists">
@@ -87,6 +88,9 @@
           <p>数量: </p>
           <%= select_tag "order[item_count]", options_for_select(@available_quantity), class: 'p-payment_method__amount', :onchange => "update_max_used_point(event)" %>
           <p class="u-margin__right_short">個</p>
+          <% if single.belongs_to_one_click_shippment_taxons? %>
+            <p class='p-payment_method__amount_stock'><%= (single.stock_quantity > 0) ? "在庫：残り#{single.stock_quantity}個" : "在庫状況：売り切れ" %></p>
+          <% end %>
         <% else %>
           <%= hidden_field_tag 'order[item_count]', 1 %>
           <p class="p-payment_method__detail_notice">※お一人様一つ限りのご購入となります</p>

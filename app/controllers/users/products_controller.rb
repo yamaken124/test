@@ -35,7 +35,7 @@ class Users::ProductsController < Users::BaseController
       redirect_to one_click_thanks_orders_path(number: @payment.number)
     else
       if request.referer.present?
-        redirect_to :back
+        redirect_to show_one_click_products_path(id: params[:product_id], error_message: params[:error_message])
       else
         redirect_to products_path
       end
