@@ -147,7 +147,7 @@
 
     <div class="c-payment_jquery_notice u-margin__bottom10"></div>
     <%= hidden_field_tag 'product_id', params[:id] %>
-    <%= submit_tag 'この商品を購入する', data: {confirm: "本当に購入しますか?"}, class: 'c-btn--submit c-btn--submit--single', :onclick=> "prevent_double_submit(event)" %>
+    <%= submit_tag 'この商品を購入する', class: 'c-btn--submit c-btn--submit--single', :onclick=> "prevent_double_submit(event)" %>
 <% if false %>
     <a href="<%= guidance_path(name: 'one_click') %>">
       <div class='p-product_text_link u-margin__top10'>
