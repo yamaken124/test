@@ -243,12 +243,10 @@ ActiveRecord::Schema.define(version: 20150514070229) do
   add_index "product_descriptions", ["product_id"], name: "index_product_descriptions_on_product_id", using: :btree
 
   create_table "products", force: :cascade do |t|
-    t.string   "name",          limit: 255
-    t.datetime "is_valid_at"
-    t.datetime "is_invalid_at"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.integer  "position",      limit: 4,   default: 0, null: false
+    t.string   "name",       limit: 255
+    t.integer  "position",
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "products_taxons", force: :cascade do |t|
