@@ -97,7 +97,7 @@ class User < ActiveRecord::Base
 
   def first_or_initialize_users_user_category
     user_company = self.get_business_account
-    if user_company['company'].present? && user_company['company']['id'] == 5
+    if user_company['company'].present? && user_company['company']['id'] == 4
       UsersUserCategory.where(user_id: self.id).first_or_initialize.update(user_category_id: 2)
     else
       UsersUserCategory.where(user_id: self.id).first_or_initialize.update(user_category_id: 1)
