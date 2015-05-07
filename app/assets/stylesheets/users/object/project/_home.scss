@@ -122,3 +122,27 @@
     padding-right:1px;
   }
 }
+.p-home_android_ranking_wrapper{
+  padding:0 4px 0 4px;
+  .p-home_android_slides_ranking_wrapper{
+    width:100%;
+    .p-home_android_slides_ranking_left{
+      height:185px;
+      width:50%;
+      float:left;
+      img {
+        width:100%;
+        height:100%;
+      }
+    }
+    .p-home_android_slides_ranking_right{
+      height:185px;
+      width:50%;
+      float:right;
+      img {
+        width:100%;
+        height:100%;
+      }
+    }
+  }
+}
