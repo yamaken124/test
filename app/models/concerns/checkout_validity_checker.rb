@@ -1,6 +1,7 @@
 class CheckoutValidityChecker
 
   def common_validity_checker(payment_attributes, detail, current_user, items)
+    raise 'item.none_stock' if items.variant.stock_quantity <= 0
     raise 'payment_attributes_error.used_point_over_limit' if payment_attributes[:used_point].to_i > Payment::UsedPointLimit
     raise 'item.quantity_over_stock_quantity' if items.quantity > items.variant.stock_quantity #FIXME in case items arent instance_of one click items
     raise 'payment_attributes_error.invalid_used_point' unless items_valid_point?(current_user, detail, items)
