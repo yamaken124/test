@@ -1,38 +1,34 @@
-<%= javascript_include_tag 'users/products/show' %>
+<div class="p-point">
+  <%if current_user.try(:profile).try(:name) %>
+    <div class="c-top_notice" style='font-size:13px'>
+      こんにちは <%= current_user.try(:profile).try(:name) %>さん
+    </div>
+    <div class="c-second_top_notice">
+      Wellnessマイレージ：
+      <span class="c-second_top_notice_mile"><%= @wellness_mileage %></span>
+      <span class="c-second_top_notice_unit">マイル</span>
+    </div>
+  <% end %>
+</div>
 
-<div class="p-point_overflow_hidden">
-  <div class="p-point">
-    <%if current_user.try(:profile).try(:name) %>
-      <div class="c-top_notice" style='font-size:13px'>
-        こんにちは <%= current_user.try(:profile).try(:name) %>さん
-      </div>
-      <div class="c-second_top_notice">
-        Wellnessマイレージ：
-        <span class="c-second_top_notice_mile"><%= @wellness_mileage %></span>
-        <span class="c-second_top_notice_unit">マイル</span>
+<div class='p-home_list'>
+  <div class='p-home_top'>
+    <%= image_tag 'users/home_top.png', class: 'p-home_top_image' %>
+  </div>
+</div>
+<div class='p-home_list'>
+  <div class='p-home_list_title_category'>カテゴリから選ぶ</div>
+  <div class='p-home_category_lists'>
+    <% @taxons.each.with_index(2) do |taxon, index| %>
+      <div class='p-home_category_list_wrapper'>
+        <a href="<%=taxons_path(id: taxon.id)%>" class='u-block_link'>
+          <div class='p-home_category_list_before'>
+            <%= image_tag "users/category_#{index}.png", class: 'p-home_category_image' %>
+          </div>
+          <div class='p-home_category_list'><%= taxon.name %></div>
+        </a>
       </div>
     <% end %>
-  </div>
-
-  <div class='p-home_list'>
-    <div class='p-home_top'>
-      <%= image_tag 'users/home_top.png', class: 'p-home_top_image' %>
-    </div>
-  </div>
-  <div class='p-home_list'>
-    <div class='p-home_list_title_category'>カテゴリから選ぶ</div>
-    <div class='p-home_category_lists'>
-      <% @taxons.each.with_index(2) do |taxon, index| %>
-        <div class='p-home_category_list_wrapper'>
-          <a href="<%=taxons_path(id: taxon.id)%>" class='u-block_link'>
-            <div class='p-home_category_list_before'>
-              <%= image_tag "users/category_#{index}.png", class: 'p-home_category_image' %>
-            </div>
-            <div class='p-home_category_list'><%= taxon.name %></div>
-          </a>
-        </div>
-      <% end %>
-    </div>
     <div class='p-home_category_list_wrapper'>
       <a href="<%=products_path%>" class='u-block_link'>
         <div class='p-home_category_list_before'>
@@ -43,8 +39,8 @@
     </div>
   </div>
 </div>
-<%# if request.env["HTTP_USER_AGENT"].include?('Android 2') %>
+<% if request.env["HTTP_USER_AGENT"].include?('Android 2') %>
   <%= render partial: 'users/accounts/android_top' %>
-<%# else %>
-  <%#= render partial: 'users/accounts/top' %>
-<%# end %>
+<% else %>
+  <%= render partial: 'users/accounts/top' %>
+<% end %>

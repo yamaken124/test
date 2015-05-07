@@ -1,22 +1,24 @@
+<%= javascript_include_tag 'users/home' %>
+
 <div class='p-home_android_ranking_wrapper'>
   <div class='p-home_slides_ranking_title'>人気商品ランキング</div>
   <div class='p-home_android_slides_ranking_wrapper'>
-    <div class='p-home_android_slides_ranking_left'>
+    <div class='p-home_android_slides_ranking_left p-home_common_height' id='android_home_max_width'>
       <a href="<%=product_path(id: 3)%>">
         <%= image_tag 'users/home_ranking_01.png' %>
       </a>
     </div>
-    <div class='p-home_android_slides_ranking_right'>
+    <div class='p-home_android_slides_ranking_right p-home_common_height'>
       <a href="<%=product_path(id: 8)%>">
         <%= image_tag 'users/home_ranking_02.png' %>
       </a>
     </div>
-    <div class='p-home_android_slides_ranking_left'>
+    <div class='p-home_android_slides_ranking_left p-home_common_height'>
       <a href="<%=product_path(id: 7)%>">
         <%= image_tag 'users/home_ranking_03.png' %>
       </a>
     </div>
-    <div class='p-home_android_slides_ranking_right'>
+    <div class='p-home_android_slides_ranking_right p-home_common_height'>
       <a href="<%=product_path(id: 9)%>">
         <%= image_tag 'users/home_ranking_04.png' %>
       </a>
