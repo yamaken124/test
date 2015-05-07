@@ -49,12 +49,6 @@
         <td><%= simple_format(h.try(:description))%></td>
       </tr>
     <% end %>
-    <tr>
-      <th>販売開始</th><td><%= @product.is_valid_at.strftime("%Y/%m/%d %H:%M") %></td>
-    </tr>
-    <tr>
-      <th>販売終了</th><td><%= @product.is_invalid_at.strftime("%Y/%m/%d %H:%M") %></td>
-    </tr>
   </tbody>
 </table>
 </section>
