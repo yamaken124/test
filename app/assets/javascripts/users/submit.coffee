@@ -33,6 +33,11 @@
       event.stopPropagation();
       return false
 
+    if !window.confirm('本当に購入しますか？')
+      event.preventDefault();
+      event.stopPropagation();
+      return false
+
   $('.c-btn--submit--single').val('送信中...')
   if $('.c-btn--submit--single').hasClass('disabled')
     event.preventDefault();
