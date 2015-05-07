@@ -35,7 +35,7 @@ class Users::ProductsController < Users::BaseController
       UserMailer.delay.send_one_click_order_accepted_notification(@detail)
       redirect_to one_click_thanks_orders_path(number: @payment.number)
     else
-      if request.referer.present?
+      if request.referer.present? && ( (params[:error_message] != 'item.none_stock') if params[:error_message].present? )
         redirect_to show_one_click_products_path(id: params[:product_id], error_message: params[:error_message])
       else
         redirect_to products_path
