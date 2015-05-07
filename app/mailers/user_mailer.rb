@@ -27,9 +27,9 @@ class UserMailer < ApplicationMailer
     user = @payment.user
     @profile = Profile.find_by(user_id: user.id)
     @detail = detail
-    @address = @detail.address
     @variant = @detail.one_click_item.variant
     @product = @variant.product
+    @office_account = user.get_business_account[:company] if @product.send_to_office?
 
     @subject = '【FiNCストア】 ご購入ありがとうございます '
     @to = user.email

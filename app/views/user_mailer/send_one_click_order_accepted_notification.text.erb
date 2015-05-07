@@ -6,9 +6,9 @@ FiNCストア ご注文の確認
 
 FiNCストアをご利用いただき、ありがとうございます。FiNCストアがお客様のご注文を承ったことをお知らせいたします。
 
-<% if @product.send_to_office? %>
+<% if @office_account.present? && @office_account[:company].present? %>
 お届け先：
-<%= @address.full_address %>
+<%= @office_address['prefecture']+@office_address['address'] %>
 <% end %>
 
 =================================================================================

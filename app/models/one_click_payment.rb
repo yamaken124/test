@@ -23,7 +23,7 @@ class OneClickPayment < ActiveRecord::Base
       transitions from: :checkout, to: :processing
     end
 
-    event :completed, after: [:register_shipment, :set_dealed_datetime, :update_user_used_point] do
+    event :completed, after: [:update_user_used_point] do
       transitions from: [:processing, :pending], to: :completed
     end
 
@@ -52,6 +52,10 @@ class OneClickPayment < ActiveRecord::Base
     raise unless GmoMultiPayment::Transaction.new(self).transaction_void
     user.update_used_point_total( (-1)*self.one_click_detail.used_point )
     self.one_click_detail.update!(paid_total: 0, used_point: 0)
+  end
+
+  def update_user_used_point
+    user.update_used_point_total(self.used_point)
   end
 
 end
