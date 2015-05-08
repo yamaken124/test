@@ -26,7 +26,7 @@ class Product < ActiveRecord::Base
   end
 
   def self.available
-    available_variants = Variant.available.active
+    available_variants = Variant.available.active(Time.now)
     Product.where(id: available_variants.pluck(:product_id)) if available_variants.present?
   end
 
@@ -44,7 +44,7 @@ class Product < ActiveRecord::Base
 
   def self.having_images_and_variants
     available_variant_id = Image.where(imageable_type: 'Variant').pluck(:imageable_id) & Price.pluck(:variant_id)
-    available_product_id = Variant.active.where(id: available_variant_id).pluck(:product_id).uniq
+    available_product_id = Variant.active(Time.now).where(id: available_variant_id).pluck(:product_id).uniq
 
     Product.where(id: available_product_id)
   end
