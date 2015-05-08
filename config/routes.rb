@@ -120,6 +120,7 @@ Rails.application.routes.draw do
         post 'search'
       end
     end
+    resources :reports, only:[:index]
   end
 
 end
