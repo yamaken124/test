@@ -1,11 +1,15 @@
-<div class="p-wrapper--have_padding">
+<div class="c-order__wrapper">
   <h2 class="c-links__title">ご注文ありがとうございました</h2>
-  <div class="c-order_title">
-    <p class="c-order-number">注文番号:<br><%= @number %></p>
-    <p class="c-order-amount">合計:<br><%= number_to_jpy(@payment.amount) %></p>
-    <p class="c-order-amount">使用マイル:<br><%= @payment.used_point %>mile</p>
+  <div class="c-order__title">
+    <p class="c-order__lists">注文番号:<br><%= @number %></p>
+    <p class="c-order__lists">合計:<br><%= number_to_jpy(@payment.amount) %></p>
+    <p class="c-order__lists">使用マイル:<br><%= @payment.used_point %>mile</p>
   </div>
-  <% @items.each do |item| %>
-    <%= render partial: 'users/orders/thanks', locals: {item: item} %>
+  <% if @item.instance_of?(OneClickItem) %>
+    <%= render partial: 'users/orders/thanks', locals: {item: @item} %>
+  <% else %>
+    <% @items.each do |item| %>
+      <%= render partial: 'users/orders/thanks', locals: {item: item} %>
+    <% end %>
   <% end %>
 </div>

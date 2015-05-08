@@ -25,6 +25,12 @@ class Users::OrdersController < Users::BaseController
     @items = @payment.single_order_detail.single_line_items.includes(variant: [:images, :price])
   end
 
+  def one_click_thanks
+    @payment = OneClickPayment.find_by(number: @number)
+    @item = @payment.one_click_detail.one_click_item
+    render :thanks
+  end
+
   def edit
     associate_user
   end
@@ -108,10 +114,6 @@ class Users::OrdersController < Users::BaseController
     redirect_to one_click_history_orders_path
   end
 
-  def one_click_thanks
-    @payment = OneClickPayment.find_by(number: @number)
-    @items = @payment.one_click_detail.one_click_item
-  end
 
   private
 
