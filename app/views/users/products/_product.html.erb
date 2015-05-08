@@ -1,5 +1,5 @@
 <% single_variant = @single_variants.find_by(product_id: product.id) %>
-<% subscription_variant = @subscription_variants.find_by(product_id: product.id) %>
+<%# subscription_variant = @subscription_variants.find_by(product_id: product.id) %>
 
 <div class='c-product'>
   <a href="<%= product.one_click_product? ? show_one_click_products_path(id: product.id) : product_path(id: product.id) %>" class='u-block_link'>
