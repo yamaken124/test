@@ -112,11 +112,13 @@
   }
 }
 .p-home_android_ranking_wrapper{
-  padding:0 4px 0 4px;
+  padding-top:15px;
   .p-home_android_slides_ranking_wrapper{
     width:100%;
+    margin-top:15px;
+    margin-left:1%;
     .p-home_android_slides_ranking_left{
-      height:185px;
+      height:155px;
       width:50%;
       float:left;
       img {
