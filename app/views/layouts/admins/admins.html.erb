@@ -5,18 +5,22 @@
   <%= stylesheet_link_tag    'admins/app', media: 'all' %>
   <%= javascript_include_tag 'admins/app' %>
   <%= csrf_meta_tags %>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0;"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0;">
   <%= favicon_link_tag(source='/favicon.ico', options={}) %>
 </head>
 <body class="skin-blue">
-  <%= render :partial => "layouts/admins/header" %>
-  <div class="wrapper row-offcanvas row-offcanvas-left">
-    <%= render :partial => "layouts/admins/left" %>
-    <!-- Right side column. Contains the navbar and content of the page -->
-    <aside class="right-side">          
-      <!-- Main content -->
+  <% if current_admin.admins? %>
+    <%= render :partial => "layouts/admins/header"%>
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+      <%= render :partial => "layouts/admins/left" if current_admin.admins? %>
+      <aside class="right-side">
         <%= yield %>
-    </aside><!-- /.right-side -->
-  </div><!-- ./wrapper -->
+      </aside>
+    </div>
+  <% else %>
+    <div class="wrapper" style="padding:25px 25px">
+      <%= yield %>
+    </div>
+  <% end %>
 </body>
 </html>

@@ -1,4 +1,8 @@
 class Admins::ProductsController < Admins::BaseController
+
+  include Admins::AuthenticationHelper
+
+  before_action :allow_only_admins
   before_action :set_product, only: [:show, :edit, :update, :destroy]
   before_action :set_leaf_taxons, only: [:new, :edit]
   before_action :set_new_product, only: [:new]
