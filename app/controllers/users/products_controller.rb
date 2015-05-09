@@ -74,7 +74,8 @@ class Users::ProductsController < Users::BaseController
     # end
 
     def available_quantity
-      @available_quantity = Array(1..Product::AvailableQuantity)
+      max_available_quantity = [Product::AvailableQuantity, @product.variants.single_order.first.stock_quantity].min
+      @available_quantity = Array(1..max_available_quantity)
     end
 
     def reject_invalid_product
