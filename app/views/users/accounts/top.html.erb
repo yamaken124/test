@@ -13,25 +13,23 @@
 
 <div class='p-home_list'>
   <div class='p-home_top'>
-    <%= image_tag 'users/home_top2.png', class: 'p-home_top_image' %>
+    <%= image_tag 'users/home_top6.png', class: 'p-home_top_image' %>
   </div>
 </div>
 <div class='p-home_list'>
   <div class='p-home_list_title_category'>カテゴリから選ぶ</div>
   <div class='p-home_category_lists'>
     <% @taxons.each.with_index(2) do |taxon, index| %>
-      <div class='p-home_category_lists_wrapper'>
+      <div class='p-home_category_list_wrapper'>
         <a href="<%=taxons_path(id: taxon.id)%>" class='u-block_link'>
-          <div class='p-home_category_list_wrapper'>
-            <div class='p-home_category_list_before'>
-              <%= image_tag "users/category_#{index}.png", class: 'p-home_category_image' %>
-            </div>
-            <div class='p-home_category_list'><%= taxon.name %></div>
+          <div class='p-home_category_list_before'>
+            <%= image_tag "users/category_#{index}.png", class: 'p-home_category_image' %>
           </div>
+          <div class='p-home_category_list'><%= taxon.name %></div>
         </a>
       </div>
     <% end %>
-    <div class='p-home_category_lists_wrapper'>
+    <div class='p-home_category_list_wrapper'>
       <a href="<%=products_path%>" class='u-block_link'>
         <div class='p-home_category_list_before'>
           <%= image_tag 'users/category_1.png', class: 'p-home_category_image' %>
