@@ -105,4 +105,8 @@ class User < ActiveRecord::Base
 
   end
 
+  def register_gmo_card?
+    GmoMultiPayment::Member.new(self).search
+  end
+
 end

@@ -1,2 +1,4 @@
 <p>本日の売り上げ：<%= @daily_detail.pluck(:paid_total).sum %></p>
 <p>本日の弁当売り上げ：<%= @daily_one_click_detail.pluck(:paid_total).sum %></p>
+
+<p>カード登録者数：<%= @users_registered_card if params[:credit] == 'true'%></p>
