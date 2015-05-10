@@ -49,6 +49,7 @@ class OneClickPayment < ActiveRecord::Base
   end
 
   def cancel_order
+    return if self.gmo_access_id.nil? #0円決済のcancel
     raise unless GmoMultiPayment::Transaction.new(self).transaction_void
     user.update_used_point_total( (-1)*self.one_click_detail.used_point )
     self.one_click_detail.update!(paid_total: 0, used_point: 0)
