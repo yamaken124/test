@@ -1,4 +1,8 @@
 class Admins::UsersController < Admins::BaseController
+
+  include Admins::AuthenticationHelper
+
+  before_action :allow_only_admins
   before_action :set_user, only: [:show, :edit, :update]
   before_action :set_visitor, only: [:index]
 

@@ -1,7 +1,9 @@
 class Admins::ReportsController < Admins::BaseController
 
+  include Admins::AuthenticationHelper
   include Admins::ReportsHelper
 
+  before_action :allow_only_admins
   before_action :set_date_field_value
 
   def index

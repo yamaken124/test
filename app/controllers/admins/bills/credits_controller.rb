@@ -1,4 +1,9 @@
 class Admins::Bills::CreditsController < Admins::BaseController
+
+  include Admins::AuthenticationHelper
+
+  before_action :allow_admins_and_nutritionists
+
   def index
     @payments = Payment.where(payment_method_id: PaymentMethod::CreditCard).includes(:payment_method).includes(user:[:profile]).order("id DESC")
   end

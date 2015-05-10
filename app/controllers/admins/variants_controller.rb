@@ -1,4 +1,9 @@
 class Admins::VariantsController < Admins::BaseController
+
+  include Admins::AuthenticationHelper
+
+  before_action :allow_only_admins
+
   before_action :set_variant, only: [:edit, :update, :destroy]
   before_action :set_price, only: [:update]
   before_action :set_product,only: [:index,:new,:edit]

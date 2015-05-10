@@ -1,6 +1,6 @@
 <%= order_form.fields_for 'single_line_items_attributes[]', single_line_item do |item_form| %>
   <% variant = @variants.where(id: single_line_item.variant_id).first %>
-  <div class="c-product_list">
+  <div class="c-product_list__short">
     <div class="c-product_list__image">
       <%= link_to product_path(variant.product_id) do %>
         <%= image_tag variant.top_image %>
@@ -20,6 +20,6 @@
     <%= item_form.hidden_field :variant_id %>
     <%= item_form.hidden_field :id %>
     <%= item_form.submit "数量変更", class: "submit u-margin__left_short" %>
-    <div class="remove_from_cart u-margin__left_short"><%= link_to "カートから外す", remove_item_cart_path(single_line_item.id), data: { confirm: "本当にカートから商品を削除しますか？" }, method: :patch, class: "u-finc_font_color u-font_size_small" %></div>
+    <div class="remove_from_cart"><%= link_to "カートから外す", remove_item_cart_path(single_line_item.id), data: { confirm: "本当にカートから商品を削除しますか？" }, method: :patch, class: "u-finc_font_color u-font_size_small"  %></div>
   </div>
 <% end %>
