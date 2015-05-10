@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150506103623) do
+ActiveRecord::Schema.define(version: 20150509083830) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20150506103623) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
     t.string   "last_sign_in_ip",        limit: 255
+    t.integer  "authority",              limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -93,7 +94,7 @@ ActiveRecord::Schema.define(version: 20150506103623) do
     t.datetime "updated_at",                                     null: false
   end
 
-  add_index "oauth_access_tokens", ["oauth_application_id"], name: "fk_rails_cbb1c17693", using: :btree
+  add_index "oauth_access_tokens", ["oauth_application_id"], name: "fk_rails_5989c29d2a", using: :btree
   add_index "oauth_access_tokens", ["user_id"], name: "index_oauth_access_tokens_on_user_id", using: :btree
 
   create_table "oauth_applications", force: :cascade do |t|
@@ -211,8 +212,8 @@ ActiveRecord::Schema.define(version: 20150506103623) do
     t.datetime "updated_at",                                     null: false
   end
 
-  add_index "payments", ["address_id"], name: "fk_rails_e488695957", using: :btree
-  add_index "payments", ["single_order_detail_id"], name: "fk_rails_e2b9115812", using: :btree
+  add_index "payments", ["address_id"], name: "fk_rails_036fdaa32c", using: :btree
+  add_index "payments", ["single_order_detail_id"], name: "fk_rails_5eea199f3d", using: :btree
 
   create_table "prices", force: :cascade do |t|
     t.integer  "variant_id", limit: 4
@@ -254,11 +255,11 @@ ActiveRecord::Schema.define(version: 20150506103623) do
     t.integer  "user_id",         limit: 4
     t.string   "last_name",       limit: 255, default: "", null: false
     t.string   "first_name",      limit: 255, default: "", null: false
+    t.string   "last_name_kana",  limit: 255, default: "", null: false
+    t.string   "first_name_kana", limit: 255, default: "", null: false
+    t.string   "phone",           limit: 255, default: "", null: false
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
-    t.string   "phone",           limit: 255
-    t.string   "last_name_kana",  limit: 255
-    t.string   "first_name_kana", limit: 255
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
@@ -295,7 +296,7 @@ ActiveRecord::Schema.define(version: 20150506103623) do
   end
 
   add_index "shipments", ["address_id"], name: "index_shipments_on_address_id", using: :btree
-  add_index "shipments", ["single_line_item_id"], name: "fk_rails_15430f5dae", using: :btree
+  add_index "shipments", ["single_line_item_id"], name: "fk_rails_6943af24fe", using: :btree
 
   create_table "single_line_items", force: :cascade do |t|
     t.integer  "variant_id",             limit: 4
@@ -334,7 +335,7 @@ ActiveRecord::Schema.define(version: 20150506103623) do
 
   add_index "single_order_details", ["address_id"], name: "index_single_order_details_on_address_id", using: :btree
   add_index "single_order_details", ["single_order_id"], name: "index_single_order_details_on_single_order_id", using: :btree
-  add_index "single_order_details", ["tax_rate_id"], name: "fk_rails_86d62fed6e", using: :btree
+  add_index "single_order_details", ["tax_rate_id"], name: "fk_rails_39395a72ef", using: :btree
 
   create_table "single_orders", force: :cascade do |t|
     t.integer  "purchase_order_id", limit: 4

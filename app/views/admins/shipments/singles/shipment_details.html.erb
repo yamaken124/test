@@ -34,6 +34,7 @@
           <th>単価</th>
           <th>個数</th>
           <th>注文使用ポイント</th>
+          <th>送料</th>
           <th>注文支払い合計</th>
           <th></th>
         </tr>
@@ -45,6 +46,7 @@
             <td><%= number_to_currency(item.price) %></td>
             <td><%= item.quantity %></td>
             <td><%= item.single_order_detail.used_point %></td>
+            <td><%= number_to_currency(item.single_order_detail.shipment_total) %></td>
             <td><%= number_to_currency(item.single_order_detail.paid_total) %></td>
             <td>
               <% if shipment.ready? %>
