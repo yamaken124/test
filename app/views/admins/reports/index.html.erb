@@ -1,4 +1,70 @@
-<p>本日の売り上げ：<%= @daily_detail.pluck(:paid_total).sum %></p>
-<p>本日の弁当売り上げ：<%= @daily_one_click_detail.pluck(:paid_total).sum %></p>
+<%= form_tag admins_reports_path, method: "get" do %>
 
-<p>カード登録者数：<%= @users_registered_card if params[:credit] == 'true'%></p>
+  <div class="content-header">
+    <h3>レポート</h3>
+  </div>
+  <section class="content">
+    <div class="content">
+      <div class='form-group'>
+        <div class='input-group'>
+          from: <%= date_field 'date', 'from', :value => @serached_date_from %>
+          to: <%= date_field 'date', 'to', :value => @serached_date_to %>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>属性</th>
+            <th>値</th>
+            <th><%= submit_tag "表示", class: 'btn btn-primary' %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>売上</td>
+            <td><%= number_to_jpy(@selected_single_order_details.pluck(:paid_total).sum) if params[:sales] %></td>
+            <td>
+              <%= check_box_tag 'sales', true, false, {:checked => true} %>
+            </td>
+          </tr>
+          <tr>
+            <td>弁当売上</td>
+            <td><%= number_to_jpy(@selected_one_click_details.pluck(:paid_total).sum) if params[:lunch_sales] %></td>
+            <td>
+              <%= check_box_tag 'lunch_sales', true, false, {:checked => true} %>
+            </td>
+          </tr>
+          <tr>
+            <td>ログイン数</td>
+            <td><%= @selected_login_users.size if params[:login_user_count] %></td>
+            <td>
+              <%= check_box_tag 'login_user_count', true, false, {:checked => true} %>
+            </td>
+          </tr>
+          <tr>
+            <td>カード登録数</td>
+            <td><%= @selected_credit_cards.size if params[:credit_card_count] %></td>
+            <td>
+              <%= check_box_tag 'credit_card_count', true, false %>
+            </td>
+          </tr>
+          <tr>
+            <td>総ユーザー数</td>
+            <td><%= @all_users.size if params[:all_user_count] %></td>
+            <td>
+              <%= check_box_tag 'all_user_count', true, false %>
+            </td>
+          </tr>
+          <tr>
+            <td>総カード登録者数</td>
+            <td><%= @users_registered_card if params[:all_credit_count] %></td>
+            <td>
+              <%= check_box_tag 'all_credit_count', true, false %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+<% end %>

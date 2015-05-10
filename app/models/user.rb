@@ -36,6 +36,7 @@ class User < ActiveRecord::Base
   has_many :oauth_access_tokens
   has_many :returned_items
   has_one :users_user_category
+  has_one :credit_card
 
   validates :used_point_total, numericality: true
 
