@@ -10,5 +10,12 @@
   password: '1oKQBHekuK',
   password_confirmation: '1oKQBHekuK',
   authority: 10,
+},{
+  id: 3,
+  email: 'storenutritionist@finc.co.jp',
+  password: 's8cLYDMqA7',
+  password_confirmation: 's8cLYDMqA7',
+  authority: 20,
 }
+
 ].each { |s| Admin.seed(s) }

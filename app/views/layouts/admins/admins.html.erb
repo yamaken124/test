@@ -9,10 +9,10 @@
   <%= favicon_link_tag(source='/favicon.ico', options={}) %>
 </head>
 <body class="skin-blue">
-  <% if current_admin.admins? %>
+  <% unless current_admin.operators? %>
     <%= render :partial => "layouts/admins/header"%>
     <div class="wrapper row-offcanvas row-offcanvas-left">
-      <%= render :partial => "layouts/admins/left" if current_admin.admins? %>
+      <%= render :partial => "layouts/admins/left" %>
       <aside class="right-side">
         <%= yield %>
       </aside>

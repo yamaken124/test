@@ -1,4 +1,9 @@
 class Admins::ImagesController < Admins::BaseController
+
+  include Admins::AuthenticationHelper
+
+  before_action :allow_only_admins
+
   before_action :set_image, only: [:edit, :update, :destroy]
   before_action :set_imageable, only: [:show, :edit, :new, :index]
 
