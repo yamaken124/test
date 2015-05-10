@@ -19,6 +19,7 @@ class Users::CreditCardsController < Users::BaseController
     if GmoMultiPayment::Card.new(@user).search.size < GmoMultiPayment::Card::UpperLimit
       expire = params[:expire_year][2,3] + format("%02d",params[:expire_month])
       if GmoMultiPayment::Card.new(@user).create(params[:card_no], expire)
+        register_credit_card_history
         redirect_to continue_path
       else
         flash[:notice] = "カード情報または、有効期限が不正です。"
@@ -36,6 +37,13 @@ class Users::CreditCardsController < Users::BaseController
   end
 
   private
+
+    def register_credit_card_history
+      unless CreditCard.find_by(user_id: current_user.id).present?
+        CreditCard.create(user_id: current_user.id, registered_at: Time.now)
+      end
+    end
+
     def check_multi_payment_user
       @user = current_user
       gmo_member = GmoMultiPayment::Member.new(@user)

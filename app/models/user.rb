@@ -36,6 +36,7 @@ class User < ActiveRecord::Base
   has_many :oauth_access_tokens
   has_many :returned_items
   has_one :users_user_category
+  has_one :credit_card
 
   validates :used_point_total, numericality: true
 
@@ -103,6 +104,10 @@ class User < ActiveRecord::Base
       UsersUserCategory.where(user_id: self.id).first_or_initialize.update(user_category_id: 1)
     end
 
+  end
+
+  def register_gmo_card?
+    GmoMultiPayment::Member.new(self).search
   end
 
 end
