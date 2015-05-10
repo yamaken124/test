@@ -7,7 +7,7 @@ module Admins::AuthenticationHelper
   end
 
   def allow_admins_and_nutritionists
-    redirect_to :back unless (current_admin.admins? || current_admin.nutritionist?)
+    redirect_to :back unless (current_admin.admins? || current_admin.nutritionists?)
   end
 
 end
