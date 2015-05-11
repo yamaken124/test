@@ -46,7 +46,6 @@ RSpec.describe Admins::ProductsController, type: :controller do
     it 'redirect to varinants#index' do
       expect(response).to redirect_to admins_product_variants_path(product_id: assigns(:product).id)
     end
-
     it { expect { post :create, params }.to change(Product, :count).by(1) }
     it { expect { post :create, params }.to change(ProductDescription, :count).by(1) }
     it { expect { post :create, params }.to change(HowToUseProduct, :count).by(1) }

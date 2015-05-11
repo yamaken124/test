@@ -512,6 +512,7 @@ DEPENDENCIES
   rails_config
   rmagick
   rspec
+  rspec-mocks
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
