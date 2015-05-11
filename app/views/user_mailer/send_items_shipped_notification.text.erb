@@ -1,43 +1,33 @@
-<%= @payment.user.profile.name %>様
+<%= @user.profile.name %>様
 
 FiNCストア 商品発送のご連絡
-注文番号：<%= @payment.number %>
-
 _________________________________________________________________________________
 
 FiNCストア をご利用いただき、ありがとうございます。お客様がご注文いただいた商品の発送が完了したことをお知らせいたします。商品の詳細は下記のとおりです。
 
 お届け先：
-<%= @address.name %>様
-<%= @address.zipcode %>
-<%= @address.full_address %>
+　<%= @address.name %>様
+　<%= @address.full_address %>
 
 運送会社：
-<%= @carrier %>
+　<%= @carrier %>
 
 発送状況の確認先：
-https://trackings.post.japanpost.jp/services/srv/search/
+　https://trackings.post.japanpost.jp/services/srv/search/
 
 追跡番号：
-<%= @shipments.first.tracking %>
+　<%= @shipments.first.tracking %>
 
 =================================================================================
 
-注文内容
-
-注文番号：<%= @payment.number %>
-注文日：<%= @detail.completed_on %>
-
-商品名：
+発送内容：
 <% @shipments.each do |shipment| %>
-  <% variant = shipment.single_line_item.variant %>
-  <%= variant.name %>
+<% variant = shipment.single_line_item.variant %>
+　<%= variant.name %>（<%= shipment.single_line_item.quantity %>個）
 <% end %>
 
-ご請求合計：<%= number_to_jpy(@detail.paid_total) %>
-
 注文履歴ページ：
-<%= single_history_orders_path(:only_path => false) %>
+　<%= single_history_orders_path(:only_path => false) %>
 
 =================================================================================
 
