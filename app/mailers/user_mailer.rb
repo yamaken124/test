@@ -66,17 +66,16 @@ class UserMailer < ApplicationMailer
     @to = @payment.user.email
   end
 
-  def send_items_shipped_notification(shipments, payment)
+  def send_items_shipped_notification(shipments)
     sleep 1
 
-    @payment = payment
-    @detail = @payment.single_order_detail
-    @address = @payment.address
-    @carrier = '日本郵便株式会社' #TODO will change
     @shipments = shipments
+    @address = @shipments.first.address
+    @carrier = '日本郵便株式会社' #TODO will change
+    @user = @address.user
 
     @subject = '【FiNCストア】発送が完了しました'
-    @to = @payment.user.email
+    @to = @user.email
   end
 
   def send_return_request_accepted_notification(item)
