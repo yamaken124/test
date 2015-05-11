@@ -21,17 +21,31 @@
         </thead>
         <tbody>
           <tr>
-            <td>売上</td>
-            <td><%= number_to_jpy(@selected_single_order_details.pluck(:paid_total).sum) if params[:sales] %></td>
+            <td>売上高</td>
+            <td><%= number_to_jpy(@selected_single_order_details.pluck(:paid_total).sum+@selected_single_order_details.pluck(:used_point).sum) if params[:detail] %></td>
             <td>
-              <%= check_box_tag 'sales', true, false, {:checked => true} %>
+              <%= check_box_tag 'detail', true, false, {:checked => true} %>
             </td>
           </tr>
           <tr>
-            <td>弁当売上</td>
-            <td><%= number_to_jpy(@selected_one_click_details.pluck(:paid_total).sum) if params[:lunch_sales] %></td>
+            <td>実支払い</td>
+            <td><%= number_to_jpy(@selected_single_order_details.pluck(:paid_total).sum) if params[:detail] %></td>
             <td>
-              <%= check_box_tag 'lunch_sales', true, false, {:checked => true} %>
+              <%= check_box_tag 'detail', true, false, {:checked => true} %>
+            </td>
+          </tr>
+          <tr>
+            <td>弁当売上高</td>
+            <td><%= number_to_jpy(@selected_one_click_details.pluck(:paid_total).sum+@selected_one_click_details.pluck(:used_point).sum) if params[:lunch_detail] %></td>
+            <td>
+              <%= check_box_tag 'lunch_detail', true, false, {:checked => true} %>
+            </td>
+          </tr>
+          <tr>
+            <td>弁当実払い</td>
+            <td><%= number_to_jpy(@selected_one_click_details.pluck(:paid_total).sum) if params[:lunch_detail] %></td>
+            <td>
+              <%= check_box_tag 'lunch_detail', true, false, {:checked => true} %>
             </td>
           </tr>
           <tr>
