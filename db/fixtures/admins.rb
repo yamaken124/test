@@ -9,7 +9,7 @@
   email: 'storeoperator@finc.co.jp',
   password: '1oKQBHekuK',
   password_confirmation: '1oKQBHekuK',
-  authority: 10,
+  authority: 0,
 },{
   id: 3,
   email: 'storenutritionist@finc.co.jp',
