@@ -8,8 +8,8 @@ class Admins::ReportsController < Admins::BaseController
 
   def index
 
-    @selected_single_order_details = SingleOrderDetail.where('completed_on >= ?', pluck_date[:from]).where('completed_on <= ?', pluck_date[:to]) if params[:sales]
-    @selected_one_click_details = OneClickDetail.where('completed_on >= ?', pluck_date[:from]).where('completed_on <= ?', pluck_date[:to]) if params[:lunch_sales]
+    @selected_single_order_details = SingleOrderDetail.where('completed_on >= ?', pluck_date[:from]).where('completed_on <= ?', pluck_date[:to]) if params[:detail]
+    @selected_one_click_details = OneClickDetail.where('completed_on >= ?', pluck_date[:from]).where('completed_on <= ?', pluck_date[:to]) if params[:lunch_detail]
 
     @selected_login_users = User.all.where('current_sign_in_at >= ?', pluck_date[:from]).where('current_sign_in_at <= ?', pluck_date[:to].to_date + 1) if params[:login_user_count]
     @selected_credit_cards = CreditCard.all.where('registered_at >= ?', pluck_date[:from]).where('registered_at < ?', pluck_date[:to].to_date + 1) if params[:credit_card_count]
