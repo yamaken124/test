@@ -8,7 +8,7 @@ class Users::CheckoutsController < Users::BaseController
   before_action :set_state_if_present
 
   before_action :ensure_order_not_completed
-  before_action :ensure_checkout_allowed
+  # before_action :ensure_checkout_allowed
   before_action :ensure_sufficient_stock_lines
   before_action :ensure_valid_state
 
@@ -68,11 +68,11 @@ class Users::CheckoutsController < Users::BaseController
       redirect_to cart_path if @order.completed?
     end
 
-    def ensure_checkout_allowed
-      unless @order.checkout_allowed?
-        redirect_to spree.cart_path
-      end
-    end
+    # def ensure_checkout_allowed
+    #   unless @order.checkout_allowed?
+    #     redirect_to cart_path
+    #   end
+    # end
 
     def ensure_sufficient_stock_lines
       redirect_to cart_path, notice: '商品が選ばれていません' and return if @detail.item_total.zero?
