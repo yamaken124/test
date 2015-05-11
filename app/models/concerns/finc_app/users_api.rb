@@ -8,7 +8,8 @@ module FincApp
           if response.has_key?('user')
             response['user']
           else
-            raise ActiveRecord::RecordNotFound
+            # raise ActiveRecord::RecordNotFound
+            {}
           end
         end
 

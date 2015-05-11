@@ -11,6 +11,7 @@ class Admins::UsersController < Admins::BaseController
   end
 
   def show
+    @me = @user.try(:me_in_finc_app) if params[:admin_name]
   end
 
   def edit

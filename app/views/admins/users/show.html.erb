@@ -10,6 +10,10 @@
   <div class="content col-md-9">
     <table class="table c-table">
       <thead>
+        <tr>
+          <th>ユーザー情報</th>
+          <th></th>
+        </tr>
         <% if @user.profile.present? %>
           <tr>
             <th>名前</th>
@@ -55,4 +59,26 @@
       </thead>
     </table>
   </div>
+</section>
+
+<%= form_tag admins_user_path(id: @user.id), method: "get" do %>
+  <section class="content">
+    <div class="content col-md-9">
+      <table class="table c-table">
+        <thead>
+          <tr>
+            <th>FiNC APP情報</th>
+            <th></th>
+            <th><%= submit_tag "表示", class: 'btn btn-primary' %></th>
+          </tr>
+          <tr>
+            <th>管理者</th>
+            <th><%= @me['admin']['name'] if (@me.present? && @me['admin'].present?) %></th>
+            <th><%= check_box_tag 'admin_name', true, false, {:checked => true} %></th>
+          </tr>
+        </thead>
+      </table>
+    </div>
   </section>
+<% end %>
+
