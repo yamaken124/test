@@ -14,7 +14,7 @@ class Admins::Shipments::SinglesController < Admins::BaseController
 
   def update_state
     @shipments = Shipment.where(id: shipment_ids_from_params).includes(single_line_item: [:variant])
-    filter_for_update(@shipments)
+    filter_for_update
     method_name = :"update_#{params[:state]}"
     send(method_name, @shipments) if respond_to?(method_name, true)
   end
@@ -100,7 +100,7 @@ class Admins::Shipments::SinglesController < Admins::BaseController
 
     def update_shipped(shipments)
       redirect_to :back and return unless has_same_tracking?(shipments)
-      UserMailer.delay.send_items_shipped_notification(shipments, payment_from_shipments(shipments))
+      UserMailer.delay.send_items_shipped_notification(shipments)
       shipments_update_state(shipments)
       redirect_to :back
     end
