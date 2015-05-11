@@ -4,13 +4,21 @@ class Admins::UsersController < Admins::BaseController
 
   before_action :allow_only_admins
   before_action :set_user, only: [:show, :edit, :update]
-  before_action :set_visitor, only: [:index]
 
   def index
     @users = User.includes(:profile).page(params[:page])
   end
 
   def show
+    if params[:admin_name]
+      begin
+        ActiveRecord::Base.transaction do
+          @me = @user.me_in_finc_app
+        end
+      rescue
+        params[:admin_not_found] = "アプリ情報が見つかりません"
+      end
+    end
   end
 
   def edit
@@ -35,10 +43,6 @@ class Admins::UsersController < Admins::BaseController
   private
     def set_user
       @user = User.find(params[:id])
-    end
-
-    def set_visitor
-      @visitor = User.where("current_sign_in_at > ?", Date.yesterday).count
     end
 
 end
