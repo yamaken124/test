@@ -54,7 +54,6 @@ class User < ActiveRecord::Base
   end
 
   def update_used_point_total(changed_point)
-
     begin
       ActiveRecord::Base.transaction do
         raise 'minus_point' if (wellness_mileage - changed_point < 0)

@@ -56,12 +56,12 @@ class Payment < ActiveRecord::Base
         end
 
         def set_dealed_datetime
-          order_detail = SingleOrderDetail.find(self.single_order_detail)
-          order_detail.update(completed_at: Time.now)
+          single_order_detail.update(completed_at: Time.now)
         end
 
         def update_user_used_point
-          user.update_used_point_total(self.used_point)
+          return true if self.used_point == 0
+          raise unless user.update_used_point_total(self.used_point)
         end
 
         def cancel_order
