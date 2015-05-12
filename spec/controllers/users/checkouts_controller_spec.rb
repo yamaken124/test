@@ -130,7 +130,7 @@ RSpec.describe Users::CheckoutsController, type: :controller do
           before { patch :update, params }
           it { expect(response).to render_template :edit }
         end
-        context 'render edit in credit card is not found' do
+        context 'render edit in case credit card is not found' do
           let(:params) do
             { order: {
                 address_id: nil, use_all_point: 'false', used_point: 0,
