@@ -80,4 +80,8 @@ class SingleOrderDetail < ActiveRecord::Base
     single_line_items.all? { |item| item.shipment.shipped? }
   end
 
+  def complete_items
+    single_line_items.update_all(payment_state: SingleLineItem.payment_states[:completed])
+  end
+
 end

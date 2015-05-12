@@ -42,10 +42,6 @@ class SingleLineItem < ActiveRecord::Base
     self.quantity = 0 if quantity.nil? || quantity < 0
   end
 
-  def self.complete_items(single_order_detail)
-    single_order_detail.single_line_items.update_all(payment_state: self.payment_states[:completed])
-  end
-
   def cancel_item(payment)
     begin
       ActiveRecord::Base.transaction do
