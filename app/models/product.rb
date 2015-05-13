@@ -37,11 +37,6 @@ class Product < ActiveRecord::Base
       .where(variant_id: imageable_ids).pluck(:image_id) ).order('position ASC')
   end
 
-  def single_price
-    single_variants = variants.single_order
-    Price.where(id: single_variants.ids).index_by(&:variant_id)
-  end
-
   def self.having_images_and_variants
     available_variant_id = Image.where(imageable_type: 'Variant').pluck(:imageable_id) & Price.pluck(:variant_id)
     available_product_id = Variant.active(Time.now).where(id: available_variant_id).pluck(:product_id).uniq
