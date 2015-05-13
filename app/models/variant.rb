@@ -48,7 +48,7 @@ class Variant < ActiveRecord::Base
 
     available_variant_id_with_all_variant_images = \
       Variant.available_ids.select { |id| ( VariantImageWhereabout.where(variant_id: id).top.present? && VariantImageWhereabout.where(variant_id: id).description.present? ) }
-    Variant.where(id: available_variant_id_with_all_variant_images)
+    Variant.where(id: available_variant_id_with_all_variant_images).active(Time.now)
   end
 
   def self.available_ids

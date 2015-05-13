@@ -26,7 +26,7 @@ class Product < ActiveRecord::Base
   end
 
   def self.available
-    available_variants = Variant.available.active(Time.now)
+    available_variants = Variant.available
     Product.where(id: available_variants.pluck(:product_id)) if available_variants.present?
   end
 
@@ -35,11 +35,6 @@ class Product < ActiveRecord::Base
     images.where(imageable_id: imageable_ids)
       .where( id: VariantImageWhereabout.where(whereabout: VariantImageWhereabout.whereabouts[whereabout.to_sym])
       .where(variant_id: imageable_ids).pluck(:image_id) ).order('position ASC')
-  end
-
-  def single_price
-    single_variants = variants.single_order
-    Price.where(id: single_variants.ids).index_by(&:variant_id)
   end
 
   def self.having_images_and_variants

@@ -15,10 +15,7 @@ class CheckoutValidityChecker
 
   def item_invalid_checker(item)
     variant = Variant.find(item.variant_id)
-    unless variant.available? && Product.find(variant.product_id).available?
-      raise 'item.invalid_item'
-    end
-    true
+    (variant.available?) ? true : (raise 'item.invalid_item')
   end
 
   def has_credit_card_attribute?(payment_attributes)
