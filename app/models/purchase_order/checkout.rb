@@ -67,7 +67,10 @@ class PurchaseOrder < ActiveRecord::Base
                 OrderUpdater.new(single_order_detail).update_totals
                 single_order_detail.paid_total = single_order_detail.total
                 attributes[:payment_attributes] = attributes[:payment_attributes].merge(payment_attributes_from_params(attributes))
-                raise_checkout_payment_error(attributes)
+
+                # raise_checkout_payment_error(attributes)
+                CheckoutValidityChecker.new.common_validity_checker(attributes[:payment_attributes], @single_order_detail, user, @single_order_detail.single_line_items)
+
                 single_order_detail.update!(attributes)
 
               when :confirm
@@ -97,23 +100,6 @@ class PurchaseOrder < ActiveRecord::Base
             payment_params["used_point"] = single_order_detail.used_point
             payment_params
           end
-
-          def has_credit_card_attribtue?(attributes)
-            attributes[:payment_attributes][:gmo_card_seq_temporary].present?
-          end
-
-          def has_address_attribtue?(attributes)
-            attributes[:payment_attributes][:address_id].present?
-          end
-
-          def raise_checkout_payment_error(attributes)
-            raise 'payment_attributes_error.used_point_over_limit' if attributes[:payment_attributes][:used_point].to_i > Payment::UsedPointLimit
-            raise 'payment_attributes_error.address_missing' unless has_address_attribtue?(attributes)
-            raise 'payment_attributes_error.credit_card_missing' unless has_credit_card_attribtue?(attributes)
-            raise 'payment_attributes_error.invalid_used_point' unless CheckoutValidityChecker.new.items_valid_point?(user, single_order_detail, single_order_detail.single_line_items)
-            CheckoutValidityChecker.new.items_invalid_checker(single_order_detail.single_line_items)
-          end
-
       end
     end
   end
