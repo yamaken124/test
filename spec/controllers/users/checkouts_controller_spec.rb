@@ -70,45 +70,57 @@ RSpec.describe Users::CheckoutsController, type: :controller do
         single_order = create(:single_order, purchase_order_id: @order.id)
         @detail = create(:single_order_detail, single_order_id: single_order.id, address_id: @address.id)
       end
-      context 'valid' do
-        describe 'without mile' do
-          let(:params) do
-            {
-              order: {
-                address_id: @address.id,
-                payment_attributes: {
-                  payment_method_id: 1,
-                  gmo_card_seq_temporary: 0,
-                },
-                use_all_point: 'false',
-                used_point: 0,
+      context 'without mile' do
+        let(:params) do
+          {
+            order: {
+              address_id: @address.id,
+              payment_attributes: {
+                payment_method_id: 1,
+                gmo_card_seq_temporary: 0,
               },
-              state: 'payment',
-            }
-          end
+              use_all_point: 'false',
+              used_point: 0,
+            },
+            state: 'payment',
+          }
+        end
+        describe 'redirect_to confirm' do
           before { patch :update, params }
           it { expect(response).to redirect_to checkout_state_path(state: 'confirm') }
         end
-        describe 'with mile' do
-          before do
-            create(:upper_used_point_limit, variant_id: @variant.id, limit: 1000)
-            @single_line_items = create(:single_line_item, variant_id: @variant.id, single_order_detail_id: @detail.id, quantity: 1, price: 100)
-            allow_any_instance_of(User).to receive(:wellness_mileage) {100}
-            create(:upper_used_point_limit, variant_id: @variant.id, limit:100)
+        context 'invalid product' do
+          describe 'order should fail and redirect_to cart' do
+            before do
+              @variant.update(is_valid_at: '2050-01-01')
+              create(:single_line_item, variant_id: @variant.id, single_order_detail_id: @detail.id, quantity: 1, price: 100)
+              create(:upper_used_point_limit, variant_id: @variant.id, limit:100)
+              patch :update, params
+            end
+            it { expect(response).to redirect_to cart_path }
+            it { expect(assigns(:order).state).to eq "fail" }
           end
-          let(:params) do
-            { order: {
-                address_id: @address.id, use_all_point: 'false', used_point: 50,
-                payment_attributes: { payment_method_id: 1, gmo_card_seq_temporary: 0, },
-              }, state: 'payment',
-            }
-          end
-          before { patch :update, params }
-          it { expect(response).to redirect_to checkout_state_path('confirm') }
         end
       end
+      context 'with mile' do
+        before do
+          create(:upper_used_point_limit, variant_id: @variant.id, limit: 1000)
+          @single_line_items = create(:single_line_item, variant_id: @variant.id, single_order_detail_id: @detail.id, quantity: 1, price: 100)
+          allow_any_instance_of(User).to receive(:wellness_mileage) {100}
+          create(:upper_used_point_limit, variant_id: @variant.id, limit:100)
+        end
+        let(:params) do
+          { order: {
+              address_id: @address.id, use_all_point: 'false', used_point: 50,
+              payment_attributes: { payment_method_id: 1, gmo_card_seq_temporary: 0, },
+            }, state: 'payment',
+          }
+        end
+        before { patch :update, params }
+        it { expect(response).to redirect_to checkout_state_path('confirm') }
+      end
       context 'invalid' do
-        context 'render edit in case address is missng' do
+        context 'address missng' do
           let(:params) do
             { order: {
                 address_id: nil, use_all_point: 'false', used_point: 0,
@@ -119,7 +131,7 @@ RSpec.describe Users::CheckoutsController, type: :controller do
           before { patch :update, params }
           it { expect(response).to render_template :edit }
         end
-        context 'render edit with used point over limit' do
+        context 'used point over limit' do
           let(:params) do
             { order: {
                 address_id: @address.id, use_all_point: 'false', used_point: 10000,
@@ -130,7 +142,7 @@ RSpec.describe Users::CheckoutsController, type: :controller do
           before { patch :update, params }
           it { expect(response).to render_template :edit }
         end
-        context 'render edit in case credit card is not found' do
+        context 'credit card not found' do
           let(:params) do
             { order: {
                 address_id: nil, use_all_point: 'false', used_point: 0,
@@ -146,7 +158,7 @@ RSpec.describe Users::CheckoutsController, type: :controller do
             create(:upper_used_point_limit, variant_id: @variant.id, limit:200)
             @single_line_items = create(:single_line_item, variant_id: @variant.id, single_order_detail_id: @detail.id, quantity: 1, price: 100)
           end
-          describe 'reject minus used_point' do
+          context 'minus used_point' do
             let(:params) do
               { order: {
                   address_id: @address.id, use_all_point: 'false', used_point: -10,
@@ -157,7 +169,7 @@ RSpec.describe Users::CheckoutsController, type: :controller do
             before { patch :update, params }
             it { expect(response).to render_template :edit }
           end
-          describe 'used_point over wellness_mileage' do
+          context 'used_point over wellness_mileage' do
             before do
               allow_any_instance_of(User).to receive(:wellness_mileage) {10}
             end
@@ -171,7 +183,7 @@ RSpec.describe Users::CheckoutsController, type: :controller do
             before { patch :update, params }
             it { expect(response).to render_template :edit }
           end
-          describe 'used_point over upper_used_point_limit' do
+          context 'used_point over upper_used_point_limit' do
             before do
               allow_any_instance_of(User).to receive(:wellness_mileage) {100}
             end
@@ -197,7 +209,7 @@ RSpec.describe Users::CheckoutsController, type: :controller do
         @single_order = create(:single_order, purchase_order_id: @order.id)
       end
       let(:params) { {state: 'confirm'} }
-      context 'valid without mile' do
+      context 'without mile' do
         before do
           allow_any_instance_of(User).to receive(:wellness_mileage) {10000}
           @detail = create(:single_order_detail, single_order_id: @single_order.id, address_id: @address.id, used_point: 0)
@@ -208,14 +220,14 @@ RSpec.describe Users::CheckoutsController, type: :controller do
           before { patch :update, params }
           it { expect(response).to redirect_to thanks_orders_path(number: @payment.number) }
         end
-        describe 'create shipment' do
-          it { expect { patch :update, params }.to change(Shipment, :count).by(1) }
+        it 'create shipment' do
+          expect { patch :update, params }.to change(Shipment, :count).by(1)
         end
-        describe 'does not create user point history' do
-          it { expect { patch :update, params }.to change(UserPointHistory, :count).by(0) }
+        it 'does not create user point history' do
+        expect { patch :update, params }.to change(UserPointHistory, :count).by(0)
         end
       end
-      context 'valid with mile' do
+      context 'with mile' do
         before do
           allow_any_instance_of(User).to receive(:wellness_mileage) {10000}
           @detail = create(:single_order_detail, single_order_id: @single_order.id, address_id: @address.id, used_point: 30)
@@ -226,8 +238,8 @@ RSpec.describe Users::CheckoutsController, type: :controller do
           before { patch :update, params }
           it { expect(response).to redirect_to thanks_orders_path(number: @payment.number) }
         end
-        describe 'create user point history' do
-          it { expect { patch :update, params }.to change(UserPointHistory, :count).by(1) }
+        it 'create user point history' do
+          expect { patch :update, params }.to change(UserPointHistory, :count).by(1)
         end
       end
 
@@ -237,7 +249,7 @@ RSpec.describe Users::CheckoutsController, type: :controller do
           @detail = create(:single_order_detail, single_order_id: @single_order.id, address_id: @address.id, used_point: 30)
           @single_line_items = create(:single_line_item, variant_id: @variant.id, single_order_detail_id: @detail.id, quantity: 1, price: 100)
         end
-        describe 'cannot process anything already bought' do
+        context 'payment already completed' do
           before do
             allow_any_instance_of(User).to receive(:wellness_mileage) {10000}
             @payment = create(:payment, single_order_detail_id: @detail.id, address_id: @address.id, user_id: @user.id, state:10)

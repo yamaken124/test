@@ -74,7 +74,6 @@ RSpec.describe Variant, :type => :model do
               expect(@single_variant.available?).to eq false
             end
             it 'is not shown on top products(self.available)' do
-              p @single_variant
               expect(Variant.available).to eq []
             end
           end
