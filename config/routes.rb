@@ -94,8 +94,6 @@ Rails.application.routes.draw do
           patch 'update_tracking_code', :to => 'singles#update_tracking_code', :as => :update_tracking_code
           patch 'update_state', :to => 'singles#update_state', :as => :update_state
         end
-        member do
-        end
       end
       resources :one_clicks, only:[:index, :show, :update] do
         collection do

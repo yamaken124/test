@@ -65,7 +65,7 @@ class SingleLineItem < ActiveRecord::Base
   end
 
   def can_send_back?
-    (Date.today - single_order_detail.completed_on <= 14) && shipment.shipped?
+    (Date.today - shipment.shipped_at.to_date <= 14) && shipment.shipped?
   end
 
 

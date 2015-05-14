@@ -6,6 +6,9 @@
   <li <%= 'class=active' if request.path_info == state_admins_shipments_singles_path(state: "ready") %>>
     <a href="<%= state_admins_shipments_singles_path(state: "ready") %>"><%="未発送一覧(#{Shipment.ready.count})"%></a>
   </li>
+  <li <%= 'class=active' if request.path_info == state_admins_shipments_singles_path(state: "exported") %>>
+    <a href="<%= state_admins_shipments_singles_path(state: "exported") %>"><%="CSV出力一覧(#{Shipment.exported.count})"%></a>
+  </li>
   <li <%= 'class=active' if request.path_info == state_admins_shipments_singles_path(state: "shipped") %>>
     <a href="<%= state_admins_shipments_singles_path(state: "shipped") %>">発送済み一覧</a>
   </li>

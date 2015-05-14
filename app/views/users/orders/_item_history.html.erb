@@ -40,6 +40,12 @@
         この注文はキャンセルされました。
       </li>
     </ul>
+  <% elsif (item.shipment.exported? if item.shipment.present?) %>
+    <ul class="c-links">
+      <li class="c-link--nolink">
+        発送準備中です。
+      </li>
+    </ul>
   <% elsif item.can_canceled? %>
     <ul class="c-links">
       <% if item.instance_of?(SingleLineItem) %>
