@@ -1,7 +1,6 @@
-<% detail = @payment.single_order_detail %>
 <div class="content-header">
   <h3>
-    <%= link_to '発送管理', admins_shipments_singles_path %> / <%= @payment.number %>
+    <%= link_to '発送管理', admins_shipments_singles_path %>
     <div class="u-float_right">
       <% if @shipments.all_state?(@shipments, 'shipped') %>
         <div class="btn btn-warning">発送済み</div>
@@ -12,15 +11,16 @@
       <% elsif @shipments.all_state?(@shipments, 'failed') %>
         <div class="btn btn-default">取引が失敗しています</div>
       <% elsif @shipments.all_state?(@shipments, 'ready') %>
-        <%= form_tag csv_export_admins_shipments_path(format: :csv), method: "get", class: "u-float_left" do %>
-          <%= hidden_field_tag :shipment_ids, @shipments.ids %>
+        <%= form_tag csv_export_admins_shipments_singles_path(format: :csv), method: "get", class: "u-float_left" do %>
+          <% @shipments.each do |shipment| %>
+            <%= hidden_field_tag "shipment[ids][]", shipment.id %>
+          <% end %>
           <%= submit_tag "CSV出力", class: "btn btn-primary" %>
         <% end %>
       <% end %>
     </div>
   </h3>
 </div>
-
 <section class="content">
 
   <div class="content col-md-9">
@@ -28,21 +28,57 @@
     <table class="table c-table">
       <thead>
         <tr>
-          <th>商品名</th>
-          <th>商品画像</th>
-          <th>個数</th>
-          <th>支払い額合計</th>
-          <th>購入者</th>
+          <th>納品先名称</th>
+          <th>納品先郵便番号</th>
+          <th>納品先住所１</th>
+          <th>納品先住所２</th>
+          <th>納品先電話番号</th>
+          <th>納品先E-Mail</th>
+          <th>決済方法</th>
+          <th>品目金額合計</th>
+          <th>送料（税抜）</th>
+          <th>決済手数料（税抜）</th>
+          <th>消費税率</th>
+          <th>割引・利用ポイント１</th>
+          <th>消費税額</th>
+          <th>請求金額</th>
+          <th>品目コード</th>
+          <th>品目名称</th>
+          <th>予定数量</th>
+          <th>品目単価</th>
+          <th>１個あたりの消費税額</th>
+          <th>品目金額</th>
+          <th>消費税額</th>
           <th></th>
         </tr>
         <% @shipments.each do |shipment| %>
           <% item = shipment.single_line_item %>
+          <% address = shipment.address %>
+          <% detail = shipment.single_line_item.single_order_detail %>
+          <% payment = detail.payment %>
+          <% user = payment.user %>
           <tr>
-            <td><%= item.variant.sku %></td>
-            <td><%= image_tag item.variant.images.first.try(:image).try(:url), class: "thumb" %></td>
+            <td><%= address.name %></td>
+            <td><%= address.zipcode %></td>
+            <td><%= address.city %></td>
+            <td><%= address.address %></td>
+            <td><%= address.phone %></td>
+            <td><%= user.email %></td>
+            <td>クレジットカード</td>
+            <td><%= number_to_jpy(detail.item_total) %></td>
+            <td><%= number_to_jpy(detail.shipment_total) %></td>
+            <td><%= number_to_jpy(0) %></td>
+            <td>8%</td>
+            <td><%= detail.used_point %></td>
+            <td><%= number_to_jpy(detail.included_tax_total) %></td>
+            <td><%= number_to_jpy(detail.paid_total) %></td>
+            <td><%= item.variant.id %></td>
+            <td><%= item.variant.name %></td>
             <td><%= item.quantity %></td>
-            <td><%= number_to_currency(item.single_order_detail.paid_total) %></td>
-            <td><%= shipment.address.user.name %></td>
+            <td><%= number_to_jpy(item.price) %></td>
+            <td><%= number_to_jpy( (item.price * 0.08).floor ) %></td>
+            <td><%= '' %></td>
+            <td><%= '' %></td>
             <td>
               <% if shipment.ready? %>
                 <%= form_tag update_state_admins_shipments_singles_path(shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
@@ -54,50 +90,6 @@
             </td>
           </tr>
         <% end %>
-        <%= form_tag update_tracking_code_admins_shipments_singles_path, method: "patch" do %>
-          <tr>
-            <td><%= label_tag :tracking, t("shipment.tracking") %></td>
-            <td colspan="3">
-              <%= text_field_tag :tracking, (@tracking), class: "form-control", placeholder: "追跡番号を入力してください" %>
-              <%= hidden_field_tag :shipment_ids, @shipments.ids %>
-            </td>
-            <td>
-              <%= submit_tag @button_value, class: "btn btn-primary" %>
-            </td>
-          </tr>
-        <% end %>
-      </thead>
-    </table>
-  </div>
-
-  <div class="content col-md-9">
-    <h4 class="box-title">お届先情報</h4>
-    <table class="table c-table">
-      <thead>
-        <tr>
-          <th>名前</th>
-          <th><%= @payment.address.name %></th>
-        </tr>
-        <tr>
-          <th>郵便番号</th>
-          <th><%= @payment.address.zipcode %></th>
-        </tr>
-        <tr>
-          <th>都道府県</th>
-          <th><%= @payment.address.city %></th>
-        </tr>
-        <tr>
-          <th>住所</th>
-          <th><%= @payment.address.address %></th>
-        </tr>
-        <tr>
-          <th>電話番号</th>
-          <th><%= @payment.address.phone %></th>
-        </tr>
-        <tr>
-          <th>メールアドレス</th>
-          <th><%= @payment.user.email %></th>
-        </tr>
       </thead>
     </table>
   </div>

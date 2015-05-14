@@ -8,8 +8,6 @@ class Admins::Shipments::SinglesController < Admins::BaseController
   end
 
   def shipment_details
-    payment_from_shipments(@shipments)
-    set_tracking(@shipments)
   end
 
   def update_state
@@ -19,12 +17,12 @@ class Admins::Shipments::SinglesController < Admins::BaseController
     send(method_name, @shipments) if respond_to?(method_name, true)
   end
 
-  def update_tracking_code
-    shipment_ids_from_params.each do |shipment_id|
-      Shipment.find(shipment_id).update(tracking: params[:tracking])
-    end
-    redirect_to :back
-  end
+  # def update_tracking_code
+  #   shipment_ids_from_params.each do |shipment_id|
+  #     Shipment.find(shipment_id).update(tracking: params[:tracking])
+  #   end
+  #   redirect_to :back
+  # end
 
   def return_requests
     @return_requested_items = ReturnedItem.includes(user: [:profile]).includes(single_line_item: [:shipment, variant: [:product], single_order_detail: [:payment]]).where(returned_at: nil)
@@ -32,35 +30,35 @@ class Admins::Shipments::SinglesController < Admins::BaseController
   end
 
   def csv_export
-    @shipments = Shipment.all
-
+    @shipments = Shipment.where(id: shipment_ids_array_from_parameters)
     respond_to do |format|
       format.html do
         @shipments = Shipment.all
       end
       format.csv do
-        send_data render_to_string, filename: "users.csv", type: :csv
+        send_data render_to_string, filename: "FiNC#{Time.now.strftime('%y%m%d%H%M%S')}.csv", type: :csv
       end
     end
   end
 
   private
+
+    def shipment_ids_array_from_parameters
+      params[:shipment].require(:ids)
+    end
+
     def set_shipments
-      @shipments = Shipment.where(id: shipment_ids).includes(single_line_item: [:variant] )
+      @shipments = Shipment.where(id: shipment_ids).includes(:address, single_line_item: [:variant, single_order_detail: [payment: [:user]]] )
       filter_for_update
     end
 
-    def payment_from_shipments(shipments)
-      @payment = Payment.find_by(single_order_detail_id: shipments.first.single_line_item.single_order_detail_id)
-    end
-
     def filter_for_update
-      redirect_to :back and return unless (has_same_state? && @shipments.present? && ordered_by_same_user?)
+      redirect_to :back and return unless (has_same_state? && @shipments.present?)# && ordered_by_same_user?)
     end
 
-    def ordered_by_same_user?
-      @shipments.all? {|shipment| shipment.address.user == @shipments.first.address.user}
-    end
+    # def ordered_by_same_user?
+    #   @shipments.all? {|shipment| shipment.address.user == @shipments.first.address.user}
+    # end
 
     def has_same_state?
       @shipments.all? {|shipment| shipment.state == @shipments.first.state}
