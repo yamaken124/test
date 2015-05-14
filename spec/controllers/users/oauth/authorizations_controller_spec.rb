@@ -20,10 +20,19 @@ RSpec.describe Users::Oauth::AuthorizationsController, type: :controller do
     end
 
     context 'not signed up yet' do
-      before { stub_request(:get, "#{Settings.internal_api.finc_app.host}/v2/me").to_return(body: { user: { last_name: 'shino', email: 'mockuser@finc.co.jp' } }.to_json) }
+      before do
+        stub_request(
+          :get,
+          "#{Settings.internal_api.finc_app.host}/v2/me")
+          .to_return(body: { user: { last_name: 'shino', email: 'mockuser@finc.co.jp' } }.to_json)
+        stub_request(
+          :get,
+          "#{Settings.internal_api.finc_app.host}/v3/business_account")
+          .to_return(body: { company: { id: 5, name: 'FiNC', zipcode: '1040061', address: '中央区銀座3-9-6銀座マトリックスビル4,5F', prefecture: '東京都' } }.to_json)
+      end
       context 'valid consumer_key' do
         let(:params) { { consumer_key: 'cons', access_token: 'access' } }
-        it { post :create, params; expect(response).to redirect_to root_path }
+        it { post :create, params; expect(response).to redirect_to guidance_path(name: 'tutorial') }
         it { expect{ post :create, params }.to change(User, :count).by(1) }
         it { expect{ post :create, params }.to change(OauthAccessToken, :count).by(1) }
       end
@@ -35,6 +44,10 @@ RSpec.describe Users::Oauth::AuthorizationsController, type: :controller do
           :get,
           "#{Settings.internal_api.finc_app.host}/v2/me")
           .to_return(body: { user: { last_name: 'shino', email: 'mockuser@finc.co.jp' } }.to_json)
+        stub_request(
+          :get,
+          "#{Settings.internal_api.finc_app.host}/v3/business_account")
+          .to_return(body: { company: { id: 5, name: 'FiNC', zipcode: '1040061', address: '中央区銀座3-9-6銀座マトリックスビル4,5F', prefecture: '東京都' } }.to_json)
       end
 
       let!(:oauth_access_token) { create(:oauth_access_token, oauth_application_id: oauth_application.id, user_id: user.id, token: 'access') }
@@ -71,6 +84,12 @@ RSpec.describe Users::Oauth::AuthorizationsController, type: :controller do
     end
 
     describe 'User found' do
+      before do
+        stub_request(
+          :get,
+          "#{Settings.internal_api.finc_app.host}/v3/business_account")
+          .to_return(body: { company: { id: 5, name: 'FiNC', zipcode: '1040061', address: '中央区銀座3-9-6銀座マトリックスビル4,5F', prefecture: '東京都' } }.to_json)
+      end
       let(:oauth_application) { OauthApplication.find_by(consumer_key: Settings.oauth_applications.finc_app.consumer_key) }
       let!(:oauth_access_token) { create(:oauth_access_token, oauth_application_id: oauth_application.id, user_id: user.id, token: 'access') }
       it do

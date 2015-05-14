@@ -1,5 +1,5 @@
 <%= javascript_include_tag 'users/products/show' %>
-<%= form_tag(one_click_item_orders_path, :method => :post) do %>
+<%= form_tag(post_one_click_order_products_path, :method => :post) do %>
 
   <% single = @product.variants.single_variant %>
   <% subscription = @product.variants.subscription_variant %>
@@ -15,15 +15,16 @@
     </ul>
   </div>
   <div class="c-payment_checkout_notice">
-    <%if flash['error_message'].present? %>
+    <%if flash['error_message'].present? || params['error_message'].present?%>
       <% if params['error_message'] == 'payment_attributes_error.used_point_over_limit' %>
         <%= t(params['error_message'], :limit => Payment::UsedPointLimit+1) %>
+      <% elsif params['error_message'] == 'item.quantity_over_stock_quantity' %>
+        <%= t(params['error_message'], :stock_quantity => single.stock_quantity) %>
       <% else %>
         <%= t(params['error_message'], :default => "入力項目に不備があります") %>
       <% end %>
     <% end %>
   </div>
-
   <div class="p-wrapper--have_padding">
     <h2 class="p-lists__title_without_padding">栄養士からの一言</h2>
     <ul class="p-lists">
@@ -34,6 +35,7 @@
         <div class="p-list__fincrew_description">
           <%= include_line_break(@product.product_description.try(:nutritionist_word)) %>
         </div>
+<% if false %>
         <div class = "c-btn--product--detail_wrapper">
           <a href="<%= description_products_path(@product.id) %>">
             <div class="c-btn--product--detail">
@@ -41,6 +43,7 @@
             </div>
           </a>
         </div>
+<% end %>
       </li>
       <h2 class="p-lists__title">この商品について</h3>
       <li class="p-list">
@@ -48,12 +51,12 @@
           <%= include_line_break(@product.product_description.try(:description)) %>
         </div>
       </li>
-      <%if @product.send_to_office?%>
+      <%if @product.send_to_office? && @office_address.present? %>
         <h2 class="p-lists__title">お届け先住所（オフィスお届け）</h3>
         <li class="p-list">
           <div class="p-list__description">
-            <%= "#{current_user.addresses.last.try(:name)}<br>
-              #{current_user.addresses.last.try(:full_address)}".html_safe %>
+            <%= @office_address['zipcode'] %><br>
+            <%= @office_address['prefecture']+@office_address['address'] %>
           </div>
         </li>
       <% end %>
@@ -83,8 +86,11 @@
       <div class="p-payment_method__detail is-active">
         <% if !@product.only_once_purhcase? %>
           <p>数量: </p>
-          <%= select_tag "order[item_count]", options_for_select(@available_quantity), class: 'p-payment_method__amount' %>
+          <%= select_tag "order[item_count]", options_for_select(@available_quantity), class: 'p-payment_method__amount', :onchange => "update_max_used_point(event)" %>
           <p class="u-margin__right_short">個</p>
+          <% if single.belongs_to_one_click_shippment_taxons? %>
+            <p class='p-payment_method__amount_stock'><%= (single.stock_quantity > 0) ? "在庫：残り#{single.stock_quantity}個" : "在庫状況：売り切れ" %></p>
+          <% end %>
         <% else %>
           <%= hidden_field_tag 'order[item_count]', 1 %>
           <p class="p-payment_method__detail_notice">※お一人様一つ限りのご購入となります</p>
@@ -140,11 +146,14 @@
     </ul>
 
     <div class="c-payment_jquery_notice u-margin__bottom10"></div>
-    <%= submit_tag '1-clickで購入する', class: 'c-btn--submit c-btn--submit--single', :onclick=> "prevent_double_submit(event)" %>
+    <%= hidden_field_tag 'product_id', params[:id] %>
+    <%= submit_tag 'この商品を購入する', class: 'c-btn--submit c-btn--submit--single', :onclick=> "prevent_double_submit(event)" %>
+<% if false %>
     <a href="<%= guidance_path(name: 'one_click') %>">
       <div class='p-product_text_link u-margin__top10'>
         1-click購入とは？
       </div>
     </a>
+<% end %>
   </div>
 <% end %>

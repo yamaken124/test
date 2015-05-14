@@ -1,59 +1,39 @@
-<%= @payment.user.profile.name %>様
+<%= @user.profile.name %>様
 
 FiNCストア 商品発送のご連絡
-注文番号：<%= @payment.number %>
-<%= orders_url %>
-
 _________________________________________________________________________________
 
 FiNCストア をご利用いただき、ありがとうございます。お客様がご注文いただいた商品の発送が完了したことをお知らせいたします。商品の詳細は下記のとおりです。
 
 お届け先：
-<%= @address.name %>様
-<%= @address.zipcode %>
-<%= @address.full_address %>
+　<%= @address.name %>様
+　<%= @address.full_address %>
 
 運送会社：
-<%= @carrier %>
+　<%= @carrier %>
+
+発送状況の確認先：
+　https://trackings.post.japanpost.jp/services/srv/search/
 
 追跡番号：
-<%= @shipments.first.tracking %>
+　<%= @shipments.first.tracking %>
 
 =================================================================================
 
-注文内容
-
-注文番号：<%= @payment.number %>
-注文日：<%= @detail.completed_on %>
-
+発送内容：
 <% @shipments.each do |shipment| %>
-  <% variant = shipment.single_line_item.variant %>
-  商品名：<%= variant.name %>
-
+<% variant = shipment.single_line_item.variant %>
+　<%= variant.name %>（<%= shipment.single_line_item.quantity %>個）
 <% end %>
 
-注文履歴：
-<%= orders_path(:only_path => false) %>
+注文履歴ページ：
+　<%= single_history_orders_path(:only_path => false) %>
 
 =================================================================================
-
-商品の小計：<%= number_to_jpy(@detail.item_total) %>
-配送料：<%= number_to_jpy(@detail.shipment_total) %>
-注文合計：<%= number_to_jpy(@detail.total) %>
-
-使用ポイント：<%= number_to_jpy(@detail.used_point) %>
-ご請求合計：<%= number_to_jpy(@detail.total) %>
-
-_________________________________________________________________________________
 
 またのご利用をお待ちしております。
 FiNCストア
 <% root_path(:only_path => false) %>
-
 _________________________________________________________________________________
-
-本メールは、FiNCストア でのご注文について、当サイトがご注文を受領したことを確認するものにすぎません。FiNCストア が販売する商品については、商品が発送されたことをお知らせするメールを当サイトからお送りした時点で、当該商品のご購入についての契約が成立します。
-
-在庫状況とお届け予定日は、確約されたものではありません。お届け予定日は、在庫状況の変動などにより変更される場合があります。
 
 このEメールアドレスは配信専用です。このメッセージに返信しないようお願いいたします。

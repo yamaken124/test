@@ -39,15 +39,6 @@
         </div>
       <% end %>
 
-      <div class="form-group">
-        <%= p.label :is_valid_at %><br>
-        <%= p.date_select :is_valid_at, {}, { class: "form-control" } %>
-      </div>
-      <div class="field">
-        <%= p.label :is_invalid_at %><br>
-        <p><%= p.date_select :is_invalid_at, { default: 5.years.from_now }, { class: "form-control" } %></p>
-      </div>
-
       <%= p.fields_for :products_taxons, @product.products_taxons || ProductTaxon.new do |t| %>
         <div class="form-group">
           <p><%= t.label "category" + (t.options[:child_index]+1).to_s %></p>

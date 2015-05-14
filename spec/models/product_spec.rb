@@ -15,52 +15,57 @@ require 'rails_helper'
 
 RSpec.describe Product, :type => :model do
 
-  describe 'product validations' do
-
-    let(:product) { create(:product) }
-    let(:variant) { create(:variant, product_id: product.id ) }
-    let!(:image) { Image.create(:image=> File.open(File.join(Rails.root, '/spec/fixtures/sample.png')), imageable_id: variant.id, imageable_type: "Variant" ) }
-    let!(:price) { create(:price, variant_id: variant.id ) }
-    let!(:whereabout) { create(:variant_image_whereabout, image_id: image.id, variant_id: variant.id) }
-    let!(:descriptionwhereabout) { create(:variant_image_whereabout, image_id: image.id, variant_id: variant.id, whereabout: 2) }
-
-    it 'product_available' do
-      expect(product.available?).to eq true
+  context 'with valid single variant' do
+    before do
+      @user = create(:user)
+      @product = create(:product)
+      @single_variant = create(:single_variant, product_id: @product.id)
+      @price = create(:price, variant_id: @single_variant.id)
+      @image = Image.create(:image=> File.open(File.join(Rails.root, '/spec/fixtures/sample.png')), imageable_id: @single_variant.id, imageable_type: "Variant" )
+      allow_any_instance_of(User).to receive(:shown_product_ids) {[@product.id]}
     end
 
-    it 'having_images_and_variants' do
-      expect(Product.having_images_and_variants).to eq [product]
-    end
+    context 'with price' do
 
-  end
+      context 'with only top image' do
+        before do
+          create(:variant_image_whereabout, image_id: @image.id, variant_id: @single_variant.id, whereabout: 1)
+        end
+        it 'has top preview_images' do
+          expect(@product.preview_images('top')).to eq [@image]
+        end
+        it 'does not have description preview_images' do
+          expect(@product.preview_images('description')).to eq []
+        end
+        it 'is not available' do
+          expect(@product.available?).to eq false
+        end
+        it 'is displayed' do
+          expect(@product.displayed?(@user)).to eq true
+        end
+        it 'has image and variant' do
+          expect(Product.having_images_and_variants).to eq [@product]
+        end
+        it 'is not in available products' do
+          expect(Product.available).to eq nil
+        end
 
-  describe 'prices of each order' do
-
-    context 'single_order_type' do
-      let(:product) {create(:product)}
-      let!(:single_variant) {create(:single_variant, product_id: product.id)}
-      let!(:single_price) {create(:price, variant_id: single_variant.id )}
-      let!(:image) { Image.create(:image=> File.open(File.join(Rails.root, '/spec/fixtures/sample.png')), imageable_id: single_variant.id, imageable_type: "Variant" ) }
-
-      # it 'expects single_master_price' do
-      #   expect(product.single_master_price).to eq single_price.amount
-      # end
-
-      it 'preview_images' do
-        # expect(product.preview_images(whereabout)).to eq [image]
+        context 'with top and description image' do
+          before do
+            create(:variant_image_whereabout, image_id: @image.id, variant_id: @single_variant.id, whereabout: 2)
+          end
+          it 'has description preview_images' do
+            expect(@product.preview_images('description')).to eq [@image]
+          end
+          it 'is available' do
+            expect(@product.available?).to eq true
+          end
+          it 'is in available products' do
+            expect(Product.available).to eq [@product]
+          end
+        end
       end
-
     end
-
-    context 'subscription_order_type' do
-      # it 'expects subscription_master_price' do
-      #   product = create(:product)
-      #   subscription_variant = create(:subscription_variant, product_id: product.id)
-      #   subscription_price = create(:price, variant_id: subscription_variant.id )
-      #   expect(product.subscription_master_price).to eq subscription_price.amount
-      # end
-    end
-
   end
 
 end

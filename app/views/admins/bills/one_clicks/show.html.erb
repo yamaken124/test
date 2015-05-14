@@ -1,0 +1,115 @@
+<% payment = @detail.one_click_payment %>
+<% profile = @user.profile %>
+<section class="content">
+
+  <div class="content col-md-9">
+    <h4 class="box-title">お客様情報</h4>
+    <table class="table c-table">
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th><%= @user.profile.try(:name) %></th>
+        </tr>
+        <tr>
+          <th>メールアドレス</th>
+          <th><%= @user.email %></th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+<% if @office_address.present? %>
+  <div class="content col-md-9">
+    <h4 class="box-title">お届け先情報</h4>
+    <table class="table c-table">
+      <thead>
+        <tr>
+          <th>会社名</th>
+          <th><%= @office_address['name'] %></th>
+        </tr>
+        <tr>
+          <th>郵便番号</th>
+          <th><%= @office_address['zipcode'] %></th>
+        </tr>
+        <tr>
+          <th>都道府県</th>
+          <th><%= @office_address['prefecture'] %></th>
+        </tr>
+        <tr>
+          <th>住所</th>
+          <th><%= @office_address['address'] %></th>
+        </tr>
+        <tr>
+          <th>電話番号</th>
+          <th><%#= payment.address.phone %></th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+<% end %>
+  <div class="content col-md-9">
+    <h4 class="box-title">お支払い情報</h4>
+    <table class="table c-table">
+      <thead>
+        <tr>
+          <th>支払い時間</th>
+          <th><%= payment.created_at.strftime("%Y/%m/%d %H:%M") %></th>
+        </tr>
+        <tr>
+          <th>注文番号</th>
+          <th><%= payment.number %></th>
+        </tr>
+        <tr>
+          <th>ステータス</th>
+          <th><%= t("payment.state.#{payment.state}") %></th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <div class="content col-md-9">
+    <h4 class="box-title">ご注文情報</h4>
+    <table class="table c-table">
+      <thead>
+        <tr>
+          <th>総額</th>
+          <th><%= number_to_jpy(@detail.total) %></th>
+        </tr>
+        <tr>
+          <th>実支払額</th>
+          <th><%= number_to_jpy(@detail.paid_total) %></th>
+        </tr>
+        <tr>
+          <th>税額</th>
+          <th><%= number_to_jpy(@detail.included_tax_total) %></th>
+        </tr>
+        <tr>
+          <th>小計</th>
+          <th><%= number_to_jpy(@detail.item_total) %></th>
+        </tr>
+        <tr>
+          <th>使用マイル</th>
+          <th><%= @detail.used_point %></th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <div class="content col-md-9">
+    <h4 class="box-title">ご購入商品情報</h4>
+    <table class="table c-table">
+      <thead>
+        <tr>
+          <th>商品名</th>
+          <th><%= @detail.one_click_item.variant.name %></th>
+        </tr>
+        <tr>
+          <th>数量</th>
+          <th><%= @detail.one_click_item.quantity %></th>
+        </tr>
+        <tr>
+          <th>金額</th>
+          <th><%= number_to_jpy(@detail.one_click_item.price) %></th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
+</section>

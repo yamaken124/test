@@ -80,4 +80,7 @@ Rails.application.configure do
 
   # Set marking ribbon to know which environment you use
   config.rack_dev_mark.enable = true
+
+  # Rails logrotate
+  config.logger = Logger.new("log/staging.log", 5, 10 * 1024 * 1024)
 end

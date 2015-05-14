@@ -22,4 +22,7 @@ class Admin < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  enum authority: { admins: 0, operators: 10, nutritionists: 20 }
+
 end

@@ -16,7 +16,6 @@
             <th>ID</th>
             <th>名前</th>
             <th>この商品について</th>
-            <th>状態</th>
             <th>カテゴリ</th>
             <th>状態</th>
             <th></th>
@@ -28,7 +27,6 @@
               <td><%= product.id %></td>
               <td><a href="<%= admins_product_path(id: product.id) %>"><%= product.name %></a></td>
               <td><%= product.product_description.try(:description) %></td>
-              <td><%= t(product.classify_validity) %></td>
               <td>
                 <% product.taxons.each.with_index(1) do |products_taxon, i| %>
                   <% if i <= 3 %>

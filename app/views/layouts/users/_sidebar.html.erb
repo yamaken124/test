@@ -15,9 +15,21 @@
         </li>
       <% end %>
     <% end %>
-    <li class="sidebar_rules">
-      <%= link_to guidance_path(name: 'user_guidance') do %>
+    <li class="sidebar_lists_with_top_margin">
+      <%= link_to guidance_path(name: 'user_guidance'), class:'u-block_link' do %>
         <div class='sidebar_lists_left'>利用案内</div>
+        <div class='sidebar_lists_right'></div>
+      <% end %>
+    </li>
+    <li class="sidebar_lists_min">
+      <%= link_to guidance_path(name: 'privacy'), class:'u-block_link' do %>
+        <div class='sidebar_lists_left'>プライバシーポリシー</div>
+        <div class='sidebar_lists_right'></div>
+      <% end %>
+    </li>
+    <li class="sidebar_lists_min">
+      <%= link_to guidance_path(name: 'specified_commercial_transaction_act'), class:'u-block_link' do %>
+        <div class='sidebar_lists_left'>特定商取引法に基づく表示</div>
         <div class='sidebar_lists_right'></div>
       <% end %>
     </li>

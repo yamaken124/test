@@ -62,10 +62,6 @@ class SingleOrderDetail < ActiveRecord::Base
     # self.adjustment_total = additional_tax_total
   end
 
-  def can_send_back?
-    Date.today - self.completed_on <= 14
-  end
-
   def item_total_with_tax
     item_total.to_i# + additional_tax_total.to_i
   end
@@ -82,6 +78,10 @@ class SingleOrderDetail < ActiveRecord::Base
 
   def all_shipped?
     single_line_items.all? { |item| item.shipment.shipped? }
+  end
+
+  def complete_items
+    single_line_items.update_all(payment_state: SingleLineItem.payment_states[:completed])
   end
 
 end

@@ -1,39 +1,23 @@
 <% single_variant = @single_variants.find_by(product_id: product.id) %>
-<% subscription_variant = @subscription_variants.find_by(product_id: product.id) %>
+<%# subscription_variant = @subscription_variants.find_by(product_id: product.id) %>
 
-<% if product.one_click_product? %>
-  <a href="<%= show_one_click_products_path(id: product.id) %>">
-<% else %>
-  <a href="<%= product_path(id: product.id) %>">
-<% end %>
-  <div class="c-product">
+<div class='c-product'>
+  <a href="<%= product.one_click_product? ? show_one_click_products_path(id: product.id) : product_path(id: product.id) %>" class='u-block_link'>
     <%= image_tag @images.find_by(imageable_id: single_variant.id).image.url, class: "c-product__image" %>
-    <div class="c-product__left_wrapper">
-      <div class="c-product__title">
-        <%= product.name %>
-      </div>
-      <div class="c-product__price">
-        <% if(single_variant.price && subscription_variant.try(:price)) %>
-          <p class="c-product__price_title"><%=t('order_type.single_order')%></p>
-        <% end %>
-        <% if single_variant.price %>
-          <p class="c-product__price_value">
+    <div class="c-product__bottom_wrapper">
+      <div class="c-product__left_wrapper">
+        <span class="c-product__title"><%= simple_format(product.name) %></span>
+        <span class="c-product__price_title"><%=t('order_type.single_order')%></span>
+        <span class="c-product__price_value">
           <%= number_to_jpy(single_variant.price.amount) %><%=t('tax.included') %>
+        </span>
+        <% if single_variant.belongs_to_one_click_shippment_taxons? %>
+          <p class='c-product__stock_quantity'>
+            <%= (single_variant.stock_quantity > 0) ? "在庫状況：残り#{single_variant.stock_quantity}個" : "在庫状況：売り切れ" %>
           </p>
         <% end %>
       </div>
-      <div class="c-product__price">
-        <%if( subscription_variant.try(:price) && single_variant.price ) %>
-            <p class="c-product__price_title"><%=t('order_type.subscription_order')%></p>
-        <% end %>
-        <% if(subscription_variant.try(:price)) %>
-          <p class="c-product__price_value">
-            <%= number_to_jpy(subscription_variant.try(:price).try(:amount)) %>
-          </p>
-        <% end %>
-      </div>
+      <div class="c-product__right_wrapper"></div>
     </div>
-    <div class="c-product__right_wrapper">
-    </div>
-  </div>
-</a>
+  </a>
+</div>

@@ -1,0 +1,14 @@
+<div class="content-header">
+  <% if current_admin.admins? %>
+    <h3>発送管理（※単品商品毎管理）</h3>
+  <% else %>
+    <h3>株式会社FiNC 発送管理（※商品毎管理）</h3>
+  <% end %>
+</div>
+<section class="content col-md-10">
+  <h4 class="box-title"><%= @title %></h4>
+  <%= render partial: 'table', locals: {shipments: @shipments} %>
+</section>
+<section>
+  <%= render partial: 'nav', locals: {} %>
+</section>

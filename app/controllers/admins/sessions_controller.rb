@@ -14,6 +14,6 @@ class Admins::SessionsController < Devise::SessionsController
     end
 
     def after_sign_in_path_for(resource)
-      admins_products_path
+      current_admin.admins? ? admins_products_path : admins_shipments_singles_path
     end
 end

@@ -8,6 +8,7 @@ gem 'rails', '4.2.0'
 gem 'mysql2'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
+gem 'compass-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
@@ -56,6 +57,7 @@ gem 'rails_config'
 group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'
+  gem 'rspec-mocks'
   gem 'guard-rspec'
   gem 'factory_girl_rails'
   gem 'email_spec'

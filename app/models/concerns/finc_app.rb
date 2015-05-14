@@ -17,9 +17,9 @@ module FincApp
   def self.filter_user_params(finc_app_user_params)
     { profile_attributes: {} }.tap do |update_params|
       if finc_app_user_params[:telephone].present? && finc_app_user_params[:telephone] =~ Profile.phone_regexp
-        update_params[:profile_atttributes][:phone] = finc_app_user_params[:telephone]
+        update_params[:profile_attributes][:phone] = finc_app_user_params[:telephone]
       end
-      update_params[:profile_atttributes][:id] = finc_app_user_params[:profile_id] if finc_app_user_params[:profile_id]
+      update_params[:profile_attributes][:id] = finc_app_user_params[:profile_id] if finc_app_user_params[:profile_id]
       %w(last_name first_name last_name_kana first_name_kana).each do |attribute|
         if finc_app_user_params[attribute].present?
           update_params[:profile_attributes][attribute.to_sym] = finc_app_user_params[attribute]

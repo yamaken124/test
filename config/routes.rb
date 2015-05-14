@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       :only => [ :session ]
   end
 
-  root 'users/accounts#show'
+  root 'users/accounts#top'
 
   resource :health_check, only: [:show]
 
@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       end
     end
     resource :account, only: [:show] do
+      get '/top' => 'accounts#top', on: :collection, :as => :top
       resources :addresses, only: [:index, :edit, :update, :new, :create, :destroy] do
         collection do
           get 'fetch_address_with_zipcode', action: :fetch_address_with_zipcode, :as => :fetch_address
@@ -43,6 +44,7 @@ Rails.application.routes.draw do
         get ':id/show_one_click/', action: :show_one_click, :as => :show_one_click
         get ':id/description', action: :description, :as => :description
         get 'update_max_used_point', action: :update_max_used_point, :as => :update_max_used_point
+        post :post_one_click_order
       end
     end
     resource :cart, only: [:update], controller: :orders do
@@ -50,13 +52,15 @@ Rails.application.routes.draw do
       get :address, on: :member
       patch '/remove_item/:id' => 'orders#remove_item', on: :collection, :as => :remove_item
     end
-    resources :orders, only: [:index, :show] do
+    resources :orders, only: [:show] do
       collection do
+        get 'single_history'
+        get 'one_click_history'
         post :populate
-        post :one_click_item
         get  ':number/thanks', action: :thanks, :as => :thanks
         get  ':number/one_click_thanks', action: :one_click_thanks, :as => :one_click_thanks
-        delete '/cancel/:number' => 'orders#cancel', :as => :cancel
+        patch '/cancel/:number' => 'orders#cancel', :as => :cancel
+        patch '/one_click_cancel/:number' => 'orders#one_click_cancel', :as => :one_click_cancel
       end
     end
     namespace :orders do
@@ -80,79 +84,41 @@ Rails.application.routes.draw do
       resources :images,only: [:index, :new, :create, :edit, :update, :destroy], controller: :images, imageable_type: 'Variant'
       post '/images/sort', :to => 'images#sort'
     end
-    resources :shipments, only:[:index, :show, :update] do
-      collection do
-        get 'state/:state', :to => 'shipments#index', :as => :state
-        get 'return_requests'
-        get 'shipment_details'
-        get 'csv_export'
-        patch 'update_tracking_code', :to => 'shipments#update_tracking_code', :as => :update_tracking_code
-        patch 'update_state', :to => 'shipments#update_state', :as => :update_state
+    namespace :shipments do
+      resources :singles, only:[:index, :show, :update] do
+        collection do
+          get 'state/:state', :to => 'singles#index', :as => :state
+          get 'return_requests'
+          get 'shipment_details'
+          get 'csv_export'
+          patch 'update_tracking_code', :to => 'singles#update_tracking_code', :as => :update_tracking_code
+          patch 'update_state', :to => 'singles#update_state', :as => :update_state
+        end
       end
-      member do
+      resources :one_clicks, only:[:index, :show, :update] do
+        collection do
+          get 'state/:state', :to => 'one_clicks#index', :as => :state
+          get 'return_requests'
+          get 'shipment_details'
+          get 'csv_export'
+          patch 'update_tracking_code', :to => 'one_clicks#update_tracking_code', :as => :update_tracking_code
+          patch 'update_state', :to => 'one_clicks#update_state', :as => :update_state
+        end
       end
     end
     #TODO routing setting
     namespace :bills do
-      resources :credits
-      resources :post_payments
+      resources :credits, only: [:index, :show]
+      resources :post_payments, only: [:index, :show]
       resources :subscriptions
+      resources :one_clicks
     end
+    resources :users, only:[:index, :show, :update] do
+      collection do
+        post 'search'
+      end
+    end
+    resources :reports, only:[:index]
   end
 
-
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
 end

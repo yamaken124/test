@@ -1,7 +1,7 @@
 <% detail = @payment.single_order_detail %>
 <div class="content-header">
   <h3>
-    <%= link_to '発送管理', admins_shipments_path %> / <%= @payment.number %>
+    <%= link_to '発送管理', admins_shipments_singles_path %> / <%= @payment.number %>
     <div class="u-float_right">
       <% if @shipments.all_state?(@shipments, 'shipped') %>
         <div class="btn btn-warning">発送済み</div>
@@ -28,11 +28,10 @@
     <table class="table c-table">
       <thead>
         <tr>
-          <th>名前</th>
-          <th>画像</th>
-          <th>単価</th>
+          <th>商品名</th>
+          <th>商品画像</th>
           <th>個数</th>
-          <th>注文支払い合計</th>
+          <th>支払い額合計</th>
           <th>購入者</th>
           <th></th>
         </tr>
@@ -41,13 +40,12 @@
           <tr>
             <td><%= item.variant.sku %></td>
             <td><%= image_tag item.variant.images.first.try(:image).try(:url), class: "thumb" %></td>
-            <td><%= number_to_currency(item.price) %></td>
             <td><%= item.quantity %></td>
             <td><%= number_to_currency(item.single_order_detail.paid_total) %></td>
             <td><%= shipment.address.user.name %></td>
             <td>
               <% if shipment.ready? %>
-                <%= form_tag update_state_admins_shipments_path(shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
+                <%= form_tag update_state_admins_shipments_singles_path(shipment), method: "patch", class: "u-float_left u-margin__left20" do %>
                   <%= hidden_field_tag :state, "canceled" %>
                   <%= hidden_field_tag :shipment_ids, @shipments.ids %>
                   <%= submit_tag "発送キャンセル", class: "btn btn-warning", data: { confirm: "本当に発送をキャンセルしますか？" } %>
@@ -56,7 +54,52 @@
             </td>
           </tr>
         <% end %>
+        <%= form_tag update_tracking_code_admins_shipments_singles_path, method: "patch" do %>
+          <tr>
+            <td><%= label_tag :tracking, t("shipment.tracking") %></td>
+            <td colspan="3">
+              <%= text_field_tag :tracking, (@tracking), class: "form-control", placeholder: "追跡番号を入力してください" %>
+              <%= hidden_field_tag :shipment_ids, @shipments.ids %>
+            </td>
+            <td>
+              <%= submit_tag @button_value, class: "btn btn-primary" %>
+            </td>
+          </tr>
+        <% end %>
       </thead>
     </table>
   </div>
 
+  <div class="content col-md-9">
+    <h4 class="box-title">お届先情報</h4>
+    <table class="table c-table">
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th><%= @payment.address.name %></th>
+        </tr>
+        <tr>
+          <th>郵便番号</th>
+          <th><%= @payment.address.zipcode %></th>
+        </tr>
+        <tr>
+          <th>都道府県</th>
+          <th><%= @payment.address.city %></th>
+        </tr>
+        <tr>
+          <th>住所</th>
+          <th><%= @payment.address.address %></th>
+        </tr>
+        <tr>
+          <th>電話番号</th>
+          <th><%= @payment.address.phone %></th>
+        </tr>
+        <tr>
+          <th>メールアドレス</th>
+          <th><%= @payment.user.email %></th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
+</section>

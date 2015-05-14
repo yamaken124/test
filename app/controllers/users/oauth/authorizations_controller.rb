@@ -3,6 +3,7 @@ module Users
     class AuthorizationsController < Users::Oauth::BaseController
       before_action :redirect_to_root_if_signed_in
       before_action :check_valid_key_and_token!, only: [:create]
+      after_action :register_users_user_category
 
       def create
         if sign_in_with_access_token(persisted_access_token)
@@ -10,14 +11,14 @@ module Users
         else
           # finc_app 以外の認証も対応する必要が出たら実装する
           sign_up_with_fincapp(oauth_application, params[:access_token])
-          redirect_to root_path#edit_profile_path#(continue: :credit_cards)
+          redirect_to guidance_path(name: 'tutorial')#edit_profile_path#(continue: :credit_cards)
         end
       end
 
       def sign_in_with_email_password
-        if resource = FincApp.sign_in(user_params[:email], user_params[:password])
-          sign_in(resource)
-          redirect_to after_sign_in_path_for(resource)
+        if @user = FincApp.sign_in(user_params[:email], user_params[:password])
+          sign_in(@user)
+          redirect_to after_sign_in_path_for(@user)
         else
           @user = User.new(email: user_params[:email])
           render layout: "users/users"
@@ -48,23 +49,28 @@ module Users
 
         def sign_up_with_fincapp(oauth_finc_app, access_token)
           fincapp_user = FincApp.me(access_token)
-          user = FincApp.save_user_from_finc_app(fincapp_user)
-          user.oauth_access_tokens.where(oauth_application_id: oauth_finc_app.id) \
+          @user = FincApp.save_user_from_finc_app(fincapp_user)
+          @user.oauth_access_tokens.where(oauth_application_id: oauth_finc_app.id) \
             .where(token: access_token).first_or_create
-          sign_in(:user, user)
-          user
+          sign_in(:user, @user)
+          @user
         end
 
         def sign_in_with_access_token(persisted_access_token)
-          if persisted_access_token && user = User.where(id: persisted_access_token.user_id).first
-            sign_in(:user, user)
-            user
+          if persisted_access_token && @user = User.where(id: persisted_access_token.user_id).first
+            sign_in(:user, @user)
+            @user
           end
         end
 
         def user_params
           params.require(:user).permit(:email, :password, :remember_me)
         end
+
+        def register_users_user_category
+          @user.first_or_initialize_users_user_category if @user.present?
+        end
+
     end
   end
 end

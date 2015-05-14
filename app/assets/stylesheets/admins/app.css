@@ -14,7 +14,7 @@
  *= require bootstrap
  *= require font-awesome
  *= require ionicons
- *= require iCheck/all
  *= require admin-lte
+ *= require iCheck/all
  *= require_tree ./object
  */

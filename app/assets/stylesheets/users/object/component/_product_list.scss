@@ -1,34 +1,44 @@
 @import "../../foundation/setting";
+.c-product_list__wrapper{
+  padding: 20px 5px 0 5px;
+}
 .c-product_list{
   width:100%;
-  height:100px;
-  margin-top:10px;
+  margin-bottom:20px;
   .c-product_list__image{
-    width:90px;
-    height:90px;
-    float:left;
+    width:30%;
+    display: inline-block;
+    vertical-align: middle;
+    padding-right:5%;
     img{
       width:100%;
     }
   }
   .c-product__list_detail_wrapper{
-    height:100px;
-    float:left;
+    width:60%;
+    display: inline-block;
+    vertical-align: bottom;
     .c-product_list__title{
-      margin-top:33px;
-      margin-left:10px;
       color:$base_font_color;
+      padding-bottom:4px;
+      word-wrap: break-word;
     }
     .c-product_list__price{
-      margin-top:5px;
-      margin-left:10px;
-      color:$base_font_color;
+      color:$finc_color;
     }
   }
+}
+.c-product_list__short{
+  @extend .c-product_list;
+  margin-bottom: 10px;
 }
 .c-product_list__detail{
   width:100%;
   height:24px;
+  margin-bottom:20px;
+  &:last-child{
+    margin-bottom:0;
+  }
   select{
     height:100%;
     width:60px;
@@ -41,7 +51,7 @@
     -o-appearance: none;
     appearance: none;
     padding: 4px;
-    margin:0;
+    margin:0 2px;
     background: url(asset-path("users/drop.png")) no-repeat right, #fff;
     background-size:5px 12px;
     float:left;
@@ -80,5 +90,6 @@
     text-align:center;
     height: 22px;
     line-height:22px;
+    margin-left:6px;
   }
 }

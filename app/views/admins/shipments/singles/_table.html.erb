@@ -1,4 +1,4 @@
-<%= form_tag shipment_details_admins_shipments_path, method: "get" do %>
+<%= form_tag shipment_details_admins_shipments_singles_path, method: "get" do %>
   <table class="table c-table">
     <thead>
       <tr>
@@ -8,7 +8,7 @@
         <th>商品SKU名</th>
         <th>名前</th>
         <th>税込金額</th>
-        <th><%= submit_tag "詳細情報", class: '' %></th>
+        <th><%= submit_tag "詳細", class: 'btn btn-primary' %></th>
       </tr>
     </thead>
     <tbody>

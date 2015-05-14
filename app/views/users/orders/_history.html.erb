@@ -1,0 +1,12 @@
+<div class="c-order__title">
+  <p class="c-order__lists">注文日:<br><%= detail.completed_on %></p>
+  <p class="c-order__lists">合計:<br><%= number_to_jpy(detail.paid_total) %></p>
+  <p class="c-order__lists">注文番号:<br><%= "#{payment.number}" %></p>
+</div>
+<% if detail.instance_of?(OneClickDetail) %>
+  <%= render partial: 'users/orders/item_history', locals: {item: detail.one_click_item, detail: detail, payment: payment, shipment: detail.one_click_item.one_click_shipment} %>
+<% else %>
+  <% detail.single_line_items.each do |item|%>
+    <%= render partial: 'users/orders/item_history', locals: {item: item, detail: detail, shipment: item.shipment} %>
+  <% end %>
+<% end %>

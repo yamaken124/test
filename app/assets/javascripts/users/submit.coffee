@@ -33,6 +33,11 @@
       event.stopPropagation();
       return false
 
+    if !window.confirm('本当に購入しますか？')
+      event.preventDefault();
+      event.stopPropagation();
+      return false
+
   $('.c-btn--submit--single').val('送信中...')
   if $('.c-btn--submit--single').hasClass('disabled')
     event.preventDefault();
@@ -64,4 +69,6 @@ $ ->
         $('.c-btn--submit--single').val('登録する')
       else if url.match(/credit_cards/)
         $('.c-btn--submit--single').val('登録する')
+      else if url.match(/show_one_click/)
+        $('.c-btn--submit--single').val('この商品を購入する')
     return

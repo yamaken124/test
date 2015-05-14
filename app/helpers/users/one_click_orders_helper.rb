@@ -6,21 +6,27 @@ module Users::OneClickOrdersHelper
 
     begin
       ActiveRecord::Base.transaction do
-        detail = OneClickDetail.create!(detail_attributes)
+        @detail = OneClickDetail.create!(detail_attributes)
+        @item = OneClickItem.create!(item_attributes(@detail))
+        CheckoutValidityChecker.new.common_validity_checker(payment_attributes(@detail), @detail, current_user, @item)
 
-        @item = OneClickItem.create!(item_attributes(detail))
-        CheckoutValidityChecker.new.common_validity_checker(payment_attributes(detail), detail, current_user, @item)
-        @payment = OneClickPayment.new(payment_attributes(detail))
+        #弁当(1-clickで発送管理まで行うもの）なら在庫、発送管理
+        if @item.variant.belongs_to_one_click_shippment_taxons?
+          @item.variant.update_stock_quantity( (-1)*@item.quantity )
+          OneClickShipment.new(shipment_attributes).save!
+        end
 
-        # 0円決済はone_click_orderにて許容するとの認識
-        (raise 'gmo_transaction_failed' unless @payment.pay_with_gmo_payment) if detail.paid_total > 0
+        @payment = OneClickPayment.new(payment_attributes(@detail))
+
+        # 0円決済はone_click_orderにて許容する＝決済は通さない
+        (raise 'gmo_transaction_failed' unless @payment.pay_with_gmo_payment) if @detail.paid_total > 0
         @payment.save!
 
         create_once_purchase_product_history if @item.variant.product.one_click_product?
       end
       true
     rescue => e
-      flash['error_message'] = e.message
+      params['error_message'] = e.message
       false
     end
 
@@ -31,7 +37,7 @@ module Users::OneClickOrdersHelper
       tax_rate_id: 1,
       completed_on: Date.today,
       completed_at: Time.now,
-      address_id: Address.last.id, #TODO company_address or null
+      address_id: nil, #TODO company_address or null
       used_point: used_point,
       item_count: order_attributes_from_params[:item_count],
       )
@@ -42,11 +48,12 @@ module Users::OneClickOrdersHelper
       amount: detail.paid_total,
       used_point: used_point,
       payment_method_id: 1,
-      address_id: Address.last.id,
+      address_id: nil,
       number: one_click_number(detail),
       user_id: current_user.id,
       gmo_card_seq_temporary: payment_attributes_from_params[:gmo_card_seq_temporary],#FIXME
       one_click_detail_id: detail.id,
+      state: OneClickPayment.states[:completed],
       )
   end
 
@@ -58,6 +65,14 @@ module Users::OneClickOrdersHelper
       )
   end
 
+  def shipment_attributes
+    {
+      address_id: nil, #TODO company_address or null
+      one_click_item_id: @item.id,
+      state: OneClickShipment.states[:ready],
+    }
+  end
+
   def one_click_order_updater
     # FIXME order_updaterと統合
     order = {}
@@ -66,7 +81,6 @@ module Users::OneClickOrdersHelper
     order[:paid_total] = order[:total] - used_point.to_i
     order[:included_tax_total] = order[:paid_total] - ( order[:paid_total] / (TaxRate.rating) ).floor
     order
-
   end
 
   def item_total

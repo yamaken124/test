@@ -13,12 +13,7 @@
         <% end %>
       </ul>
     <% end %>
-    <div class="p-wrapper--have_padding">
-    <% if false #TODO %>
-      <div class="c-payment_method_section">
-        購入形式: <%= t('order_type.single_order') %>
-      </div>
-    <% end %>
+    <div class="c-product_list__wrapper">
       <%= render partial: 'single_line_item', collection: order_form.object.single_line_items, locals: { order_form: order_form } %>
       <% # TODO 定期購買 %>
     </div>

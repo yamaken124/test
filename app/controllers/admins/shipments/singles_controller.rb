@@ -1,4 +1,5 @@
-class Admins::ShipmentsController < Admins::BaseController
+class Admins::Shipments::SinglesController < Admins::BaseController
+
   before_filter :set_shipments, only: [:shipment_details]
   before_filter :setup_for_current_state, only: [:index]
 
@@ -13,7 +14,7 @@ class Admins::ShipmentsController < Admins::BaseController
 
   def update_state
     @shipments = Shipment.where(id: shipment_ids_from_params).includes(single_line_item: [:variant])
-    filter_for_update(@shipments)
+    filter_for_update
     method_name = :"update_#{params[:state]}"
     send(method_name, @shipments) if respond_to?(method_name, true)
   end
@@ -45,16 +46,24 @@ class Admins::ShipmentsController < Admins::BaseController
 
   private
     def set_shipments
-      @shipments = Shipment.where(id: shipment_ids).includes(single_line_item: [:variant], )
-      filter_for_update(@shipments)
+      @shipments = Shipment.where(id: shipment_ids).includes(single_line_item: [:variant] )
+      filter_for_update
     end
 
     def payment_from_shipments(shipments)
       @payment = Payment.find_by(single_order_detail_id: shipments.first.single_line_item.single_order_detail_id)
     end
 
-    def filter_for_update(shipments)
-      redirect_to :back and return unless (has_same_state?(shipments) && shipments.present?)# && belongs_to_same_order_detail?(shipments))
+    def filter_for_update
+      redirect_to :back and return unless (has_same_state? && @shipments.present? && ordered_by_same_user?)
+    end
+
+    def ordered_by_same_user?
+      @shipments.all? {|shipment| shipment.address.user == @shipments.first.address.user}
+    end
+
+    def has_same_state?
+      @shipments.all? {|shipment| shipment.state == @shipments.first.state}
     end
 
     def shipment_ids_from_params
@@ -73,14 +82,6 @@ class Admins::ShipmentsController < Admins::BaseController
         Shipment.all.includes(single_line_item: [:variant, single_order_detail: [payment: [user: [:profile] ]]]).order("id DESC")
       method_name = :"before_#{params[:state]}"
       send(method_name) if respond_to?(method_name, true)
-    end
-
-    def belongs_to_same_order_detail?(shipments)
-      shipments.all? {|shipment| shipment.single_line_item.single_order_detail_id == shipments.first.single_line_item.single_order_detail_id}
-    end
-
-    def has_same_state?(shipments)
-      shipments.all? {|shipment| shipment.state == shipments.first.state}
     end
 
     def has_same_tracking?(shipments)
@@ -112,15 +113,15 @@ class Admins::ShipmentsController < Admins::BaseController
 
     def update_shipped(shipments)
       redirect_to :back and return unless has_same_tracking?(shipments)
-      UserMailer.delay.send_items_shipped_notification(shipments, payment_from_shipments(shipments))
+      UserMailer.delay.send_items_shipped_notification(shipments)
       shipments_update_state(shipments)
       redirect_to :back
     end
 
     def update_canceled(shipments)
-      # 現在キャンセルは商品一つずつのみ対応s
+      # 現在キャンセルは商品一つずつのみ対応
       shipments.first.single_line_item.cancel_item(payment_from_shipments(shipments))
-      redirect_to admins_shipments_path
+      redirect_to admins_shipments_singles_path
     end
 
     def update_returned(shipments)

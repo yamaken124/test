@@ -20,6 +20,7 @@
 FactoryGirl.define do
   factory :admin do
     email "xxx@gmail.com"
-    password "xxxx1031"    
+    password "xxxx1031"
+    authority 0
   end
 end

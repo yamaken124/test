@@ -1,0 +1,17 @@
+<div class="c-segments">
+<% if current_user.can_see_one_click_history? %>
+  <a href="">
+    <p class="is--active">通常商品</p>
+  </a>
+  <div class="border"></div>
+  <a href="<%= one_click_history_orders_path %>">
+    <p>限定公開商品</p>
+  </a>
+<% else %>
+  <p class = "is--active_center">注文履歴</p>
+<% end %>
+</div>
+<% @details.each do |detail| %>
+  <%= render partial: 'users/orders/history', locals: {detail: detail, payment: detail.payment} %>
+<% end %>
+<div class="c-pager"><%= paginate(@details) %></div>

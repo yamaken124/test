@@ -25,7 +25,7 @@
             <td><%= item.user.profile.name %></td>
             <td class="message"><%= item.message %></td>
             <td>
-              <%= form_tag update_state_admins_shipments_path, method: "patch", class: "u-float_left" do %>
+              <%= form_tag update_state_admins_shipments_singles_path, method: "patch", class: "u-float_left" do %>
                 <%= hidden_field_tag :state, "returned" %>
                 <%= hidden_field_tag :shipment_ids, item.single_line_item.shipment.id %>
                 <%= hidden_field_tag :returned_item_id, item.id %>

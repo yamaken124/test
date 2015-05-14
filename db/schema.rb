@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150424131423) do
+ActiveRecord::Schema.define(version: 20150509162935) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",           limit: 4
@@ -41,12 +41,20 @@ ActiveRecord::Schema.define(version: 20150424131423) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
     t.string   "last_sign_in_ip",        limit: 255
+    t.integer  "authority",              limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "admins", ["email"], name: "index_admins_on_email", unique: true, using: :btree
   add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true, using: :btree
+
+  create_table "credit_cards", force: :cascade do |t|
+    t.integer  "user_id",       limit: 4
+    t.datetime "registered_at"
+  end
+
+  add_index "credit_cards", ["user_id"], name: "index_credit_cards_on_user_id", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   limit: 4,     default: 0, null: false
@@ -93,7 +101,7 @@ ActiveRecord::Schema.define(version: 20150424131423) do
     t.datetime "updated_at",                                     null: false
   end
 
-  add_index "oauth_access_tokens", ["oauth_application_id"], name: "fk_rails_cbb1c17693", using: :btree
+  add_index "oauth_access_tokens", ["oauth_application_id"], name: "fk_rails_5989c29d2a", using: :btree
   add_index "oauth_access_tokens", ["user_id"], name: "index_oauth_access_tokens_on_user_id", using: :btree
 
   create_table "oauth_applications", force: :cascade do |t|
@@ -162,12 +170,26 @@ ActiveRecord::Schema.define(version: 20150424131423) do
     t.integer  "one_click_detail_id",    limit: 4
     t.string   "number",                 limit: 255
     t.integer  "user_id",                limit: 4
+    t.integer  "state",                  limit: 4
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
   end
 
   add_index "one_click_payments", ["address_id"], name: "index_one_click_payments_on_address_id", using: :btree
   add_index "one_click_payments", ["one_click_detail_id"], name: "index_one_click_payments_on_one_click_detail_id", using: :btree
+
+  create_table "one_click_shipments", force: :cascade do |t|
+    t.integer  "address_id",        limit: 4
+    t.integer  "one_click_item_id", limit: 4
+    t.string   "tracking",          limit: 255
+    t.datetime "shipped_at"
+    t.integer  "state",             limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "one_click_shipments", ["address_id"], name: "index_one_click_shipments_on_address_id", using: :btree
+  add_index "one_click_shipments", ["one_click_item_id"], name: "index_one_click_shipments_on_one_click_item_id", using: :btree
 
   create_table "payment_methods", force: :cascade do |t|
     t.string   "name",          limit: 255
@@ -197,8 +219,8 @@ ActiveRecord::Schema.define(version: 20150424131423) do
     t.datetime "updated_at",                                     null: false
   end
 
-  add_index "payments", ["address_id"], name: "fk_rails_e488695957", using: :btree
-  add_index "payments", ["single_order_detail_id"], name: "fk_rails_e2b9115812", using: :btree
+  add_index "payments", ["address_id"], name: "fk_rails_036fdaa32c", using: :btree
+  add_index "payments", ["single_order_detail_id"], name: "fk_rails_5eea199f3d", using: :btree
 
   create_table "prices", force: :cascade do |t|
     t.integer  "variant_id", limit: 4
@@ -221,11 +243,9 @@ ActiveRecord::Schema.define(version: 20150424131423) do
   add_index "product_descriptions", ["product_id"], name: "index_product_descriptions_on_product_id", using: :btree
 
   create_table "products", force: :cascade do |t|
-    t.string   "name",          limit: 255
-    t.datetime "is_valid_at"
-    t.datetime "is_invalid_at"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "products_taxons", force: :cascade do |t|
@@ -242,11 +262,11 @@ ActiveRecord::Schema.define(version: 20150424131423) do
     t.integer  "user_id",         limit: 4
     t.string   "last_name",       limit: 255, default: "", null: false
     t.string   "first_name",      limit: 255, default: "", null: false
+    t.string   "last_name_kana",  limit: 255, default: "", null: false
+    t.string   "first_name_kana", limit: 255, default: "", null: false
+    t.string   "phone",           limit: 255, default: "", null: false
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
-    t.string   "phone",           limit: 255
-    t.string   "last_name_kana",  limit: 255
-    t.string   "first_name_kana", limit: 255
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
@@ -283,7 +303,7 @@ ActiveRecord::Schema.define(version: 20150424131423) do
   end
 
   add_index "shipments", ["address_id"], name: "index_shipments_on_address_id", using: :btree
-  add_index "shipments", ["single_line_item_id"], name: "fk_rails_15430f5dae", using: :btree
+  add_index "shipments", ["single_line_item_id"], name: "fk_rails_6943af24fe", using: :btree
 
   create_table "single_line_items", force: :cascade do |t|
     t.integer  "variant_id",             limit: 4
@@ -322,7 +342,7 @@ ActiveRecord::Schema.define(version: 20150424131423) do
 
   add_index "single_order_details", ["address_id"], name: "index_single_order_details_on_address_id", using: :btree
   add_index "single_order_details", ["single_order_id"], name: "index_single_order_details_on_single_order_id", using: :btree
-  add_index "single_order_details", ["tax_rate_id"], name: "fk_rails_86d62fed6e", using: :btree
+  add_index "single_order_details", ["tax_rate_id"], name: "fk_rails_39395a72ef", using: :btree
 
   create_table "single_orders", force: :cascade do |t|
     t.integer  "purchase_order_id", limit: 4
@@ -461,6 +481,7 @@ ActiveRecord::Schema.define(version: 20150424131423) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "used_point_total",       limit: 4,   default: 0,  null: false
+    t.integer  "finc_user_id",           limit: 4
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

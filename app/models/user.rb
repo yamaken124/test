@@ -36,8 +36,11 @@ class User < ActiveRecord::Base
   has_many :oauth_access_tokens
   has_many :returned_items
   has_one :users_user_category
+  has_one :credit_card
 
-  after_create :create_user_category
+  validates :used_point_total, numericality: true
+
+  paginates_per 20
 
   accepts_nested_attributes_for :profile
 
@@ -51,13 +54,21 @@ class User < ActiveRecord::Base
   end
 
   def update_used_point_total(changed_point)
-    self.used_point_total += changed_point.to_i
-    save!
-    UserPointHistory.create!(
-      user_id: id,
-      used_point: changed_point
-    ) #point history
-    WellnessMileage.add((-1)*changed_point, self) #ポイントを使うとmasterのポイントも減らす
+    begin
+      ActiveRecord::Base.transaction do
+        raise 'minus_point' if (wellness_mileage - changed_point < 0)
+        self.used_point_total += changed_point.to_i
+        save!
+        UserPointHistory.create!(
+          user_id: id,
+          used_point: changed_point
+        ) #point history
+        WellnessMileage.add((-1)*changed_point, self) #ポイントを使うとmasterのポイントも減らす
+      end
+      true
+    rescue => e
+      false
+    end
   end
 
   def belonging_user_category
@@ -77,15 +88,25 @@ class User < ActiveRecord::Base
   end
 
   def max_used_point
-    wellness_mileage
+    [wellness_mileage, Payment::UsedPointLimit].min
   end
 
-  def create_user_category
-    # if id.in?(lmi_user_ids)
-    #   UsersUserCategory.where(user_id: user.id).first_or_create(user_category_id: 2)
-    # else
-    UsersUserCategory.where(user_id: id).first_or_create(user_category_id: 1)
-    # end
+  def can_see_one_click_history?
+    Taxon::OneClickTaxonIds.any? {|taxon_id| shown_taxon.ids.include?(taxon_id) }
+  end
+
+  def first_or_initialize_users_user_category
+    user_company = self.get_business_account
+    if user_company['company'].present? && user_company['company']['id'] == 4
+      UsersUserCategory.where(user_id: self.id).first_or_initialize.update(user_category_id: 2)
+    else
+      UsersUserCategory.where(user_id: self.id).first_or_initialize.update(user_category_id: 1)
+    end
+
+  end
+
+  def register_gmo_card?
+    GmoMultiPayment::Member.new(self).search
   end
 
 end

@@ -43,6 +43,10 @@
       display:block;
     }
   }
+  .form__field_paddigng_right{
+    @extend .form__field;
+    padding-right:5px;
+  }
   i{
     font-size:12px;
     color:$base_font_color;

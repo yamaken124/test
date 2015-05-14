@@ -15,7 +15,7 @@ class Users::Orders::ItemsController < Users::BaseController
       )
     UserMailer.delay.send_return_request_accepted_notification(SingleLineItem.find(params[:item_id]))
 
-    redirect_to orders_path
+    redirect_to single_history_orders_path
   end
 
 end

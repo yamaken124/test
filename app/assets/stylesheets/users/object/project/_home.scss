@@ -1,0 +1,139 @@
+@import "../../foundation/setting";
+@import "../../foundation/mixin";
+@import "compass/css3";
+
+.p-home_list_title{
+  color:$base_font_color;
+  font-size:16px;
+  display: inline;
+  &:before{
+    content: "";
+    float:left;
+    width:16px;
+    height:16px;
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+  }
+}
+.p-home_list_title_category{
+  @extend .p-home_list_title;
+  &:before{
+    background-image:url(asset-path("users/category_icon.png"));
+  }
+}
+.p-home_top{
+  width:100%;
+  .p-home_top_image{
+    width:100%;
+  }
+}
+.p-home_list{
+  border-bottom:1px solid $base_border_color;
+  padding:15px 4% 15px 4%;
+  .p-home_category_lists{
+    width:100%;
+    padding-top:8px;
+    overflow:hidden;
+    .p-home_category_list_wrapper{
+      width:46%;
+      height:35px;
+      margin:6px 2% 6px 2%;
+      padding:4px 0 4px;
+      float:left;
+      @include box-shadow(rgba(0, 0, 0, .4) 0 0 2px);
+      .p-home_category_list_before{
+        width:5%;
+        height:100%;
+        float:left;
+        color: $finc_color;
+        margin-left:5%;
+        vertical-align: middle;
+        .p-home_category_image{
+          height:25px;
+          margin-top:5px;
+        }
+      }
+      .p-home_category_list{
+        @extend .p-home_category_list_before;
+        float:left;
+        width:75%;
+        font-size:14px;
+        text-align:center;
+        padding:0 5% 0 5%;
+        vertical-align: middle;
+        line-height: 35px;
+      }
+    }
+    .p-home_category_list_center{
+      margin:0 auto;
+      margin-left: 27%;
+      margin-top:5px;
+      @extend .p-home_category_list;
+    }
+  }
+}
+.p-home_ranking_wrapper{
+  height:213px;
+  width:100%;
+  padding-top:15px;
+  .p-home_slides_ranking_wrapper{
+    height:185px;
+    width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-top:15px;
+    .p-home_slides_ranking_images{
+      width:900px;
+      height:100%;
+      .p-home_slides_ranking_unit{
+        position:relative;
+        float:left;
+        width:180px;
+        height:180px;
+        img{
+          width:100%;
+          height:100%;
+          border-left:1px solid $base_border_color;
+          &:last-child{
+            border-right:1px solid $base_border_color;
+          }
+        }
+      }
+    }
+  }
+}
+.p-home_slides_ranking_title{
+  @extend .p-home_list_title_category;
+  &:before{
+    background-image:url(asset-path("users/ranking_icon.png"));
+    margin-left:4%;
+  }
+}
+.p-home_android_ranking_wrapper{
+  padding-top:15px;
+  .p-home_android_slides_ranking_wrapper{
+    width:100%;
+    margin-top:15px;
+    margin-left:1%;
+    .p-home_android_slides_ranking_left{
+      height:155px;
+      width:50%;
+      float:left;
+      img {
+        width:100%;
+        height:100%;
+      }
+    }
+    .p-home_android_slides_ranking_right{
+      height:185px;
+      width:50%;
+      float:right;
+      img {
+        width:100%;
+        height:100%;
+      }
+    }
+  }
+}

@@ -42,10 +42,6 @@ class SingleLineItem < ActiveRecord::Base
     self.quantity = 0 if quantity.nil? || quantity < 0
   end
 
-  def self.complete_items(single_order_detail)
-    single_order_detail.single_line_items.update_all(payment_state: self.payment_states[:completed])
-  end
-
   def cancel_item(payment)
     begin
       ActiveRecord::Base.transaction do
@@ -63,5 +59,14 @@ class SingleLineItem < ActiveRecord::Base
   def prohibit_using_mileage?
     Taxon::FreeShippingId.include?( ProductsTaxon.find_by(product_id: Variant.find(self.variant_id).product_id).taxon_id )
   end
+
+  def can_canceled?
+    completed? && variant.product.available?
+  end
+
+  def can_send_back?
+    (Date.today - single_order_detail.completed_on <= 14) && shipment.shipped?
+  end
+
 
 end
