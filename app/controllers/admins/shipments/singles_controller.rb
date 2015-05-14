@@ -17,20 +17,13 @@ class Admins::Shipments::SinglesController < Admins::BaseController
     send(method_name, @shipments) if respond_to?(method_name, true)
   end
 
-  # def update_tracking_code
-  #   shipment_ids_from_params.each do |shipment_id|
-  #     Shipment.find(shipment_id).update(tracking: params[:tracking])
-  #   end
-  #   redirect_to :back
-  # end
-
   def return_requests
     @return_requested_items = ReturnedItem.includes(user: [:profile]).includes(single_line_item: [:shipment, variant: [:product], single_order_detail: [:payment]]).where(returned_at: nil)
     @title = "返品要望リスト"
   end
 
   def csv_export
-    @shipments = Shipment.where(id: shipment_ids_array_from_parameters)
+    @shipments = Shipment.where(id: shipment_ids_from_params)
     respond_to do |format|
       format.html do
         @shipments = Shipment.all
@@ -39,16 +32,18 @@ class Admins::Shipments::SinglesController < Admins::BaseController
         send_data render_to_string, filename: "FiNC#{Time.now.strftime('%y%m%d%H%M%S')}.csv", type: :csv
       end
     end
+    update_exported
   end
 
   private
 
-    def shipment_ids_array_from_parameters
-      params[:shipment].require(:ids)
+    def shipment_ids_from_params
+      return nil if params[:shipment].nil?
+      shipment_ids = params[:shipment].require(:ids)
     end
 
     def set_shipments
-      @shipments = Shipment.where(id: shipment_ids).includes(:address, single_line_item: [:variant, single_order_detail: [payment: [:user]]] )
+      @shipments = Shipment.where(id: shipment_ids_from_params).includes(:address, single_line_item: [:variant, single_order_detail: [payment: [:user]]] )
       filter_for_update
     end
 
@@ -56,16 +51,8 @@ class Admins::Shipments::SinglesController < Admins::BaseController
       redirect_to :back and return unless (has_same_state? && @shipments.present?)# && ordered_by_same_user?)
     end
 
-    # def ordered_by_same_user?
-    #   @shipments.all? {|shipment| shipment.address.user == @shipments.first.address.user}
-    # end
-
     def has_same_state?
       @shipments.all? {|shipment| shipment.state == @shipments.first.state}
-    end
-
-    def shipment_ids_from_params
-      params[:shipment_ids].split.map(&:to_i)
     end
 
     def set_tracking(shipments)
@@ -86,10 +73,6 @@ class Admins::Shipments::SinglesController < Admins::BaseController
       shipments.first.tracking.present? && (shipments.all? {|shipment| shipment.tracking == shipments.first.tracking})
     end
 
-    def shipment_ids
-      return nil if params[:shipment].nil?
-      shipment_ids = params[:shipment].require(:ids)
-    end
 
     def before_ready
       @title = "未発送リスト"
@@ -110,8 +93,7 @@ class Admins::Shipments::SinglesController < Admins::BaseController
     end
 
     def update_shipped(shipments)
-      redirect_to :back and return unless has_same_tracking?(shipments)
-      UserMailer.delay.send_items_shipped_notification(shipments)
+      # UserMailer.delay.send_items_shipped_notification(shipments)
       shipments_update_state(shipments)
       redirect_to :back
     end
@@ -125,6 +107,18 @@ class Admins::Shipments::SinglesController < Admins::BaseController
     def update_returned(shipments)
       ReturnedItem.find(params[:returned_item_id]).update(returned_at: Time.now)
       redirect_to :back
+    end
+
+    def update_exported
+      begin
+        ActiveRecord::Base.transaction do
+          @shipments.each do |shipment|
+            shipment.exported!
+          end
+        end
+      rescue
+        # redirect
+      end
     end
 
     def shipments_update_state(shipments)

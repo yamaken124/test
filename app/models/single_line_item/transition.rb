@@ -16,7 +16,7 @@ class SingleLineItem < ActiveRecord::Base
           state :completed
           state :canceled
 
-         event :completed do
+          event :completed do
             transitions from: [:checkout, :pending], to: :completed
           end
 

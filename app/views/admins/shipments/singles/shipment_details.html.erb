@@ -1,6 +1,6 @@
 <div class="content-header">
   <h3>
-    <%= link_to '発送管理', admins_shipments_singles_path %>
+    <%= link_to '発送管理トップ', admins_shipments_singles_path %>
     <div class="u-float_right">
       <% if @shipments.all_state?(@shipments, 'shipped') %>
         <div class="btn btn-warning">発送済み</div>
@@ -16,6 +16,13 @@
             <%= hidden_field_tag "shipment[ids][]", shipment.id %>
           <% end %>
           <%= submit_tag "CSV出力", class: "btn btn-primary" %>
+        <% end %>
+      <% elsif @shipments.all_state?(@shipments, 'exported') %>
+        <%= form_tag update_state_admins_shipments_singles_path(state: :shipped), method: "patch", class: "u-float_left" do %>
+          <% @shipments.each do |shipment| %>
+            <%= hidden_field_tag "shipment[ids][]", shipment.id %>
+          <% end %>
+          <%= submit_tag "発送する", class: "btn btn-primary" %>
         <% end %>
       <% end %>
     </div>
