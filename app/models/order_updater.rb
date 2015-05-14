@@ -17,6 +17,7 @@ class OrderUpdater
 
   def update_totals
     update_item_total
+    update_item_count
     update_shipment_total
     update_used_point
     update_adjustment_total
@@ -60,7 +61,7 @@ class OrderUpdater
   end
 
   def update_item_count
-    order_detail.item_count = order_detail.single_line_items.sum(:quantity)
+    order_detail.item_count = order_detail.single_line_items.except_canceled.sum(:quantity)
   end
 
   def persist_totals
@@ -74,13 +75,18 @@ class OrderUpdater
         included_tax_total: order_detail.included_tax_total,
         total: order_detail.total,
         paid_total: order_detail.total,
-        updated_at: Time.now
       )
     else
       SingleOrderDetail.find(order_detail.id).update(
-        paid_total: order_detail.total,
-        included_tax_total: order_detail.included_tax_total,
+        item_total: order_detail.item_total,
+        item_count: order_detail.item_count,
+        adjustment_total: order_detail.adjustment_total,
+        additional_tax_total: order_detail.additional_tax_total,
         shipment_total: order_detail.shipment_total,
+        included_tax_total: order_detail.included_tax_total,
+        total: order_detail.total,
+        paid_total: order_detail.total,
+        order_changed_at: Time.now,
         used_point: order_detail.used_point,
       )
     end

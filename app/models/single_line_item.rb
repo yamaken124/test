@@ -61,7 +61,7 @@ class SingleLineItem < ActiveRecord::Base
   end
 
   def can_canceled?
-    completed? && variant.product.available?
+    completed? && variant.available?
   end
 
   def can_send_back?
