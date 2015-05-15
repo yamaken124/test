@@ -56,11 +56,6 @@ class Users::ProductsController < Users::BaseController
       reject_invalid_product
     end
 
-    def set_products(available_variants)
-      displayed_product_ids = Product.available.try(:ids) & current_user.shown_product_ids
-      @products = Product.where(id: displayed_product_ids).order('position ASC').page(params[:page])
-    end
-
     def available_quantity
       max_available_quantity = [Product::AvailableQuantity, @product.variants.single_order.first.stock_quantity].min
       @available_quantity = Array(1..max_available_quantity)

@@ -16,9 +16,9 @@ module Users::ProductsHelper
     displayed_product_ids = Product.available.try(:ids) & current_user.shown_product_ids
     if @taxon.present?
       selected_product_id = ProductsTaxon.where(taxon_id: @taxon.id).pluck(:product_id)
-      @products = Product.where(id: (displayed_product_ids & selected_product_id) ).page(params[:page])
+      @products = Product.where(id: (displayed_product_ids & selected_product_id) ).order('position ASC').page(params[:page])
     else
-      @products = Product.where(id: displayed_product_ids).page(params[:page])
+      @products = Product.where(id: displayed_product_ids).order('position ASC').page(params[:page])
     end
   end
 
