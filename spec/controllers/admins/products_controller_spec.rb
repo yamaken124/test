@@ -110,4 +110,45 @@ RSpec.describe Admins::ProductsController, type: :controller do
     end
   end
 
+  describe 'GET #move_position' do
+    before do
+      create(:product, id: 1, position: 1)
+      create(:product, id: 2, position: 2)
+      create(:product, id: 3, position: 3)
+      create(:product, id: 4, position: 4)
+    end
+    context 'move_up' do
+      let(:move_up_params) { {
+        position: "up", product_id: 2
+      } }
+
+      it "locates up position of product" do
+        before_product_position = Product.find(move_up_params[:product_id]).position
+        get :move_position, move_up_params
+        expect(assigns(:product).position).to eq (before_product_position - 1)
+      end
+
+      it "redirects to admins#index path" do
+        get :move_position, move_up_params
+        expect(response).to redirect_to admins_products_path
+      end
+    end
+
+    context 'move_down' do
+      let(:move_down_params) { {
+        position: "down", product_id: 2
+      } }
+
+      it "locates down position of product" do
+        before_product_position = Product.find(move_down_params[:product_id]).position
+        get :move_position, move_down_params
+        expect(assigns(:product).position).to eq (before_product_position + 1)
+      end
+
+      it "redirects to admins#index path" do
+        get :move_position, move_down_params
+        expect(response).to redirect_to admins_products_path
+      end
+    end
+  end
 end
